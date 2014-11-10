@@ -5,6 +5,7 @@ import java.util.Locale;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
+import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -21,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import de.mrapp.android.dialog.listener.OnClickListenerWrapper;
 import de.mrapp.android.dialog.listener.OnItemClickListenerWrapper;
+import de.mrapp.android.dialog.listener.OnMultiChoiceClickListenerWrapper;
 
 public class MaterialDialogBuilder extends AlertDialog.Builder {
 
@@ -65,9 +67,11 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 
 	private ListAdapter listAdapter;
 
-	private OnClickListener listViewClickListener;
+	private OnClickListener listViewSingleChoiceListener;
 
-	private int[] selectedListItems;
+	private OnMultiChoiceClickListener listViewMultiChoiceListener;
+
+	private boolean[] checkedListItems;
 
 	/**
 	 * Inflates the dialog's layout.
@@ -167,14 +171,22 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		if (listAdapter != null && !listAdapter.isEmpty()) {
 			listView.setAdapter(listAdapter);
 			listView.setVisibility(View.VISIBLE);
-			listView.setOnItemClickListener(new OnItemClickListenerWrapper(
-					listViewClickListener, dialog, 0));
 
-			if (selectedListItems != null) {
-				for (int position : selectedListItems) {
-					if (position != -1) {
-						listView.setItemChecked(position, true);
-					}
+			if (listView.getChoiceMode() == ListView.CHOICE_MODE_NONE) {
+				listView.setOnItemClickListener(new OnItemClickListenerWrapper(
+						listViewSingleChoiceListener, dialog,
+						AlertDialog.BUTTON_POSITIVE));
+			} else if (listView.getChoiceMode() == ListView.CHOICE_MODE_SINGLE) {
+				listView.setOnItemClickListener(new OnItemClickListenerWrapper(
+						listViewSingleChoiceListener, dialog, 0));
+			} else if (listView.getChoiceMode() == ListView.CHOICE_MODE_MULTIPLE) {
+				listView.setOnItemClickListener(new OnMultiChoiceClickListenerWrapper(
+						listViewMultiChoiceListener, dialog, 0));
+			}
+
+			if (checkedListItems != null) {
+				for (int i = 0; i < checkedListItems.length; i++) {
+					listView.setItemChecked(i, checkedListItems[i]);
 				}
 			}
 
@@ -386,7 +398,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 			listAdapter = new ArrayAdapter<CharSequence>(context,
 					android.R.layout.simple_list_item_1, items);
-			listViewClickListener = listener;
+			listViewSingleChoiceListener = listener;
 			listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
 		} else {
 			super.setItems(items, listener);
@@ -414,9 +426,13 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 			listAdapter = new ArrayAdapter<CharSequence>(context,
 					android.R.layout.simple_list_item_single_choice, items);
-			listViewClickListener = listener;
+			listViewSingleChoiceListener = listener;
 			listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-			selectedListItems = new int[] { checkedItem };
+			checkedListItems = new boolean[items.length];
+
+			for (int i = 0; i < checkedListItems.length; i++) {
+				checkedListItems[i] = (i == checkedItem);
+			}
 		} else {
 			super.setSingleChoiceItems(items, checkedItem, listener);
 		}
@@ -443,9 +459,13 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 			final OnClickListener listener) {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 			listAdapter = adapter;
-			listViewClickListener = listener;
+			listViewSingleChoiceListener = listener;
 			listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-			selectedListItems = new int[] { checkedItem };
+			checkedListItems = new boolean[adapter.getCount()];
+
+			for (int i = 0; i < checkedListItems.length; i++) {
+				checkedListItems[i] = (i == checkedItem);
+			}
 		} else {
 			super.setSingleChoiceItems(adapter, checkedItem, listener);
 		}
@@ -457,6 +477,46 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	public MaterialDialogBuilder setSingleChoiceItems(final Cursor cursor,
 			final int checkedItem, final String labelColumn,
 			final OnClickListener listener) {
+		throw new UnsupportedOperationException(
+				"This method is not supported yet");
+	}
+
+	@Override
+	public MaterialDialogBuilder setMultiChoiceItems(
+			final CharSequence[] items, final boolean[] checkedItems,
+			final OnMultiChoiceClickListener listener) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+			listAdapter = new ArrayAdapter<CharSequence>(context,
+					android.R.layout.simple_list_item_multiple_choice, items);
+			listViewMultiChoiceListener = listener;
+			listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+			checkedListItems = checkedItems;
+		} else {
+			super.setMultiChoiceItems(items, checkedItems, listener);
+		}
+
+		return this;
+	}
+
+	@Override
+	public MaterialDialogBuilder setMultiChoiceItems(final int resourceId,
+			final boolean[] checkedItems,
+			final OnMultiChoiceClickListener listener) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+			setMultiChoiceItems(
+					context.getResources().getTextArray(resourceId),
+					checkedItems, listener);
+		} else {
+			super.setMultiChoiceItems(resourceId, checkedItems, listener);
+		}
+
+		return this;
+	}
+
+	@Override
+	public MaterialDialogBuilder setMultiChoiceItems(final Cursor cursor,
+			final String isCheckedColumn, final String labelColumn,
+			final OnMultiChoiceClickListener listener) {
 		throw new UnsupportedOperationException(
 				"This method is not supported yet");
 	}
