@@ -40,6 +40,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 
 	private int buttonTextColor;
 
+	private boolean stackButtons;
+
 	private CharSequence negativeButtonText;
 
 	private CharSequence neutralButtonText;
@@ -201,22 +203,36 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		messageTextView.setLayoutParams(messageLayoutParams);
 	}
 
-	private void initializeButtonBar(View root, AlertDialog dialog) {
-		boolean buttonAdded = false;
-		buttonAdded |= addNegativeButton(root, dialog);
-		buttonAdded |= addNeutralButton(root, dialog);
-		buttonAdded |= addPositiveButton(root, dialog);
+	private void inflateButtonBar(View root, AlertDialog dialog) {
+		ViewGroup buttonBarContainer = (ViewGroup) root
+				.findViewById(R.id.button_bar_container);
 
-		if (buttonAdded) {
-			View buttonBarContainer = root
-					.findViewById(R.id.button_bar_container);
+		if (stackButtons) {
+			View.inflate(context, R.layout.stacked_button_bar,
+					buttonBarContainer);
+		} else {
+			View.inflate(context, R.layout.horizontal_button_bar,
+					buttonBarContainer);
+		}
+
+		initializeButtonBar(root, buttonBarContainer, dialog);
+	}
+
+	private void initializeButtonBar(View root, ViewGroup buttonBarContainer,
+			AlertDialog dialog) {
+		Button negativeButton = addNegativeButton(buttonBarContainer, dialog);
+		Button neutralButton = addNeutralButton(buttonBarContainer, dialog);
+		Button positiveButton = addPositiveButton(buttonBarContainer, dialog);
+
+		if (negativeButton != null || neutralButton != null
+				|| positiveButton != null) {
 			showButtonBarContainer(root, buttonBarContainer);
 		}
 	}
 
 	private void showButtonBarContainer(View root, View buttonBarContainer) {
-		buttonBarContainer.setVisibility(View.VISIBLE);
 		View contentRoot = root.findViewById(R.id.content_root);
+		buttonBarContainer.setVisibility(View.VISIBLE);
 		int paddingLeft = context.getResources().getDimensionPixelSize(
 				R.dimen.dialog_content_padding_left);
 		int paddingTop = context.getResources().getDimensionPixelSize(
@@ -229,7 +245,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 				paddingBottom);
 	}
 
-	private boolean addNegativeButton(View root, AlertDialog dialog) {
+	private Button addNegativeButton(View root, AlertDialog dialog) {
 		if (!TextUtils.isEmpty(negativeButtonText)) {
 			Button negativeButton = (Button) root
 					.findViewById(android.R.id.button1);
@@ -244,13 +260,13 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 				negativeButton.setTextColor(buttonTextColor);
 			}
 
-			return true;
+			return negativeButton;
 		}
 
-		return false;
+		return null;
 	}
 
-	private boolean addNeutralButton(View root, AlertDialog dialog) {
+	private Button addNeutralButton(View root, AlertDialog dialog) {
 		if (!TextUtils.isEmpty(neutralButtonText)) {
 			Button neutralButton = (Button) root
 					.findViewById(android.R.id.button2);
@@ -265,13 +281,13 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 				neutralButton.setTextColor(buttonTextColor);
 			}
 
-			return true;
+			return neutralButton;
 		}
 
-		return false;
+		return null;
 	}
 
-	private boolean addPositiveButton(View root, AlertDialog dialog) {
+	private Button addPositiveButton(View root, AlertDialog dialog) {
 		if (!TextUtils.isEmpty(positiveButtonText)) {
 			Button positiveButton = (Button) root
 					.findViewById(android.R.id.button3);
@@ -286,10 +302,10 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 				positiveButton.setTextColor(buttonTextColor);
 			}
 
-			return true;
+			return positiveButton;
 		}
 
-		return false;
+		return null;
 	}
 
 	private void initializeListViewListener(final AlertDialog dialog,
@@ -333,6 +349,11 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 
 	public MaterialDialogBuilder setButtonTextColor(final int color) {
 		this.buttonTextColor = color;
+		return this;
+	}
+
+	public MaterialDialogBuilder stackButtons(final boolean stackButtons) {
+		this.stackButtons = stackButtons;
 		return this;
 	}
 
@@ -563,7 +584,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		ViewGroup titleContainer = inflateTitleView(root);
 		TextView messageTextView = initializeMessage(root, titleContainer);
 		inflateContentView(root, titleContainer, messageTextView, dialog);
-		initializeButtonBar(root, dialog);
+		inflateButtonBar(root, dialog);
 		return super.create();
 	}
 
