@@ -18,9 +18,9 @@
 
         <TextView
             android:id="@android:id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dialog_title_margin_bottom"
+            android:layout_marginBottom="@dimen/dialog_content_spacing"
             android:drawablePadding="@dimen/dialog_title_drawable_padding"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
@@ -30,8 +30,14 @@
 
         <TextView
             android:id="@android:id/message"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
     </LinearLayout>
 
     <RelativeLayout

@@ -11,8 +11,13 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
@@ -58,6 +63,26 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 
 	};
 
+	private class OnItemClickListenerWrapper implements OnItemClickListener {
+
+		private OnClickListener wrappedListener;
+
+		private AlertDialog dialog;
+
+		public OnItemClickListenerWrapper(final OnClickListener listener,
+				final AlertDialog dialog) {
+			this.wrappedListener = listener;
+			this.dialog = dialog;
+		}
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			wrappedListener.onClick(dialog, 0);
+		}
+
+	};
+
 	private Context context;
 
 	private ViewGroup contentViewGroup;
@@ -73,6 +98,11 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	 * The text view, which is used to show the dialog's message.
 	 */
 	private TextView messageTextView;
+
+	/**
+	 * The list view, which is used to show the dialog's items.
+	 */
+	private ListView listView;
 
 	private Button negativeButton;
 
@@ -92,6 +122,10 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 
 	private OnClickListener positiveButtonListener;
 
+	private ListAdapter listAdapter;
+
+	private OnClickListener listViewClickListener;
+
 	/**
 	 * Inflates the dialog's layout.
 	 */
@@ -101,6 +135,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		inputViewGroup = (ViewGroup) view.findViewById(android.R.id.input);
 		titleTextView = (TextView) view.findViewById(android.R.id.title);
 		messageTextView = (TextView) view.findViewById(android.R.id.message);
+		listView = (ListView) view.findViewById(android.R.id.list);
 		negativeButton = (Button) view.findViewById(android.R.id.button1);
 		neutralButton = (Button) view.findViewById(android.R.id.button2);
 		positiveButton = (Button) view.findViewById(android.R.id.button3);
@@ -185,6 +220,23 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		}
 	}
 
+	private void showListView(final AlertDialog dialog) {
+		if (listAdapter != null && !listAdapter.isEmpty()) {
+			listView.setAdapter(listAdapter);
+			listView.setVisibility(View.VISIBLE);
+			listView.setOnItemClickListener(new OnItemClickListenerWrapper(
+					listViewClickListener, dialog));
+
+			if (!TextUtils.isEmpty(messageTextView.getText())) {
+				LinearLayout.LayoutParams layoutParams = (LayoutParams) messageTextView
+						.getLayoutParams();
+				layoutParams.bottomMargin = context.getResources()
+						.getDimensionPixelSize(R.dimen.dialog_content_spacing);
+				messageTextView.setLayoutParams(layoutParams);
+			}
+		}
+	}
+
 	private void hideTitleIfEmpty() {
 		if (TextUtils.isEmpty(titleTextView.getText())) {
 			titleTextView.setVisibility(View.GONE);
@@ -194,10 +246,13 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	private void hideMessageIfEmpty() {
 		if (TextUtils.isEmpty(messageTextView.getText())) {
 			messageTextView.setVisibility(View.GONE);
-			LinearLayout.LayoutParams layoutParams = (LayoutParams) titleTextView
-					.getLayoutParams();
-			layoutParams.bottomMargin = 0;
-			titleTextView.setLayoutParams(layoutParams);
+
+			if (listAdapter == null || listAdapter.isEmpty()) {
+				LinearLayout.LayoutParams layoutParams = (LayoutParams) titleTextView
+						.getLayoutParams();
+				layoutParams.bottomMargin = 0;
+				titleTextView.setLayoutParams(layoutParams);
+			}
 		}
 	}
 
@@ -375,6 +430,33 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	}
 
 	@Override
+	public MaterialDialogBuilder setItems(final CharSequence[] items,
+			OnClickListener listener) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+			listAdapter = new ArrayAdapter<CharSequence>(context,
+					android.R.layout.simple_list_item_1, items);
+			listViewClickListener = listener;
+		} else {
+			super.setItems(items, listener);
+		}
+
+		return this;
+	}
+
+	@Override
+	public MaterialDialogBuilder setItems(final int resourceId,
+			OnClickListener listener) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+			listAdapter = new ArrayAdapter<CharSequence>(context, resourceId);
+			listViewClickListener = listener;
+		} else {
+			super.setItems(resourceId, listener);
+		}
+
+		return this;
+	}
+
+	@Override
 	public AlertDialog create() {
 		AlertDialog dialog = super.create();
 
@@ -382,6 +464,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 			addNegativeButton(dialog);
 			addNeutralButton(dialog);
 			addPositiveButton(dialog);
+			showListView(dialog);
 			hideTitleIfEmpty();
 			hideMessageIfEmpty();
 			hideButtonBarIfEmpty();
