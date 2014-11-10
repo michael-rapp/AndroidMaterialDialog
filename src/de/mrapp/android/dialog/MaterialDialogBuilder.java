@@ -188,6 +188,29 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		}
 	}
 
+	private void initializeListViewListener(final AlertDialog dialog,
+			ListView listView) {
+		if (listViewChoiceMode == ListView.CHOICE_MODE_NONE) {
+			listView.setOnItemClickListener(new OnItemClickListenerWrapper(
+					listViewSingleChoiceListener, dialog,
+					AlertDialog.BUTTON_POSITIVE));
+		} else if (listViewChoiceMode == ListView.CHOICE_MODE_SINGLE) {
+			listView.setOnItemClickListener(new OnItemClickListenerWrapper(
+					listViewSingleChoiceListener, dialog, 0));
+		} else if (listViewChoiceMode == ListView.CHOICE_MODE_MULTIPLE) {
+			listView.setOnItemClickListener(new OnMultiChoiceClickListenerWrapper(
+					listViewMultiChoiceListener, dialog, 0));
+		}
+	}
+
+	private void initializeListViewCheckedItems(ListView listView) {
+		if (checkedListItems != null) {
+			for (int i = 0; i < checkedListItems.length; i++) {
+				listView.setItemChecked(i, checkedListItems[i]);
+			}
+		}
+	}
+
 	private void showContentContainer(ViewGroup contentContainer,
 			ViewGroup titleContainer, TextView messageTextView) {
 		contentContainer.setVisibility(View.VISIBLE);
@@ -306,29 +329,6 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		}
 
 		return null;
-	}
-
-	private void initializeListViewListener(final AlertDialog dialog,
-			ListView listView) {
-		if (listViewChoiceMode == ListView.CHOICE_MODE_NONE) {
-			listView.setOnItemClickListener(new OnItemClickListenerWrapper(
-					listViewSingleChoiceListener, dialog,
-					AlertDialog.BUTTON_POSITIVE));
-		} else if (listViewChoiceMode == ListView.CHOICE_MODE_SINGLE) {
-			listView.setOnItemClickListener(new OnItemClickListenerWrapper(
-					listViewSingleChoiceListener, dialog, 0));
-		} else if (listViewChoiceMode == ListView.CHOICE_MODE_MULTIPLE) {
-			listView.setOnItemClickListener(new OnMultiChoiceClickListenerWrapper(
-					listViewMultiChoiceListener, dialog, 0));
-		}
-	}
-
-	private void initializeListViewCheckedItems(ListView listView) {
-		if (checkedListItems != null) {
-			for (int i = 0; i < checkedListItems.length; i++) {
-				listView.setItemChecked(i, checkedListItems[i]);
-			}
-		}
 	}
 
 	public MaterialDialogBuilder(Context context) {
