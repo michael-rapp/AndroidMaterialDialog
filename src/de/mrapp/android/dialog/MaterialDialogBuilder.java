@@ -165,7 +165,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 			listView.setAdapter(listAdapter);
 			listView.setVisibility(View.VISIBLE);
 			listView.setOnItemClickListener(new OnItemClickListenerWrapper(
-					listViewClickListener, dialog));
+					listViewClickListener, dialog, 0));
 
 			if (!TextUtils.isEmpty(messageTextView.getText())) {
 				LinearLayout.LayoutParams layoutParams = (LayoutParams) messageTextView
