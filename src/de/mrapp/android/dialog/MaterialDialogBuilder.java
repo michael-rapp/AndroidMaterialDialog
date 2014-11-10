@@ -243,208 +243,120 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	public MaterialDialogBuilder(Context context, int theme) {
 		super(context);
 		this.context = context;
-
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			inflateLayout();
-			applyTheme(theme);
-		}
+		inflateLayout();
+		applyTheme(theme);
 	}
 
 	@Override
 	public MaterialDialogBuilder setTitle(CharSequence title) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			titleTextView.setText(title);
-		} else {
-			super.setTitle(title);
-		}
-
+		titleTextView.setText(title);
 		return this;
 	}
 
 	@Override
 	public MaterialDialogBuilder setTitle(int resourceId) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			titleTextView.setText(resourceId);
-		} else {
-			super.setTitle(resourceId);
-		}
-
+		titleTextView.setText(resourceId);
 		return this;
 	}
 
 	@Override
 	public MaterialDialogBuilder setMessage(CharSequence message) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			messageTextView.setText(message);
-		} else {
-			super.setMessage(message);
-		}
-
+		messageTextView.setText(message);
 		return this;
 	}
 
 	@Override
 	public MaterialDialogBuilder setMessage(int resourceId) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			messageTextView.setText(resourceId);
-		} else {
-			super.setMessage(resourceId);
-		}
-
+		messageTextView.setText(resourceId);
 		return this;
 	}
 
 	@Override
 	public MaterialDialogBuilder setIcon(Drawable icon) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			titleTextView.setCompoundDrawablesWithIntrinsicBounds(icon, null,
-					null, null);
-		} else {
-			super.setIcon(icon);
-		}
-
+		titleTextView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null,
+				null);
 		return this;
 	}
 
 	@Override
 	public MaterialDialogBuilder setIcon(int resourceId) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			Drawable icon = context.getResources().getDrawable(resourceId);
-			setIcon(icon);
-		} else {
-			super.setIcon(resourceId);
-		}
-
-		return this;
+		Drawable icon = context.getResources().getDrawable(resourceId);
+		return setIcon(icon);
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public final MaterialDialogBuilder setIconAttribute(final int attributeId) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			TypedArray typedArray = context.getTheme().obtainStyledAttributes(
-					new int[] { attributeId });
-			Drawable icon = typedArray.getDrawable(0);
-			setIcon(icon);
-		} else {
-			super.setIconAttribute(attributeId);
-		}
-
-		return this;
+		TypedArray typedArray = context.getTheme().obtainStyledAttributes(
+				new int[] { attributeId });
+		Drawable icon = typedArray.getDrawable(0);
+		return setIcon(icon);
 	}
 
 	@Override
 	public MaterialDialogBuilder setNegativeButton(final CharSequence text,
 			final OnClickListener listener) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			negativeButtonText = text;
-			negativeButtonListener = listener;
-		} else {
-			super.setNegativeButton(text, listener);
-		}
-
+		negativeButtonText = text;
+		negativeButtonListener = listener;
 		return this;
 	}
 
 	@Override
 	public MaterialDialogBuilder setNegativeButton(int resourceId,
 			final OnClickListener listener) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			setNegativeButton(context.getText(resourceId), listener);
-		} else {
-			super.setNegativeButton(resourceId, listener);
-		}
-
-		return this;
+		return setNegativeButton(context.getText(resourceId), listener);
 	}
 
 	@Override
 	public MaterialDialogBuilder setPositiveButton(final CharSequence text,
 			final OnClickListener listener) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			positiveButtonText = text;
-			positiveButtonListener = listener;
-		} else {
-			super.setPositiveButton(text, listener);
-		}
-
+		positiveButtonText = text;
+		positiveButtonListener = listener;
 		return this;
 	}
 
 	@Override
 	public MaterialDialogBuilder setPositiveButton(int resourceId,
 			final OnClickListener listener) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			setPositiveButton(context.getText(resourceId), listener);
-		} else {
-			setPositiveButton(resourceId, listener);
-		}
-
-		return this;
+		return setPositiveButton(context.getText(resourceId), listener);
 	}
 
 	@Override
 	public MaterialDialogBuilder setNeutralButton(final CharSequence text,
 			final OnClickListener listener) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			neutralButtonText = text;
-			neutralButtonListener = listener;
-		} else {
-			super.setNeutralButton(text, listener);
-		}
-
+		neutralButtonText = text;
+		neutralButtonListener = listener;
 		return this;
 	}
 
 	@Override
 	public MaterialDialogBuilder setNeutralButton(final int resourceId,
 			final OnClickListener listener) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			setNeutralButton(context.getText(resourceId), listener);
-		} else {
-			super.setNeutralButton(resourceId, listener);
-		}
-
-		return this;
+		return setNeutralButton(context.getText(resourceId), listener);
 	}
 
 	@Override
 	public MaterialDialogBuilder setItems(final CharSequence[] items,
 			OnClickListener listener) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			listAdapter = new ArrayAdapter<CharSequence>(context,
-					android.R.layout.simple_list_item_1, items);
-			listViewSingleChoiceListener = listener;
-			listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-		} else {
-			super.setItems(items, listener);
-		}
-
+		listAdapter = new ArrayAdapter<CharSequence>(context,
+				android.R.layout.simple_list_item_1, items);
+		listViewSingleChoiceListener = listener;
+		listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
 		return this;
 	}
 
 	@Override
 	public MaterialDialogBuilder setItems(final int resourceId,
 			OnClickListener listener) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			setItems(context.getResources().getTextArray(resourceId), listener);
-		} else {
-			super.setItems(resourceId, listener);
-		}
-
-		return this;
+		return setItems(context.getResources().getTextArray(resourceId),
+				listener);
 	}
 
 	@Override
 	public final MaterialDialogBuilder setAdapter(final ListAdapter adapter,
 			final OnClickListener listener) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			listAdapter = adapter;
-			listViewSingleChoiceListener = listener;
-			listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-		} else {
-			super.setAdapter(listAdapter, listener);
-		}
-
+		listAdapter = adapter;
+		listViewSingleChoiceListener = listener;
+		listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
 		return this;
 	}
 
@@ -452,18 +364,14 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	public MaterialDialogBuilder setSingleChoiceItems(
 			final CharSequence[] items, final int checkedItem,
 			final OnClickListener listener) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			listAdapter = new ArrayAdapter<CharSequence>(context,
-					android.R.layout.simple_list_item_single_choice, items);
-			listViewSingleChoiceListener = listener;
-			listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-			checkedListItems = new boolean[items.length];
+		listAdapter = new ArrayAdapter<CharSequence>(context,
+				android.R.layout.simple_list_item_single_choice, items);
+		listViewSingleChoiceListener = listener;
+		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		checkedListItems = new boolean[items.length];
 
-			for (int i = 0; i < checkedListItems.length; i++) {
-				checkedListItems[i] = (i == checkedItem);
-			}
-		} else {
-			super.setSingleChoiceItems(items, checkedItem, listener);
+		for (int i = 0; i < checkedListItems.length; i++) {
+			checkedListItems[i] = (i == checkedItem);
 		}
 
 		return this;
@@ -472,31 +380,22 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	@Override
 	public MaterialDialogBuilder setSingleChoiceItems(final int resourceId,
 			final int checkedItem, final OnClickListener listener) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			setSingleChoiceItems(context.getResources()
-					.getTextArray(resourceId), checkedItem, listener);
-		} else {
-			super.setSingleChoiceItems(resourceId, checkedItem, listener);
-		}
-
-		return this;
+		return setSingleChoiceItems(
+				context.getResources().getTextArray(resourceId), checkedItem,
+				listener);
 	}
 
 	@Override
 	public MaterialDialogBuilder setSingleChoiceItems(
 			final ListAdapter adapter, final int checkedItem,
 			final OnClickListener listener) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			listAdapter = adapter;
-			listViewSingleChoiceListener = listener;
-			listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-			checkedListItems = new boolean[adapter.getCount()];
+		listAdapter = adapter;
+		listViewSingleChoiceListener = listener;
+		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		checkedListItems = new boolean[adapter.getCount()];
 
-			for (int i = 0; i < checkedListItems.length; i++) {
-				checkedListItems[i] = (i == checkedItem);
-			}
-		} else {
-			super.setSingleChoiceItems(adapter, checkedItem, listener);
+		for (int i = 0; i < checkedListItems.length; i++) {
+			checkedListItems[i] = (i == checkedItem);
 		}
 
 		return this;
@@ -514,16 +413,11 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	public MaterialDialogBuilder setMultiChoiceItems(
 			final CharSequence[] items, final boolean[] checkedItems,
 			final OnMultiChoiceClickListener listener) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			listAdapter = new ArrayAdapter<CharSequence>(context,
-					android.R.layout.simple_list_item_multiple_choice, items);
-			listViewMultiChoiceListener = listener;
-			listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-			checkedListItems = checkedItems;
-		} else {
-			super.setMultiChoiceItems(items, checkedItems, listener);
-		}
-
+		listAdapter = new ArrayAdapter<CharSequence>(context,
+				android.R.layout.simple_list_item_multiple_choice, items);
+		listViewMultiChoiceListener = listener;
+		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		checkedListItems = checkedItems;
 		return this;
 	}
 
@@ -531,15 +425,9 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	public MaterialDialogBuilder setMultiChoiceItems(final int resourceId,
 			final boolean[] checkedItems,
 			final OnMultiChoiceClickListener listener) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			setMultiChoiceItems(
-					context.getResources().getTextArray(resourceId),
-					checkedItems, listener);
-		} else {
-			super.setMultiChoiceItems(resourceId, checkedItems, listener);
-		}
-
-		return this;
+		return setMultiChoiceItems(
+				context.getResources().getTextArray(resourceId), checkedItems,
+				listener);
 	}
 
 	@Override
@@ -560,29 +448,20 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	@Override
 	public MaterialDialogBuilder setOnItemSelectedListener(
 			final OnItemSelectedListener listener) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			listView.setOnItemSelectedListener(listener);
-		} else {
-			super.setOnItemSelectedListener(listener);
-		}
-
+		listView.setOnItemSelectedListener(listener);
 		return this;
 	}
 
 	@Override
 	public AlertDialog create() {
 		AlertDialog dialog = super.create();
-
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			addNegativeButton(dialog);
-			addNeutralButton(dialog);
-			addPositiveButton(dialog);
-			showListView(dialog);
-			hideTitleIfEmpty();
-			hideMessageIfEmpty();
-			hideButtonBarIfEmpty();
-		}
-
+		addNegativeButton(dialog);
+		addNeutralButton(dialog);
+		addPositiveButton(dialog);
+		showListView(dialog);
+		hideTitleIfEmpty();
+		hideMessageIfEmpty();
+		hideButtonBarIfEmpty();
 		return dialog;
 	}
 
