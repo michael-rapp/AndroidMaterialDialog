@@ -30,13 +30,15 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 
 	private Context context;
 
-	private int theme;
-
 	private CharSequence title;
 
 	private CharSequence message;
 
 	private Drawable icon;
+
+	private int titleColor;
+
+	private int buttonTextColor;
 
 	private CharSequence negativeButtonText;
 
@@ -103,7 +105,6 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 			if (!TextUtils.isEmpty(title) || icon != null) {
 				titleContainer.setVisibility(View.VISIBLE);
 				titleTextView.setText(title);
-				int titleColor = obtainTitleColor();
 
 				if (titleColor != 0) {
 					titleTextView.setTextColor(titleColor);
@@ -116,26 +117,6 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 
 			}
 		}
-	}
-
-	private int obtainTitleColor() {
-		if (theme != 0) {
-			TypedArray typedArray = context.getTheme().obtainStyledAttributes(
-					theme, new int[] { R.attr.colorPrimary });
-			int color = typedArray.getColor(0, 0);
-
-			if (color != 0) {
-				return color;
-			} else {
-				int resourceId = typedArray.getResourceId(0, 0);
-
-				if (resourceId != 0) {
-					return context.getResources().getColor(resourceId);
-				}
-			}
-		}
-
-		return 0;
 	}
 
 	private TextView initializeMessage(final View root,
@@ -258,7 +239,6 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 					negativeButtonListener, dialog, AlertDialog.BUTTON_NEGATIVE);
 			negativeButton.setOnClickListener(onClickListener);
 			negativeButton.setVisibility(View.VISIBLE);
-			int buttonTextColor = obtainButtonTextColor();
 
 			if (buttonTextColor != 0) {
 				negativeButton.setTextColor(buttonTextColor);
@@ -280,7 +260,6 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 					neutralButtonListener, dialog, AlertDialog.BUTTON_NEUTRAL);
 			neutralButton.setOnClickListener(onClickListener);
 			neutralButton.setVisibility(View.VISIBLE);
-			int buttonTextColor = obtainButtonTextColor();
 
 			if (buttonTextColor != 0) {
 				neutralButton.setTextColor(buttonTextColor);
@@ -302,7 +281,6 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 					positiveButtonListener, dialog, AlertDialog.BUTTON_POSITIVE);
 			positiveButton.setOnClickListener(onClickListener);
 			positiveButton.setVisibility(View.VISIBLE);
-			int buttonTextColor = obtainButtonTextColor();
 
 			if (buttonTextColor != 0) {
 				positiveButton.setTextColor(buttonTextColor);
@@ -312,26 +290,6 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		}
 
 		return false;
-	}
-
-	private int obtainButtonTextColor() {
-		if (theme != 0) {
-			TypedArray typedArray = context.getTheme().obtainStyledAttributes(
-					theme, new int[] { R.attr.colorAccent });
-			int color = typedArray.getColor(0, 0);
-
-			if (color != 0) {
-				return color;
-			} else {
-				int resourceId = typedArray.getResourceId(0, 0);
-
-				if (resourceId != 0) {
-					return context.getResources().getColor(resourceId);
-				}
-			}
-		}
-
-		return 0;
 	}
 
 	private void initializeListViewListener(final AlertDialog dialog,
@@ -359,12 +317,23 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 
 	public MaterialDialogBuilder(Context context) {
 		this(context, 0);
+		this.context = context;
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public MaterialDialogBuilder(Context context, int theme) {
-		super(context);
+		super(context, theme);
 		this.context = context;
-		this.theme = theme;
+	}
+
+	public MaterialDialogBuilder setTitleColor(final int color) {
+		this.titleColor = color;
+		return this;
+	}
+
+	public MaterialDialogBuilder setButtonTextColor(final int color) {
+		this.buttonTextColor = color;
+		return this;
 	}
 
 	@Override
