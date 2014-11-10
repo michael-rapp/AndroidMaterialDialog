@@ -387,8 +387,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	public MaterialDialogBuilder setItems(final int resourceId,
 			OnClickListener listener) {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			listAdapter = new ArrayAdapter<CharSequence>(context, resourceId);
-			listViewClickListener = listener;
+			this.setItems(context.getResources().getTextArray(resourceId),
+					listener);
 		} else {
 			super.setItems(resourceId, listener);
 		}
