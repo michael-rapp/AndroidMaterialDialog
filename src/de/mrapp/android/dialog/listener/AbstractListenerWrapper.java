@@ -1,21 +1,12 @@
 package de.mrapp.android.dialog.listener;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface.OnClickListener;
 
 public abstract class AbstractListenerWrapper {
-
-	private OnClickListener wrappedListener;
 
 	private AlertDialog dialog;
 
 	private int button;
-
-	protected final void attemptOnClick() {
-		if (wrappedListener != null) {
-			wrappedListener.onClick(dialog, button);
-		}
-	}
 
 	protected final void attemptCloseDialog() {
 		switch (button) {
@@ -33,9 +24,15 @@ public abstract class AbstractListenerWrapper {
 		}
 	}
 
-	public AbstractListenerWrapper(final OnClickListener listener,
-			final AlertDialog dialog, final int button) {
-		this.wrappedListener = listener;
+	protected final AlertDialog getDialog() {
+		return dialog;
+	}
+
+	protected final int getButton() {
+		return button;
+	}
+
+	public AbstractListenerWrapper(final AlertDialog dialog, final int button) {
 		this.dialog = dialog;
 		this.button = button;
 	}
