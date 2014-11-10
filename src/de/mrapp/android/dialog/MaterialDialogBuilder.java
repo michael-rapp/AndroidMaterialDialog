@@ -177,6 +177,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		if (listAdapter != null && !listAdapter.isEmpty() && listView != null) {
 			showContentContainer(contentContainer, titleContainer,
 					messageTextView);
+			listView.setChoiceMode(listViewChoiceMode);
 			listView.setAdapter(listAdapter);
 			initializeListViewListener(dialog, listView);
 			initializeListViewCheckedItems(listView);
