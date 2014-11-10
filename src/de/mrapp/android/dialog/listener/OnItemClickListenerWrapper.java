@@ -6,24 +6,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class OnItemClickListenerWrapper implements OnItemClickListener {
-
-	private OnClickListener wrappedListener;
-
-	private AlertDialog dialog;
+public class OnItemClickListenerWrapper extends AbstractListenerWrapper
+		implements OnItemClickListener {
 
 	public OnItemClickListenerWrapper(final OnClickListener listener,
-			final AlertDialog dialog) {
-		this.wrappedListener = listener;
-		this.dialog = dialog;
+			final AlertDialog dialog, final int button) {
+		super(listener, dialog, button);
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		if (wrappedListener != null) {
-			wrappedListener.onClick(dialog, 0);
-		}
+		attemptOnClick();
+		attemptCloseDialog();
 	}
 
 };
