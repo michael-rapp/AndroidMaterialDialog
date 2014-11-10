@@ -5,6 +5,7 @@ import java.util.Locale;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
@@ -93,12 +94,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 
 	/**
 	 * Inflates the dialog's layout.
-	 * 
-	 * @param context
-	 *            The context, which should be used, as an instance of the class
-	 *            {@link Context}
 	 */
-	private void inflateLayout(final Context context) {
+	private void inflateLayout() {
 		View view = View.inflate(context, R.layout.material_dialog, null);
 		contentViewGroup = (ViewGroup) view.findViewById(android.R.id.content);
 		inputViewGroup = (ViewGroup) view.findViewById(android.R.id.input);
@@ -108,6 +105,51 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		neutralButton = (Button) view.findViewById(android.R.id.button2);
 		positiveButton = (Button) view.findViewById(android.R.id.button3);
 		setView(view);
+	}
+
+	private void applyTheme(int theme) {
+		if (theme != 0) {
+			obtainTitleColor(theme);
+			obtainButtonTextColor(theme);
+		}
+	}
+
+	private void obtainTitleColor(int theme) {
+		TypedArray typedArray = context.getTheme().obtainStyledAttributes(
+				theme, new int[] { R.attr.colorPrimary });
+		int color = typedArray.getColor(0, 0);
+
+		if (color != 0) {
+			titleTextView.setTextColor(color);
+		} else {
+			int resourceId = typedArray.getResourceId(0, 0);
+
+			if (resourceId != 0) {
+				titleTextView.setTextColor(context.getResources().getColor(
+						resourceId));
+			}
+		}
+	}
+
+	private void obtainButtonTextColor(int theme) {
+		TypedArray typedArray = context.getTheme().obtainStyledAttributes(
+				theme, new int[] { R.attr.colorAccent });
+		int color = typedArray.getColor(0, 0);
+
+		if (color != 0) {
+			negativeButton.setTextColor(color);
+			neutralButton.setTextColor(color);
+			positiveButton.setTextColor(color);
+		} else {
+			int resourceId = typedArray.getResourceId(0, 0);
+
+			if (resourceId != 0) {
+				color = context.getResources().getColor(resourceId);
+				negativeButton.setTextColor(color);
+				neutralButton.setTextColor(color);
+				positiveButton.setTextColor(color);
+			}
+		}
 	}
 
 	private void addNegativeButton(AlertDialog dialog) {
@@ -176,11 +218,16 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	}
 
 	public MaterialDialogBuilder(Context context) {
+		this(context, 0);
+	}
+
+	public MaterialDialogBuilder(Context context, int theme) {
 		super(context);
 		this.context = context;
 
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			inflateLayout(context);
+			inflateLayout();
+			applyTheme(theme);
 		}
 	}
 
