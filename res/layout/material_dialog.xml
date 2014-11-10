@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@android:id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dialog_content_padding_bottom"
+        android:paddingEnd="@dimen/dialog_content_padding_right"
+        android:paddingLeft="@dimen/dialog_content_padding_left"
+        android:paddingRight="@dimen/dialog_content_padding_right"
+        android:paddingStart="@dimen/dialog_content_padding_left"
+        android:paddingTop="@dimen/dialog_content_padding_top" >
+
+        <TextView
+            android:id="@android:id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dialog_title_margin_bottom"
+            android:drawablePadding="@dimen/dialog_title_drawable_padding"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?attr/colorPrimary" />
+
+        <TextView
+            android:id="@android:id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@android:id/input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dialog_button_bar_margin_bottom"
+        android:layout_marginEnd="@dimen/dialog_button_bar_margin_right"
+        android:layout_marginLeft="@dimen/dialog_button_bar_margin_left"
+        android:layout_marginRight="@dimen/dialog_button_bar_margin_right"
+        android:layout_marginStart="@dimen/dialog_button_bar_margin_left"
+        android:minHeight="@dimen/dialog_button_bar_min_height" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@android:id/button1"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dialog_button_min_height"
+                android:minWidth="@dimen/dialog_button_min_width"
+                android:padding="@dimen/dialog_button_padding"
+                android:textColor="?attr/colorAccent"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@android:id/button2"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dialog_button_spacing"
+                android:layout_marginStart="@dimen/dialog_button_spacing"
+                android:minHeight="@dimen/dialog_button_min_height"
+                android:minWidth="@dimen/dialog_button_min_width"
+                android:padding="@dimen/dialog_button_padding"
+                android:textColor="?attr/colorAccent"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@android:id/button3"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dialog_button_spacing"
+                android:layout_marginStart="@dimen/dialog_button_spacing"
+                android:minHeight="@dimen/dialog_button_min_height"
+                android:minWidth="@dimen/dialog_button_min_width"
+                android:padding="@dimen/dialog_button_padding"
+                android:textColor="?attr/colorAccent"
+                android:visibility="gone" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>
