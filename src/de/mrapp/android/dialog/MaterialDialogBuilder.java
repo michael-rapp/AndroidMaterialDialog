@@ -11,77 +11,17 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import de.mrapp.android.dialog.listener.OnClickListenerWrapper;
+import de.mrapp.android.dialog.listener.OnItemClickListenerWrapper;
 
 public class MaterialDialogBuilder extends AlertDialog.Builder {
-
-	private class OnClickListenerWrapper implements
-			android.view.View.OnClickListener {
-
-		private OnClickListener wrappedListener;
-
-		private AlertDialog dialog;
-
-		private int button;
-
-		private void closeDialog() {
-			switch (button) {
-			case AlertDialog.BUTTON_NEGATIVE:
-				dialog.cancel();
-				break;
-			case AlertDialog.BUTTON_NEUTRAL:
-				dialog.cancel();
-				break;
-			case AlertDialog.BUTTON_POSITIVE:
-				dialog.dismiss();
-				break;
-			default:
-				break;
-			}
-		}
-
-		public OnClickListenerWrapper(final OnClickListener listener,
-				final AlertDialog dialog, final int button) {
-			this.wrappedListener = listener;
-			this.dialog = dialog;
-			this.button = button;
-		}
-
-		@Override
-		public void onClick(View v) {
-			wrappedListener.onClick(dialog, button);
-			closeDialog();
-		}
-
-	};
-
-	private class OnItemClickListenerWrapper implements OnItemClickListener {
-
-		private OnClickListener wrappedListener;
-
-		private AlertDialog dialog;
-
-		public OnItemClickListenerWrapper(final OnClickListener listener,
-				final AlertDialog dialog) {
-			this.wrappedListener = listener;
-			this.dialog = dialog;
-		}
-
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			wrappedListener.onClick(dialog, 0);
-		}
-
-	};
 
 	private Context context;
 
