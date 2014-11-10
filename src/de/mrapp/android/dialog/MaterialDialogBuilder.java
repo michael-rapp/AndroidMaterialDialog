@@ -6,8 +6,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
 import android.content.res.TypedArray;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +67,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	private ListAdapter listAdapter;
 
 	private OnClickListener listViewClickListener;
+
+	private int[] selectedListItems;
 
 	/**
 	 * Inflates the dialog's layout.
@@ -166,6 +170,14 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 			listView.setVisibility(View.VISIBLE);
 			listView.setOnItemClickListener(new OnItemClickListenerWrapper(
 					listViewClickListener, dialog, 0));
+
+			if (selectedListItems != null) {
+				for (int position : selectedListItems) {
+					if (position != -1) {
+						listView.setItemChecked(position, true);
+					}
+				}
+			}
 
 			if (!TextUtils.isEmpty(messageTextView.getText())) {
 				LinearLayout.LayoutParams layoutParams = (LayoutParams) messageTextView
@@ -376,6 +388,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 			listAdapter = new ArrayAdapter<CharSequence>(context,
 					android.R.layout.simple_list_item_1, items);
 			listViewClickListener = listener;
+			listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
 		} else {
 			super.setItems(items, listener);
 		}
@@ -387,13 +400,66 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	public MaterialDialogBuilder setItems(final int resourceId,
 			OnClickListener listener) {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			this.setItems(context.getResources().getTextArray(resourceId),
-					listener);
+			setItems(context.getResources().getTextArray(resourceId), listener);
 		} else {
 			super.setItems(resourceId, listener);
 		}
 
 		return this;
+	}
+
+	@Override
+	public MaterialDialogBuilder setSingleChoiceItems(
+			final CharSequence[] items, final int checkedItem,
+			final OnClickListener listener) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+			listAdapter = new ArrayAdapter<CharSequence>(context,
+					android.R.layout.simple_list_item_single_choice, items);
+			listViewClickListener = listener;
+			listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+			selectedListItems = new int[] { checkedItem };
+		} else {
+			super.setSingleChoiceItems(items, checkedItem, listener);
+		}
+
+		return this;
+	}
+
+	@Override
+	public MaterialDialogBuilder setSingleChoiceItems(final int resourceId,
+			final int checkedItem, final OnClickListener listener) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+			setSingleChoiceItems(context.getResources()
+					.getTextArray(resourceId), checkedItem, listener);
+		} else {
+			super.setSingleChoiceItems(resourceId, checkedItem, listener);
+		}
+
+		return this;
+	}
+
+	@Override
+	public MaterialDialogBuilder setSingleChoiceItems(
+			final ListAdapter adapter, final int checkedItem,
+			final OnClickListener listener) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+			listAdapter = adapter;
+			listViewClickListener = listener;
+			listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+			selectedListItems = new int[] { checkedItem };
+		} else {
+			super.setSingleChoiceItems(adapter, checkedItem, listener);
+		}
+
+		return this;
+	}
+
+	@Override
+	public MaterialDialogBuilder setSingleChoiceItems(final Cursor cursor,
+			final int checkedItem, final String labelColumn,
+			final OnClickListener listener) {
+		throw new UnsupportedOperationException(
+				"This method is not supported yet");
 	}
 
 	@Override
