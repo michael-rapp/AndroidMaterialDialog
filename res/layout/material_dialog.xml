@@ -5,43 +5,38 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@android:id/content"
+        android:id="@+id/content_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/dialog_content_padding_bottom"
+        android:paddingBottom="@dimen/dialog_content_padding_top"
         android:paddingEnd="@dimen/dialog_content_padding_right"
         android:paddingLeft="@dimen/dialog_content_padding_left"
         android:paddingRight="@dimen/dialog_content_padding_right"
         android:paddingStart="@dimen/dialog_content_padding_left"
         android:paddingTop="@dimen/dialog_content_padding_top" >
 
-        <TextView
-            android:id="@android:id/title"
+        <RelativeLayout
+            android:id="@+id/title_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dialog_content_spacing"
-            android:drawablePadding="@dimen/dialog_title_drawable_padding"
-            android:ellipsize="marquee"
-            android:fadingEdge="horizontal"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="?attr/colorPrimary" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@android:id/message"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
-        <ListView
-            android:id="@android:id/list"
+        <RelativeLayout
+            android:id="@+id/content_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone" />
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@android:id/input"
+        android:id="@+id/button_bar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dialog_button_bar_margin_bottom"
@@ -49,9 +44,11 @@
         android:layout_marginLeft="@dimen/dialog_button_bar_margin_left"
         android:layout_marginRight="@dimen/dialog_button_bar_margin_right"
         android:layout_marginStart="@dimen/dialog_button_bar_margin_left"
-        android:minHeight="@dimen/dialog_button_bar_min_height" >
+        android:minHeight="@dimen/dialog_button_bar_min_height"
+        android:visibility="gone" >
 
         <LinearLayout
+            android:id="@+id/button_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

@@ -1,6 +1,7 @@
 package de.mrapp.android.dialog;
 
 import java.util.Locale;
+
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -29,30 +30,13 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 
 	private Context context;
 
-	private ViewGroup contentViewGroup;
+	private int theme;
 
-	private ViewGroup inputViewGroup;
+	private CharSequence title;
 
-	/**
-	 * The text view, which is used to show the dialog's title.
-	 */
-	private TextView titleTextView;
+	private CharSequence message;
 
-	/**
-	 * The text view, which is used to show the dialog's message.
-	 */
-	private TextView messageTextView;
-
-	/**
-	 * The list view, which is used to show the dialog's items.
-	 */
-	private ListView listView;
-
-	private Button negativeButton;
-
-	private Button neutralButton;
-
-	private Button positiveButton;
+	private Drawable icon;
 
 	private CharSequence negativeButtonText;
 
@@ -68,171 +52,308 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 
 	private ListAdapter listAdapter;
 
+	private int listViewChoiceMode;
+
 	private OnClickListener listViewSingleChoiceListener;
 
 	private OnMultiChoiceClickListener listViewMultiChoiceListener;
 
+	private OnItemSelectedListener listViewItemSelectedListener;
+
 	private boolean[] checkedListItems;
+
+	private View customView;
+
+	private int customViewId;
+
+	private View customTitleView;
 
 	/**
 	 * Inflates the dialog's layout.
 	 */
-	private void inflateLayout() {
-		View view = View.inflate(context, R.layout.material_dialog, null);
-		contentViewGroup = (ViewGroup) view.findViewById(android.R.id.content);
-		inputViewGroup = (ViewGroup) view.findViewById(android.R.id.input);
-		titleTextView = (TextView) view.findViewById(android.R.id.title);
-		messageTextView = (TextView) view.findViewById(android.R.id.message);
-		listView = (ListView) view.findViewById(android.R.id.list);
-		negativeButton = (Button) view.findViewById(android.R.id.button1);
-		neutralButton = (Button) view.findViewById(android.R.id.button2);
-		positiveButton = (Button) view.findViewById(android.R.id.button3);
-		setView(view);
+	private View inflateLayout() {
+		View root = View.inflate(context, R.layout.material_dialog, null);
+		super.setView(root);
+		return root;
 	}
 
-	private void applyTheme(int theme) {
+	private ViewGroup inflateTitleView(View root) {
+		ViewGroup titleContainer = (ViewGroup) root
+				.findViewById(R.id.title_container);
+
+		if (customTitleView != null) {
+			titleContainer.setVisibility(View.VISIBLE);
+			titleContainer.addView(customTitleView,
+					ViewGroup.LayoutParams.MATCH_PARENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT);
+		} else {
+			View.inflate(context, R.layout.material_dialog_title,
+					titleContainer);
+		}
+
+		initializeTitle(titleContainer);
+		return titleContainer;
+	}
+
+	private void initializeTitle(final ViewGroup titleContainer) {
+		TextView titleTextView = (TextView) titleContainer
+				.findViewById(android.R.id.title);
+
+		if (titleTextView != null) {
+			if (!TextUtils.isEmpty(title) || icon != null) {
+				titleContainer.setVisibility(View.VISIBLE);
+				titleTextView.setText(title);
+				int titleColor = obtainTitleColor();
+
+				if (titleColor != 0) {
+					titleTextView.setTextColor(titleColor);
+				}
+
+				if (icon != null) {
+					titleTextView.setCompoundDrawablesWithIntrinsicBounds(icon,
+							null, null, null);
+				}
+
+			}
+		}
+	}
+
+	private int obtainTitleColor() {
 		if (theme != 0) {
-			obtainTitleColor(theme);
-			obtainButtonTextColor(theme);
+			TypedArray typedArray = context.getTheme().obtainStyledAttributes(
+					theme, new int[] { R.attr.colorPrimary });
+			int color = typedArray.getColor(0, 0);
+
+			if (color != 0) {
+				return color;
+			} else {
+				int resourceId = typedArray.getResourceId(0, 0);
+
+				if (resourceId != 0) {
+					return context.getResources().getColor(resourceId);
+				}
+			}
 		}
+
+		return 0;
 	}
 
-	private void obtainTitleColor(int theme) {
-		TypedArray typedArray = context.getTheme().obtainStyledAttributes(
-				theme, new int[] { R.attr.colorPrimary });
-		int color = typedArray.getColor(0, 0);
+	private TextView initializeMessage(final View root,
+			final ViewGroup titleContainer) {
+		TextView messageTextView = (TextView) root
+				.findViewById(android.R.id.message);
 
-		if (color != 0) {
-			titleTextView.setTextColor(color);
+		if (!TextUtils.isEmpty(message)) {
+			showMessageTextView(titleContainer, messageTextView);
+			messageTextView.setText(message);
+		}
+
+		return messageTextView;
+	}
+
+	private void showMessageTextView(final ViewGroup titleContainer,
+			TextView messageTextView) {
+		messageTextView.setVisibility(View.VISIBLE);
+		LinearLayout.LayoutParams layoutParams = (LayoutParams) titleContainer
+				.getLayoutParams();
+		layoutParams.bottomMargin = context.getResources()
+				.getDimensionPixelSize(R.dimen.dialog_content_spacing);
+		titleContainer.setLayoutParams(layoutParams);
+	}
+
+	private void inflateContentView(View root, ViewGroup titleContainer,
+			TextView messageTextView, final AlertDialog dialog) {
+		ViewGroup contentContainer = (ViewGroup) root
+				.findViewById(R.id.content_container);
+
+		if (customView != null) {
+			showContentContainer(contentContainer, titleContainer,
+					messageTextView);
+			contentContainer.addView(customView,
+					ViewGroup.LayoutParams.MATCH_PARENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT);
+		} else if (customViewId != 0) {
+			showContentContainer(contentContainer, titleContainer,
+					messageTextView);
+			View.inflate(context, customViewId, contentContainer);
 		} else {
-			int resourceId = typedArray.getResourceId(0, 0);
+			View.inflate(context, R.layout.material_dialog_list_view,
+					contentContainer);
+		}
 
-			if (resourceId != 0) {
-				titleTextView.setTextColor(context.getResources().getColor(
-						resourceId));
+		initializeContent(contentContainer, titleContainer, messageTextView,
+				dialog);
+	}
+
+	private void initializeContent(final ViewGroup contentContainer,
+			final ViewGroup titleContainer, final TextView messageTextView,
+			final AlertDialog dialog) {
+		ListView listView = (ListView) contentContainer
+				.findViewById(android.R.id.list);
+
+		if (listAdapter != null && !listAdapter.isEmpty() && listView != null) {
+			showContentContainer(contentContainer, titleContainer,
+					messageTextView);
+			listView.setAdapter(listAdapter);
+			listView.setVisibility(View.VISIBLE);
+			initializeListViewListener(dialog, listView);
+			initializeListViewCheckedItems(listView);
+
+			if (listViewItemSelectedListener != null) {
+				listView.setOnItemSelectedListener(listViewItemSelectedListener);
 			}
 		}
 	}
 
-	private void obtainButtonTextColor(int theme) {
-		TypedArray typedArray = context.getTheme().obtainStyledAttributes(
-				theme, new int[] { R.attr.colorAccent });
-		int color = typedArray.getColor(0, 0);
+	private void showContentContainer(ViewGroup contentContainer,
+			ViewGroup titleContainer, TextView messageTextView) {
+		contentContainer.setVisibility(View.VISIBLE);
+		int contentSpacing = context.getResources().getDimensionPixelSize(
+				R.dimen.dialog_content_spacing);
+		LinearLayout.LayoutParams titleLayoutParams = (LayoutParams) titleContainer
+				.getLayoutParams();
+		titleLayoutParams.bottomMargin = contentSpacing;
+		titleContainer.setLayoutParams(titleLayoutParams);
+		LinearLayout.LayoutParams messageLayoutParams = (LayoutParams) messageTextView
+				.getLayoutParams();
+		messageLayoutParams.bottomMargin = contentSpacing;
+		messageTextView.setLayoutParams(messageLayoutParams);
+	}
 
-		if (color != 0) {
-			negativeButton.setTextColor(color);
-			neutralButton.setTextColor(color);
-			positiveButton.setTextColor(color);
-		} else {
-			int resourceId = typedArray.getResourceId(0, 0);
+	private void initializeButtonBar(View root, AlertDialog dialog) {
+		boolean buttonAdded = false;
+		buttonAdded |= addNegativeButton(root, dialog);
+		buttonAdded |= addNeutralButton(root, dialog);
+		buttonAdded |= addPositiveButton(root, dialog);
 
-			if (resourceId != 0) {
-				color = context.getResources().getColor(resourceId);
-				negativeButton.setTextColor(color);
-				neutralButton.setTextColor(color);
-				positiveButton.setTextColor(color);
-			}
+		if (buttonAdded) {
+			View buttonBarContainer = root
+					.findViewById(R.id.button_bar_container);
+			showButtonBarContainer(root, buttonBarContainer);
 		}
 	}
 
-	private void addNegativeButton(AlertDialog dialog) {
+	private void showButtonBarContainer(View root, View buttonBarContainer) {
+		buttonBarContainer.setVisibility(View.VISIBLE);
+		View contentRoot = root.findViewById(R.id.content_root);
+		int paddingLeft = context.getResources().getDimensionPixelSize(
+				R.dimen.dialog_content_padding_left);
+		int paddingTop = context.getResources().getDimensionPixelSize(
+				R.dimen.dialog_content_padding_top);
+		int paddingRight = context.getResources().getDimensionPixelSize(
+				R.dimen.dialog_content_padding_right);
+		int paddingBottom = context.getResources().getDimensionPixelSize(
+				R.dimen.dialog_content_padding_bottom);
+		contentRoot.setPadding(paddingLeft, paddingTop, paddingRight,
+				paddingBottom);
+	}
+
+	private boolean addNegativeButton(View root, AlertDialog dialog) {
 		if (!TextUtils.isEmpty(negativeButtonText)) {
+			Button negativeButton = (Button) root
+					.findViewById(android.R.id.button1);
 			negativeButton.setText(negativeButtonText.toString().toUpperCase(
 					Locale.getDefault()));
 			OnClickListenerWrapper onClickListener = new OnClickListenerWrapper(
 					negativeButtonListener, dialog, AlertDialog.BUTTON_NEGATIVE);
 			negativeButton.setOnClickListener(onClickListener);
 			negativeButton.setVisibility(View.VISIBLE);
+			int buttonTextColor = obtainButtonTextColor();
+
+			if (buttonTextColor != 0) {
+				negativeButton.setTextColor(buttonTextColor);
+			}
+
+			return true;
 		}
+
+		return false;
 	}
 
-	private void addNeutralButton(AlertDialog dialog) {
+	private boolean addNeutralButton(View root, AlertDialog dialog) {
 		if (!TextUtils.isEmpty(neutralButtonText)) {
+			Button neutralButton = (Button) root
+					.findViewById(android.R.id.button2);
 			neutralButton.setText(neutralButtonText.toString().toUpperCase(
 					Locale.getDefault()));
 			OnClickListenerWrapper onClickListener = new OnClickListenerWrapper(
 					neutralButtonListener, dialog, AlertDialog.BUTTON_NEUTRAL);
 			neutralButton.setOnClickListener(onClickListener);
 			neutralButton.setVisibility(View.VISIBLE);
+			int buttonTextColor = obtainButtonTextColor();
+
+			if (buttonTextColor != 0) {
+				neutralButton.setTextColor(buttonTextColor);
+			}
+
+			return true;
 		}
+
+		return false;
 	}
 
-	private void addPositiveButton(AlertDialog dialog) {
+	private boolean addPositiveButton(View root, AlertDialog dialog) {
 		if (!TextUtils.isEmpty(positiveButtonText)) {
+			Button positiveButton = (Button) root
+					.findViewById(android.R.id.button3);
 			positiveButton.setText(positiveButtonText.toString().toUpperCase(
 					Locale.getDefault()));
 			OnClickListenerWrapper onClickListener = new OnClickListenerWrapper(
 					positiveButtonListener, dialog, AlertDialog.BUTTON_POSITIVE);
 			positiveButton.setOnClickListener(onClickListener);
 			positiveButton.setVisibility(View.VISIBLE);
-		}
-	}
+			int buttonTextColor = obtainButtonTextColor();
 
-	private void showListView(final AlertDialog dialog) {
-		if (listAdapter != null && !listAdapter.isEmpty()) {
-			listView.setAdapter(listAdapter);
-			listView.setVisibility(View.VISIBLE);
-
-			if (listView.getChoiceMode() == ListView.CHOICE_MODE_NONE) {
-				listView.setOnItemClickListener(new OnItemClickListenerWrapper(
-						listViewSingleChoiceListener, dialog,
-						AlertDialog.BUTTON_POSITIVE));
-			} else if (listView.getChoiceMode() == ListView.CHOICE_MODE_SINGLE) {
-				listView.setOnItemClickListener(new OnItemClickListenerWrapper(
-						listViewSingleChoiceListener, dialog, 0));
-			} else if (listView.getChoiceMode() == ListView.CHOICE_MODE_MULTIPLE) {
-				listView.setOnItemClickListener(new OnMultiChoiceClickListenerWrapper(
-						listViewMultiChoiceListener, dialog, 0));
+			if (buttonTextColor != 0) {
+				positiveButton.setTextColor(buttonTextColor);
 			}
 
-			if (checkedListItems != null) {
-				for (int i = 0; i < checkedListItems.length; i++) {
-					listView.setItemChecked(i, checkedListItems[i]);
+			return true;
+		}
+
+		return false;
+	}
+
+	private int obtainButtonTextColor() {
+		if (theme != 0) {
+			TypedArray typedArray = context.getTheme().obtainStyledAttributes(
+					theme, new int[] { R.attr.colorAccent });
+			int color = typedArray.getColor(0, 0);
+
+			if (color != 0) {
+				return color;
+			} else {
+				int resourceId = typedArray.getResourceId(0, 0);
+
+				if (resourceId != 0) {
+					return context.getResources().getColor(resourceId);
 				}
 			}
+		}
 
-			if (!TextUtils.isEmpty(messageTextView.getText())) {
-				LinearLayout.LayoutParams layoutParams = (LayoutParams) messageTextView
-						.getLayoutParams();
-				layoutParams.bottomMargin = context.getResources()
-						.getDimensionPixelSize(R.dimen.dialog_content_spacing);
-				messageTextView.setLayoutParams(layoutParams);
+		return 0;
+	}
+
+	private void initializeListViewListener(final AlertDialog dialog,
+			ListView listView) {
+		if (listViewChoiceMode == ListView.CHOICE_MODE_NONE) {
+			listView.setOnItemClickListener(new OnItemClickListenerWrapper(
+					listViewSingleChoiceListener, dialog,
+					AlertDialog.BUTTON_POSITIVE));
+		} else if (listViewChoiceMode == ListView.CHOICE_MODE_SINGLE) {
+			listView.setOnItemClickListener(new OnItemClickListenerWrapper(
+					listViewSingleChoiceListener, dialog, 0));
+		} else if (listViewChoiceMode == ListView.CHOICE_MODE_MULTIPLE) {
+			listView.setOnItemClickListener(new OnMultiChoiceClickListenerWrapper(
+					listViewMultiChoiceListener, dialog, 0));
+		}
+	}
+
+	private void initializeListViewCheckedItems(ListView listView) {
+		if (checkedListItems != null) {
+			for (int i = 0; i < checkedListItems.length; i++) {
+				listView.setItemChecked(i, checkedListItems[i]);
 			}
-		}
-	}
-
-	private void hideTitleIfEmpty() {
-		if (TextUtils.isEmpty(titleTextView.getText())) {
-			titleTextView.setVisibility(View.GONE);
-		}
-	}
-
-	private void hideMessageIfEmpty() {
-		if (TextUtils.isEmpty(messageTextView.getText())) {
-			messageTextView.setVisibility(View.GONE);
-
-			if (listAdapter == null || listAdapter.isEmpty()) {
-				LinearLayout.LayoutParams layoutParams = (LayoutParams) titleTextView
-						.getLayoutParams();
-				layoutParams.bottomMargin = 0;
-				titleTextView.setLayoutParams(layoutParams);
-			}
-		}
-	}
-
-	private void hideButtonBarIfEmpty() {
-		if (TextUtils.isEmpty(negativeButtonText)
-				&& TextUtils.isEmpty(neutralButtonText)
-				&& TextUtils.isEmpty(positiveButtonText)) {
-			int paddingLeft = context.getResources().getDimensionPixelSize(
-					R.dimen.dialog_content_padding_left);
-			int paddingTop = context.getResources().getDimensionPixelSize(
-					R.dimen.dialog_content_padding_top);
-			int paddingRight = context.getResources().getDimensionPixelSize(
-					R.dimen.dialog_content_padding_right);
-			contentViewGroup.setPadding(paddingLeft, paddingTop, paddingRight,
-					paddingTop);
-			inputViewGroup.setVisibility(View.GONE);
 		}
 	}
 
@@ -243,53 +364,47 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	public MaterialDialogBuilder(Context context, int theme) {
 		super(context);
 		this.context = context;
-		inflateLayout();
-		applyTheme(theme);
+		this.theme = theme;
 	}
 
 	@Override
 	public MaterialDialogBuilder setTitle(CharSequence title) {
-		titleTextView.setText(title);
+		this.title = title;
 		return this;
 	}
 
 	@Override
 	public MaterialDialogBuilder setTitle(int resourceId) {
-		titleTextView.setText(resourceId);
-		return this;
+		return setTitle(context.getText(resourceId));
 	}
 
 	@Override
 	public MaterialDialogBuilder setMessage(CharSequence message) {
-		messageTextView.setText(message);
+		this.message = message;
 		return this;
 	}
 
 	@Override
 	public MaterialDialogBuilder setMessage(int resourceId) {
-		messageTextView.setText(resourceId);
-		return this;
+		return setMessage(context.getText(resourceId));
 	}
 
 	@Override
 	public MaterialDialogBuilder setIcon(Drawable icon) {
-		titleTextView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null,
-				null);
+		this.icon = icon;
 		return this;
 	}
 
 	@Override
 	public MaterialDialogBuilder setIcon(int resourceId) {
-		Drawable icon = context.getResources().getDrawable(resourceId);
-		return setIcon(icon);
+		return setIcon(context.getResources().getDrawable(resourceId));
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public final MaterialDialogBuilder setIconAttribute(final int attributeId) {
 		TypedArray typedArray = context.getTheme().obtainStyledAttributes(
 				new int[] { attributeId });
-		Drawable icon = typedArray.getDrawable(0);
-		return setIcon(icon);
+		return setIcon(typedArray.getDrawable(0));
 	}
 
 	@Override
@@ -340,7 +455,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		listAdapter = new ArrayAdapter<CharSequence>(context,
 				android.R.layout.simple_list_item_1, items);
 		listViewSingleChoiceListener = listener;
-		listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+		listViewChoiceMode = ListView.CHOICE_MODE_NONE;
 		return this;
 	}
 
@@ -356,7 +471,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 			final OnClickListener listener) {
 		listAdapter = adapter;
 		listViewSingleChoiceListener = listener;
-		listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+		listViewChoiceMode = ListView.CHOICE_MODE_NONE;
 		return this;
 	}
 
@@ -367,7 +482,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		listAdapter = new ArrayAdapter<CharSequence>(context,
 				android.R.layout.simple_list_item_single_choice, items);
 		listViewSingleChoiceListener = listener;
-		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		listViewChoiceMode = ListView.CHOICE_MODE_SINGLE;
 		checkedListItems = new boolean[items.length];
 
 		for (int i = 0; i < checkedListItems.length; i++) {
@@ -391,7 +506,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 			final OnClickListener listener) {
 		listAdapter = adapter;
 		listViewSingleChoiceListener = listener;
-		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		listViewChoiceMode = ListView.CHOICE_MODE_SINGLE;
 		checkedListItems = new boolean[adapter.getCount()];
 
 		for (int i = 0; i < checkedListItems.length; i++) {
@@ -416,7 +531,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		listAdapter = new ArrayAdapter<CharSequence>(context,
 				android.R.layout.simple_list_item_multiple_choice, items);
 		listViewMultiChoiceListener = listener;
-		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		listViewChoiceMode = ListView.CHOICE_MODE_MULTIPLE;
 		checkedListItems = checkedItems;
 		return this;
 	}
@@ -448,21 +563,39 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	@Override
 	public MaterialDialogBuilder setOnItemSelectedListener(
 			final OnItemSelectedListener listener) {
-		listView.setOnItemSelectedListener(listener);
+		listViewItemSelectedListener = listener;
+		return this;
+	}
+
+	@Override
+	public MaterialDialogBuilder setView(final View view) {
+		customView = view;
+		customViewId = 0;
+		return this;
+	}
+
+	@Override
+	public MaterialDialogBuilder setView(final int resourceId) {
+		customViewId = resourceId;
+		customView = null;
+		return this;
+	}
+
+	@Override
+	public MaterialDialogBuilder setCustomTitle(final View view) {
+		customTitleView = view;
 		return this;
 	}
 
 	@Override
 	public AlertDialog create() {
+		View root = inflateLayout();
 		AlertDialog dialog = super.create();
-		addNegativeButton(dialog);
-		addNeutralButton(dialog);
-		addPositiveButton(dialog);
-		showListView(dialog);
-		hideTitleIfEmpty();
-		hideMessageIfEmpty();
-		hideButtonBarIfEmpty();
-		return dialog;
+		ViewGroup titleContainer = inflateTitleView(root);
+		TextView messageTextView = initializeMessage(root, titleContainer);
+		inflateContentView(root, titleContainer, messageTextView, dialog);
+		initializeButtonBar(root, dialog);
+		return super.create();
 	}
 
 }
