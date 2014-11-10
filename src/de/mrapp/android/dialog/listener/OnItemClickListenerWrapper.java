@@ -21,7 +21,9 @@ public class OnItemClickListenerWrapper implements OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		wrappedListener.onClick(dialog, 0);
+		if (wrappedListener != null) {
+			wrappedListener.onClick(dialog, 0);
+		}
 	}
 
 };
