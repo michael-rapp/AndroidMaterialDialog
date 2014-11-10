@@ -1,7 +1,7 @@
 package de.mrapp.android.dialog;
 
 import java.util.Locale;
-
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
@@ -313,6 +313,20 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 			setIcon(icon);
 		} else {
 			super.setIcon(resourceId);
+		}
+
+		return this;
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public final MaterialDialogBuilder setIconAttribute(final int attributeId) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+			TypedArray typedArray = context.getTheme().obtainStyledAttributes(
+					new int[] { attributeId });
+			Drawable icon = typedArray.getDrawable(0);
+			setIcon(icon);
+		} else {
+			super.setIconAttribute(attributeId);
 		}
 
 		return this;
