@@ -178,7 +178,6 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 			showContentContainer(contentContainer, titleContainer,
 					messageTextView);
 			listView.setAdapter(listAdapter);
-			listView.setVisibility(View.VISIBLE);
 			initializeListViewListener(dialog, listView);
 			initializeListViewCheckedItems(listView);
 
