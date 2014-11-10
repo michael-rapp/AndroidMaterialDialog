@@ -13,6 +13,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -420,6 +421,20 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	}
 
 	@Override
+	public final MaterialDialogBuilder setAdapter(final ListAdapter adapter,
+			final OnClickListener listener) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+			listAdapter = adapter;
+			listViewSingleChoiceListener = listener;
+			listView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+		} else {
+			super.setAdapter(listAdapter, listener);
+		}
+
+		return this;
+	}
+
+	@Override
 	public MaterialDialogBuilder setSingleChoiceItems(
 			final CharSequence[] items, final int checkedItem,
 			final OnClickListener listener) {
@@ -519,6 +534,25 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 			final OnMultiChoiceClickListener listener) {
 		throw new UnsupportedOperationException(
 				"This method is not supported yet");
+	}
+
+	@Override
+	public MaterialDialogBuilder setCursor(final Cursor cursor,
+			final OnClickListener listener, final String labelColumn) {
+		throw new UnsupportedOperationException(
+				"This method is not supported yet");
+	}
+
+	@Override
+	public MaterialDialogBuilder setOnItemSelectedListener(
+			final OnItemSelectedListener listener) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+			listView.setOnItemSelectedListener(listener);
+		} else {
+			super.setOnItemSelectedListener(listener);
+		}
+
+		return this;
 	}
 
 	@Override
