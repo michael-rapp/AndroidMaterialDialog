@@ -38,7 +38,10 @@ public class OnClickListenerWrapper implements
 
 	@Override
 	public void onClick(View v) {
-		wrappedListener.onClick(dialog, button);
+		if (wrappedListener != null) {
+			wrappedListener.onClick(dialog, button);
+		}
+
 		closeDialog();
 	}
 
