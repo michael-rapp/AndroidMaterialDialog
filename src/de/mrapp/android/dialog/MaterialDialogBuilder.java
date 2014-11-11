@@ -81,7 +81,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		return root;
 	}
 
-	private ViewGroup inflateTitleView(View root) {
+	private ViewGroup inflateTitleView(final View root) {
 		ViewGroup titleContainer = (ViewGroup) root
 				.findViewById(R.id.title_container);
 
@@ -135,7 +135,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	}
 
 	private void showMessageTextView(final ViewGroup titleContainer,
-			TextView messageTextView) {
+			final TextView messageTextView) {
 		messageTextView.setVisibility(View.VISIBLE);
 		LinearLayout.LayoutParams layoutParams = (LayoutParams) titleContainer
 				.getLayoutParams();
@@ -144,8 +144,9 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		titleContainer.setLayoutParams(layoutParams);
 	}
 
-	private void inflateContentView(View root, ViewGroup titleContainer,
-			TextView messageTextView, final AlertDialog dialog) {
+	private void inflateContentView(final View root,
+			final ViewGroup titleContainer, final TextView messageTextView,
+			final AlertDialog dialog) {
 		ViewGroup contentContainer = (ViewGroup) root
 				.findViewById(R.id.content_container);
 
@@ -189,7 +190,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	}
 
 	private void initializeListViewListener(final AlertDialog dialog,
-			ListView listView) {
+			final ListView listView) {
 		if (listViewChoiceMode == ListView.CHOICE_MODE_NONE) {
 			listView.setOnItemClickListener(new OnItemClickListenerWrapper(
 					listViewSingleChoiceListener, dialog,
@@ -203,7 +204,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		}
 	}
 
-	private void initializeListViewCheckedItems(ListView listView) {
+	private void initializeListViewCheckedItems(final ListView listView) {
 		if (checkedListItems != null) {
 			for (int i = 0; i < checkedListItems.length; i++) {
 				listView.setItemChecked(i, checkedListItems[i]);
@@ -211,8 +212,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		}
 	}
 
-	private void showContentContainer(ViewGroup contentContainer,
-			ViewGroup titleContainer, TextView messageTextView) {
+	private void showContentContainer(final ViewGroup contentContainer,
+			final ViewGroup titleContainer, final TextView messageTextView) {
 		contentContainer.setVisibility(View.VISIBLE);
 		int contentSpacing = context.getResources().getDimensionPixelSize(
 				R.dimen.dialog_content_spacing);
@@ -226,7 +227,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		messageTextView.setLayoutParams(messageLayoutParams);
 	}
 
-	private void inflateButtonBar(View root, AlertDialog dialog) {
+	private void inflateButtonBar(final View root, final AlertDialog dialog) {
 		ViewGroup buttonBarContainer = (ViewGroup) root
 				.findViewById(R.id.button_bar_container);
 
@@ -241,8 +242,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		initializeButtonBar(root, buttonBarContainer, dialog);
 	}
 
-	private void initializeButtonBar(View root, ViewGroup buttonBarContainer,
-			AlertDialog dialog) {
+	private void initializeButtonBar(final View root,
+			final ViewGroup buttonBarContainer, final AlertDialog dialog) {
 		Button negativeButton = addNegativeButton(buttonBarContainer, dialog);
 		Button neutralButton = addNeutralButton(buttonBarContainer, dialog);
 		Button positiveButton = addPositiveButton(buttonBarContainer, dialog);
@@ -253,7 +254,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		}
 	}
 
-	private void showButtonBarContainer(View root, View buttonBarContainer) {
+	private void showButtonBarContainer(final View root,
+			final View buttonBarContainer) {
 		View contentRoot = root.findViewById(R.id.content_root);
 		buttonBarContainer.setVisibility(View.VISIBLE);
 		int paddingLeft = context.getResources().getDimensionPixelSize(
@@ -268,7 +270,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 				paddingBottom);
 	}
 
-	private Button addNegativeButton(View root, AlertDialog dialog) {
+	private Button addNegativeButton(final View root, final AlertDialog dialog) {
 		if (!TextUtils.isEmpty(negativeButtonText)) {
 			Button negativeButton = (Button) root
 					.findViewById(android.R.id.button1);
@@ -289,7 +291,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		return null;
 	}
 
-	private Button addNeutralButton(View root, AlertDialog dialog) {
+	private Button addNeutralButton(final View root, final AlertDialog dialog) {
 		if (!TextUtils.isEmpty(neutralButtonText)) {
 			Button neutralButton = (Button) root
 					.findViewById(android.R.id.button2);
@@ -310,7 +312,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		return null;
 	}
 
-	private Button addPositiveButton(View root, AlertDialog dialog) {
+	private Button addPositiveButton(final View root, final AlertDialog dialog) {
 		if (!TextUtils.isEmpty(positiveButtonText)) {
 			Button positiveButton = (Button) root
 					.findViewById(android.R.id.button3);
@@ -331,62 +333,62 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		return null;
 	}
 
-	public MaterialDialogBuilder(Context context) {
+	public MaterialDialogBuilder(final Context context) {
 		this(context, 0);
 		this.context = context;
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public MaterialDialogBuilder(Context context, int theme) {
+	public MaterialDialogBuilder(final Context context, final int theme) {
 		super(context, theme);
 		this.context = context;
 	}
 
-	public MaterialDialogBuilder setTitleColor(final int color) {
+	public final MaterialDialogBuilder setTitleColor(final int color) {
 		this.titleColor = color;
 		return this;
 	}
 
-	public MaterialDialogBuilder setButtonTextColor(final int color) {
+	public final MaterialDialogBuilder setButtonTextColor(final int color) {
 		this.buttonTextColor = color;
 		return this;
 	}
 
-	public MaterialDialogBuilder stackButtons(final boolean stackButtons) {
+	public final MaterialDialogBuilder stackButtons(final boolean stackButtons) {
 		this.stackButtons = stackButtons;
 		return this;
 	}
 
 	@Override
-	public MaterialDialogBuilder setTitle(CharSequence title) {
+	public final MaterialDialogBuilder setTitle(final CharSequence title) {
 		this.title = title;
 		return this;
 	}
 
 	@Override
-	public MaterialDialogBuilder setTitle(int resourceId) {
+	public final MaterialDialogBuilder setTitle(final int resourceId) {
 		return setTitle(context.getText(resourceId));
 	}
 
 	@Override
-	public MaterialDialogBuilder setMessage(CharSequence message) {
+	public final MaterialDialogBuilder setMessage(final CharSequence message) {
 		this.message = message;
 		return this;
 	}
 
 	@Override
-	public MaterialDialogBuilder setMessage(int resourceId) {
+	public final MaterialDialogBuilder setMessage(final int resourceId) {
 		return setMessage(context.getText(resourceId));
 	}
 
 	@Override
-	public MaterialDialogBuilder setIcon(Drawable icon) {
+	public final MaterialDialogBuilder setIcon(final Drawable icon) {
 		this.icon = icon;
 		return this;
 	}
 
 	@Override
-	public MaterialDialogBuilder setIcon(int resourceId) {
+	public final MaterialDialogBuilder setIcon(final int resourceId) {
 		return setIcon(context.getResources().getDrawable(resourceId));
 	}
 
@@ -398,50 +400,50 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	}
 
 	@Override
-	public MaterialDialogBuilder setNegativeButton(final CharSequence text,
-			final OnClickListener listener) {
+	public final MaterialDialogBuilder setNegativeButton(
+			final CharSequence text, final OnClickListener listener) {
 		negativeButtonText = text;
 		negativeButtonListener = listener;
 		return this;
 	}
 
 	@Override
-	public MaterialDialogBuilder setNegativeButton(int resourceId,
+	public final MaterialDialogBuilder setNegativeButton(final int resourceId,
 			final OnClickListener listener) {
 		return setNegativeButton(context.getText(resourceId), listener);
 	}
 
 	@Override
-	public MaterialDialogBuilder setPositiveButton(final CharSequence text,
-			final OnClickListener listener) {
+	public final MaterialDialogBuilder setPositiveButton(
+			final CharSequence text, final OnClickListener listener) {
 		positiveButtonText = text;
 		positiveButtonListener = listener;
 		return this;
 	}
 
 	@Override
-	public MaterialDialogBuilder setPositiveButton(int resourceId,
+	public final MaterialDialogBuilder setPositiveButton(final int resourceId,
 			final OnClickListener listener) {
 		return setPositiveButton(context.getText(resourceId), listener);
 	}
 
 	@Override
-	public MaterialDialogBuilder setNeutralButton(final CharSequence text,
-			final OnClickListener listener) {
+	public final MaterialDialogBuilder setNeutralButton(
+			final CharSequence text, final OnClickListener listener) {
 		neutralButtonText = text;
 		neutralButtonListener = listener;
 		return this;
 	}
 
 	@Override
-	public MaterialDialogBuilder setNeutralButton(final int resourceId,
+	public final MaterialDialogBuilder setNeutralButton(final int resourceId,
 			final OnClickListener listener) {
 		return setNeutralButton(context.getText(resourceId), listener);
 	}
 
 	@Override
-	public MaterialDialogBuilder setItems(final CharSequence[] items,
-			OnClickListener listener) {
+	public final MaterialDialogBuilder setItems(final CharSequence[] items,
+			final OnClickListener listener) {
 		listAdapter = new ArrayAdapter<CharSequence>(context,
 				android.R.layout.simple_list_item_1, items);
 		listViewSingleChoiceListener = listener;
@@ -450,8 +452,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	}
 
 	@Override
-	public MaterialDialogBuilder setItems(final int resourceId,
-			OnClickListener listener) {
+	public final MaterialDialogBuilder setItems(final int resourceId,
+			final OnClickListener listener) {
 		return setItems(context.getResources().getTextArray(resourceId),
 				listener);
 	}
@@ -466,7 +468,14 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	}
 
 	@Override
-	public MaterialDialogBuilder setSingleChoiceItems(
+	public final MaterialDialogBuilder setCursor(final Cursor cursor,
+			final OnClickListener listener, final String labelColumn) {
+		throw new UnsupportedOperationException(
+				"This method is not supported yet");
+	}
+
+	@Override
+	public final MaterialDialogBuilder setSingleChoiceItems(
 			final CharSequence[] items, final int checkedItem,
 			final OnClickListener listener) {
 		listAdapter = new ArrayAdapter<CharSequence>(context,
@@ -483,15 +492,16 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	}
 
 	@Override
-	public MaterialDialogBuilder setSingleChoiceItems(final int resourceId,
-			final int checkedItem, final OnClickListener listener) {
+	public final MaterialDialogBuilder setSingleChoiceItems(
+			final int resourceId, final int checkedItem,
+			final OnClickListener listener) {
 		return setSingleChoiceItems(
 				context.getResources().getTextArray(resourceId), checkedItem,
 				listener);
 	}
 
 	@Override
-	public MaterialDialogBuilder setSingleChoiceItems(
+	public final MaterialDialogBuilder setSingleChoiceItems(
 			final ListAdapter adapter, final int checkedItem,
 			final OnClickListener listener) {
 		listAdapter = adapter;
@@ -507,15 +517,15 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	}
 
 	@Override
-	public MaterialDialogBuilder setSingleChoiceItems(final Cursor cursor,
-			final int checkedItem, final String labelColumn,
-			final OnClickListener listener) {
+	public final MaterialDialogBuilder setSingleChoiceItems(
+			final Cursor cursor, final int checkedItem,
+			final String labelColumn, final OnClickListener listener) {
 		throw new UnsupportedOperationException(
 				"This method is not supported yet");
 	}
 
 	@Override
-	public MaterialDialogBuilder setMultiChoiceItems(
+	public final MaterialDialogBuilder setMultiChoiceItems(
 			final CharSequence[] items, final boolean[] checkedItems,
 			final OnMultiChoiceClickListener listener) {
 		listAdapter = new ArrayAdapter<CharSequence>(context,
@@ -527,8 +537,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	}
 
 	@Override
-	public MaterialDialogBuilder setMultiChoiceItems(final int resourceId,
-			final boolean[] checkedItems,
+	public final MaterialDialogBuilder setMultiChoiceItems(
+			final int resourceId, final boolean[] checkedItems,
 			final OnMultiChoiceClickListener listener) {
 		return setMultiChoiceItems(
 				context.getResources().getTextArray(resourceId), checkedItems,
@@ -536,7 +546,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	}
 
 	@Override
-	public MaterialDialogBuilder setMultiChoiceItems(final Cursor cursor,
+	public final MaterialDialogBuilder setMultiChoiceItems(final Cursor cursor,
 			final String isCheckedColumn, final String labelColumn,
 			final OnMultiChoiceClickListener listener) {
 		throw new UnsupportedOperationException(
@@ -544,41 +554,34 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	}
 
 	@Override
-	public MaterialDialogBuilder setCursor(final Cursor cursor,
-			final OnClickListener listener, final String labelColumn) {
-		throw new UnsupportedOperationException(
-				"This method is not supported yet");
-	}
-
-	@Override
-	public MaterialDialogBuilder setOnItemSelectedListener(
+	public final MaterialDialogBuilder setOnItemSelectedListener(
 			final OnItemSelectedListener listener) {
 		listViewItemSelectedListener = listener;
 		return this;
 	}
 
 	@Override
-	public MaterialDialogBuilder setView(final View view) {
+	public final MaterialDialogBuilder setView(final View view) {
 		customView = view;
 		customViewId = 0;
 		return this;
 	}
 
 	@Override
-	public MaterialDialogBuilder setView(final int resourceId) {
+	public final MaterialDialogBuilder setView(final int resourceId) {
 		customViewId = resourceId;
 		customView = null;
 		return this;
 	}
 
 	@Override
-	public MaterialDialogBuilder setCustomTitle(final View view) {
+	public final MaterialDialogBuilder setCustomTitle(final View view) {
 		customTitleView = view;
 		return this;
 	}
 
 	@Override
-	public AlertDialog create() {
+	public final AlertDialog create() {
 		View root = inflateLayout();
 		AlertDialog dialog = super.create();
 		ViewGroup titleContainer = inflateTitleView(root);
