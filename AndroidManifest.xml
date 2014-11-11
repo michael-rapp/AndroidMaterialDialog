@@ -26,4 +26,6 @@ License along with this program. If not, see
         android:minSdkVersion="4"
         android:targetSdkVersion="21" />
 
+    <application android:supportsRtl="true" />
+
 </manifest>
