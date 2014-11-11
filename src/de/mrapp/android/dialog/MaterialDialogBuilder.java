@@ -636,26 +636,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	 *            instance of the class {@link Context}
 	 */
 	public MaterialDialogBuilder(final Context context) {
-		this(context, 0);
-		this.context = context;
-	}
-
-	/**
-	 * Creates a new builder, which allows to create dialogs, which are designed
-	 * according to Android 5.0's Material Design guidelines even on
-	 * pre-Lollipop devices.
-	 * 
-	 * @param context
-	 *            The context, which should be used by the builder, as an
-	 *            instance of the class {@link Context}
-	 * @param theme
-	 *            The resource id of the theme, which should be applied on the
-	 *            dialog, which created by the builder, as an {@link Integer}
-	 *            value
-	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public MaterialDialogBuilder(final Context context, final int theme) {
-		super(context, theme);
+		super(context);
 		this.context = context;
 	}
 
