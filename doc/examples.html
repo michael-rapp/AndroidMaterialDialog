@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <title>AndroidMaterialDialog &#150; Documentation: Examples</title>
+        <link rel=stylesheet type=text/css href=style.css />
+        <link rel="icon" type="image/png" href="images/favicon.png" />
+    </head>
+    
+    <body>
+        <div class="content">
+            <div class="header">
+                <h1>AndroidMaterialDialog &#150; Documentation</h1>
+                <h2>Documentation of the Android-library "AndroidMaterialDialog".</h2>
+            </div>
+
+            <div class="navigation">
+                <div class="navigation-item"><a href="index.html">GENERAL</a></div>
+                <div class="navigation-item"><a href="content.html">CONTENT</a></div>
+                <div class="navigation-item-selected"><a href="examples.html">EXAMPLES</a></div>
+            </div>
+
+            <div class="text">
+                 <h3>Examples</h3>
+
+                 <p>This is example provides a quick overview about how to use the library "AndroidMaterialDialog". This includes the necessary setup steps, as well as source code examples, which demonstrate the use of the library.</p>
+
+                 <h4>Project setup</h4>
+
+                 <p>Before the library "AndroidMaterialDialog" can be used, its source code must be retrieved. The latest release can be downloaded as a zip archive via the direct link <a href="https://sourceforge.net/p/androidmaterialdialog/files">https://sourceforge.net/p/androidmaterialdialog/files</a>. Alternatively, the Mercurial repository, which hosts the project's source code, can be cloned by using the following command line command:</p>
+
+                <div class="code-block">hg clone http://hg.code.sf.net/p/androidmaterialdialog/code androidmaterialdialog-code</div>
+                
+                <p>To use the library within an Android project, the downloaded source code has to be imported into the workspace of the appropriate IDE. When using Eclipse, the source code can be added as a new project by using the option "File" -> "Import..." -> "Android" -> "Existing Android Code Into Workspace".</p>
+
+                <p>To be able to use the newly imported library project from within another project, a reference to the library project has to be created. This can be established in the Eclipse IDE by right-clicking the dependent project and choosing the option "Properties". Then the group "Android" at the left of the recently opened window has to be chosen. Finally, the button "Add..." has to be clicked to add the library project as a new dependency. For further information about how to reference an Android library project, refer to <a href="http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject">this</a> article of the official Android developer documentation.</p>
+
+                <p>As the library depends on the AppCompat v7 revision 21 support library in order to provide Android 5.0-features on devices with an API level less than 21, this support library or a newer one has to be added to the library's workspace as well. A detailed explaination about how to import this support library can be found in <a href="https://developer.android.com/tools/support-library/setup.html">this</a> article of the Android developer documentation.</p>
+
+                <h4>Creating a typical alert dialog</h4>
+
+                <p>The code below shows how to create and show a typical alert dialog, which may be used to asks the user for confirmation of a specific action. The button contains a title and a message and can be closed by the user by either using a "OK" button or a "Cancel" button. The <tt>this</tt> parameter, which is passed to the builder's constructor in the example below, must be a <tt>Context</tt>, e.g. an <tt>Activity</tt>. The <tt>null</tt> parameters, which are passed to the </tt>setPositiveButton</tt>- and <tt>setNegativeButton</tt>-methods can be replaced by instances of the type <a href="http://developer.android.com/reference/android/content/DialogInterface.OnClickListener.html" target="_blank" class="code">DialogInterface.OnClickListener</a> in order to execute some code when the user closes the dialog by clicking the appropriate button.</p>
+
+                <div class="code-block">MaterialDialogBuilder dialogBuilder = <strong><font color='#7f0055'>new</font></strong> MaterialDialogBuilder(<strong><font color='#7f0055'>this</font></strong>);
+<br/>dialogBuilder.setTitle(R.string.dialog_title);
+<br/>dialogBuilder.setMessage(R.string.dialog_message);
+<br/>dialogBuilder.setTitle(R.string.dialog_title);
+<br/>dialogBuilder.setPositiveButton(android.R.string.ok, <strong><font color='#7f0055'>null</font></strong>);
+<br/>dialogBuilder.setNegativeButton(android.R.string.cancel, <strong><font color='#7f0055'>null</font></strong>);
+<br/>dialogBuilder.show();</div>
+
+                <p>As the methods of the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialogBuilder.html" target="_blank" class="code">MaterialDialogBuilder</a>, which is provided by this library, is nearly identical to the API of the Android SDK's class <a href="http://developer.android.com/reference/android/app/AlertDialog.Builder.html" target="_blank" class="code">AlertDialog.Builder</a>, the practices, which are described in <a href="http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog" target="_blank" class="code">this</a> section of the Android developer guide, do also work together with this library.</p>             
+
+                <h4>External references:</h4>
+
+                <div class="reference"><a name="reference1" class="reference">[1]</a><a href="http://developer.android.com/tools/projects/projects-eclipse.html" target="_blank">http://developer.android.com/tools/projects/projects-eclipse.html</a> &#150; Managing Projects from Eclipse with ADT</div>
+                <div class="reference"><a name="reference2" class="reference">[2]</a><a href="https://developer.android.com/tools/support-library/setup.html" target="_blank">https://developer.android.com/tools/support-library/setup.html</a> &#150; Support Library Setup</div>
+
+                <div class="reference"><a name="reference3" class="reference">[3]</a><a href="http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog" target="_blank">http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog</a> &#150; Building an Alert Dialog
+            </div>
+
+            <div class="copyright">
+                &#169; Copyright 2014, Michael Rapp. All rights reserved.
+            </div>
+        </div>
+    </body>
+</html>
