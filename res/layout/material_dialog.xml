@@ -25,7 +25,8 @@ License along with this program. If not, see
     <LinearLayout
         android:id="@+id/content_root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:paddingBottom="@dimen/dialog_content_padding_top"
         android:paddingEnd="@dimen/dialog_content_padding_right"
