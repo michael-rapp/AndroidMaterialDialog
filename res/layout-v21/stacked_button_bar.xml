@@ -36,7 +36,6 @@ License along with this program. If not, see
         android:padding="@dimen/dialog_button_padding"
         android:textColor="?attr/colorAccent"
         android:textSize="@dimen/dialog_button_text_size"
-        android:textStyle="bold"
         android:visibility="gone" />
 
     <Button
@@ -52,7 +51,6 @@ License along with this program. If not, see
         android:padding="@dimen/dialog_button_padding"
         android:textColor="?attr/colorAccent"
         android:textSize="@dimen/dialog_button_text_size"
-        android:textStyle="bold"
         android:visibility="gone" />
 
     <Button
@@ -68,7 +66,6 @@ License along with this program. If not, see
         android:padding="@dimen/dialog_button_padding"
         android:textColor="?attr/colorAccent"
         android:textSize="@dimen/dialog_button_text_size"
-        android:textStyle="bold"
         android:visibility="gone" />
 
 </LinearLayout>
