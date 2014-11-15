@@ -2,6 +2,18 @@ AndroidPreferenceActivity - RELEASE NOTES
 =========================================
 
 
+Version:        1.0.2
+Release date:   11.16.2014
+--------------------------
+
+A minor release, which introduces the following changes:
+
+    -   Changed the appearance of a dialog's buttons to be identically
+        on Lollipop-devices, as well as on pre-Lollipop devices.
+        
+    -   A dialog's list view is now scrolled to the first selected item.
+    
+    
 Version:        1.0.1 
 Release date:   11.13.2014
 --------------------------
