@@ -28,39 +28,42 @@ License along with this program. If not, see
 
     <Button
         android:id="@android:id/button1"
-        style="?attr/buttonBarButtonStyle"
+        style="?android:attr/buttonBarButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/dialog_button_min_height"
         android:minWidth="@dimen/dialog_button_min_width"
         android:padding="@dimen/dialog_button_padding"
         android:textColor="?attr/colorAccent"
+        android:textSize="@dimen/dialog_button_text_size"
+        android:textStyle="bold"
         android:visibility="gone" />
 
     <Button
         android:id="@android:id/button2"
-        style="?attr/buttonBarButtonStyle"
+        style="?android:attr/buttonBarButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dialog_button_spacing"
         android:layout_marginStart="@dimen/dialog_button_spacing"
-        android:minHeight="@dimen/dialog_button_min_height"
         android:minWidth="@dimen/dialog_button_min_width"
         android:padding="@dimen/dialog_button_padding"
         android:textColor="?attr/colorAccent"
+        android:textSize="@dimen/dialog_button_text_size"
+        android:textStyle="bold"
         android:visibility="gone" />
 
     <Button
         android:id="@android:id/button3"
-        style="?attr/buttonBarButtonStyle"
+        style="?android:attr/buttonBarButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dialog_button_spacing"
         android:layout_marginStart="@dimen/dialog_button_spacing"
-        android:minHeight="@dimen/dialog_button_min_height"
         android:minWidth="@dimen/dialog_button_min_width"
         android:padding="@dimen/dialog_button_padding"
         android:textColor="?attr/colorAccent"
+        android:textSize="@dimen/dialog_button_text_size"
+        android:textStyle="bold"
         android:visibility="gone" />
 
 </LinearLayout>
