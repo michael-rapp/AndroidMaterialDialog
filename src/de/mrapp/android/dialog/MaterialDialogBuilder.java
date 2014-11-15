@@ -412,9 +412,15 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	 *            instance of the class {@link ListView}
 	 */
 	private void initializeListViewCheckedItems(final ListView listView) {
+		boolean scrolledToCheckedItem = false;
+
 		if (checkedListItems != null) {
 			for (int i = 0; i < checkedListItems.length; i++) {
 				listView.setItemChecked(i, checkedListItems[i]);
+
+				if (!scrolledToCheckedItem && checkedListItems[i]) {
+					listView.setSelection(i);
+				}
 			}
 		}
 	}
