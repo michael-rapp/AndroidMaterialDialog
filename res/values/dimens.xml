@@ -29,9 +29,9 @@ License along with this program. If not, see
     <item name="dialog_button_bar_margin_right" type="dimen">16dp</item>
     <item name="dialog_button_bar_min_height" type="dimen">48dp</item>
     <item name="dialog_button_min_width" type="dimen">64dp</item>
-    <item name="dialog_button_min_height" type="dimen">36dp</item>
     <item name="dialog_button_spacing" type="dimen">8dp</item>
     <item name="dialog_button_padding" type="dimen">8dp</item>
+    <item name="dialog_button_text_size" type="dimen">14sp</item>
     <item name="dialog_title_drawable_padding" type="dimen">8dp</item>
 
 </resources>
