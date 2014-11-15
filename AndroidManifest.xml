@@ -23,7 +23,7 @@ License along with this program. If not, see
     android:versionName="1.0.1" >
 
     <uses-sdk
-        android:minSdkVersion="4"
+        android:minSdkVersion="11"
         android:targetSdkVersion="21" />
 
     <application android:supportsRtl="true" />
