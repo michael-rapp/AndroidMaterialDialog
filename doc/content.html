@@ -38,6 +38,7 @@
                     </ul>
                     <li><a href="content.html#using-custom-views">Using custom views</a></li>
                     <li><a href="content.html#creating-and-showing-the-dialog">Creating and showing the dialog</a></li>
+		    <li><a href="content.html#validating-the-dialog-content">Validating the dialog's content</a></li>
                 </ol>
 
                 <h4><a name="implementation-details">1 Implementation details</a></h4>
@@ -145,6 +146,10 @@
                 <h4><a name="creating-and-showing-the-dialog">6 Creating and showing the dialog</a></h4>
 
                 <p>Once an instance of the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialogBuilder.html" target="_blank" class="code">MaterialDialogBuilder</a> has been configured by using the setter methods discussed in the previous sections of this documentation, the builder's method <tt>create():AlertDialog</tt> can be used to create the dialog as an instance of the class <a href="http://developer.android.com/reference/android/app/AlertDialog.html" target="_blank" class="code">AlertDialog</a>. Such a dialog instance can be shown by calling its <tt>show</tt>-method. A shorter way of showing the dialog, which is created by a <a href="javadoc/de/mrapp/android/dialog/MaterialDialogBuilder.html" target="_blank" class="code">MaterialDialogBuilder</a>, is to call the builder's <tt>show</tt>-method. This method implicitly calls the <tt>create</tt>-method to create the dialog, as well as the dialog's <tt>show</tt>-method to show the dialog on the screen.</p>
+
+		<h4><a name="validating-the-dialog-content">7 Validating the dialog's content</a></h4>
+		
+		<p>It is also possible to validate a dialog's content when its positive button is clicked by the user. Therfore the interface <a href="javadoc/de/mrapp/android/dialog/MaterialDialogBuilder.Validator.html" target="_blank" class="code">Validator</a> has to be implemented. It defines the method <tt>validate():boolean</tt>, which has to be overridden in order to return, whether the dialog's content is valid, or not. Multiple instances of this interface can be added to an instance of the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialogBuilder.html" target="_blank" class="code">MaterialDialogBuilder</a> by using its method <tt>addValidator(Validator):void</tt>. Previously added instances can be removed by using the method <tt>removeValidator(Validator):void</tt> afterwards. When the dialog's positive button is clicked by the user, all added validators will be executed. If one of them returns <tt>false</tt> from its <tt>validate</tt>-method, the dialog will not be dismissed. When the negative or neutral button is clicked instead, no validation will be performed.</p>
 
                 <h4>External references:</h4>
                 <div class="reference"><a name="reference1" class="reference">[1]</a><a href="http://developer.android.com/reference/android/app/AlertDialog.Builder.html" target="_blank">http://developer.android.com/reference/android/app/AlertDialog.Builder.html</a> &#150; Class AlterDialog.Builder</div>
