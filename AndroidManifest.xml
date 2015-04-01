@@ -20,11 +20,11 @@ License along with this program. If not, see
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.mrapp.android.dialog"
     android:supportsRtl="true"
-    android:versionCode="3"
-    android:versionName="1.0.2" >
+    android:versionCode="4"
+    android:versionName="1.1.0" >
 
     <uses-sdk
         android:minSdkVersion="11"
-        android:targetSdkVersion="21" />
+        android:targetSdkVersion="22" />
 
 </manifest>
