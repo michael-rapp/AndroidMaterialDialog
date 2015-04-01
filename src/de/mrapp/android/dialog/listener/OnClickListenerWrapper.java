@@ -17,6 +17,9 @@
  */
 package de.mrapp.android.dialog.listener;
 
+import java.util.Set;
+
+import de.mrapp.android.dialog.MaterialDialogBuilder.Validator;
 import android.app.AlertDialog;
 import android.content.DialogInterface.OnClickListener;
 import android.view.View;
@@ -39,6 +42,12 @@ public class OnClickListenerWrapper extends AbstractListenerWrapper implements
 	private final OnClickListener wrappedListener;
 
 	/**
+	 * A set, which contains the validators, which should be executed when the
+	 * listener is called.
+	 */
+	private final Set<Validator> validators;
+
+	/**
 	 * Creates a new wrapper, which implements the interface
 	 * {@link android.view.View.OnClickListener} in order to delegate the method
 	 * calls to encapsulated listener of the type {@link OnClickListener}.
@@ -46,6 +55,10 @@ public class OnClickListenerWrapper extends AbstractListenerWrapper implements
 	 * @param listener
 	 *            The listener, which should be encapsulated by the wrapper, as
 	 *            an instance of the type {@link OnClickListener}
+	 * @param validators
+	 *            A set, which contains the validators, which should be executed
+	 *            when the listener is called, as an instance of the type
+	 *            {@link Set} or null, if no validators should be executed
 	 * @param dialog
 	 *            The dialog, the listener should belong to, as an instance of
 	 *            the class {@link AlertDialog}
@@ -54,15 +67,25 @@ public class OnClickListenerWrapper extends AbstractListenerWrapper implements
 	 *            as an {@link Integer} value
 	 */
 	public OnClickListenerWrapper(final OnClickListener listener,
-			final AlertDialog dialog, final int buttonType) {
+			final Set<Validator> validators, final AlertDialog dialog,
+			final int buttonType) {
 		super(dialog, buttonType);
 		this.wrappedListener = listener;
+		this.validators = validators;
 	}
 
 	@Override
 	public final void onClick(final View v) {
 		if (wrappedListener != null) {
 			wrappedListener.onClick(getDialog(), getButtonType());
+		}
+
+		if (validators != null) {
+			for (Validator validator : validators) {
+				if (!validator.validate()) {
+					return;
+				}
+			}
 		}
 
 		attemptCloseDialog();
