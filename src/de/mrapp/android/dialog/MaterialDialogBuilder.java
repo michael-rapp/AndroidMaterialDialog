@@ -17,7 +17,9 @@
  */
 package de.mrapp.android.dialog;
 
+import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
@@ -42,6 +44,7 @@ import android.widget.TextView;
 import de.mrapp.android.dialog.listener.OnClickListenerWrapper;
 import de.mrapp.android.dialog.listener.OnItemClickListenerWrapper;
 import de.mrapp.android.dialog.listener.OnMultiChoiceClickListenerWrapper;
+import static de.mrapp.android.dialog.util.Condition.ensureNotNull;
 
 /**
  * A builder, which allows to create dialogs, which are designed according to
@@ -56,6 +59,21 @@ import de.mrapp.android.dialog.listener.OnMultiChoiceClickListenerWrapper;
  * @since 1.0.0
  */
 public class MaterialDialogBuilder extends AlertDialog.Builder {
+
+	/**
+	 * Defines the interface, a class, which should be able to validate the
+	 * content of a dialog, must implement.
+	 */
+	public interface Validator {
+
+		/**
+		 * Validates the content of a dialog.
+		 * 
+		 * @return True, if the content of the dialog is valid, false otherwise
+		 */
+		boolean validate();
+
+	};
 
 	/**
 	 * The context, which is used by the builder.
@@ -184,6 +202,11 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	 * The custom title view of the dialog, which is created by the builder.
 	 */
 	private View customTitleView;
+
+	/**
+	 * A set, which contains the validators of the dialog.
+	 */
+	private Set<Validator> validators;
 
 	/**
 	 * Inflates the dialog's layout.
@@ -550,7 +573,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 			negativeButton.setText(negativeButtonText.toString().toUpperCase(
 					Locale.getDefault()));
 			OnClickListenerWrapper onClickListener = new OnClickListenerWrapper(
-					negativeButtonListener, dialog, AlertDialog.BUTTON_NEGATIVE);
+					negativeButtonListener, null, dialog,
+					AlertDialog.BUTTON_NEGATIVE);
 			negativeButton.setOnClickListener(onClickListener);
 			negativeButton.setVisibility(View.VISIBLE);
 
@@ -584,7 +608,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 			neutralButton.setText(neutralButtonText.toString().toUpperCase(
 					Locale.getDefault()));
 			OnClickListenerWrapper onClickListener = new OnClickListenerWrapper(
-					neutralButtonListener, dialog, AlertDialog.BUTTON_NEUTRAL);
+					neutralButtonListener, null, dialog,
+					AlertDialog.BUTTON_NEUTRAL);
 			neutralButton.setOnClickListener(onClickListener);
 			neutralButton.setVisibility(View.VISIBLE);
 
@@ -618,7 +643,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 			positiveButton.setText(positiveButtonText.toString().toUpperCase(
 					Locale.getDefault()));
 			OnClickListenerWrapper onClickListener = new OnClickListenerWrapper(
-					positiveButtonListener, dialog, AlertDialog.BUTTON_POSITIVE);
+					positiveButtonListener, validators, dialog,
+					AlertDialog.BUTTON_POSITIVE);
 			positiveButton.setOnClickListener(onClickListener);
 			positiveButton.setVisibility(View.VISIBLE);
 
@@ -644,6 +670,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	public MaterialDialogBuilder(final Context context) {
 		super(context);
 		this.context = context;
+		this.validators = new LinkedHashSet<Validator>();
 	}
 
 	/**
@@ -689,6 +716,31 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		return this;
 	}
 
+	/**
+	 * Adds a new validator to the dialog, which should be executed when the
+	 * positive button is clicked.
+	 * 
+	 * @param validator
+	 *            The validator, which should be added, as an instance of the
+	 *            type {@link Validator}
+	 */
+	public final void addValidator(final Validator validator) {
+		ensureNotNull(validator, "The validator may not be null");
+		validators.add(validator);
+	}
+
+	/**
+	 * Removes a specific validator from the dialog, which should not be
+	 * executed when the positive button is clicked, anymore.
+	 * 
+	 * @param validator
+	 *            The validator, which should be removed
+	 */
+	public final void removeValidator(final Validator validator) {
+		ensureNotNull(validator, "The validator may not be null");
+		validators.remove(validator);
+	}
+
 	@Override
 	public final MaterialDialogBuilder setTitle(final CharSequence title) {
 		this.title = title;
@@ -717,6 +769,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 		return this;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public final MaterialDialogBuilder setIcon(final int resourceId) {
 		return setIcon(context.getResources().getDrawable(resourceId));
