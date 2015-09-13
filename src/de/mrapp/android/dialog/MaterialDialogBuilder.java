@@ -80,7 +80,12 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	/**
 	 * The context, which is used by the builder.
 	 */
-	private Context context;
+	private final Context context;
+
+	/**
+	 * A set, which contains the validators of the dialog.
+	 */
+	private final Set<Validator> validators;
 
 	/**
 	 * The title of the dialog, which is created by the builder.
@@ -226,11 +231,6 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	 * The custom title view of the dialog, which is created by the builder.
 	 */
 	private View customTitleView;
-
-	/**
-	 * A set, which contains the validators of the dialog.
-	 */
-	private Set<Validator> validators;
 
 	/**
 	 * Inflates the dialog's layout.
@@ -663,10 +663,30 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	 * 
 	 * @param context
 	 *            The context, which should be used by the builder, as an
-	 *            instance of the class {@link Context}
+	 *            instance of the class {@link Context}. The context may not be
+	 *            null
 	 */
 	public MaterialDialogBuilder(final Context context) {
 		super(context);
+		this.context = context;
+		this.validators = new LinkedHashSet<Validator>();
+	}
+
+	/**
+	 * Creates a new builder, which alows to create dialogs, which are designed
+	 * according to Android 5.0's Material Design guidelines even on
+	 * pre-Lollipop devices.
+	 * 
+	 * @param context
+	 *            The context, which should be used by the builder, as an
+	 *            instance of the class {@link Context}. The context may not be
+	 *            null
+	 * @param themeResourceId
+	 *            The resource id of the theme, which should be used by the
+	 *            dialog. The resource id must correspond to a valid theme
+	 */
+	public MaterialDialogBuilder(final Context context, final int themeResourceId) {
+		super(context, themeResourceId);
 		this.context = context;
 		this.validators = new LinkedHashSet<Validator>();
 	}
