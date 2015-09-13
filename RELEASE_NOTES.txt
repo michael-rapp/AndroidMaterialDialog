@@ -2,6 +2,20 @@ AndroidPreferenceActivity - RELEASE NOTES
 =========================================
 
 
+Version:		1.2.0
+Release date:	09.13.2015
+--------------------------
+
+A feature release, which introduces the following changes:
+
+	-	Added setter methods, which allow to customize various colors
+		of a dialog. The colors of the dialog's background, message, 
+		list items and item controls can now be specified.
+		
+	-	Added an additional constructor to the class MaterialDialogBuilder,
+		which allows to specify the theme, which should be used. 
+		
+
 Version:        1.1.0
 Release date:   04.01.2015
 --------------------------
