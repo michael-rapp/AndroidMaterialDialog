@@ -696,7 +696,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	 * builder.
 	 * 
 	 * @param color
-	 *            The color, which should be set, as an {@link Integer} value
+	 *            The color, which should be set, as an {@link Integer} value or
+	 *            -1, if no custom color should be set
 	 * @return The builder, the method has been called upon, as an instance of
 	 *         the class {@link MaterialDialogBuilder}
 	 */
@@ -710,7 +711,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	 * builder.
 	 * 
 	 * @param color
-	 *            The color, which should be set, as an {@link Integer} value
+	 *            The color, which should be set, as an {@link Integer} value or
+	 *            -1, if no custom color should be set
 	 * @return The builder, the method has been called upon, as an instance of
 	 *         the class {@link MaterialDialogBuilder}
 	 */
@@ -724,7 +726,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	 * builder.
 	 * 
 	 * @param color
-	 *            The color, which should be set, as an {@link Integer} value
+	 *            The color, which should be set, as an {@link Integer} value or
+	 *            -1, if no custom color should be set
 	 * @return The builder, the method has been called upon, as an instance of
 	 *         the class {@link MaterialDialogBuilder}
 	 */
@@ -738,7 +741,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	 * by the builder.
 	 * 
 	 * @param color
-	 *            The color, which should be set, as an {@link Integer} value
+	 *            The color, which should be set, as an {@link Integer} value or
+	 *            -1, if no custom color should be set
 	 * @return The builder, the method has been called upon, as an instance of
 	 *         the class {@link MaterialDialogBuilder}
 	 */
@@ -753,7 +757,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	 * 
 	 * @param background
 	 *            The background, which should be set, as an instance of the
-	 *            class {@link Drawable} or null, if no background should be set
+	 *            class {@link Drawable} or null, if no custom background should
+	 *            be set
 	 * @return The builder, the method has been called upon, as an instance of
 	 *         the class {@link MaterialDialogBuilder}
 	 */
@@ -766,7 +771,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	 * Sets the background of the dialog, which is created by the builder.
 	 * 
 	 * @param resourceId
-	 *            the resource id of the background, which should be set, as an
+	 *            The resource id of the background, which should be set, as an
 	 *            {@link Integer} value. The resource id must correspond to a
 	 *            valid drawable resource
 	 * @return The builder, the method has been called upon, as an instance of
@@ -783,12 +788,13 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	 * 
 	 * @param color
 	 *            The background color, which should be set, as an
-	 *            {@link Integer} value
+	 *            {@link Integer} value or -1, if no custom background color
+	 *            should be set
 	 * @return The builder, the method has been called upon, as an instance of
 	 *         the class {@link MaterialDialogBuilder}
 	 */
 	public final MaterialDialogBuilder setBackgroundColor(final int color) {
-		this.background = new ColorDrawable(color);
+		this.background = color != -1 ? new ColorDrawable(color) : null;
 		return this;
 	}
 
@@ -797,7 +803,8 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
 	 * builder.
 	 * 
 	 * @param color
-	 *            The color, which should be set, as an {@link Integer} value
+	 *            The color, which should be set, as an {@link Integer} value or
+	 *            -1, if no custom button color should be set
 	 * @return The builder, the method has been called upon, as an instance of
 	 *         the class {@link MaterialDialogBuilder}
 	 */
