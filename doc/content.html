@@ -30,6 +30,7 @@
                     <li><a href="content.html#implementation-details">Implementation details</a></li>
                     <li><a href="content.html#specifying-title-icon-and-message">Specifying a title, icon and message</a></li>
                     <li><a href="content.html#specifying-the-buttons">Specifying the dialog's buttons</a></li>
+		    <li><a href="content.html#modifying-the-appearance">Modifying the dialog's appearance</a></li>
                     <li><a href="content.html#show-list-items">Use the dialog to show list items</a></li>
                     <ul>
                         <li><a href="content.html#no-choice-mode">No choice mode</a></li>
@@ -74,7 +75,24 @@
 
                 <p>The <tt>setIcon</tt>-methods show above allow to specify the icon by either passing an instance of the class <a href="http://developer.android.com/reference/android/graphics/drawable/Drawable.html" target="_blank" class="code">Drawable</a> or the resource ID of a drawable resource as a parameter. The <tt>setIconAttribute</tt>-method allows to pass the attribute of theme, which is currently applied on the builder's context, which specifies the drawable. An example of such an attribute is <tt>android.R.attr.alertDialogIcon</tt>.</p>
 
-		<h4><a name="modifying-the-appearance">3 Modifying the dialog's appearance</a></h4>
+                <h4><a name="specifying-the-buttons">3 Specifying the dialog's buttons</a></h4>
+
+                <p>As already mentioned, the a dialog, which is created by a <a href="javadoc/de/mrapp/android/dialog/MaterialDialogBuilder.html" target="_blank" class="code">MaterialDialogBuilder</a> may contain up to three buttons. These buttons, which are called "negative button", "neutral button" and "positive button" are added to the dialog in this particular order from left to right. For adding each of these buttons to the dialog, two dedicated methods exist. One of them allows to specify the button's text as an instance of the class <a href="http://developer.android.com/reference/java/lang/CharSequence.html" target="_blank" class="code">CharSequence</a>, the other one allows to pass the resource ID of a string resource. All of these methods are listed below:</p>
+
+                <p class="center"><tt>setNegativeButton(CharSequence, OnClickListener):MaterialDialogBuilder</tt></p>
+                <p class="center"><tt>setNegativeButton(int, OnClickListener):MaterialDialogBuilder</tt></p>
+                <p class="center"><tt>setNeutralButton(CharSequence, OnClickListener):MaterialDialogBuilder</tt></p>
+                <p class="center"><tt>setNeutralButton(int, OnClickListener):MaterialDialogBuilder</tt></p>
+                <p class="center"><tt>setPositiveButton(CharSequence, OnClickListener):MaterialDialogBuilder</tt></p>
+                <p class="center"><tt>setPositiveeButton(int, OnClickListener):MaterialDialogBuilder</tt></p>
+
+                <p>The second parameter of all methods shown above allows to pass a listener, which therefore must implement the interface <a href="http://developer.android.com/reference/android/content/DialogInterface.OnClickListener.html" target="_blank" class="code">DialogInterface.OnClickListener</a>, to the button. The listener is invoked when the user closes the dialog by clicking the appropriate button. Passing a <tt>null</tt> reference instead of a listener implementation, does not cause the app to crash and the dialog will be closed anyways, when the button is clicked.</p>
+
+                <p>By default the dialog's buttons are align horizontally, but as the "Material Design" guidelines introduced an alternative way of aligning a dialog's buttons, the builder's method <tt>stackButtons(boolean):MaterialDialogBuilder</tt> can be used to align the buttons vertically. The following screenshots shows a dialog, whose buttons are stacked:<p>
+
+                 <p><center><a href="images/example.png" target="_blank".><img src="images/example-stacked-buttons.png" width="320" alt="Example"></center></a></p>
+
+		<h4><a name="modifying-the-appearance">4 Modifying the dialog's appearance</a></h4>
 
 		<p>The class <a href="javadoc/de/mrapp/android/dialog/MaterialDialogBuilder.html" target="_blank" class="code">MaterialDialogBuilder</a> provides various methods, which can be used to customize the appearance of dialogs. The following table gives an overview of these methods and shows the default values, which are used when not overridden.</p>
 
@@ -94,7 +112,7 @@
                     <tr>
                         <td><tt>setMessageColor(int):void</tt></td>
                         <td>Sets the color of the dialog's message.</td>
-                        <td><center><tt>android.R.textColorPrimary</tt></center></td>
+                        <td><center><tt>android.R.textColorSecondary</tt></center></td>
 			<td><center>Must be a valid color, not a resource ID.</center></td>
                     </tr>
                     <tr>
@@ -124,23 +142,6 @@
 		</table>
 
 		<p>If a dialog, which is created by the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialogBuilder.html" target="_blank" class="code">MaterialDialogBuilder</a> should use an individual theme instead of the App's default theme, the theme's resource ID can be passed to the builder's constructor.</p>
-
-                <h4><a name="specifying-the-buttons">4 Specifying the dialog's buttons</a></h4>
-
-                <p>As already mentioned, the a dialog, which is created by a <a href="javadoc/de/mrapp/android/dialog/MaterialDialogBuilder.html" target="_blank" class="code">MaterialDialogBuilder</a> may contain up to three buttons. These buttons, which are called "negative button", "neutral button" and "positive button" are added to the dialog in this particular order from left to right. For adding each of these buttons to the dialog, two dedicated methods exist. One of them allows to specify the button's text as an instance of the class <a href="http://developer.android.com/reference/java/lang/CharSequence.html" target="_blank" class="code">CharSequence</a>, the other one allows to pass the resource ID of a string resource. All of these methods are listed below:</p>
-
-                <p class="center"><tt>setNegativeButton(CharSequence, OnClickListener):MaterialDialogBuilder</tt></p>
-                <p class="center"><tt>setNegativeButton(int, OnClickListener):MaterialDialogBuilder</tt></p>
-                <p class="center"><tt>setNeutralButton(CharSequence, OnClickListener):MaterialDialogBuilder</tt></p>
-                <p class="center"><tt>setNeutralButton(int, OnClickListener):MaterialDialogBuilder</tt></p>
-                <p class="center"><tt>setPositiveButton(CharSequence, OnClickListener):MaterialDialogBuilder</tt></p>
-                <p class="center"><tt>setPositiveeButton(int, OnClickListener):MaterialDialogBuilder</tt></p>
-
-                <p>The second parameter of all methods shown above allows to pass a listener, which therefore must implement the interface <a href="http://developer.android.com/reference/android/content/DialogInterface.OnClickListener.html" target="_blank" class="code">DialogInterface.OnClickListener</a>, to the button. The listener is invoked when the user closes the dialog by clicking the appropriate button. Passing a <tt>null</tt> reference instead of a listener implementation, does not cause the app to crash and the dialog will be closed anyways, when the button is clicked.</p>
-
-                <p>By default the dialog's buttons are align horizontally, but as the "Material Design" guidelines introduced an alternative way of aligning a dialog's buttons, the builder's method <tt>stackButtons(boolean):MaterialDialogBuilder</tt> can be used to align the buttons vertically. The following screenshots shows a dialog, whose buttons are stacked:<p>
-
-                 <p><center><a href="images/example.png" target="_blank".><img src="images/example-stacked-buttons.png" width="320" alt="Example"></center></a></p>
 
                 <h4><a name="show-list-items">5 Use the dialog to show list items</a></h4>
 
