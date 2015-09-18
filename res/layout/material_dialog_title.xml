@@ -24,5 +24,4 @@ License along with this program. If not, see
     android:ellipsize="marquee"
     android:fadingEdge="horizontal"
     android:singleLine="true"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:textColor="?attr/colorPrimary" />
+    android:textAppearance="?android:attr/textAppearanceLarge" />
