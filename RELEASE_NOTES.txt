@@ -2,6 +2,15 @@ AndroidPreferenceActivity - RELEASE NOTES
 =========================================
 
 
+Version:		1.2.1
+Release date:	09.18.2015
+--------------------------
+
+A bugfix release, which fixes the following issues:
+
+    -   https://sourceforge.net/p/androidmaterialdialog/tickets/3/
+
+
 Version:		1.2.0
 Release date:	09.13.2015
 --------------------------
