@@ -268,6 +268,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
      * @return The builder, which has been created, as an instance of the class {@link
      * MaterialDialogBuilder}
      */
+    @SuppressWarnings("deprecation")
     private MaterialDialogBuilder createDialogBuilder() {
         MaterialDialogBuilder dialogBuilder = new MaterialDialogBuilder(getActivity());
 
