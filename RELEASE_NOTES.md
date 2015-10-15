@@ -15,7 +15,7 @@ A bugfix release, which fixes the following issues:
 
 ## Version 1.2.0 (Sept. 13th 2015)
 
- feature release, which introduces the following changes:
+A feature release, which introduces the following changes:
  
  - Added setter methods, which allow to customize various colors of a dialog. The colors of the dialog's background, message, list items and item controls can now be specified (https://github.com/michael-rapp/AndroidMaterialDialog/issues/2).
  - Added an additional constructor to the class `MaterialDialogBuilder`, which allows to specify the theme, which should be used.
