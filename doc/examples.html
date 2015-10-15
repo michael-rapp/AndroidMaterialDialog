@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <title>AndroidMaterialDialog &#150; Documentation: Examples</title>
+        <link rel=stylesheet type=text/css href=style.css />
+        <link rel="icon" type="image/png" href="images/favicon.png" />
+    </head>
+    
+    <body>
+        <div class="content">
+            <div class="header">
+                <h1>AndroidMaterialDialog &#150; Documentation</h1>
+                <h2>Documentation of the Android-library "AndroidMaterialDialog".</h2>
+            </div>
+
+            <div class="navigation">
+                <div class="navigation-item"><a href="index.html">GENERAL</a></div>
+                <div class="navigation-item"><a href="content.html">CONTENT</a></div>
+                <div class="navigation-item-selected"><a href="examples.html">EXAMPLES</a></div>
+            </div>
+
+            <div class="text">
+                 <h3>Examples</h3>
+
+                 <p>The following example provides a quick overview on how to use the library "AndroidMaterialDialog".</p>
+
+                <h4>Creating a typical alert dialog</h4>
+
+                <p>The code below shows how to create and show a typical alert dialog, which may be used to ask the user for confirmation for a specific action. The dialog contains a title and a message and can be closed by the user by either using a "OK" button or a "Cancel" button. The <tt>this</tt> parameter, which is passed to the builder's constructor in the example below, must be a <tt>Context</tt>, e.g. an <tt>Activity</tt>. The <tt>null</tt> parameters, which are passed to the </tt>setPositiveButton</tt>- and <tt>setNegativeButton</tt>-methods can be replaced by instances of the type <a href="http://developer.android.com/reference/android/content/DialogInterface.OnClickListener.html" target="_blank" class="code">DialogInterface.OnClickListener</a> in order to execute some code when the user closes the dialog by clicking the corresponding button.</p>
+
+                <div class="code-block">MaterialDialogBuilder dialogBuilder = <strong><font color='#7f0055'>new</font></strong> MaterialDialogBuilder(<strong><font color='#7f0055'>this</font></strong>);
+<br/>dialogBuilder.setTitle(R.string.dialog_title);
+<br/>dialogBuilder.setMessage(R.string.dialog_message);
+<br/>dialogBuilder.setTitle(R.string.dialog_title);
+<br/>dialogBuilder.setPositiveButton(android.R.string.ok, <strong><font color='#7f0055'>null</font></strong>);
+<br/>dialogBuilder.setNegativeButton(android.R.string.cancel, <strong><font color='#7f0055'>null</font></strong>);
+<br/>dialogBuilder.show();</div>
+
+                <p>As the methods of the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialogBuilder.html" target="_blank" class="code">MaterialDialogBuilder</a>, which is provided by this library, is nearly identical to the API of the Android SDK's class <a href="http://developer.android.com/reference/android/app/AlertDialog.Builder.html" target="_blank" class="code">AlertDialog.Builder</a>, the practices, which are described in <a href="http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog" target="_blank" class="code">this</a> section of the Android developer guide, do also work together with this library.</p>             
+
+                <h4>External references:</h4>
+
+                <div class="reference"><a name="reference1" class="reference">[1]</a><a href="http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog" target="_blank">http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog</a> &#150; Building an Alert Dialog
+            </div>
+
+            <div class="copyright">
+                &#169; Copyright 2014 - 2015, Michael Rapp. All rights reserved.
+            </div>
+        </div>
+    </body>
+</html>
