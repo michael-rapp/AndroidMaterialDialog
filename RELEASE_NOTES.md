@@ -18,7 +18,6 @@ A bugfix release, which fixes the following issues:
  feature release, which introduces the following changes:
  
  - Added setter methods, which allow to customize various colors of a dialog. The colors of the dialog's background, message, list items and item controls can now be specified (https://github.com/michael-rapp/AndroidMaterialDialog/issues/2).
- 
  - Added an additional constructor to the class `MaterialDialogBuilder`, which allows to specify the theme, which should be used.
 
 ## Version 1.1.0 (Apr. 1st 2015)
@@ -45,9 +44,6 @@ A bugfix release, which fixes the following issues:
 The first stable release, which provides a builder, which allows to create dialogs, which are designed according to Android 5.0's Material Design guidelines even on pre-Lollipop devices. The implementation initially provides the following features:
 
 - The builder is extended from the Android SDK's built-in class `android.app.AlertDialog.Builder` and therefore provides all functionalities of its base class, including the possibilities to create dialogs with a title, icon, message, up to three buttons and optional list items. 
-        
 - The library uses the AppCompat v7 revision 21 support library in order to retrieve the color of a dialog's title and button texts from the applied theme. Alternatively, these colors can be set manually using the builder.
-        
-- A dialog's title and content can be replaced by any custom view.
-        
+- A dialog's title and content can be replaced by any custom view.  
 - The builder supports to create dialogs, whose buttons are stacked, as introduces in the Material Design guidelines.
