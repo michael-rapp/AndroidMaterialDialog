@@ -20,7 +20,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.github.michael-rapp:android-util:1.0.0'
 }
 
