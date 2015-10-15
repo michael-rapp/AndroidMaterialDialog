@@ -1,23 +1,23 @@
 /*
  * AndroidMaterialDialog Copyright 2014 - 2015 Michael Rapp
  *
- * This program is free software: you can redistribute it and/or modify 
- * it under the terms of the GNU Lesser General Public License as published 
- * by the Free Software Foundation, either version 3 of the License, or 
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program. If not, see
- * <http://www.gnu.org/licenses/>. 
+ * You should have received a copy of the GNU Lesser General Public License along with this program.
+ * If not, see <http://www.gnu.org/licenses/>.
  */
 package de.mrapp.android.dialog.listener;
 
 import android.app.AlertDialog;
+import android.support.annotation.NonNull;
+
+import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * An abstract base class for all wrappers, which implement a specific listener interface of a
@@ -86,12 +86,13 @@ public abstract class AbstractListenerWrapper {
      *
      * @param dialog
      *         The dialog, the listener should belong to, as an instance of the class {@link
-     *         AlertDialog}
+     *         AlertDialog}. The dialog may not be null
      * @param buttonType
      *         The type of the button or list item, the listener belongs to, as an {@link Integer}
      *         value
      */
-    public AbstractListenerWrapper(final AlertDialog dialog, final int buttonType) {
+    public AbstractListenerWrapper(@NonNull final AlertDialog dialog, final int buttonType) {
+        ensureNotNull(dialog, "The dialog may not be null");
         this.dialog = dialog;
         this.buttonType = buttonType;
     }

@@ -1,19 +1,16 @@
 /*
  * AndroidMaterialDialog Copyright 2014 - 2015 Michael Rapp
  *
- * This program is free software: you can redistribute it and/or modify 
- * it under the terms of the GNU Lesser General Public License as published 
- * by the Free Software Foundation, either version 3 of the License, or 
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program. If not, see
- * <http://www.gnu.org/licenses/>. 
+ * You should have received a copy of the GNU Lesser General Public License along with this program.
+ * If not, see <http://www.gnu.org/licenses/>.
  */
 package de.mrapp.android.dialog.adapter;
 
@@ -24,6 +21,8 @@ import android.graphics.ColorFilter;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Build;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
@@ -67,7 +66,7 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
      *         The resource id of the layout, which should be used by the adapter, as an {@link
      *         Integer} value. The resource id must correspond to a valid layout resource
      */
-    public ArrayAdapter(final Context context, final int resourceId) {
+    public ArrayAdapter(@NonNull final Context context, final int resourceId) {
         super(context, resourceId);
         this.textViewResourceId = -1;
         this.itemColor = -1;
@@ -87,7 +86,8 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
      *         The id of the text view within the layout resource to be populated, as an {@link
      *         Integer} value
      */
-    public ArrayAdapter(final Context context, final int resourceId, final int textViewResourceId) {
+    public ArrayAdapter(@NonNull final Context context, final int resourceId,
+                        final int textViewResourceId) {
         super(context, resourceId, textViewResourceId);
         this.textViewResourceId = textViewResourceId;
         this.itemColor = -1;
@@ -104,9 +104,11 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
      *         The resource id of the layout, which should be used by the adapter, as an {@link
      *         Integer} value. The resource id must correspond to a valid layout resource
      * @param items
-     *         The items of the adapter as an array of the generic type Type
+     *         The items of the adapter as an array of the generic type Type. The items may not be
+     *         null
      */
-    public ArrayAdapter(final Context context, final int resourceId, final Type[] items) {
+    public ArrayAdapter(@NonNull final Context context, final int resourceId,
+                        @NonNull final Type[] items) {
         super(context, resourceId, items);
         this.textViewResourceId = -1;
         this.itemColor = -1;
@@ -126,10 +128,11 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
      *         The id of the text view within the layout resource to be populated, as an {@link
      *         Integer} value
      * @param items
-     *         The items of the adapter as an array of the generic type Type
+     *         The items of the adapter as an array of the generic type Type. The items may not be
+     *         null
      */
-    public ArrayAdapter(final Context context, final int resourceId, final int textViewResourceId,
-                        final Type[] items) {
+    public ArrayAdapter(@NonNull final Context context, final int resourceId,
+                        final int textViewResourceId, @NonNull final Type[] items) {
         super(context, resourceId, textViewResourceId, items);
         this.textViewResourceId = textViewResourceId;
         this.itemColor = -1;
@@ -147,9 +150,10 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
      *         Integer} value. The resource id must correspond to a valid layout resource
      * @param items
      *         A list, which contains the items of the adapter, as an instance of the type {@link
-     *         List}
+     *         List}. The list may not be null
      */
-    public ArrayAdapter(final Context context, final int resourceId, final List<Type> items) {
+    public ArrayAdapter(@NonNull final Context context, final int resourceId,
+                        @NonNull final List<Type> items) {
         super(context, resourceId, items);
         this.textViewResourceId = -1;
         this.itemColor = -1;
@@ -170,10 +174,10 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
      *         Integer} value
      * @param items
      *         A list, which contains the items of the adapter, as an instance of the type {@link
-     *         List}
+     *         List}. The list may not be null
      */
-    public ArrayAdapter(final Context context, final int resourceId, final int textViewResourceId,
-                        final List<Type> items) {
+    public ArrayAdapter(@NonNull final Context context, final int resourceId,
+                        final int textViewResourceId, @NonNull final List<Type> items) {
         super(context, resourceId, textViewResourceId, items);
         this.textViewResourceId = textViewResourceId;
         this.itemColor = -1;
@@ -197,7 +201,7 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
      *         The text color, which should be set, as an {@link Integer} value or -1, if no custom
      *         color should be set
      */
-    public final void setItemColor(final int color) {
+    public final void setItemColor(@ColorInt final int color) {
         this.itemColor = color;
     }
 
@@ -219,7 +223,7 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
      *         custom color should be set
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public final void setItemControlColor(final int color) {
+    public final void setItemControlColor(@ColorInt final int color) {
         this.itemControlColor = color;
     }
 
