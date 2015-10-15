@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+AndroidMaterialDialog Copyright 2014 - 2015 Michael Rapp
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+Lesser General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with this program. If
+not, see <http://www.gnu.org/licenses/>.
+-->
+<resources>
+
+    <string name="app_name">AndroidMaterialDialog Example</string>
+    <string name="show_example_dialogs_preference_category_title">Show example dialogs</string>
+    <string name="show_alert_dialog_preference_key">show_alert_dialog_preference_key</string>
+    <string name="show_alert_dialog_preference_title">Show example alert dialog</string>
+    <string name="show_list_dialog_preference_key">show_list_dialog_preference_key</string>
+    <string name="show_list_dialog_preference_title">Show example list dialog</string>
+    <string name="show_single_choice_dialog_preference_key">show_single_choice_dialog_preference_key</string>
+    <string name="show_single_choice_dialog_preference_title">Show example single choice dialog</string>
+    <string name="show_multi_choice_dialog_preference_key">show_multi_choice_dialog_preference_key</string>
+    <string name="show_multi_choice_dialog_preference_title">Show example multi choice dialog</string>
+    <string name="show_custom_dialog_preference_key">show_custom_dialog_preference_key</string>
+    <string name="show_custom_dialog_preference_title">Show dialog with custom content</string>
+    <string name="dialog_title_preference_category_title">Title</string>
+    <string name="show_dialog_title_preference_key">show_dialog_title_preference_key</string>
+    <string name="show_dialog_title_preference_title">Show dialog title</string>
+    <string name="show_dialog_title_preference_summary">Allows to set, whether the example dialog should contain a title, or not</string>
+    <string name="dialog_title_preference_key">dialog_title_preference_key</string>
+    <string name="dialog_title_preference_title">Dialog title</string>
+    <string name="dialog_title_preference_summary">Allows to change the title of the example dialog</string>
+    <string name="dialog_title_preference_default_value">Dialog title</string>
+    <string name="dialog_message_preference_category_title">Message</string>
+    <string name="show_dialog_message_preference_key">show_dialog_message_preference_key</string>
+    <string name="show_dialog_message_preference_title">Show dialog message</string>
+    <string name="show_dialog_message_preference_summary">Allows to set, whether the example dialog should contain a message, or not</string>
+    <string name="dialog_message_preference_key">dialog_message_preference_key</string>
+    <string name="dialog_message_preference_title">Dialog message</string>
+    <string name="dialog_message_preference_summary">Allows to change the message of the example dialog</string>
+    <string name="dialog_message_preference_default_value">This is the message of the Material Design-styled dialog.</string>
+    <string name="dialog_icon_preference_category_title">Icon</string>
+    <string name="show_dialog_icon_preference_key">show_dialog_icon_preference_key</string>
+    <string name="show_dialog_icon_preference_title">Show dialog icon</string>
+    <string name="show_dialog_icon_preference_summary">Allows to set, whether the example dialog should contain an icon, or not</string>
+    <string name="dialog_buttons_preference_category_title">Buttons</string>
+    <string name="positive_button_text_preference_key">positive_button_text_preference_key</string>
+    <string name="positive_button_text_preference_title">Positive button text</string>
+    <string name="positive_button_text_preference_summary">Allows to set the text of the positive button</string>
+    <string name="positive_button_text_preference_default_value">Yes</string>
+    <string name="show_positive_button_preference_key">show_positive_button_preference_key</string>
+    <string name="show_positive_button_preference_title">Show positive button</string>
+    <string name="show_positive_button_preference_summary">Allows to set, whether the example dialog should contain a positive button, or not</string>
+    <string name="neutral_button_text_preference_key">neutral_button_text_preference_key</string>
+    <string name="neutral_button_text_preference_title">Neutral button text</string>
+    <string name="neutral_button_text_preference_summary">Allows to set the text of the neutral button</string>
+    <string name="neutral_button_text_preference_default_value">Cancel</string>
+    <string name="show_neutral_button_preference_key">show_neutral_button_preference_key</string>
+    <string name="show_neutral_button_preference_title">Show neutral button</string>
+    <string name="show_neutral_button_preference_summary">Allows to set, whether the example dialog should contain a neutral button, or not</string>
+    <string name="negative_button_text_preference_key">negative_button_text_preference_key</string>
+    <string name="negative_button_text_preference_title">Negative button text</string>
+    <string name="negative_button_text_preference_summary">Allows to set the text of the negative button</string>
+    <string name="negative_button_text_preference_default_value">No</string>
+    <string name="show_negative_button_preference_key">show_negative_button_preference_key</string>
+    <string name="show_negative_button_preference_title">Show negative button</string>
+    <string name="show_negative_button_preference_summary">Allows to set, whether the example dialog should contain a negative button, or not</string>
+    <string name="stack_buttons_preference_key">stack_buttons_preference_key</string>
+    <string name="stack_buttons_preference_title">Stack dialog buttons</string>
+    <string name="stack_buttons_preference_summary">Allows to set, whether the example dialog\'s buttons should be aligned verticaly, or not</string>
+    <string name="colors_preference_category_title">Colors</string>
+    <string name="invert_colors_preference_key">invert_colors_preference_key</string>
+    <string name="invert_colors_preference_title">Invert colors</string>
+    <string name="invert_colors_preference_summary">Allows to set, whether the colors of all elements of the example dialog should be inverted, or not</string>
+    <string name="multi_choice_listener_selected_text">Selected item at position %s</string>
+    <string name="multi_choice_listener_unselected_text">Unselected item at position %s</string>
+    <string name="single_choice_listener_text">Selected item at position %s</string>
+    <string name="custom_dialog_content_text">This is a custom view, which has been added to the dialog.</string>
+    <string name="custom_dialog_title_text">This is a custom title</string>
+
+    <string-array name="list_items">
+        <item>Item 1</item>
+        <item>Item 2</item>
+        <item>Item 3</item>
+    </string-array>
+
+</resources>

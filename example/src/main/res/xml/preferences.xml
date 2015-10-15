@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+AndroidMaterialDialog Copyright 2014 - 2015 Michael Rapp
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+Lesser General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with this program. If
+not, see <http://www.gnu.org/licenses/>.
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/show_example_dialogs_preference_category_title">
+        <Preference
+            android:key="@string/show_alert_dialog_preference_key"
+            android:title="@string/show_alert_dialog_preference_title"/>
+        <Preference
+            android:key="@string/show_list_dialog_preference_key"
+            android:title="@string/show_list_dialog_preference_title"/>
+        <Preference
+            android:key="@string/show_single_choice_dialog_preference_key"
+            android:title="@string/show_single_choice_dialog_preference_title"/>
+        <Preference
+            android:key="@string/show_multi_choice_dialog_preference_key"
+            android:title="@string/show_multi_choice_dialog_preference_title"/>
+        <Preference
+            android:key="@string/show_custom_dialog_preference_key"
+            android:title="@string/show_custom_dialog_preference_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/dialog_title_preference_category_title">
+        <CheckBoxPreference
+            android:defaultValue="@bool/show_dialog_title_preference_default_value"
+            android:key="@string/show_dialog_title_preference_key"
+            android:summary="@string/show_dialog_title_preference_summary"
+            android:title="@string/show_dialog_title_preference_title"/>
+
+        <EditTextPreference
+            android:defaultValue="@string/dialog_title_preference_default_value"
+            android:dependency="@string/show_dialog_title_preference_key"
+            android:key="@string/dialog_title_preference_key"
+            android:summary="@string/dialog_title_preference_summary"
+            android:title="@string/dialog_title_preference_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/dialog_icon_preference_category_title">
+        <CheckBoxPreference
+            android:defaultValue="@bool/show_dialog_icon_preference_default_value"
+            android:key="@string/show_dialog_icon_preference_key"
+            android:summary="@string/show_dialog_icon_preference_summary"
+            android:title="@string/show_dialog_icon_preference_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/dialog_message_preference_category_title">
+        <CheckBoxPreference
+            android:defaultValue="@bool/show_dialog_message_preference_default_value"
+            android:key="@string/show_dialog_message_preference_key"
+            android:summary="@string/show_dialog_message_preference_summary"
+            android:title="@string/show_dialog_message_preference_title"/>
+
+        <EditTextPreference
+            android:defaultValue="@string/dialog_message_preference_default_value"
+            android:dependency="@string/show_dialog_message_preference_key"
+            android:key="@string/dialog_message_preference_key"
+            android:summary="@string/dialog_message_preference_summary"
+            android:title="@string/dialog_message_preference_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/dialog_buttons_preference_category_title">
+        <CheckBoxPreference
+            android:defaultValue="@bool/show_negative_button_preference_default_value"
+            android:key="@string/show_negative_button_preference_key"
+            android:summary="@string/show_negative_button_preference_summary"
+            android:title="@string/show_negative_button_preference_title"/>
+
+        <EditTextPreference
+            android:defaultValue="@string/negative_button_text_preference_default_value"
+            android:dependency="@string/show_negative_button_preference_key"
+            android:key="@string/negative_button_text_preference_key"
+            android:summary="@string/negative_button_text_preference_summary"
+            android:title="@string/negative_button_text_preference_title"/>
+
+        <CheckBoxPreference
+            android:defaultValue="@bool/show_neutral_button_preference_default_value"
+            android:key="@string/show_neutral_button_preference_key"
+            android:summary="@string/show_neutral_button_preference_summary"
+            android:title="@string/show_neutral_button_preference_title"/>
+
+        <EditTextPreference
+            android:defaultValue="@string/neutral_button_text_preference_default_value"
+            android:dependency="@string/show_neutral_button_preference_key"
+            android:key="@string/neutral_button_text_preference_key"
+            android:summary="@string/neutral_button_text_preference_summary"
+            android:title="@string/neutral_button_text_preference_title"/>
+
+        <CheckBoxPreference
+            android:defaultValue="@bool/show_positive_button_preference_default_value"
+            android:key="@string/show_positive_button_preference_key"
+            android:summary="@string/show_positive_button_preference_summary"
+            android:title="@string/show_positive_button_preference_title"/>
+
+        <EditTextPreference
+            android:defaultValue="@string/positive_button_text_preference_default_value"
+            android:dependency="@string/show_positive_button_preference_key"
+            android:key="@string/positive_button_text_preference_key"
+            android:summary="@string/positive_button_text_preference_summary"
+            android:title="@string/positive_button_text_preference_title"/>
+
+        <CheckBoxPreference
+            android:defaultValue="@bool/stack_buttons_preference_default_value"
+            android:key="@string/stack_buttons_preference_key"
+            android:summary="@string/stack_buttons_preference_summary"
+            android:title="@string/stack_buttons_preference_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/colors_preference_category_title">
+        <CheckBoxPreference
+            android:defaultValue="@bool/invert_colors_preference_default_value"
+            android:key="@string/invert_colors_preference_key"
+            android:summary="@string/invert_colors_preference_summary"
+            android:title="@string/invert_colors_preference_title"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

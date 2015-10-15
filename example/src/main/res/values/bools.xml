@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+AndroidMaterialDialog Copyright 2014 - 2015 Michael Rapp
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+Lesser General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with this program. If
+not, see <http://www.gnu.org/licenses/>.
+-->
+<resources>
+
+    <bool name="show_dialog_title_preference_default_value">true</bool>
+    <bool name="show_dialog_icon_preference_default_value">false</bool>
+    <bool name="show_dialog_message_preference_default_value">true</bool>
+    <bool name="show_negative_button_preference_default_value">true</bool>
+    <bool name="show_neutral_button_preference_default_value">false</bool>
+    <bool name="show_positive_button_preference_default_value">true</bool>
+    <bool name="stack_buttons_preference_default_value">false</bool>
+    <bool name="invert_colors_preference_default_value">false</bool>
+
+</resources>
