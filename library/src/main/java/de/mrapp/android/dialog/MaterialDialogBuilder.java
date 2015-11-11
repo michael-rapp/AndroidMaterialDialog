@@ -1059,7 +1059,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
         TextView messageTextView = initializeMessage(root, titleContainer);
         inflateContentView(root, titleContainer, messageTextView, dialog);
         inflateButtonBar(root, dialog);
-        return new MaterialDialog(dialog);
+        return dialog;
     }
 
 }
