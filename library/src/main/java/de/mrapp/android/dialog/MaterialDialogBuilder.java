@@ -26,7 +26,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -570,7 +569,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
      */
     private Button addNegativeButton(@NonNull final View root, @NonNull final AlertDialog dialog) {
         if (!TextUtils.isEmpty(negativeButtonText)) {
-            Button negativeButton = (Button) root.findViewById(android.R.id.button1);
+            Button negativeButton = (Button) root.findViewById(android.R.id.button2);
             negativeButton.setText(negativeButtonText.toString().toUpperCase(Locale.getDefault()));
             OnClickListenerWrapper onClickListener =
                     new OnClickListenerWrapper(negativeButtonListener, null, dialog,
@@ -601,7 +600,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
      */
     private Button addNeutralButton(@NonNull final View root, @NonNull final AlertDialog dialog) {
         if (!TextUtils.isEmpty(neutralButtonText)) {
-            Button neutralButton = (Button) root.findViewById(android.R.id.button2);
+            Button neutralButton = (Button) root.findViewById(android.R.id.button3);
             neutralButton.setText(neutralButtonText.toString().toUpperCase(Locale.getDefault()));
             OnClickListenerWrapper onClickListener =
                     new OnClickListenerWrapper(neutralButtonListener, null, dialog,
@@ -632,7 +631,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
      */
     private Button addPositiveButton(@NonNull final View root, @NonNull final AlertDialog dialog) {
         if (!TextUtils.isEmpty(positiveButtonText)) {
-            Button positiveButton = (Button) root.findViewById(android.R.id.button3);
+            Button positiveButton = (Button) root.findViewById(android.R.id.button1);
             positiveButton.setText(positiveButtonText.toString().toUpperCase(Locale.getDefault()));
             OnClickListenerWrapper onClickListener =
                     new OnClickListenerWrapper(positiveButtonListener, validators, dialog,
@@ -1060,7 +1059,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
         TextView messageTextView = initializeMessage(root, titleContainer);
         inflateContentView(root, titleContainer, messageTextView, dialog);
         inflateButtonBar(root, dialog);
-        return dialog;
+        return new MaterialDialog(dialog);
     }
 
 }

@@ -14,6 +14,8 @@
  */
 package de.mrapp.android.dialog.example;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
@@ -26,6 +28,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import de.mrapp.android.dialog.MaterialDialogBuilder;
@@ -65,7 +68,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 MaterialDialogBuilder dialogBuilder = createDialogBuilder();
-                dialogBuilder.show();
+                AlertDialog dialog = dialogBuilder.create();
+                dialog.show();
+                //dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                 return true;
             }
 

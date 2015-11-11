@@ -22,21 +22,6 @@ not, see <http://www.gnu.org/licenses/>.
     android:orientation="vertical">
 
     <Button
-        android:id="@android:id/button1"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dialog_button_spacing"
-        android:layout_marginLeft="@dimen/dialog_button_spacing"
-        android:layout_marginRight="@dimen/dialog_button_spacing"
-        android:layout_marginStart="@dimen/dialog_button_spacing"
-        android:gravity="end|center_vertical"
-        android:padding="@dimen/dialog_button_padding"
-        android:textColor="?attr/colorAccent"
-        android:textSize="@dimen/dialog_button_text_size"
-        android:visibility="gone"/>
-
-    <Button
         android:id="@android:id/button2"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
@@ -53,6 +38,21 @@ not, see <http://www.gnu.org/licenses/>.
 
     <Button
         android:id="@android:id/button3"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dialog_button_spacing"
+        android:layout_marginLeft="@dimen/dialog_button_spacing"
+        android:layout_marginRight="@dimen/dialog_button_spacing"
+        android:layout_marginStart="@dimen/dialog_button_spacing"
+        android:gravity="end|center_vertical"
+        android:padding="@dimen/dialog_button_padding"
+        android:textColor="?attr/colorAccent"
+        android:textSize="@dimen/dialog_button_text_size"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@android:id/button1"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
