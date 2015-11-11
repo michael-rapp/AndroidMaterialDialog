@@ -22,7 +22,7 @@ import android.view.View;
 
 import java.util.Set;
 
-import de.mrapp.android.dialog.MaterialDialogBuilder.Validator;
+import de.mrapp.android.dialog.Validator;
 
 /**
  * A wrapper, which implements the interface {@link android.view.View.OnClickListener} in order to

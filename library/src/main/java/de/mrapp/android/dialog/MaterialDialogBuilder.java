@@ -17,6 +17,7 @@ package de.mrapp.android.dialog;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.res.TypedArray;
@@ -63,21 +64,6 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @since 1.0.0
  */
 public class MaterialDialogBuilder extends AlertDialog.Builder {
-
-    /**
-     * Defines the interface, a class, which should be able to validate the content of a dialog,
-     * must implement.
-     */
-    public interface Validator {
-
-        /**
-         * Validates the content of a dialog.
-         *
-         * @return True, if the content of the dialog is valid, false otherwise
-         */
-        boolean validate();
-
-    }
 
     /**
      * The context, which is used by the builder.
@@ -429,7 +415,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
         if (listViewChoiceMode == ListView.CHOICE_MODE_NONE) {
             listView.setOnItemClickListener(
                     new OnItemClickListenerWrapper(listViewSingleChoiceListener, dialog,
-                            AlertDialog.BUTTON_POSITIVE));
+                            DialogInterface.BUTTON_POSITIVE));
         } else if (listViewChoiceMode == ListView.CHOICE_MODE_SINGLE) {
             listView.setOnItemClickListener(
                     new OnItemClickListenerWrapper(listViewSingleChoiceListener, dialog, 0));
@@ -604,7 +590,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
             neutralButton.setText(neutralButtonText.toString().toUpperCase(Locale.getDefault()));
             OnClickListenerWrapper onClickListener =
                     new OnClickListenerWrapper(neutralButtonListener, null, dialog,
-                            AlertDialog.BUTTON_NEUTRAL);
+                            DialogInterface.BUTTON_NEUTRAL);
             neutralButton.setOnClickListener(onClickListener);
             neutralButton.setVisibility(View.VISIBLE);
 
@@ -635,7 +621,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
             positiveButton.setText(positiveButtonText.toString().toUpperCase(Locale.getDefault()));
             OnClickListenerWrapper onClickListener =
                     new OnClickListenerWrapper(positiveButtonListener, validators, dialog,
-                            AlertDialog.BUTTON_POSITIVE);
+                            DialogInterface.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(onClickListener);
             positiveButton.setVisibility(View.VISIBLE);
 
