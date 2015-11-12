@@ -4,7 +4,7 @@
 
 A major release, which introduces the following changes:
 
-- The library has been completely reworked in order to make it independent from the class `AlertDialog` of the Android SDK. Dialogs, which are created using the library are now instances of the newly introduced class `MaterialDialog`. The class `MaterialDialogBuilder` has been removed. In order to create dialogs, the builder `MaterialDialog.Builder` has to be used now.
+- The library has been completely reworked in order to make it independent from the class `AlertDialog` of the Android SDK. Dialogs, which are created using the library are now instances of the newly introduced class `MaterialDialog`. The class `MaterialDialogBuilder` has been removed. In order to create dialogs, the builder `MaterialDialog.Builder` has to be used now. The decision to rework the library has been made because of the problem discussed in https://github.com/michael-rapp/AndroidMaterialDialog/issues/4.  
 
 ## Version 2.0.0 (Oct. 19th 2015)
 
