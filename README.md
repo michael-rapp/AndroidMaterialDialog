@@ -1,12 +1,12 @@
 # AndroidMaterialDialog - README
 
-"AndroidMaterialDialog" is an Android-library, which provides a builder, which allows to create dialogs, which are designed according to Android 5.0's Material Design guidelines even on pre-Lollipop devices.
+"AndroidMaterialDialog" is an Android-library, which provides a builder, which allows to create dialogs, which are designed according to Android 5's Material Design guidelines even on pre-Lollipop devices.
 
 ![](doc/images/example.png)
 
 The library provides the following features:
 
-- The builder is extended from the Android SDK's built-in class `android.app.AlertDialog.Builder` and therefore provides all functionalities of its base class, including the possibilities to create dialogs with a title, icon, message, up to three buttons and optional list items.
+- The builder has been designed to be similar to the Android SDK's built-in class `android.app.AlertDialog.Builder` and therefore provides all of its functionalities, including the possibilities to create dialogs with a title, icon, message, up to three buttons and optional list items.
 - The library uses the AppCompat v7 support library in order to retrieve the color of a dialog's button texts from the applied theme. Alternatively, these colors can be set manually using the builder.
 - A dialog's title and content can be replaced by any custom view.
 - The builder supports to create dialogs, whose buttons are stacked, as introduced in the Material Design guidelines.
@@ -31,19 +31,20 @@ Before version 2.0.0 this project was hosted on [Sourceforge](https://sourceforg
 
 ## Examples
 
-The code below shows how to create and show an alert dialog by using the library's `MaterialDialogBuilder`. The dialog contains a title and message and can be closed by the user by either using a "OK" button or a "Cancel" button. The `this` parameter, which is passed to the builder's constructor in the example below, must be a `Context`, e.g. an `Activity`. The `null` parameters, which are passed to the `setPositiveButton`- and `setNegativeButton`-methods can be replaced by instances of the type `DialogInterface.OnClickListener` in order to execute some code when the user closes the dialog by clicking the corresponding button.
+The code below shows how to create and show an alert dialog by using the library's `MaterialDialog.Builder`. The dialog contains a title and message and can be closed by the user by either using a "OK" button or a "Cancel" button. The `this` parameter, which is passed to the builder's constructor in the example below, must be a `Context`, e.g. an `Activity`. The `null` parameters, which are passed to the `setPositiveButton`- and `setNegativeButton`-methods can be replaced by instances of the type `DialogInterface.OnClickListener` in order to execute some code when the user closes the dialog by clicking the corresponding button.
 
 ```
-MaterialDialogBuilder dialogBuilder = new MaterialDialogBuilder(this); 
+MaterialDialog.Builder dialogBuilder = new MaterialDialog.Builder(this); 
 dialogBuilder.setTitle(R.string.dialog_title); 
 dialogBuilder.setMessage(R.string.dialog_message); 
 dialogBuilder.setTitle(R.string.dialog_title); 
 dialogBuilder.setPositiveButton(android.R.string.ok, null); 
 dialogBuilder.setNegativeButton(android.R.string.cancel, null); 
-dialogBuilder.show();
+MaterialDialog dialog = dialogBuilder.create();
+dialog.show();
 ```
 
-As the methods of the class `MaterialDialogBuilder`, which is provided by this library, is nearly identical to the API of the Android SDK's class [`AlertDialog.Builder`](http://developer.android.com/reference/android/app/AlertDialog.Builder.html), the practices, which are described in [this](http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog) section of the Android developer guide, do also work together with this library.
+As the methods of the class `MaterialDialog.Builder`, which is provided by this library, are nearly identical to the API of the Android SDK's class [`AlertDialog.Builder`](http://developer.android.com/reference/android/app/AlertDialog.Builder.html), the practices, which are described in [this](http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog) section of the Android developer guide, do also work together with this library.
 
 ## Contact information
 
