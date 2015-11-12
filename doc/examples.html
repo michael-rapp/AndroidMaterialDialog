@@ -30,15 +30,16 @@
 
                 <p>The code below shows how to create and show a typical alert dialog, which may be used to ask the user for confirmation for a specific action. The dialog contains a title and a message and can be closed by the user by either using a "OK" button or a "Cancel" button. The <tt>this</tt> parameter, which is passed to the builder's constructor in the example below, must be a <tt>Context</tt>, e.g. an <tt>Activity</tt>. The <tt>null</tt> parameters, which are passed to the </tt>setPositiveButton</tt>- and <tt>setNegativeButton</tt>-methods can be replaced by instances of the type <a href="http://developer.android.com/reference/android/content/DialogInterface.OnClickListener.html" target="_blank" class="code">DialogInterface.OnClickListener</a> in order to execute some code when the user closes the dialog by clicking the corresponding button.</p>
 
-                <div class="code-block">MaterialDialogBuilder dialogBuilder = <strong><font color='#7f0055'>new</font></strong> MaterialDialogBuilder(<strong><font color='#7f0055'>this</font></strong>);
+                <div class="code-block">MaterialDialog.Builder dialogBuilder = <strong><font color='#7f0055'>new</font></strong> Material.DialogBuilder(<strong><font color='#7f0055'>this</font></strong>);
 <br/>dialogBuilder.setTitle(R.string.dialog_title);
 <br/>dialogBuilder.setMessage(R.string.dialog_message);
 <br/>dialogBuilder.setTitle(R.string.dialog_title);
 <br/>dialogBuilder.setPositiveButton(android.R.string.ok, <strong><font color='#7f0055'>null</font></strong>);
 <br/>dialogBuilder.setNegativeButton(android.R.string.cancel, <strong><font color='#7f0055'>null</font></strong>);
-<br/>dialogBuilder.show();</div>
+<br/>MaterialDialog dialog = dialogBuilder.create();
+<br/>dialog.show();</div>
 
-                <p>As the methods of the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialogBuilder.html" target="_blank" class="code">MaterialDialogBuilder</a>, which is provided by this library, is nearly identical to the API of the Android SDK's class <a href="http://developer.android.com/reference/android/app/AlertDialog.Builder.html" target="_blank" class="code">AlertDialog.Builder</a>, the practices, which are described in <a href="http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog" target="_blank" class="code">this</a> section of the Android developer guide, do also work together with this library.</p>             
+                <p>As the methods of the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a>, which is provided by this library, is nearly identical to the API of the Android SDK's class <a href="http://developer.android.com/reference/android/app/AlertDialog.Builder.html" target="_blank" class="code">AlertDialog.Builder</a>, the practices, which are described in <a href="http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog" target="_blank" class="code">this</a> section of the Android developer guide, do also work together with this library.</p>
 
                 <h4>External references:</h4>
 
