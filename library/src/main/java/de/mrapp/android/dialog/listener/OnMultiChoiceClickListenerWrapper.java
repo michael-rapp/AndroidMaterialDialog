@@ -14,7 +14,6 @@
  */
 package de.mrapp.android.dialog.listener;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +21,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+
+import de.mrapp.android.dialog.MaterialDialog;
 
 /**
  * A wrapper, which implements the interface {@link OnItemClickListener} in order to delegate the
@@ -48,14 +49,14 @@ public class OnMultiChoiceClickListenerWrapper extends AbstractListenerWrapper
      *         {@link OnMultiChoiceClickListener} or null, if no listener should be encapsulated
      * @param dialog
      *         The dialog, the listener should belong to, as an instance of the class {@link
-     *         AlertDialog}. The dialog may not be null
+     *         MaterialDialog}. The dialog may not be null
      * @param buttonType
      *         The type of the button or list item, the listener belongs to, as an {@link Integer}
      *         value
      */
 
     public OnMultiChoiceClickListenerWrapper(@Nullable final OnMultiChoiceClickListener listener,
-                                             @NonNull final AlertDialog dialog,
+                                             @NonNull final MaterialDialog dialog,
                                              final int buttonType) {
         super(dialog, buttonType);
         this.wrappedListener = listener;

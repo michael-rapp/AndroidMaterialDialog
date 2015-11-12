@@ -14,15 +14,13 @@
  */
 package de.mrapp.android.dialog.listener;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface.OnClickListener;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import java.util.Set;
-
-import de.mrapp.android.dialog.Validator;
+import de.mrapp.android.dialog.MaterialDialog;
+import de.mrapp.android.dialog.MaterialDialog.Validator;
 
 /**
  * A wrapper, which implements the interface {@link android.view.View.OnClickListener} in order to
@@ -40,9 +38,10 @@ public class OnClickListenerWrapper extends AbstractListenerWrapper
     private final OnClickListener wrappedListener;
 
     /**
-     * A set, which contains the validators, which should be executed when the listener is called.
+     * True, if the dialog, the listener belongs to, is validated when the listener is called, false
+     * otherwise.
      */
-    private final Set<Validator> validators;
+    private final boolean validate;
 
     /**
      * Creates a new wrapper, which implements the interface {@link android.view.View.OnClickListener}
@@ -52,23 +51,21 @@ public class OnClickListenerWrapper extends AbstractListenerWrapper
      * @param listener
      *         The listener, which should be encapsulated by the wrapper, as an instance of the type
      *         {@link OnClickListener} or null, if no listener should be encapsulated
-     * @param validators
-     *         A set, which contains the validators, which should be executed when the listener is
-     *         called, as an instance of the type {@link Set} or null, if no validators should be
-     *         executed
+     * @param validate
+     *         True, if the dialog, the listener belongs to, should be validated when the listener
+     *         is called, false otherwise
      * @param dialog
      *         The dialog, the listener should belong to, as an instance of the class {@link
-     *         AlertDialog}. The dialog may not be null
+     *         MaterialDialog}. The dialog may not be null
      * @param buttonType
      *         The type of the button or list item, the listener belongs to, as an {@link Integer}
      *         value
      */
-    public OnClickListenerWrapper(@Nullable final OnClickListener listener,
-                                  @Nullable final Set<Validator> validators,
-                                  @NonNull final AlertDialog dialog, final int buttonType) {
+    public OnClickListenerWrapper(@Nullable final OnClickListener listener, final boolean validate,
+                                  @NonNull final MaterialDialog dialog, final int buttonType) {
         super(dialog, buttonType);
         this.wrappedListener = listener;
-        this.validators = validators;
+        this.validate = validate;
     }
 
     @Override
@@ -77,8 +74,8 @@ public class OnClickListenerWrapper extends AbstractListenerWrapper
             wrappedListener.onClick(getDialog(), getButtonType());
         }
 
-        if (validators != null) {
-            for (Validator validator : validators) {
+        if (validate) {
+            for (Validator validator : getDialog().getValidators()) {
                 if (!validator.validate()) {
                     return;
                 }

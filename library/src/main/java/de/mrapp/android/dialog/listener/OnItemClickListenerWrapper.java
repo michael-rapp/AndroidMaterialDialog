@@ -22,6 +22,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import de.mrapp.android.dialog.MaterialDialog;
+
 /**
  * A wrapper, which implements the interface {@link OnItemClickListener} in order to delegate the
  * method calls to encapsulated listener of the type {@link OnClickListener}.
@@ -52,7 +54,7 @@ public class OnItemClickListenerWrapper extends AbstractListenerWrapper
      *         value
      */
     public OnItemClickListenerWrapper(@Nullable final OnClickListener listener,
-                                      @NonNull final AlertDialog dialog, final int buttonType) {
+                                      @NonNull final MaterialDialog dialog, final int buttonType) {
         super(dialog, buttonType);
         this.wrappedListener = listener;
     }

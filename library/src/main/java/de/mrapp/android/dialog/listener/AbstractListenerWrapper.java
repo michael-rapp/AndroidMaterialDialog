@@ -17,6 +17,8 @@ package de.mrapp.android.dialog.listener;
 import android.app.AlertDialog;
 import android.support.annotation.NonNull;
 
+import de.mrapp.android.dialog.MaterialDialog;
+
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
@@ -31,9 +33,9 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
 public abstract class AbstractListenerWrapper {
 
     /**
-     * The alert dialog, the listener belongs to.
+     * The dialog, the listener belongs to.
      */
-    private final AlertDialog dialog;
+    private final MaterialDialog dialog;
 
     /**
      * The type of the buttonType or list view, the listener belongs to.
@@ -63,9 +65,10 @@ public abstract class AbstractListenerWrapper {
     /**
      * Returns the dialog, the listener belongs to.
      *
-     * @return The dialog, the listener belongs to, as an instance of the class {@link AlertDialog}
+     * @return The dialog, the listener belongs to, as an instance of the class {@link
+     * MaterialDialog}
      */
-    protected final AlertDialog getDialog() {
+    protected final MaterialDialog getDialog() {
         return dialog;
     }
 
@@ -91,7 +94,7 @@ public abstract class AbstractListenerWrapper {
      *         The type of the button or list item, the listener belongs to, as an {@link Integer}
      *         value
      */
-    public AbstractListenerWrapper(@NonNull final AlertDialog dialog, final int buttonType) {
+    public AbstractListenerWrapper(@NonNull final MaterialDialog dialog, final int buttonType) {
         ensureNotNull(dialog, "The dialog may not be null");
         this.dialog = dialog;
         this.buttonType = buttonType;

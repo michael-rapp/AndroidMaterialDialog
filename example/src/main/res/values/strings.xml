@@ -82,6 +82,9 @@ not, see <http://www.gnu.org/licenses/>.
     <string name="single_choice_listener_text">Selected item at position %s</string>
     <string name="custom_dialog_content_text">This is a custom view, which has been added to the dialog.</string>
     <string name="custom_dialog_title_text">This is a custom title</string>
+    <string name="positive_button_toast">Clicked positive button</string>
+    <string name="neutral_button_toast">Clicked neutral button</string>
+    <string name="negative_button_toast">Clicked negative button</string>
 
     <string-array name="list_items">
         <item>Item 1</item>

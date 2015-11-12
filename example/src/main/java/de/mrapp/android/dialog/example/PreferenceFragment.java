@@ -14,8 +14,6 @@
  */
 package de.mrapp.android.dialog.example;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
@@ -28,10 +26,9 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
-import de.mrapp.android.dialog.MaterialDialogBuilder;
+import de.mrapp.android.dialog.MaterialDialog;
 
 /**
  * A preference fragment, which contains the example app's settings.
@@ -67,10 +64,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialogBuilder dialogBuilder = createDialogBuilder();
-                AlertDialog dialog = dialogBuilder.create();
-                dialog.show();
-                //dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                MaterialDialog.Builder dialogBuilder = createDialogBuilder();
+                dialogBuilder.setTitle(null);
+                dialogBuilder.show();
                 return true;
             }
 
@@ -97,7 +93,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialogBuilder dialogBuilder = createDialogBuilder();
+                MaterialDialog.Builder dialogBuilder = createDialogBuilder();
                 dialogBuilder.setItems(R.array.list_items, createSingleChoiceListener());
                 dialogBuilder.show();
                 return true;
@@ -127,7 +123,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialogBuilder dialogBuilder = createDialogBuilder();
+                MaterialDialog.Builder dialogBuilder = createDialogBuilder();
                 dialogBuilder
                         .setSingleChoiceItems(R.array.list_items, 0, createSingleChoiceListener());
                 dialogBuilder.show();
@@ -177,7 +173,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialogBuilder dialogBuilder = createDialogBuilder();
+                MaterialDialog.Builder dialogBuilder = createDialogBuilder();
                 dialogBuilder
                         .setMultiChoiceItems(R.array.list_items, new boolean[]{true, false, false},
                                 createMultiChoiceListener());
@@ -238,7 +234,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialogBuilder dialogBuilder = createDialogBuilder();
+                MaterialDialog.Builder dialogBuilder = createDialogBuilder();
                 dialogBuilder
                         .setView(View.inflate(getActivity(), R.layout.custom_dialog_content, null));
                 dialogBuilder.setCustomTitle(
@@ -271,11 +267,11 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
      * settings.
      *
      * @return The builder, which has been created, as an instance of the class {@link
-     * MaterialDialogBuilder}
+     * MaterialDialog.Builder}
      */
     @SuppressWarnings("deprecation")
-    private MaterialDialogBuilder createDialogBuilder() {
-        MaterialDialogBuilder dialogBuilder = new MaterialDialogBuilder(getActivity());
+    private MaterialDialog.Builder createDialogBuilder() {
+        MaterialDialog.Builder dialogBuilder = new MaterialDialog.Builder(getActivity());
 
         if (shouldTitleBeShown()) {
             dialogBuilder.setTitle(getDialogTitle());
@@ -286,19 +282,21 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         }
 
         if (shouldIconBeShown()) {
-            dialogBuilder.setIconAttribute(android.R.attr.alertDialogIcon);
+            dialogBuilder.setIcon(getResources().getDrawable(android.R.drawable.ic_dialog_alert));
         }
 
         if (shouldNegativeButtonBeShown()) {
-            dialogBuilder.setNegativeButton(getNegativeButtonText(), null);
+            dialogBuilder
+                    .setNegativeButton(getNegativeButtonText(), createNegativeButtonListener());
         }
 
         if (shouldNeutralButtonBeShown()) {
-            dialogBuilder.setNeutralButton(getNeutralButtonText(), null);
+            dialogBuilder.setNeutralButton(getNeutralButtonText(), createNeutralButtonListener());
         }
 
         if (shouldPositiveButtonBeShown()) {
-            dialogBuilder.setPositiveButton(getPositiveButtonText(), null);
+            dialogBuilder
+                    .setPositiveButton(getPositiveButtonText(), createPositiveButtonListener());
         }
 
         dialogBuilder.stackButtons(shouldStackButtons());
@@ -317,6 +315,63 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         }
 
         return dialogBuilder;
+    }
+
+    /**
+     * Creates and returns a listener, which allows to show a toast, when the negative button of a
+     * dialog has been clicked.
+     *
+     * @return The listener, which has been created, as an instance of the class {@link
+     * OnClickListener}
+     */
+    private OnClickListener createNegativeButtonListener() {
+        return new OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getActivity(), R.string.negative_button_toast, Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+        };
+    }
+
+    /**
+     * Creates and returns a listener, which allows to show a toast, when the neutral button of a
+     * dialog has been clicked.
+     *
+     * @return The listener, which has been created, as an instance of the class {@link
+     * OnClickListener}
+     */
+    private OnClickListener createNeutralButtonListener() {
+        return new OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getActivity(), R.string.neutral_button_toast, Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+        };
+    }
+
+    /**
+     * Creates and returns a listener, which allows to show a toast, when the positive button of a
+     * dialog has been clicked.
+     *
+     * @return The listener, which has been created, as an instance of the class {@link
+     * OnClickListener}
+     */
+    private OnClickListener createPositiveButtonListener() {
+        return new OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getActivity(), R.string.positive_button_toast, Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+        };
     }
 
     /**
