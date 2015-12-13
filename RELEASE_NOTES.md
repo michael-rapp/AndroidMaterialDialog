@@ -5,6 +5,7 @@
 A minor release, which introduces the following changes:
 
 - The dividers of a `MaterialDialog`'s list view are not visible anymore by default as this is more consistent with the Material design guidelines (http://www.google.com/design/spec/components/dialogs.html).
+- Version 1.2.2 of the library "AndroidUtil" is now used.
 
 ## Version 3.0.0 (Nov. 12th 2015)
 
