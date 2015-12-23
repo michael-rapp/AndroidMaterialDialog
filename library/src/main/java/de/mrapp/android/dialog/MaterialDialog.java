@@ -706,6 +706,16 @@ public class MaterialDialog extends Dialog implements DialogInterface {
         }
 
         /**
+         * Returns the context, which is used by the builder.
+         *
+         * @return The context, which is used by the builder, as an instance of the class {@link
+         * Context}
+         */
+        public final Context getContext() {
+            return context;
+        }
+
+        /**
          * Sets the color of the title of the dialog, which is created by the builder.
          *
          * @param color
