@@ -97,6 +97,12 @@ public class MaterialDialog extends Dialog implements DialogInterface {
         private final Set<Validator> validators;
 
         /**
+         * True, if the dialog, which is created by the builder, should be cancelable, false
+         * otherwise.
+         */
+        private boolean cancelable = true;
+
+        /**
          * The title of the dialog, which is created by the builder.
          */
         private CharSequence title;
@@ -713,6 +719,20 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          */
         public final Context getContext() {
             return context;
+        }
+
+        /**
+         * Sets, whether the dialog, which is created by the builder, should be cancelable, or not.
+         *
+         * @param cancelable
+         *         True, if the dialog, which is created by the builder, should be cancelable, false
+         *         otherwise
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setCancelable(final boolean cancelable) {
+            this.cancelable = cancelable;
+            return this;
         }
 
         /**
@@ -1369,6 +1389,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
             inflateButtonBar(root, dialog);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(root);
+            dialog.setCancelable(cancelable);
             return dialog;
         }
 
