@@ -1,6 +1,14 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
-## Version 3.0.1 (Dez. 13th 2015)
+## Version 3.0.2 (Dec. 23th 2015)
+
+A minor release, which introduces the following changes:
+
+- Added `getContext`-method to class `MaterialDialog.Builder`.
+- Added `setCancelable`-method to class `MaterialDialog.Builder`.
+- Added `setOnCancelListener`-, `setOnDismissListener`- and `setOnKeyListener`-methods to class `MaterialDialog.Builder`. 
+
+## Version 3.0.1 (Dec. 13th 2015)
 
 A minor release, which introduces the following changes:
 
