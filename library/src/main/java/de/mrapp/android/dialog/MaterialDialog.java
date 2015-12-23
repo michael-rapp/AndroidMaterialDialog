@@ -103,6 +103,24 @@ public class MaterialDialog extends Dialog implements DialogInterface {
         private boolean cancelable = true;
 
         /**
+         * The listener, which should be notified, when the dialog, which is created by the builder,
+         * is canceled.
+         */
+        private OnCancelListener cancelListener;
+
+        /**
+         * The listener, which should be notified, when the dialog, which is created by the builder,
+         * is dismissed.
+         */
+        private OnDismissListener dismissListener;
+
+        /**
+         * The listener, which should be notified, if a key is dispatched to the dialog, which is
+         * created by the builder.
+         */
+        private OnKeyListener keyListener;
+
+        /**
          * The title of the dialog, which is created by the builder.
          */
         private CharSequence title;
@@ -732,6 +750,59 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          */
         public final Builder setCancelable(final boolean cancelable) {
             this.cancelable = cancelable;
+            return this;
+        }
+
+        /**
+         * Sets the listener, which should be notified, when the dialog, which is created by the
+         * builder, is canceled.
+         *
+         * Even in a cancelable dialog, the dialog may be dismissed for reasons other than being
+         * canceled or one of the supplied choices being selected. If you are interested in
+         * listening for all cases where the dialog is dismissed and not just when it is canceled,
+         * see {@link #setOnDismissListener(android.content.DialogInterface.OnDismissListener)
+         * setOnDismissListener}.
+         *
+         * @param listener
+         *         The listener, which should be set, as an instance of the type {@link
+         *         OnCancelListener}, or null, if no listener should be set
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         * @see #setCancelable(boolean)
+         * @see #setOnDismissListener(android.content.DialogInterface.OnDismissListener)
+         */
+        public Builder setOnCancelListener(@Nullable final OnCancelListener listener) {
+            this.cancelListener = listener;
+            return this;
+        }
+
+        /**
+         * Sets the listener, which should be notified, when the dialog, which is created by the
+         * builder, is dismissed for any reason.
+         *
+         * @param listener
+         *         The listener, which should be set, as an instance of the type {@link
+         *         OnDismissListener}, or null, if no listener should be set
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setOnDismissListener(@Nullable final OnDismissListener listener) {
+            this.dismissListener = listener;
+            return this;
+        }
+
+        /**
+         * Sets the listener, which should be notified, if a key is dispatched to the dialog, which
+         * is created by the builder.
+         *
+         * @param listener
+         *         The listener, which should be set, as an instance of the type {@link
+         *         OnKeyListener}, or null, if no listener should be set
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setOnKeyListener(@Nullable final OnKeyListener listener) {
+            this.keyListener = listener;
             return this;
         }
 
@@ -1390,6 +1461,9 @@ public class MaterialDialog extends Dialog implements DialogInterface {
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(root);
             dialog.setCancelable(cancelable);
+            dialog.setOnCancelListener(cancelListener);
+            dialog.setOnDismissListener(dismissListener);
+            dialog.setOnKeyListener(keyListener);
             return dialog;
         }
 
