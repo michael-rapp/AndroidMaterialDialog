@@ -65,7 +65,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 MaterialDialog.Builder dialogBuilder = createDialogBuilder();
-                dialogBuilder.setTitle(null);
                 dialogBuilder.show();
                 return true;
             }
