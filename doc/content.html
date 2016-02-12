@@ -136,6 +136,46 @@
 
 		<p>If a dialog, which is created by the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a>, should use an individual theme instead of the App's default theme, the theme's resource ID can be passed to the builder's constructor.</p>
 
+        <p>Besides using the setter methods mentioned above, theme attributes can be used to change the appearance of dialogs. The following table shows all available attributes. They must either be defined in the app's global theme or in the theme, whose ID is pased to the builder's constructor, if any.</p>
+
+		<table>
+                    <tr>
+                        <th>Theme attribute</th>
+                        <th>Explaination</th>
+                        <th>Format</th>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogTitleColor</tt></td>
+                        <td>Specified the color of the dialogs' title.</td>
+                        <td><center><tt>color</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogMessageColor</tt></td>
+                        <td>Specifies the color of the dialogs' message.</td>
+                        <td><center><tt>color</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogItemColor</tt></td>
+                        <td>Specifies the color of the dialogs' list items.</td>
+                        <td><center><tt>color</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogItemControlColor</tt></td>
+                        <td>Specifies the color of the dialogs' item controls (e.g. checkboxes).</td>
+                        <td><center><tt>color</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogButtonTextColor</tt></td>
+                        <td>Specifies the text color of the dialogs' buttons.</td>
+                        <td><center><tt>color</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogBackground</tt></td>
+                        <td>Specifies the dialogs' background.</td>
+                        <td><center><tt>color|reference</tt></center></td>
+                    </tr>
+		</table>
+
                 <h4><a name="show-list-items">5 Use the dialog to show list items</a></h4>
 
                 <p>A dialog, which is created by the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> can also be used to show list items. Three different choice modes are available. Each one of them will be discussed in one of the following subsections.</p>
