@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.1.0 (Feb. 13th 2016)
+
+A feature release, which provides the following changes:
+
+- It is now possible to use theme attributes in order to specify the appearance of dialogs (see documentation for further details).
+
 ## Version 3.0.2 (Dec. 23th 2015)
 
 A minor release, which introduces the following changes:
