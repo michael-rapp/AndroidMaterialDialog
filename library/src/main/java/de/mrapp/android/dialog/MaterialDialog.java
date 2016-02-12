@@ -1555,7 +1555,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      *         The context, which should be used by the dialog, as an instance of the class {@link
      *         Context}. The context may not be null
      */
-    public MaterialDialog(@NonNull final Context context) {
+    protected MaterialDialog(@NonNull final Context context) {
         super(context);
         this.validators = new LinkedHashSet<>();
     }
