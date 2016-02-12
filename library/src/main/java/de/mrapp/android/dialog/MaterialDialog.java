@@ -259,6 +259,127 @@ public class MaterialDialog extends Dialog implements DialogInterface {
         private View customTitleView;
 
         /**
+         * Obtains all relevant attributes from the current theme.
+         */
+        private void obtainStyledAttributes() {
+            int themeId = themeResourceId != -1 ? themeResourceId : 0;
+            obtainBackground(themeId);
+            obtainButtonTextColor(themeId);
+            obtainItemColor(themeId);
+            obtainItemControlColor(themeId);
+            obtainMessageColor(themeId);
+            obtainTitleColor(themeId);
+        }
+
+        /**
+         * Obtains the background from a specific theme.
+         *
+         * @param themeId
+         *         The id of the theme, the background should be obtained from, as an {@link
+         *         Integer} value
+         */
+        private void obtainBackground(@StyleRes final int themeId) {
+            TypedArray typedArray = getContext().getTheme()
+                    .obtainStyledAttributes(themeId, new int[]{R.attr.materialDialogBackground});
+            int color = typedArray.getColor(0, -1);
+
+            if (color != -1) {
+                setBackgroundColor(color);
+            } else {
+                int resourceId = typedArray.getResourceId(0, 0);
+
+                if (resourceId != 0) {
+                    setBackground(resourceId);
+                }
+            }
+        }
+
+        /**
+         * Obtains the button text color from a specific theme.
+         *
+         * @param themeId
+         *         The id of the theme, the button text color should be obtained from, as an {@link
+         *         Integer} value
+         */
+        private void obtainButtonTextColor(@StyleRes final int themeId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeId,
+                    new int[]{R.attr.materialDialogButtonTextColor});
+            int color = typedArray.getColor(0, -1);
+
+            if (color != -1) {
+                setButtonTextColor(color);
+            }
+        }
+
+        /**
+         * Obtains the item color from a specific theme.
+         *
+         * @param themeId
+         *         The id of the theme, the item color should be obtained from, as an {@link
+         *         Integer} value
+         */
+        private void obtainItemColor(@StyleRes final int themeId) {
+            TypedArray typedArray = getContext().getTheme()
+                    .obtainStyledAttributes(themeId, new int[]{R.attr.materialDialogItemColor});
+            int color = typedArray.getColor(0, -1);
+
+            if (color != -1) {
+                setItemColor(color);
+            }
+        }
+
+        /**
+         * Obtains the item control color from a specific theme.
+         *
+         * @param themeId
+         *         The id of the theme, the item control color should be obtained from, as an {@link
+         *         Integer} value
+         */
+        private void obtainItemControlColor(@StyleRes final int themeId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeId,
+                    new int[]{R.attr.materialDialogItemControlColor});
+            int color = typedArray.getColor(0, -1);
+
+            if (color != -1) {
+                setItemControlColor(color);
+            }
+        }
+
+        /**
+         * Obtains the message color from a specific theme.
+         *
+         * @param themeId
+         *         The id of the theme, the message color should be obtained from, as an {@link
+         *         Integer} value
+         */
+        private void obtainMessageColor(@StyleRes final int themeId) {
+            TypedArray typedArray = getContext().getTheme()
+                    .obtainStyledAttributes(themeId, new int[]{R.attr.materialDialogMessageColor});
+            int color = typedArray.getColor(0, -1);
+
+            if (color != -1) {
+                setMessageColor(color);
+            }
+        }
+
+        /**
+         * Obtains the title color from a specific theme.
+         *
+         * @param themeId
+         *         The id of the theme, the title color should be obtained from, as an {@link
+         *         Integer} value
+         */
+        private void obtainTitleColor(@StyleRes final int themeId) {
+            TypedArray typedArray = getContext().getTheme()
+                    .obtainStyledAttributes(themeId, new int[]{R.attr.materialDialogTitleColor});
+            int color = typedArray.getColor(0, -1);
+
+            if (color != -1) {
+                setTitleColor(color);
+            }
+        }
+
+        /**
          * Inflates the dialog's layout.
          *
          * @return The root view of the layout, which has been inflated, as an instance of the class
@@ -710,6 +831,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
             this.context = context;
             this.themeResourceId = -1;
             this.validators = new LinkedHashSet<>();
+            obtainStyledAttributes();
         }
 
         /**
@@ -727,6 +849,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
             this.context = context;
             this.themeResourceId = themeResourceId;
             this.validators = new LinkedHashSet<>();
+            obtainStyledAttributes();
         }
 
         /**
