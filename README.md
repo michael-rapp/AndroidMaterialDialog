@@ -21,7 +21,7 @@ The latest release of this library can be downloaded as a zip archive from the d
 
 Alternatively, the library can be added to your Android app as a Gradle dependency by adding the following to the respective module's `build.gradle` file:
 
-```
+```groovy
 dependencies {
     compile 'com.github.michael-rapp:android-material-dialog:3.1.1'
 }
@@ -33,7 +33,7 @@ Before version 2.0.0 this project was hosted on [Sourceforge](https://sourceforg
 
 The code below shows how to create and show an alert dialog by using the library's `MaterialDialog.Builder`. The dialog contains a title and message and can be closed by the user by either using a "OK" button or a "Cancel" button. The `this` parameter, which is passed to the builder's constructor in the example below, must be a `Context`, e.g. an `Activity`. The `null` parameters, which are passed to the `setPositiveButton`- and `setNegativeButton`-methods can be replaced by instances of the type `DialogInterface.OnClickListener` in order to execute some code when the user closes the dialog by clicking the corresponding button.
 
-```
+```java
 MaterialDialog.Builder dialogBuilder = new MaterialDialog.Builder(this); 
 dialogBuilder.setTitle(R.string.dialog_title); 
 dialogBuilder.setMessage(R.string.dialog_message); 
