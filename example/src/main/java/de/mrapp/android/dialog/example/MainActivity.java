@@ -18,7 +18,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 /**
  * The main activity of the example app.
@@ -26,14 +25,6 @@ import android.support.v7.widget.Toolbar;
  * @author Michael Rapp
  */
 public class MainActivity extends AppCompatActivity {
-
-    /**
-     * Initializes the activity's toolbar.
-     */
-    private void initializeToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-    }
 
     /**
      * Shows the preference fragment, which contains the activity's content.
@@ -49,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initializeToolbar();
         showPreferenceFragment();
     }
 

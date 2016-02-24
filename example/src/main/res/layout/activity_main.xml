@@ -14,24 +14,8 @@ General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License along with this program. If
 not, see <http://www.gnu.org/licenses/>.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/ToolbarPopupTheme"
-        app:theme="@style/ToolbarTheme"/>
-
-    <RelativeLayout
-        android:id="@+id/fragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-</LinearLayout>
+<RelativeLayout
+    android:id="@+id/fragment"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
