@@ -1,5 +1,14 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.1.1 (Feb. 24th 2016)
+
+A minor release, which introduces the following changes:
+
+- The library is from now on distributed under the Apache License version 2.0. 
+- Updated dependency "AndroidUtil" to version 1.4.3.
+- Updated AppCompat support library to version 23.1.1.
+- Minor changes of the example app.
+
 ## Version 3.1.0 (Feb. 13th 2016)
 
 A feature release, which provides the following changes:
