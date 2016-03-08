@@ -15,6 +15,7 @@ License.
 -->
 <resources>
 
+    <item name="dialog_min_width" type="dimen">300dp</item>
     <item name="dialog_content_padding_top" type="dimen">24dp</item>
     <item name="dialog_content_padding_left" type="dimen">24dp</item>
     <item name="dialog_content_padding_right" type="dimen">24dp</item>

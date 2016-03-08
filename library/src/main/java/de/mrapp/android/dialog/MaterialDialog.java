@@ -36,6 +36,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -52,8 +53,12 @@ import de.mrapp.android.dialog.adapter.ArrayAdapter;
 import de.mrapp.android.dialog.listener.OnClickListenerWrapper;
 import de.mrapp.android.dialog.listener.OnItemClickListenerWrapper;
 import de.mrapp.android.dialog.listener.OnMultiChoiceClickListenerWrapper;
+import de.mrapp.android.util.DisplayUtil;
+import de.mrapp.android.util.DisplayUtil.Orientation;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.DisplayUtil.getDeviceType;
+import static de.mrapp.android.util.DisplayUtil.getOrientation;
 
 /**
  * A dialog, which is designed according to Android 5's Material Design guidelines even on
@@ -1670,6 +1675,23 @@ public class MaterialDialog extends Dialog implements DialogInterface {
     private ViewGroup contentContainer;
 
     /**
+     * Creates and returns the layout params, which should be used by the dialog.
+     *
+     * @return The layout params, which should be used by the dialog, as an instance of the class
+     * {@link WindowManager.LayoutParams}
+     */
+    private WindowManager.LayoutParams createLayoutParameters() {
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+
+        if (getDeviceType(getContext()) == DisplayUtil.DeviceType.PHONE &&
+                getOrientation(getContext()) == Orientation.PORTRAIT) {
+            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+        }
+
+        return layoutParams;
+    }
+
+    /**
      * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
      * on pre-Lollipop devices.
      *
@@ -2331,6 +2353,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setAttributes(createLayoutParameters());
         rootView = (ViewGroup) findViewById(R.id.root);
         positiveButton = (Button) findViewById(android.R.id.button1);
         negativeButton = (Button) findViewById(android.R.id.button2);
