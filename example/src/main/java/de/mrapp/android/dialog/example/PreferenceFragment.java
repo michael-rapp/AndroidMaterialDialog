@@ -24,7 +24,6 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.widget.Toast;
 
 import de.mrapp.android.dialog.MaterialDialog;
@@ -233,10 +232,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 MaterialDialog.Builder dialogBuilder = createDialogBuilder();
-                dialogBuilder
-                        .setView(View.inflate(getActivity(), R.layout.custom_dialog_content, null));
-                dialogBuilder.setCustomTitle(
-                        View.inflate(getActivity(), R.layout.custom_dialog_title, null));
+                dialogBuilder.setView(R.layout.custom_dialog_content);
+                dialogBuilder.setCustomTitle(R.layout.custom_dialog_title);
                 dialogBuilder.show();
                 return true;
             }
