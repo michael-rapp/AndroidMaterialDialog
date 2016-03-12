@@ -13,7 +13,6 @@
  */
 package de.mrapp.android.dialog.adapter;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.ColorFilter;
@@ -202,6 +201,7 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
      */
     public final void setItemColor(@ColorInt final int color) {
         this.itemColor = color;
+        notifyDataSetChanged();
     }
 
     /**
@@ -224,9 +224,9 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public final void setItemControlColor(@ColorInt final int color) {
         this.itemControlColor = color;
+        notifyDataSetChanged();
     }
 
-    @SuppressLint("NewApi")
     @Override
     public final View getView(final int position, final View convertView, final ViewGroup parent) {
         View view = super.getView(position, convertView, parent);

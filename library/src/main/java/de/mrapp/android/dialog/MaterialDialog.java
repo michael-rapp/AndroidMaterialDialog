@@ -14,7 +14,6 @@
 package de.mrapp.android.dialog;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,6 +22,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.ArrayRes;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -31,8 +31,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -53,7 +55,7 @@ import de.mrapp.android.dialog.adapter.ArrayAdapter;
 import de.mrapp.android.dialog.listener.OnClickListenerWrapper;
 import de.mrapp.android.dialog.listener.OnItemClickListenerWrapper;
 import de.mrapp.android.dialog.listener.OnMultiChoiceClickListenerWrapper;
-import de.mrapp.android.util.DisplayUtil;
+import de.mrapp.android.util.DisplayUtil.DeviceType;
 import de.mrapp.android.util.DisplayUtil.Orientation;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
@@ -85,206 +87,61 @@ public class MaterialDialog extends Dialog implements DialogInterface {
     public static class Builder {
 
         /**
-         * The context, which is used by the builder.
+         * The dialog, which is created by the builder.
          */
-        private final Context context;
+        private MaterialDialog dialog;
 
         /**
-         * The resource id of the theme, which should be used by the dialog, which is created by the
-         * builder.
+         * Initializes the builder.
+         *
+         * @param context
+         *         The context, which should be used by the builder, as an instance of the class
+         *         {@link Context}. The context may not be null
+         * @param themeResourceId
+         *         The resource id of the theme, which should be used by the dialog, as an {@link
+         *         Integer} value, or -1, if the default theme should be used
          */
-        private final int themeResourceId;
+        private void initialize(@NonNull final Context context,
+                                @StyleRes final int themeResourceId) {
+            int themeId = themeResourceId;
 
-        /**
-         * A set, which contains the validators of the dialog, which is created by the builder.
-         */
-        private final Set<Validator> validators;
+            if (themeResourceId == -1) {
+                TypedValue typedValue = new TypedValue();
+                context.getTheme().resolveAttribute(R.attr.alertDialogTheme, typedValue, true);
+                themeId = typedValue.resourceId;
+            }
 
-        /**
-         * True, if the dialog, which is created by the builder, should be cancelable, false
-         * otherwise.
-         */
-        private boolean cancelable = true;
-
-        /**
-         * The listener, which should be notified, when the dialog, which is created by the builder,
-         * is canceled.
-         */
-        private OnCancelListener cancelListener;
-
-        /**
-         * The listener, which should be notified, when the dialog, which is created by the builder,
-         * is dismissed.
-         */
-        private OnDismissListener dismissListener;
-
-        /**
-         * The listener, which should be notified, if a key is dispatched to the dialog, which is
-         * created by the builder.
-         */
-        private OnKeyListener keyListener;
-
-        /**
-         * The title of the dialog, which is created by the builder.
-         */
-        private CharSequence title;
-
-        /**
-         * The message of the dialog, which is created by the builder.
-         */
-        private CharSequence message;
-
-        /**
-         * The icon of the dialog, which is created by the builder.
-         */
-        private Drawable icon;
-
-        /**
-         * The color of the title of the dialog, which is created by the builder.
-         */
-        private int titleColor = -1;
-
-        /**
-         * The color of the message of the dialog, which is created by the builder.
-         */
-        private int messageColor = -1;
-
-        /**
-         * The color of the list items of the dialog, which is created by the builder.
-         */
-        private int itemColor = -1;
-
-        /**
-         * The control color of the list items of the dialog, which is created by the builder.
-         */
-        private int itemControlColor = -1;
-
-        /**
-         * The background of the dialog, which is created by the builder.
-         */
-        private Drawable background;
-
-        /**
-         * The color of the button texts of the dialog, which is created by the builder.
-         */
-        private int buttonTextColor = -1;
-
-        /**
-         * True, if the buttons of the dialog, which is created by the builder, should be aligned
-         * vertically, false otherwise.
-         */
-        private boolean stackButtons;
-
-        /**
-         * The text of the negative button of the dialog, which is created by the builder.
-         */
-        private CharSequence negativeButtonText;
-
-        /**
-         * The text of the neutral button of the dialog, which is created by the builder.
-         */
-        private CharSequence neutralButtonText;
-
-        /**
-         * The text of the positive button of the dialog, which is created by the builder.
-         */
-        private CharSequence positiveButtonText;
-
-        /**
-         * The listener, which is notified, when the negative button of the dialog, which is created
-         * by the builder, is clicked.
-         */
-        private OnClickListener negativeButtonListener;
-
-        /**
-         * The listener, which is notified, when the neutral button of the dialog, which is created
-         * by the builder, is clicked.
-         */
-        private OnClickListener neutralButtonListener;
-
-        /**
-         * The listener, which is notified, when the positive button of the dialog, which is created
-         * by the builder, is clicked.
-         */
-        private OnClickListener positiveButtonListener;
-
-        /**
-         * The adapter, which is used to manage the list items of the dialog, which is created by
-         * the builder.
-         */
-        private ListAdapter listAdapter;
-
-        /**
-         * The choice mode of the list view, which is used to show the list items of the dialog,
-         * which is created by the builder.
-         */
-        private int listViewChoiceMode;
-
-        /**
-         * The listener, which is notified, when the selection of a list item of the dialog, which
-         * is created by the builder, changes and the list view's choice mode is
-         * <code>ListView.CHOICE_MODE_SINGLE</code>.
-         */
-        private OnClickListener listViewSingleChoiceListener;
-
-        /**
-         * The listener, which is notified, when the selection of a list item of the dialog, which
-         * is created by the builder, changes and the list view's choice mode is
-         * <code>ListView.CHOICE_MODE_MULTIPLE</code>.
-         */
-        private OnMultiChoiceClickListener listViewMultiChoiceListener;
-
-        /**
-         * The listener, which is notified, when a list item of the dialog, which is created by the
-         * builder, becomes selected, independently of the list view's choice mode.
-         */
-        private OnItemSelectedListener listViewItemSelectedListener;
-
-        /**
-         * An array, which is used to identify the list items of the dialog, which is created by the
-         * builder, which are by selected by default.
-         */
-        private boolean[] checkedListItems;
-
-        /**
-         * The custom content view of the dialog, which is created by the builder.
-         */
-        private View customView;
-
-        /**
-         * The resource id of the custom content view of the dialog, which is created by the
-         * builder.
-         */
-        private int customViewId = -1;
-
-        /**
-         * The custom title view of the dialog, which is created by the builder.
-         */
-        private View customTitleView;
+            dialog = new MaterialDialog(context, themeId);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            obtainStyledAttributes(themeId);
+        }
 
         /**
          * Obtains all relevant attributes from the current theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, which should be used by the dialog, as an {@link
+         *         Integer} value. The resource id must correspond to a valid style resource
          */
-        private void obtainStyledAttributes() {
-            int themeId = themeResourceId != -1 ? themeResourceId : 0;
-            obtainBackground(themeId);
-            obtainButtonTextColor(themeId);
-            obtainItemColor(themeId);
-            obtainItemControlColor(themeId);
-            obtainMessageColor(themeId);
-            obtainTitleColor(themeId);
+        private void obtainStyledAttributes(@StyleRes final int themeResourceId) {
+            obtainBackground(themeResourceId);
+            obtainButtonTextColor(themeResourceId);
+            obtainItemColor(themeResourceId);
+            obtainItemControlColor(themeResourceId);
+            obtainMessageColor(themeResourceId);
+            obtainTitleColor(themeResourceId);
         }
 
         /**
          * Obtains the background from a specific theme.
          *
-         * @param themeId
-         *         The id of the theme, the background should be obtained from, as an {@link
-         *         Integer} value
+         * @param themeResourceId
+         *         The resource id of the theme, the background should be obtained from, as an
+         *         {@link Integer} value
          */
-        private void obtainBackground(@StyleRes final int themeId) {
-            TypedArray typedArray = getContext().getTheme()
-                    .obtainStyledAttributes(themeId, new int[]{R.attr.materialDialogBackground});
+        private void obtainBackground(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogBackground});
             int color = typedArray.getColor(0, -1);
 
             if (color != -1) {
@@ -301,12 +158,12 @@ public class MaterialDialog extends Dialog implements DialogInterface {
         /**
          * Obtains the button text color from a specific theme.
          *
-         * @param themeId
-         *         The id of the theme, the button text color should be obtained from, as an {@link
-         *         Integer} value
+         * @param themeResourceId
+         *         The resource id of the theme, the button text color should be obtained from, as
+         *         an {@link Integer} value
          */
-        private void obtainButtonTextColor(@StyleRes final int themeId) {
-            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeId,
+        private void obtainButtonTextColor(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                     new int[]{R.attr.materialDialogButtonTextColor});
             int color = typedArray.getColor(0, -1);
 
@@ -318,13 +175,13 @@ public class MaterialDialog extends Dialog implements DialogInterface {
         /**
          * Obtains the item color from a specific theme.
          *
-         * @param themeId
-         *         The id of the theme, the item color should be obtained from, as an {@link
-         *         Integer} value
+         * @param themeResourceId
+         *         The resource id of the theme, the item color should be obtained from, as an
+         *         {@link Integer} value
          */
-        private void obtainItemColor(@StyleRes final int themeId) {
-            TypedArray typedArray = getContext().getTheme()
-                    .obtainStyledAttributes(themeId, new int[]{R.attr.materialDialogItemColor});
+        private void obtainItemColor(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogItemColor});
             int color = typedArray.getColor(0, -1);
 
             if (color != -1) {
@@ -335,12 +192,12 @@ public class MaterialDialog extends Dialog implements DialogInterface {
         /**
          * Obtains the item control color from a specific theme.
          *
-         * @param themeId
-         *         The id of the theme, the item control color should be obtained from, as an {@link
-         *         Integer} value
+         * @param themeResourceId
+         *         The resource id of the theme, the item control color should be obtained from, as
+         *         an {@link Integer} value
          */
-        private void obtainItemControlColor(@StyleRes final int themeId) {
-            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeId,
+        private void obtainItemControlColor(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                     new int[]{R.attr.materialDialogItemControlColor});
             int color = typedArray.getColor(0, -1);
 
@@ -352,13 +209,13 @@ public class MaterialDialog extends Dialog implements DialogInterface {
         /**
          * Obtains the message color from a specific theme.
          *
-         * @param themeId
-         *         The id of the theme, the message color should be obtained from, as an {@link
-         *         Integer} value
+         * @param themeResourceId
+         *         The resource id of the theme, the message color should be obtained from, as an
+         *         {@link Integer} value
          */
-        private void obtainMessageColor(@StyleRes final int themeId) {
-            TypedArray typedArray = getContext().getTheme()
-                    .obtainStyledAttributes(themeId, new int[]{R.attr.materialDialogMessageColor});
+        private void obtainMessageColor(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogMessageColor});
             int color = typedArray.getColor(0, -1);
 
             if (color != -1) {
@@ -369,458 +226,18 @@ public class MaterialDialog extends Dialog implements DialogInterface {
         /**
          * Obtains the title color from a specific theme.
          *
-         * @param themeId
-         *         The id of the theme, the title color should be obtained from, as an {@link
-         *         Integer} value
+         * @param themeResourceId
+         *         The resource id of the theme, the title color should be obtained from, as an
+         *         {@link Integer} value
          */
-        private void obtainTitleColor(@StyleRes final int themeId) {
-            TypedArray typedArray = getContext().getTheme()
-                    .obtainStyledAttributes(themeId, new int[]{R.attr.materialDialogTitleColor});
+        private void obtainTitleColor(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogTitleColor});
             int color = typedArray.getColor(0, -1);
 
             if (color != -1) {
                 setTitleColor(color);
             }
-        }
-
-        /**
-         * Inflates the dialog's layout.
-         *
-         * @return The root view of the layout, which has been inflated, as an instance of the class
-         * {@link View}
-         */
-        @SuppressWarnings("deprecation")
-        private View inflateLayout() {
-            View root = View.inflate(context, R.layout.material_dialog, null);
-
-            if (background != null) {
-                root.setBackgroundDrawable(background);
-            }
-
-            return root;
-        }
-
-        /**
-         * Inflates the dialog's title view, which may either be the default view or a custom view,
-         * if one has been set before.
-         *
-         * @param root
-         *         The root view of the dialog's layout as an instance of the class {@link View}
-         * @return The parent view of the title view, which has been inflated, as an instance of the
-         * class {@link ViewGroup}
-         */
-        private ViewGroup inflateTitleView(@NonNull final View root) {
-            ViewGroup titleContainer = (ViewGroup) root.findViewById(R.id.title_container);
-
-            if (customTitleView != null) {
-                titleContainer.setVisibility(View.VISIBLE);
-                titleContainer.addView(customTitleView, ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
-            } else {
-                View.inflate(context, R.layout.material_dialog_title, titleContainer);
-            }
-
-            initializeTitle(titleContainer);
-            return titleContainer;
-        }
-
-        /**
-         * Initializes the dialog's title and icon.
-         *
-         * @param titleContainer
-         *         The parent view of the title view as an instance of the class {@link ViewGroup}
-         */
-        private void initializeTitle(@NonNull final ViewGroup titleContainer) {
-            View titleView = titleContainer.findViewById(android.R.id.title);
-
-            if (titleView != null && titleView instanceof TextView) {
-                TextView titleTextView = (TextView) titleView;
-
-                if (titleColor != -1) {
-                    titleTextView.setTextColor(titleColor);
-                }
-
-                if (!TextUtils.isEmpty(title) || icon != null) {
-                    titleContainer.setVisibility(View.VISIBLE);
-                    titleTextView.setText(title);
-
-                    if (icon != null) {
-                        titleTextView
-                                .setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-                    }
-
-                }
-            }
-        }
-
-        /**
-         * Initializes the dialog's message.
-         *
-         * @param root
-         *         The root view of the dialog's layout as an instance of the class {@link View}
-         * @param titleContainer
-         *         The parent view of the title view as an instance of the class {@link ViewGroup}
-         * @return The text view, which is used to show the dialog's message, as an instance of the
-         * class {@link TextView}
-         */
-        private TextView initializeMessage(@NonNull final View root,
-                                           @NonNull final ViewGroup titleContainer) {
-            TextView messageTextView = (TextView) root.findViewById(android.R.id.message);
-
-            if (!TextUtils.isEmpty(message)) {
-                showMessageTextView(titleContainer, messageTextView);
-                messageTextView.setText(message);
-
-                if (messageColor != -1) {
-                    messageTextView.setTextColor(messageColor);
-                }
-            }
-
-            return messageTextView;
-        }
-
-        /**
-         * Shows the text view, which is used to show the dialog's message.
-         *
-         * @param titleContainer
-         *         The parent view of the title view as an instance of the class {@link ViewGroup}
-         * @param messageTextView
-         *         The text view, which is used to show the dialog's message, as an instance of the
-         *         class {@link TextView}
-         */
-        private void showMessageTextView(@NonNull final ViewGroup titleContainer,
-                                         @NonNull final TextView messageTextView) {
-            messageTextView.setVisibility(View.VISIBLE);
-            LinearLayout.LayoutParams layoutParams =
-                    (LinearLayout.LayoutParams) titleContainer.getLayoutParams();
-            layoutParams.bottomMargin =
-                    context.getResources().getDimensionPixelSize(R.dimen.dialog_content_spacing);
-            titleContainer.setLayoutParams(layoutParams);
-        }
-
-        /**
-         * Inflates the dialog's content view, which may either be the default view or a custom
-         * view, if one has been set before.
-         *
-         * @param root
-         *         The root view of the dialog's layout as an instance of the class {@link View}
-         * @param titleContainer
-         *         The parent view of the title view as an instance of the class {@link ViewGroup}
-         * @param messageTextView
-         *         The text view, which is used to show the dialog's message, as an instance of the
-         *         class {@link TextView}
-         * @param dialog
-         *         The dialog, whose content view should be inflated, as an instance of the class
-         *         {@link MaterialDialog}
-         */
-        private void inflateContentView(@NonNull final View root,
-                                        @NonNull final ViewGroup titleContainer,
-                                        @NonNull final TextView messageTextView,
-                                        @NonNull final MaterialDialog dialog) {
-            ViewGroup contentContainer = (ViewGroup) root.findViewById(R.id.content_container);
-
-            if (customView != null) {
-                showContentContainer(contentContainer, titleContainer, messageTextView);
-                contentContainer.addView(customView, ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
-            } else if (customViewId != -1) {
-                showContentContainer(contentContainer, titleContainer, messageTextView);
-                View.inflate(context, customViewId, contentContainer);
-            } else {
-                View.inflate(context, R.layout.material_dialog_list_view, contentContainer);
-            }
-
-            initializeContent(contentContainer, titleContainer, messageTextView, dialog);
-        }
-
-        /**
-         * Shows the parent view of the dialog's content view.
-         *
-         * @param contentContainer
-         *         The parent view of the the content view as an instance of the clas {@link
-         *         ViewGroup}
-         * @param titleContainer
-         *         The parent view of the title view as an instance of the class {@link ViewGroup}
-         * @param messageTextView
-         *         The text view, which is used to show the dialog's message, as an instance of the
-         *         class {@link TextView}
-         */
-        private void showContentContainer(@NonNull final ViewGroup contentContainer,
-                                          @NonNull final ViewGroup titleContainer,
-                                          @NonNull final TextView messageTextView) {
-            contentContainer.setVisibility(View.VISIBLE);
-            int contentSpacing =
-                    context.getResources().getDimensionPixelSize(R.dimen.dialog_content_spacing);
-            LinearLayout.LayoutParams titleLayoutParams =
-                    (LinearLayout.LayoutParams) titleContainer.getLayoutParams();
-            titleLayoutParams.bottomMargin = contentSpacing;
-            titleContainer.setLayoutParams(titleLayoutParams);
-            LinearLayout.LayoutParams messageLayoutParams =
-                    (LinearLayout.LayoutParams) messageTextView.getLayoutParams();
-            messageLayoutParams.bottomMargin = contentSpacing;
-            messageTextView.setLayoutParams(messageLayoutParams);
-        }
-
-        /**
-         * Initializes the dialog's content. The content view is shown if a custom content view has
-         * been specified or if any list items have been set.
-         *
-         * @param contentContainer
-         *         The parent view of the the content view as an instance of the clas {@link
-         *         ViewGroup}
-         * @param titleContainer
-         *         The parent view of the title view as an instance of the class {@link ViewGroup}
-         * @param messageTextView
-         *         The text view, which is used to show the dialog's message, as an instance of the
-         *         class {@link TextView}
-         * @param dialog
-         *         The dialog, whose content should be initialized, as an instance of the class
-         *         {@link MaterialDialog}
-         */
-        private void initializeContent(@NonNull final ViewGroup contentContainer,
-                                       @NonNull final ViewGroup titleContainer,
-                                       @NonNull final TextView messageTextView,
-                                       @NonNull final MaterialDialog dialog) {
-            ListView listView = (ListView) contentContainer.findViewById(android.R.id.list);
-
-            if (listAdapter != null && !listAdapter.isEmpty() && listView != null) {
-                if (listAdapter instanceof ArrayAdapter<?>) {
-                    if (itemColor != -1) {
-                        ((ArrayAdapter<?>) listAdapter).setItemColor(itemColor);
-                    }
-
-                    if (itemControlColor != -1) {
-                        ((ArrayAdapter<?>) listAdapter).setItemControlColor(itemControlColor);
-                    }
-                }
-
-                showContentContainer(contentContainer, titleContainer, messageTextView);
-                listView.setVisibility(View.VISIBLE);
-                listView.setChoiceMode(listViewChoiceMode);
-                listView.setAdapter(listAdapter);
-                initializeListViewListener(dialog, listView);
-                initializeListViewCheckedItems(listView);
-            }
-        }
-
-        /**
-         * Initializes the list items, which are selected by default.
-         *
-         * @param listView
-         *         The list view, which is used to show the list items, as an instance of the class
-         *         {@link ListView}
-         */
-        private void initializeListViewCheckedItems(@NonNull final ListView listView) {
-            if (checkedListItems != null) {
-                for (int i = 0; i < checkedListItems.length; i++) {
-                    listView.setItemChecked(i, checkedListItems[i]);
-
-                    if (checkedListItems[i]) {
-                        listView.setSelection(i);
-                    }
-                }
-            }
-        }
-
-        /**
-         * Initializes the listener, which should be notified, when the selection of a list item of
-         * the dialog has been changed.
-         *
-         * @param dialog
-         *         The dialog, the list items belong to, as an instance of the class {@link
-         *         MaterialDialog}
-         * @param listView
-         *         The list view, which is used to show the list items, as an instance of the class
-         *         {@link ListView}
-         */
-        private void initializeListViewListener(@NonNull final MaterialDialog dialog,
-                                                @NonNull final ListView listView) {
-            if (listViewChoiceMode == ListView.CHOICE_MODE_NONE) {
-                listView.setOnItemClickListener(
-                        new OnItemClickListenerWrapper(listViewSingleChoiceListener, dialog,
-                                DialogInterface.BUTTON_POSITIVE));
-            } else if (listViewChoiceMode == ListView.CHOICE_MODE_SINGLE) {
-                listView.setOnItemClickListener(
-                        new OnItemClickListenerWrapper(listViewSingleChoiceListener, dialog, 0));
-            } else if (listViewChoiceMode == ListView.CHOICE_MODE_MULTIPLE) {
-                listView.setOnItemClickListener(
-                        new OnMultiChoiceClickListenerWrapper(listViewMultiChoiceListener, dialog,
-                                0));
-            }
-
-            if (listViewItemSelectedListener != null) {
-                listView.setOnItemSelectedListener(listViewItemSelectedListener);
-            }
-        }
-
-        /**
-         * Inflates the button bar, which contains the dialog's buttons.
-         *
-         * @param root
-         *         The root view of the dialog's layout as an instance of the class {@link View}
-         * @param dialog
-         *         The dialog, the buttons belong to, as an instance of the class {@link
-         *         MaterialDialog}
-         */
-        private void inflateButtonBar(@NonNull final View root,
-                                      @NonNull final MaterialDialog dialog) {
-            ViewGroup buttonBarContainer = (ViewGroup) root.findViewById(R.id.button_bar_container);
-
-            if (stackButtons) {
-                View.inflate(context, R.layout.stacked_button_bar, buttonBarContainer);
-            } else {
-                View.inflate(context, R.layout.horizontal_button_bar, buttonBarContainer);
-            }
-
-            initializeButtonBar(root, buttonBarContainer, dialog);
-        }
-
-        /**
-         * Initializes the button bar, which contains the dialog's buttons.
-         *
-         * @param root
-         *         The root view of the dialog's layout as an instance of the class {@link View}
-         * @param buttonBarContainer
-         *         The parent view of the button bar, which contains the dialog's buttons, as an
-         *         instance of the class {@link ViewGroup}
-         * @param dialog
-         *         The dialog, the buttons belong to, as an instance of the class {@link
-         *         MaterialDialog}
-         */
-        private void initializeButtonBar(@NonNull final View root,
-                                         @NonNull final ViewGroup buttonBarContainer,
-                                         @NonNull final MaterialDialog dialog) {
-            Button negativeButton = addNegativeButton(buttonBarContainer, dialog);
-            Button neutralButton = addNeutralButton(buttonBarContainer, dialog);
-            Button positiveButton = addPositiveButton(buttonBarContainer, dialog);
-
-            if (negativeButton != null || neutralButton != null || positiveButton != null) {
-                showButtonBarContainer(root, buttonBarContainer);
-            }
-        }
-
-        /**
-         * Adds a negative button to the dialog, if an appropriate button text has been set before.
-         *
-         * @param root
-         *         The root view of the dialog's layout as an instance of the class {@link View}
-         * @param dialog
-         *         The dialog, the button should belong to, as an instance of the class {@link
-         *         MaterialDialog}
-         * @return The button, which has been added to the dialog, as an instance of the class
-         * {@link Button} or null, if no button has been added
-         */
-        private Button addNegativeButton(@NonNull final View root,
-                                         @NonNull final MaterialDialog dialog) {
-            if (!TextUtils.isEmpty(negativeButtonText)) {
-                Button negativeButton = (Button) root.findViewById(android.R.id.button2);
-                negativeButton
-                        .setText(negativeButtonText.toString().toUpperCase(Locale.getDefault()));
-                OnClickListenerWrapper onClickListener =
-                        new OnClickListenerWrapper(negativeButtonListener, false, dialog,
-                                AlertDialog.BUTTON_NEGATIVE);
-                negativeButton.setOnClickListener(onClickListener);
-                negativeButton.setVisibility(View.VISIBLE);
-
-                if (buttonTextColor != -1) {
-                    negativeButton.setTextColor(buttonTextColor);
-                }
-
-                return negativeButton;
-            }
-
-            return null;
-        }
-
-        /**
-         * Adds a neutral button to the dialog, if an appropriate button text has been set before.
-         *
-         * @param root
-         *         The root view of the dialog's layout as an instance of the class {@link View}
-         * @param dialog
-         *         The dialog, the button should belong to, as an instance of the class {@link
-         *         MaterialDialog}
-         * @return The button, which has been added to the dialog, as an instance of the class
-         * {@link Button} or null, if no button has been added
-         */
-        private Button addNeutralButton(@NonNull final View root,
-                                        @NonNull final MaterialDialog dialog) {
-            if (!TextUtils.isEmpty(neutralButtonText)) {
-                Button neutralButton = (Button) root.findViewById(android.R.id.button3);
-                neutralButton
-                        .setText(neutralButtonText.toString().toUpperCase(Locale.getDefault()));
-                OnClickListenerWrapper onClickListener =
-                        new OnClickListenerWrapper(neutralButtonListener, false, dialog,
-                                DialogInterface.BUTTON_NEUTRAL);
-                neutralButton.setOnClickListener(onClickListener);
-                neutralButton.setVisibility(View.VISIBLE);
-
-                if (buttonTextColor != -1) {
-                    neutralButton.setTextColor(buttonTextColor);
-                }
-
-                return neutralButton;
-            }
-
-            return null;
-        }
-
-        /**
-         * Adds a positive button to the dialog, if an appropriate button text has been set before.
-         *
-         * @param root
-         *         The root view of the dialog's layout as an instance of the class {@link View}
-         * @param dialog
-         *         The dialog, the button should belong to, as an instance of the class {@link
-         *         MaterialDialog}
-         * @return The button, which has been added to the dialog, as an instance of the class
-         * {@link Button} or null, if no button has been added
-         */
-        private Button addPositiveButton(@NonNull final View root,
-                                         @NonNull final MaterialDialog dialog) {
-            if (!TextUtils.isEmpty(positiveButtonText)) {
-                Button positiveButton = (Button) root.findViewById(android.R.id.button1);
-                positiveButton
-                        .setText(positiveButtonText.toString().toUpperCase(Locale.getDefault()));
-                dialog.addAllValidators(validators);
-                OnClickListenerWrapper onClickListener =
-                        new OnClickListenerWrapper(positiveButtonListener, true, dialog,
-                                DialogInterface.BUTTON_POSITIVE);
-                positiveButton.setOnClickListener(onClickListener);
-                positiveButton.setVisibility(View.VISIBLE);
-
-                if (buttonTextColor != -1) {
-                    positiveButton.setTextColor(buttonTextColor);
-                }
-
-                return positiveButton;
-            }
-
-            return null;
-        }
-
-        /**
-         * Shows the parent view of the button bar, which contains the dialog's buttons.
-         *
-         * @param root
-         *         The root view of the dialog's layout as an instance of the class {@link View}
-         * @param buttonBarContainer
-         *         The parent view of the button bar, which contains the dialog's buttons, as an
-         *         instance of the class {@link ViewGroup}
-         */
-        private void showButtonBarContainer(@NonNull final View root,
-                                            @NonNull final View buttonBarContainer) {
-            View contentRoot = root.findViewById(R.id.content_root);
-            buttonBarContainer.setVisibility(View.VISIBLE);
-            int paddingLeft = context.getResources()
-                    .getDimensionPixelSize(R.dimen.dialog_content_padding_left);
-            int paddingTop = context.getResources()
-                    .getDimensionPixelSize(R.dimen.dialog_content_padding_top);
-            int paddingRight = context.getResources()
-                    .getDimensionPixelSize(R.dimen.dialog_content_padding_right);
-            int paddingBottom = context.getResources()
-                    .getDimensionPixelSize(R.dimen.dialog_content_padding_bottom);
-            contentRoot.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
         }
 
         /**
@@ -832,10 +249,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          *         {@link Context}. The context may not be null
          */
         public Builder(@NonNull final Context context) {
-            this.context = context;
-            this.themeResourceId = -1;
-            this.validators = new LinkedHashSet<>();
-            obtainStyledAttributes();
+            this(context, -1);
         }
 
         /**
@@ -850,10 +264,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          *         Integer} value. The resource id must correspond to a valid theme
          */
         public Builder(@NonNull final Context context, @StyleRes final int themeResourceId) {
-            this.context = context;
-            this.themeResourceId = themeResourceId;
-            this.validators = new LinkedHashSet<>();
-            obtainStyledAttributes();
+            initialize(context, themeResourceId);
         }
 
         /**
@@ -863,7 +274,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Context}
          */
         public final Context getContext() {
-            return context;
+            return dialog.getContext();
         }
 
         /**
@@ -876,7 +287,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setCancelable(final boolean cancelable) {
-            this.cancelable = cancelable;
+            dialog.setCancelable(cancelable);
             return this;
         }
 
@@ -899,7 +310,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * @see #setOnDismissListener(android.content.DialogInterface.OnDismissListener)
          */
         public Builder setOnCancelListener(@Nullable final OnCancelListener listener) {
-            this.cancelListener = listener;
+            dialog.setOnCancelListener(listener);
             return this;
         }
 
@@ -914,7 +325,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setOnDismissListener(@Nullable final OnDismissListener listener) {
-            this.dismissListener = listener;
+            dialog.setOnDismissListener(listener);
             return this;
         }
 
@@ -929,7 +340,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setOnKeyListener(@Nullable final OnKeyListener listener) {
-            this.keyListener = listener;
+            dialog.setOnKeyListener(listener);
             return this;
         }
 
@@ -943,7 +354,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setTitleColor(@ColorInt final int color) {
-            this.titleColor = color;
+            dialog.setTitleColor(color);
             return this;
         }
 
@@ -957,7 +368,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setMessageColor(@ColorInt final int color) {
-            this.messageColor = color;
+            dialog.setMessageColor(color);
             return this;
         }
 
@@ -971,7 +382,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setItemColor(@ColorInt final int color) {
-            this.itemColor = color;
+            dialog.setItemColor(color);
             return this;
         }
 
@@ -986,7 +397,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          */
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
         public final Builder setItemControlColor(@ColorInt final int color) {
-            this.itemControlColor = color;
+            dialog.setItemControlColor(color);
             return this;
         }
 
@@ -1000,7 +411,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setBackground(@Nullable final Drawable background) {
-            this.background = background;
+            dialog.setBackground(background);
             return this;
         }
 
@@ -1013,9 +424,8 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}
          */
-        @SuppressWarnings("deprecation")
         public final Builder setBackground(@DrawableRes final int resourceId) {
-            this.background = context.getResources().getDrawable(resourceId);
+            dialog.setBackground(resourceId);
             return this;
         }
 
@@ -1029,7 +439,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setBackgroundColor(@ColorInt final int color) {
-            this.background = color != -1 ? new ColorDrawable(color) : null;
+            dialog.setBackgroundColor(color);
             return this;
         }
 
@@ -1043,7 +453,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setButtonTextColor(@ColorInt final int color) {
-            this.buttonTextColor = color;
+            dialog.setButtonTextColor(color);
             return this;
         }
 
@@ -1058,7 +468,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder stackButtons(final boolean stackButtons) {
-            this.stackButtons = stackButtons;
+            dialog.stackButtons(stackButtons);
             return this;
         }
 
@@ -1074,7 +484,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          */
         public final Builder addValidator(@NonNull final Validator validator) {
             ensureNotNull(validator, "The validator may not be null");
-            validators.add(validator);
+            dialog.addValidator(validator);
             return this;
         }
 
@@ -1091,7 +501,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          */
         public final Builder addAllValidators(@NonNull final Collection<Validator> validators) {
             ensureNotNull(validators, "The collection may not be null");
-            this.validators.addAll(validators);
+            dialog.addAllValidators(validators);
             return this;
         }
 
@@ -1105,7 +515,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setTitle(@Nullable final CharSequence title) {
-            this.title = title;
+            dialog.setTitle(title);
             return this;
         }
 
@@ -1119,7 +529,8 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setTitle(@StringRes final int resourceId) {
-            return setTitle(context.getText(resourceId));
+            dialog.setTitle(resourceId);
+            return this;
         }
 
         /**
@@ -1132,7 +543,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setMessage(@Nullable final CharSequence message) {
-            this.message = message;
+            dialog.setMessage(message);
             return this;
         }
 
@@ -1146,7 +557,8 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setMessage(@StringRes final int resourceId) {
-            return setMessage(context.getText(resourceId));
+            dialog.setMessage(resourceId);
+            return this;
         }
 
         /**
@@ -1159,7 +571,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setIcon(@Nullable final Drawable icon) {
-            this.icon = icon;
+            dialog.setIcon(icon);
             return this;
         }
 
@@ -1172,9 +584,9 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}
          */
-        @SuppressWarnings("deprecation")
         public final Builder setIcon(@DrawableRes final int resourceId) {
-            return setIcon(context.getResources().getDrawable(resourceId));
+            dialog.setIcon(resourceId);
+            return this;
         }
 
         /**
@@ -1187,9 +599,8 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setIconAttribute(@AttrRes final int attributeId) {
-            TypedArray typedArray =
-                    context.getTheme().obtainStyledAttributes(new int[]{attributeId});
-            return setIcon(typedArray.getDrawable(0));
+            dialog.setIconAttribute(attributeId);
+            return this;
         }
 
         /**
@@ -1207,8 +618,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          */
         public final Builder setNegativeButton(@Nullable final CharSequence text,
                                                @Nullable final OnClickListener listener) {
-            negativeButtonText = text;
-            negativeButtonListener = listener;
+            dialog.setNegativeButton(text, listener);
             return this;
         }
 
@@ -1227,7 +637,8 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          */
         public final Builder setNegativeButton(@StringRes final int resourceId,
                                                @Nullable final OnClickListener listener) {
-            return setNegativeButton(context.getText(resourceId), listener);
+            dialog.setNegativeButton(resourceId, listener);
+            return this;
         }
 
         /**
@@ -1245,8 +656,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          */
         public final Builder setPositiveButton(@Nullable final CharSequence text,
                                                @Nullable final OnClickListener listener) {
-            positiveButtonText = text;
-            positiveButtonListener = listener;
+            dialog.setPositiveButton(text, listener);
             return this;
         }
 
@@ -1265,7 +675,8 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          */
         public final Builder setPositiveButton(@StringRes final int resourceId,
                                                @Nullable final OnClickListener listener) {
-            return setPositiveButton(context.getText(resourceId), listener);
+            dialog.setPositiveButton(resourceId, listener);
+            return this;
         }
 
         /**
@@ -1283,8 +694,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          */
         public final Builder setNeutralButton(@Nullable final CharSequence text,
                                               @Nullable final OnClickListener listener) {
-            neutralButtonText = text;
-            neutralButtonListener = listener;
+            dialog.setNeutralButton(text, listener);
             return this;
         }
 
@@ -1303,7 +713,8 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          */
         public final Builder setNeutralButton(@StringRes final int resourceId,
                                               @Nullable final OnClickListener listener) {
-            return setNeutralButton(context.getText(resourceId), listener);
+            dialog.setNeutralButton(resourceId, listener);
+            return this;
         }
 
         /**
@@ -1320,9 +731,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          */
         public final Builder setItems(@NonNull final CharSequence[] items,
                                       @Nullable final OnClickListener listener) {
-            listAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, items);
-            listViewSingleChoiceListener = listener;
-            listViewChoiceMode = ListView.CHOICE_MODE_NONE;
+            dialog.setItems(items, listener);
             return this;
         }
 
@@ -1338,9 +747,10 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}
          */
-        public final Builder setItems(final int resourceId,
+        public final Builder setItems(@ArrayRes final int resourceId,
                                       @Nullable final OnClickListener listener) {
-            return setItems(context.getResources().getTextArray(resourceId), listener);
+            dialog.setItems(resourceId, listener);
+            return this;
         }
 
         /**
@@ -1348,19 +758,17 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * created by the builder.
          *
          * @param adapter
-         *         The adapter, which should be set, as an instance of the type {@link ListAdapter}
-         *         or null, if no items should be shown by the dialog
+         *         The adapter, which should be set, as an instance of the type {@link ListAdapter}.
+         *         The adapter may not be null
          * @param listener
          *         The listener, which should be notified, when an item is clicked, as an instance
          *         of the type {@link OnClickListener} or null, if no listener should be notified
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}
          */
-        public final Builder setAdapter(@Nullable final ListAdapter adapter,
+        public final Builder setAdapter(@NonNull final ListAdapter adapter,
                                         @Nullable final OnClickListener listener) {
-            listAdapter = adapter;
-            listViewSingleChoiceListener = listener;
-            listViewChoiceMode = ListView.CHOICE_MODE_NONE;
+            dialog.setAdapter(adapter, listener);
             return this;
         }
 
@@ -1383,17 +791,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
         public final Builder setSingleChoiceItems(@NonNull final CharSequence[] items,
                                                   final int checkedItem,
                                                   @Nullable final OnClickListener listener) {
-            listAdapter =
-                    new ArrayAdapter<>(context, android.R.layout.simple_list_item_single_choice,
-                            items);
-            listViewSingleChoiceListener = listener;
-            listViewChoiceMode = ListView.CHOICE_MODE_SINGLE;
-            checkedListItems = new boolean[items.length];
-
-            for (int i = 0; i < checkedListItems.length; i++) {
-                checkedListItems[i] = (i == checkedItem);
-            }
-
+            dialog.setSingleChoiceItems(items, checkedItem, listener);
             return this;
         }
 
@@ -1413,10 +811,11 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}
          */
-        public final Builder setSingleChoiceItems(final int resourceId, final int checkedItem,
+        public final Builder setSingleChoiceItems(@ArrayRes final int resourceId,
+                                                  final int checkedItem,
                                                   @Nullable final OnClickListener listener) {
-            return setSingleChoiceItems(context.getResources().getTextArray(resourceId),
-                    checkedItem, listener);
+            dialog.setSingleChoiceItems(resourceId, checkedItem, listener);
+            return this;
         }
 
         /**
@@ -1432,18 +831,10 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}
          */
-        public final Builder setSingleChoiceItems(@Nullable final ListAdapter adapter,
+        public final Builder setSingleChoiceItems(@NonNull final ListAdapter adapter,
                                                   final int checkedItem,
                                                   @Nullable final OnClickListener listener) {
-            listAdapter = adapter;
-            listViewSingleChoiceListener = listener;
-            listViewChoiceMode = ListView.CHOICE_MODE_SINGLE;
-            checkedListItems = new boolean[adapter != null ? adapter.getCount() : 0];
-
-            for (int i = 0; i < checkedListItems.length; i++) {
-                checkedListItems[i] = (i == checkedItem);
-            }
-
+            dialog.setSingleChoiceItems(adapter, checkedItem, listener);
             return this;
         }
 
@@ -1467,12 +858,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
         public final Builder setMultiChoiceItems(@NonNull final CharSequence[] items,
                                                  @Nullable final boolean[] checkedItems,
                                                  @Nullable final OnMultiChoiceClickListener listener) {
-            listAdapter =
-                    new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                            items);
-            listViewMultiChoiceListener = listener;
-            listViewChoiceMode = ListView.CHOICE_MODE_MULTIPLE;
-            checkedListItems = checkedItems;
+            dialog.setMultiChoiceItems(items, checkedItems, listener);
             return this;
         }
 
@@ -1493,11 +879,11 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}
          */
-        public final Builder setMultiChoiceItems(final int resourceId,
+        public final Builder setMultiChoiceItems(@ArrayRes final int resourceId,
                                                  @Nullable final boolean[] checkedItems,
                                                  @Nullable final OnMultiChoiceClickListener listener) {
-            return setMultiChoiceItems(context.getResources().getTextArray(resourceId),
-                    checkedItems, listener);
+            dialog.setMultiChoiceItems(resourceId, checkedItems, listener);
+            return this;
         }
 
         /**
@@ -1512,7 +898,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          */
         public final Builder setOnItemSelectedListener(
                 @Nullable final OnItemSelectedListener listener) {
-            listViewItemSelectedListener = listener;
+            dialog.setOnItemSelectedListener(listener);
             return this;
         }
 
@@ -1527,8 +913,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setView(@Nullable final View view) {
-            customView = view;
-            customViewId = 0;
+            dialog.setView(view);
             return this;
         }
 
@@ -1543,8 +928,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setView(@LayoutRes final int resourceId) {
-            customViewId = resourceId;
-            customView = null;
+            dialog.setView(resourceId);
             return this;
         }
 
@@ -1559,7 +943,22 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * Builder}
          */
         public final Builder setCustomTitle(@Nullable final View view) {
-            customTitleView = view;
+            dialog.setCustomTitle(view);
+            return this;
+        }
+
+        /**
+         * Sets the custom view, which should be used to show the title of the dialog, which is
+         * created by the builder.
+         *
+         * @param resourceId
+         *         The resource id of the vieww, which should be set, as an {@link Integer} value.
+         *         The resource id must correspond to a valid layout resource
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setCustomTitle(@LayoutRes final int resourceId) {
+            dialog.setCustomTitle(resourceId);
             return this;
         }
 
@@ -1571,26 +970,6 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * MaterialDialog}
          */
         public final MaterialDialog create() {
-            View root = inflateLayout();
-            int themeId = themeResourceId;
-
-            if (themeResourceId == -1) {
-                TypedValue typedValue = new TypedValue();
-                context.getTheme().resolveAttribute(R.attr.alertDialogTheme, typedValue, true);
-                themeId = typedValue.resourceId;
-            }
-
-            MaterialDialog dialog = new MaterialDialog(context, themeId);
-            ViewGroup titleContainer = inflateTitleView(root);
-            TextView messageTextView = initializeMessage(root, titleContainer);
-            inflateContentView(root, titleContainer, messageTextView, dialog);
-            inflateButtonBar(root, dialog);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(root);
-            dialog.setCancelable(cancelable);
-            dialog.setOnCancelListener(cancelListener);
-            dialog.setOnDismissListener(dismissListener);
-            dialog.setOnKeyListener(keyListener);
             return dialog;
         }
 
@@ -1602,7 +981,6 @@ public class MaterialDialog extends Dialog implements DialogInterface {
          * MaterialDialog}
          */
         public final MaterialDialog show() {
-            MaterialDialog dialog = create();
             dialog.show();
             return dialog;
         }
@@ -1635,6 +1013,42 @@ public class MaterialDialog extends Dialog implements DialogInterface {
     private ViewGroup rootView;
 
     /**
+     * The parent view of the layout, which is used to show the dialog's title.
+     */
+    private ViewGroup titleContainer;
+
+    /**
+     * The text view, which is used to show the title of the dialog.
+     */
+    private TextView titleTextView;
+
+    /**
+     * The text view, which is used to show the dialog's message.
+     */
+    private TextView messageTextView;
+
+    /**
+     * The root view of all layouts, which are used to show the dialog's title, message and
+     * content.
+     */
+    private ViewGroup contentRootView;
+
+    /**
+     * The parent view of the layout, which used to show the dialog's content.
+     */
+    private ViewGroup contentContainer;
+
+    /**
+     * The list view, which is used to show the dialog's list items.
+     */
+    private ListView listView;
+
+    /**
+     * The parent view of the layout, which is used to show the dialog's buttons.
+     */
+    private ViewGroup buttonBarContainer;
+
+    /**
      * The positive button of the dialog.
      */
     private Button positiveButton;
@@ -1650,29 +1064,138 @@ public class MaterialDialog extends Dialog implements DialogInterface {
     private Button neutralButton;
 
     /**
-     * The list view of the dialog.
+     * The title of the dialog.
      */
-    private ListView listView;
+    private CharSequence title;
 
     /**
-     * The parent view of the text view, which is used to show the title of the dialog.
+     * The message of the dialog.
      */
-    private ViewGroup titleContainer;
+    private CharSequence message;
 
     /**
-     * The text view, which is used to show the title of the dialog.
+     * The icon of the dialog.
      */
-    private TextView titleTextView;
+    private Drawable icon;
 
     /**
-     * The text view, which is used to show the message of the dialog.
+     * The color of the title of the dialog.
      */
-    private TextView messageTextView;
+    private int titleColor = -1;
 
     /**
-     * The parent view of the custom view, which is shown by the dialog.
+     * The color of the message of the dialog.
      */
-    private ViewGroup contentContainer;
+    private int messageColor = -1;
+
+    /**
+     * The color of the list items of the dialog.
+     */
+    private int itemColor = -1;
+
+    /**
+     * The control color of the list items of the dialog.
+     */
+    private int itemControlColor = -1;
+
+    /**
+     * The background of the dialog.
+     */
+    private Drawable background;
+
+    /**
+     * The color of the button texts of the dialog.
+     */
+    private int buttonTextColor = -1;
+
+    /**
+     * True, if the buttons of the dialog are aligned vertically, false otherwise.
+     */
+    private boolean stackButtons;
+
+    /**
+     * The text of the negative button of the dialog.
+     */
+    private CharSequence negativeButtonText;
+
+    /**
+     * The text of the neutral button of the dialog.
+     */
+    private CharSequence neutralButtonText;
+
+    /**
+     * The text of the positive button of the dialog.
+     */
+    private CharSequence positiveButtonText;
+
+    /**
+     * The listener, which is notified, when the negative button of the dialog, is clicked.
+     */
+    private OnClickListener negativeButtonListener;
+
+    /**
+     * The listener, which is notified, when the neutral button of the dialog, is clicked.
+     */
+    private OnClickListener neutralButtonListener;
+
+    /**
+     * The listener, which is notified, when the positive button of the dialog, is clicked.
+     */
+    private OnClickListener positiveButtonListener;
+
+    /**
+     * The adapter, which is used to manage the list items of the dialog.
+     */
+    private ListAdapter listAdapter;
+
+    /**
+     * The choice mode of the list view, which is used to show the list items of the dialog.
+     */
+    private int listViewChoiceMode = -1;
+
+    /**
+     * The listener, which is notified, when the selection of a list item of the dialog changes and
+     * the list view's choice mode is <code>ListView.CHOICE_MODE_SINGLE</code>.
+     */
+    private OnClickListener listViewSingleChoiceListener;
+
+    /**
+     * The listener, which is notified, when the selection of a list item of the dialog changes and
+     * the list view's choice mode is <code>ListView.CHOICE_MODE_MULTIPLE</code>.
+     */
+    private OnMultiChoiceClickListener listViewMultiChoiceListener;
+
+    /**
+     * The listener, which is notified, when a list item of the dialog becomes selected,
+     * irrespective of the list view's choice mode.
+     */
+    private OnItemSelectedListener listViewItemSelectedListener;
+
+    /**
+     * An array, which is used to identify the list items of the dialog, which is created by the
+     * builder, which are by selected by default.
+     */
+    private boolean[] checkedListItems;
+
+    /**
+     * The custom content view of the dialog.
+     */
+    private View customView;
+
+    /**
+     * The resource id of the custom content view of the dialog. builder.
+     */
+    private int customViewId = -1;
+
+    /**
+     * The custom title view of the dialog.
+     */
+    private View customTitleView;
+
+    /**
+     * The resource id of the custom title view of the dialog.
+     */
+    private int customTitleViewId = -1;
 
     /**
      * Creates and returns the layout params, which should be used by the dialog.
@@ -1683,7 +1206,7 @@ public class MaterialDialog extends Dialog implements DialogInterface {
     private WindowManager.LayoutParams createLayoutParameters() {
         WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
 
-        if (getDeviceType(getContext()) == DisplayUtil.DeviceType.PHONE &&
+        if (getDeviceType(getContext()) == DeviceType.PHONE &&
                 getOrientation(getContext()) == Orientation.PORTRAIT) {
             layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         }
@@ -1692,16 +1215,388 @@ public class MaterialDialog extends Dialog implements DialogInterface {
     }
 
     /**
-     * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
-     * on pre-Lollipop devices.
-     *
-     * @param context
-     *         The context, which should be used by the dialog, as an instance of the class {@link
-     *         Context}. The context may not be null
+     * Inflates the dialog's layout.
      */
-    protected MaterialDialog(@NonNull final Context context) {
-        super(context);
-        this.validators = new LinkedHashSet<>();
+    private void inflateLayout() {
+        rootView = (ViewGroup) View.inflate(getContext(), R.layout.material_dialog, null);
+    }
+
+    /**
+     * Inflates the layout, which is used to show the dialog's title. The layout may either be the
+     * default one or a custom view, if one has been set before.
+     */
+    private void inflateTitleView() {
+        titleContainer = (ViewGroup) rootView.findViewById(R.id.title_container);
+        titleContainer.removeAllViews();
+
+        if (customTitleView != null) {
+            titleContainer.addView(customTitleView, ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        } else if (customTitleViewId != -1) {
+            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+            View view = layoutInflater.inflate(customTitleViewId, titleContainer, false);
+            titleContainer.addView(view, ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        } else {
+            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+            View view =
+                    layoutInflater.inflate(R.layout.material_dialog_title, titleContainer, false);
+            titleContainer.addView(view, ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+
+        View titleView = titleContainer.findViewById(android.R.id.title);
+        titleTextView = titleView instanceof TextView ? (TextView) titleView : null;
+    }
+
+    /**
+     * Inflates the layout, which is used to show the dialog's content. The layout may either be the
+     * default one or a custom view, if one has been set before.
+     */
+    private void inflateContentView() {
+        messageTextView = (TextView) rootView.findViewById(android.R.id.message);
+        contentRootView = (ViewGroup) rootView.findViewById(R.id.content_root);
+        contentContainer = (ViewGroup) rootView.findViewById(R.id.content_container);
+        contentContainer.removeAllViews();
+
+        if (customView != null) {
+            showContentContainer();
+            contentContainer.addView(customView, ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        } else if (customViewId != -1) {
+            showContentContainer();
+            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+            View view = layoutInflater.inflate(customViewId, contentContainer, false);
+            contentContainer.addView(view, ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        } else {
+            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+            View view = layoutInflater
+                    .inflate(R.layout.material_dialog_list_view, contentContainer, false);
+            contentContainer.addView(view, ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+
+        showListView();
+    }
+
+    /**
+     * Shows the parent view of the layout, which is used to show the dialog's content.
+     */
+    private void showContentContainer() {
+        contentContainer.setVisibility(View.VISIBLE);
+        int contentSpacing =
+                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_content_spacing);
+        LinearLayout.LayoutParams titleLayoutParams =
+                (LinearLayout.LayoutParams) titleContainer.getLayoutParams();
+        titleLayoutParams.bottomMargin = contentSpacing;
+        titleContainer.setLayoutParams(titleLayoutParams);
+        LinearLayout.LayoutParams messageLayoutParams =
+                (LinearLayout.LayoutParams) messageTextView.getLayoutParams();
+        messageLayoutParams.bottomMargin = contentSpacing;
+        messageTextView.setLayoutParams(messageLayoutParams);
+    }
+
+    /**
+     * Shows the list view, which is used to show the dialog's list items.
+     */
+    private void showListView() {
+        listView = (ListView) contentContainer.findViewById(android.R.id.list);
+
+        if (listAdapter != null && !listAdapter.isEmpty() && listView != null) {
+            showContentContainer();
+            listView.setVisibility(View.VISIBLE);
+            listView.setChoiceMode(listViewChoiceMode);
+            listView.setAdapter(listAdapter);
+            listView.setOnItemSelectedListener(listViewItemSelectedListener);
+            initializeListViewSelectionListener();
+            initializeListViewCheckedItems();
+        }
+    }
+
+    /**
+     * Initializes the list items, which are selected by default.
+     */
+    private void initializeListViewCheckedItems() {
+        if (checkedListItems != null) {
+            for (int i = 0; i < checkedListItems.length; i++) {
+                listView.setItemChecked(i, checkedListItems[i]);
+
+                if (checkedListItems[i]) {
+                    listView.setSelection(i);
+                }
+            }
+        }
+    }
+
+    /**
+     * Initializes the listener, which should be notified, when the selection of a list item of the
+     * dialog has been changed.
+     */
+    private void initializeListViewSelectionListener() {
+        if (listViewChoiceMode == ListView.CHOICE_MODE_NONE) {
+            listView.setOnItemClickListener(
+                    new OnItemClickListenerWrapper(listViewSingleChoiceListener, this,
+                            DialogInterface.BUTTON_POSITIVE));
+        } else if (listViewChoiceMode == ListView.CHOICE_MODE_SINGLE) {
+            listView.setOnItemClickListener(
+                    new OnItemClickListenerWrapper(listViewSingleChoiceListener, this, 0));
+        } else if (listViewChoiceMode == ListView.CHOICE_MODE_MULTIPLE) {
+            listView.setOnItemClickListener(
+                    new OnMultiChoiceClickListenerWrapper(listViewMultiChoiceListener, this, 0));
+        }
+    }
+
+    /**
+     * Inflates the layout, which is used to show the dialog's buttons.
+     */
+    private void inflateButtonBar() {
+        buttonBarContainer = (ViewGroup) rootView.findViewById(R.id.button_bar_container);
+        buttonBarContainer.removeAllViews();
+        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+        View view = layoutInflater.inflate(
+                stackButtons ? R.layout.stacked_button_bar : R.layout.horizontal_button_bar,
+                buttonBarContainer, false);
+        buttonBarContainer.addView(view);
+        positiveButton = (Button) view.findViewById(android.R.id.button1);
+        negativeButton = (Button) view.findViewById(android.R.id.button2);
+        neutralButton = (Button) view.findViewById(android.R.id.button3);
+    }
+
+    /**
+     * Adapts the view, which is used to show the dialog's content.
+     */
+    private void adaptContentView() {
+        if (contentContainer != null) {
+            inflateContentView();
+        }
+    }
+
+    /**
+     * Adapts the view, which is used to show the dialog's title.
+     */
+    private void adaptTitleView() {
+        if (titleContainer != null) {
+            inflateTitleView();
+            adaptTitle();
+            adaptTitleColor();
+            adaptIcon();
+        }
+    }
+
+    /**
+     * Adapts the button bar.
+     */
+    private void adaptButtonBar() {
+        if (buttonBarContainer != null) {
+            inflateButtonBar();
+            adaptPositiveButton();
+            adaptNegativeButton();
+            adaptNeutralButton();
+            adaptButtonTextColor();
+            adaptButtonBarContainerVisibility();
+        }
+    }
+
+    /**
+     * Adapts the color of the dialog's title.
+     */
+    private void adaptTitleColor() {
+        if (titleTextView != null && titleColor != -1) {
+            titleTextView.setTextColor(titleColor);
+        }
+    }
+
+    /**
+     * Adapts the dialog's title.
+     */
+    private void adaptTitle() {
+        if (titleTextView != null) {
+            titleTextView.setText(title);
+        }
+
+        adaptTitleContainerVisibility();
+    }
+
+    /**
+     * Adapts the dialog's icon.
+     */
+    private void adaptIcon() {
+        if (titleTextView != null) {
+            titleTextView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+        }
+
+        adaptTitleContainerVisibility();
+    }
+
+    /**
+     * Adapts the visibility of the parent view of the text view, which is used to show the title of
+     * the dialog.
+     */
+    private void adaptTitleContainerVisibility() {
+        if (titleContainer != null) {
+            if (customTitleView == null && customTitleViewId == -1) {
+                titleContainer.setVisibility(
+                        !TextUtils.isEmpty(title) || icon != null ? View.VISIBLE : View.GONE);
+            } else {
+                titleContainer.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    /**
+     * Adapts the dialog's message.
+     */
+
+    private void adaptMessage() {
+        if (messageTextView != null) {
+            messageTextView.setText(message);
+            messageTextView.setVisibility(!TextUtils.isEmpty(message) ? View.VISIBLE : View.GONE);
+        }
+
+        if (titleContainer != null) {
+            LinearLayout.LayoutParams layoutParams =
+                    (LinearLayout.LayoutParams) titleContainer.getLayoutParams();
+            layoutParams.bottomMargin = !TextUtils.isEmpty(message) ? getContext().getResources()
+                    .getDimensionPixelSize(R.dimen.dialog_content_spacing) : 0;
+            titleContainer.setLayoutParams(layoutParams);
+        }
+    }
+
+    /**
+     * Adapts the color of the dialog's message.
+     */
+    private void adaptMessageColor() {
+        if (messageTextView != null && messageColor != -1) {
+            messageTextView.setTextColor(messageColor);
+        }
+    }
+
+    /**
+     * Adapts the dialog's background.
+     */
+    @SuppressWarnings("deprecation")
+    private void adaptBackground() {
+        if (rootView != null) {
+            rootView.setBackgroundDrawable(background);
+        }
+    }
+
+    /**
+     * Adapts the color of the dialog's list items.
+     */
+    private void adaptItemColor() {
+        ListAdapter listAdapter = getListAdapter();
+
+        if (listAdapter instanceof ArrayAdapter<?>) {
+            ((ArrayAdapter<?>) listAdapter).setItemColor(itemColor);
+        }
+    }
+
+    /**
+     * Adapts the control color of the dialog's list items.
+     */
+    private void adaptItemControlColor() {
+        ListAdapter listAdapter = getListAdapter();
+
+        if (listAdapter instanceof ArrayAdapter<?>) {
+            ((ArrayAdapter<?>) listAdapter).setItemControlColor(itemControlColor);
+        }
+    }
+
+    /**
+     * Adapts the text color of the dialog's buttons.
+     */
+    private void adaptButtonTextColor() {
+        if (buttonTextColor != -1) {
+            if (positiveButton != null) {
+                positiveButton.setTextColor(buttonTextColor);
+            }
+
+            if (neutralButton != null) {
+                neutralButton.setTextColor(buttonTextColor);
+            }
+
+            if (negativeButton != null) {
+                negativeButton.setTextColor(buttonTextColor);
+            }
+        }
+    }
+
+    /**
+     * Adapts the dialog's positive button.
+     */
+    private void adaptPositiveButton() {
+        if (positiveButton != null) {
+            positiveButton.setText(positiveButtonText != null ?
+                    positiveButtonText.toString().toUpperCase(Locale.getDefault()) : null);
+            OnClickListenerWrapper onClickListener =
+                    new OnClickListenerWrapper(positiveButtonListener, true, this,
+                            DialogInterface.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(onClickListener);
+            positiveButton.setVisibility(
+                    !TextUtils.isEmpty(positiveButtonText) ? View.VISIBLE : View.GONE);
+            adaptButtonBarContainerVisibility();
+        }
+    }
+
+    /**
+     * Adapts the dialog's neutral button.
+     */
+    private void adaptNeutralButton() {
+        if (neutralButton != null) {
+            neutralButton.setText(neutralButtonText != null ?
+                    neutralButtonText.toString().toUpperCase(Locale.getDefault()) : null);
+            OnClickListenerWrapper onClickListener =
+                    new OnClickListenerWrapper(neutralButtonListener, false, this,
+                            DialogInterface.BUTTON_NEUTRAL);
+            neutralButton.setOnClickListener(onClickListener);
+            neutralButton.setVisibility(
+                    !TextUtils.isEmpty(neutralButtonText) ? View.VISIBLE : View.GONE);
+            adaptButtonBarContainerVisibility();
+        }
+    }
+
+    /**
+     * Adapts the dialog's negative button.
+     */
+    private void adaptNegativeButton() {
+        if (negativeButton != null) {
+            negativeButton.setText(negativeButtonText != null ?
+                    negativeButtonText.toString().toUpperCase(Locale.getDefault()) : null);
+            OnClickListenerWrapper onClickListener =
+                    new OnClickListenerWrapper(negativeButtonListener, false, this,
+                            DialogInterface.BUTTON_NEGATIVE);
+            negativeButton.setOnClickListener(onClickListener);
+            negativeButton.setVisibility(
+                    !TextUtils.isEmpty(negativeButtonText) ? View.VISIBLE : View.GONE);
+            adaptButtonBarContainerVisibility();
+        }
+    }
+
+    /**
+     * Adapts the visibility of the parent view, which contains the dialog's buttons.
+     */
+    private void adaptButtonBarContainerVisibility() {
+        boolean show =
+                !TextUtils.isEmpty(positiveButtonText) || !TextUtils.isEmpty(neutralButtonText) ||
+                        !TextUtils.isEmpty(negativeButtonText);
+
+        if (buttonBarContainer != null) {
+            buttonBarContainer.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+
+        if (contentRootView != null) {
+            int paddingLeft = show ? getContext().getResources()
+                    .getDimensionPixelSize(R.dimen.dialog_content_padding_left) : 0;
+            int paddingTop = show ? getContext().getResources()
+                    .getDimensionPixelSize(R.dimen.dialog_content_padding_top) : 0;
+            int paddingRight = show ? getContext().getResources()
+                    .getDimensionPixelSize(R.dimen.dialog_content_padding_right) : 0;
+            int paddingBottom = show ? getContext().getResources()
+                    .getDimensionPixelSize(R.dimen.dialog_content_padding_bottom) : 0;
+            contentRootView.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+        }
     }
 
     /**
@@ -1759,15 +1654,9 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      */
     public final void setPositiveButton(@Nullable final CharSequence text,
                                         @Nullable final OnClickListener listener) {
-        if (positiveButton != null) {
-            positiveButton.setText(
-                    text != null ? text.toString().toUpperCase(Locale.getDefault()) : null);
-            OnClickListenerWrapper onClickListener =
-                    new OnClickListenerWrapper(listener, true, this,
-                            DialogInterface.BUTTON_POSITIVE);
-            positiveButton.setOnClickListener(onClickListener);
-            positiveButton.setVisibility(!TextUtils.isEmpty(text) ? View.VISIBLE : View.GONE);
-        }
+        positiveButtonText = text;
+        positiveButtonListener = listener;
+        adaptPositiveButton();
     }
 
     /**
@@ -1799,15 +1688,9 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      */
     public final void setNegativeButton(@Nullable final CharSequence text,
                                         @Nullable final OnClickListener listener) {
-        if (negativeButton != null) {
-            negativeButton.setText(
-                    text != null ? text.toString().toUpperCase(Locale.getDefault()) : null);
-            OnClickListenerWrapper onClickListener =
-                    new OnClickListenerWrapper(listener, false, this,
-                            DialogInterface.BUTTON_NEGATIVE);
-            negativeButton.setOnClickListener(onClickListener);
-            negativeButton.setVisibility(!TextUtils.isEmpty(text) ? View.VISIBLE : View.GONE);
-        }
+        negativeButtonText = text;
+        negativeButtonListener = listener;
+        adaptNegativeButton();
     }
 
     /**
@@ -1839,15 +1722,9 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      */
     public final void setNeutralButton(@Nullable final CharSequence text,
                                        @Nullable final OnClickListener listener) {
-        if (neutralButton != null) {
-            neutralButton.setText(
-                    text != null ? text.toString().toUpperCase(Locale.getDefault()) : null);
-            OnClickListenerWrapper onClickListener =
-                    new OnClickListenerWrapper(listener, false, this,
-                            DialogInterface.BUTTON_NEUTRAL);
-            neutralButton.setOnClickListener(onClickListener);
-            neutralButton.setVisibility(!TextUtils.isEmpty(text) ? View.VISIBLE : View.GONE);
-        }
+        neutralButtonText = text;
+        neutralButtonListener = listener;
+        adaptNeutralButton();
     }
 
     /**
@@ -1864,6 +1741,26 @@ public class MaterialDialog extends Dialog implements DialogInterface {
     public final void setNeutralButton(@StringRes final int resourceId,
                                        @Nullable final OnClickListener listener) {
         setNeutralButton(getContext().getText(resourceId), listener);
+    }
+
+    /**
+     * Returns, whether the buttons of the dialog are aligned vertically, or not.
+     *
+     * @return True, if the buttons of the dialog are aligned vertically, false otherwise
+     */
+    public final boolean areButtonsStacked() {
+        return stackButtons;
+    }
+
+    /**
+     * Sets, whether the buttons of the dialog should be aligned vertically, or not.
+     *
+     * @param stackButtons
+     *         True, if the buttons of the dialog should be aligned vertically, false otherwise
+     */
+    public final void stackButtons(final boolean stackButtons) {
+        this.stackButtons = stackButtons;
+        adaptButtonBar();
     }
 
     /**
@@ -1938,28 +1835,27 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      * ListView} or null, if the dialog does not show any list items or has not been shown yet
      */
     public final ListView getListView() {
-        return (listView != null && listView.getVisibility() == View.VISIBLE) ? listView : null;
+        return listView != null && listView.getVisibility() == View.VISIBLE ? listView : null;
     }
 
     /**
      * Returns the adapter of the list view, which is contained by the dialog.
      *
      * @return The adapter of the list view, which is contained by the dialog, as an instance of the
-     * type {@link ListAdapter} or null, if the dialog does not show any list items or has not been
-     * shown yet
+     * type {@link ListAdapter} or null, if the dialog does not show any list items
      */
     public final ListAdapter getListAdapter() {
-        return getListView() != null ? getListView().getAdapter() : null;
+        return listAdapter;
     }
 
     /**
      * Returns the icon of the dialog.
      *
      * @return The icon of the dialog, as an instance of the class {@link Drawable} or null, if no
-     * icon is shown or if the dialog has not been shown yet
+     * icon has been set
      */
     public final Drawable getIcon() {
-        return titleTextView != null ? titleTextView.getCompoundDrawables()[0] : null;
+        return icon;
     }
 
     /**
@@ -1970,15 +1866,8 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      *         if no icon should be shown
      */
     public final void setIcon(final Drawable icon) {
-        if (titleTextView != null) {
-            titleTextView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-        }
-
-        if (titleContainer != null) {
-            titleContainer.setVisibility(
-                    (!TextUtils.isEmpty(getTitle()) || getIcon() != null) ? View.VISIBLE :
-                            View.GONE);
-        }
+        this.icon = icon;
+        adaptIcon();
     }
 
     /**
@@ -1988,9 +1877,8 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      *         The resource id of the icon, which should be set, as an {@link Integer} value. The
      *         resource id must correspond to a valid drawable resource
      */
-    @SuppressWarnings("deprecation")
     public final void setIcon(@DrawableRes final int resourceId) {
-        setIcon(getContext().getResources().getDrawable(resourceId));
+        setIcon(ContextCompat.getDrawable(getContext(), resourceId));
     }
 
     /**
@@ -2009,11 +1897,11 @@ public class MaterialDialog extends Dialog implements DialogInterface {
     /**
      * Returns the color of the title of the dialog.
      *
-     * @return The color of the title of the dialog as an {@link Integer} value or -1, if no title
-     * is shown or if the dialog has not been shown yet
+     * @return The color of the title of the dialog as an {@link Integer} value or -1, if no custom
+     * color has been set
      */
     public final int getTitleColor() {
-        return !TextUtils.isEmpty(getTitle()) ? titleTextView.getCurrentTextColor() : -1;
+        return titleColor;
     }
 
     /**
@@ -2023,19 +1911,18 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      *         The color, which should be set, as an {@link Integer} value
      */
     public final void setTitleColor(@ColorInt final int color) {
-        if (titleTextView != null) {
-            titleTextView.setTextColor(color);
-        }
+        titleColor = color;
+        adaptTitleColor();
     }
 
     /**
      * Returns the color of the message of the dialog.
      *
      * @return The color of the message of the dialog as an {@link Integer} value or -1, if no
-     * message is shown or if the dialog has not been shown yet
+     * custom color has been set
      */
     public final int getMessageColor() {
-        return !TextUtils.isEmpty(getMessage()) ? messageTextView.getCurrentTextColor() : -1;
+        return messageColor;
     }
 
     /**
@@ -2045,25 +1932,18 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      *         The color, which should be set, as an {@link Integer} value
      */
     public final void setMessageColor(@ColorInt final int color) {
-        if (messageTextView != null) {
-            messageTextView.setTextColor(color);
-        }
+        messageColor = color;
+        adaptMessageColor();
     }
 
     /**
      * Returns the color of the list items of the dialog.
      *
      * @return The color of the list items of the dialog as an {@link Integer} value or -1, if no
-     * list items are shown or if the dialog has not been shown yet
+     * custom color has been set
      */
     public final int getItemColor() {
-        ListAdapter listAdapter = getListAdapter();
-
-        if (listAdapter != null && listAdapter instanceof ArrayAdapter<?>) {
-            return ((ArrayAdapter<?>) listAdapter).getItemColor();
-        }
-
-        return -1;
+        return itemColor;
     }
 
     /**
@@ -2073,30 +1953,22 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      *         The color, which should be set, as an {@link Integer} value
      */
     public final void setItemColor(@ColorInt final int color) {
-        ListAdapter listAdapter = getListAdapter();
-
-        if (listAdapter != null && listAdapter instanceof ArrayAdapter<?>) {
-            ((ArrayAdapter<?>) listAdapter).setItemColor(color);
-        }
+        itemColor = color;
+        adaptItemColor();
     }
 
     /**
      * Returns the control color of the list items of the dialog.
      *
-     * @return The color of the list items of the dialog as an {@link Integer} value
+     * @return The color of the list items of the dialog as an {@link Integer} value or -1, if no
+     * custom color has been set
      */
     public final int getItemControlColor() {
-        ListAdapter listAdapter = getListAdapter();
-
-        if (listAdapter != null && listAdapter instanceof ArrayAdapter<?>) {
-            return ((ArrayAdapter<?>) listAdapter).getItemControlColor();
-        }
-
-        return -1;
+        return itemControlColor;
     }
 
     /**
-     * Sets the control color of the list items of the dialog, which is created by the builder.
+     * Sets the control color of the list items of the dialog.
      *
      * @param color
      *         The control color, which should be set, as an {@link Integer} value or -1, if no list
@@ -2104,21 +1976,18 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public final void setItemControlColor(@ColorInt final int color) {
-        ListAdapter listAdapter = getListAdapter();
-
-        if (listAdapter != null && listAdapter instanceof ArrayAdapter<?>) {
-            ((ArrayAdapter<?>) listAdapter).setItemControlColor(color);
-        }
+        itemControlColor = color;
+        adaptItemControlColor();
     }
 
     /**
      * Returns the background of the dialog.
      *
      * @return The background of the dialog as an instance of the class {@link Drawable} or null, if
-     * no custom background is set or if the dialog has not been shown yet
+     * no custom background has been set
      */
     public final Drawable getBackground() {
-        return rootView != null ? rootView.getBackground() : null;
+        return background;
     }
 
     /**
@@ -2128,11 +1997,9 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      *         The background, which should be set, as an instance of the class {@link Drawable} or
      *         null, if no custom background should be set
      */
-    @SuppressWarnings("deprecation")
     public final void setBackground(@Nullable final Drawable background) {
-        if (rootView != null) {
-            rootView.setBackgroundDrawable(background);
-        }
+        this.background = background;
+        adaptBackground();
     }
 
     /**
@@ -2142,9 +2009,8 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      *         The resource id of the background, which should be set, as an {@link Integer} value.
      *         The resource id must correspond to a valid drawable resource
      */
-    @SuppressWarnings("deprecation")
     public final void setBackground(@DrawableRes final int resourceId) {
-        setBackground(getContext().getResources().getDrawable(resourceId));
+        setBackground(ContextCompat.getDrawable(getContext(), resourceId));
     }
 
     /**
@@ -2162,13 +2028,10 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      * Returns the color of the button texts of the dialog.
      *
      * @return The color of the button texts of the dialog as an {@link Integer} value or -1, if no
-     * button is shown or if the dialog has not been shown yet
+     * custom color has been set
      */
     public final int getButtonTextColor() {
-        return (getButton(DialogInterface.BUTTON_POSITIVE) != null ||
-                getButton(DialogInterface.BUTTON_NEUTRAL) != null ||
-                getButton(DialogInterface.BUTTON_NEGATIVE) != null) ?
-                positiveButton.getCurrentTextColor() : -1;
+        return buttonTextColor;
     }
 
     /**
@@ -2178,17 +2041,8 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      *         The color, which should be set, as an {@link Integer} value
      */
     public final void setButtonTextColor(@ColorInt final int color) {
-        if (positiveButton != null) {
-            positiveButton.setTextColor(color);
-        }
-
-        if (neutralButton != null) {
-            neutralButton.setTextColor(color);
-        }
-
-        if (negativeButton != null) {
-            negativeButton.setTextColor(color);
-        }
+        buttonTextColor = color;
+        adaptButtonTextColor();
     }
 
     /**
@@ -2199,38 +2053,22 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      *         no custom view should be used to show the title
      */
     public final void setCustomTitle(@Nullable final View view) {
-        if (titleContainer != null) {
-            CharSequence title = getTitle();
-            Drawable icon = getIcon();
-            int titleColor = getTitleColor();
-            titleContainer.removeAllViews();
+        customTitleView = view;
+        customTitleViewId = -1;
+        adaptTitleView();
+    }
 
-            if (view != null) {
-                titleContainer.setVisibility(View.VISIBLE);
-                titleContainer.addView(view, ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
-            } else {
-                View.inflate(getContext(), R.layout.material_dialog_title, titleContainer);
-            }
-
-            View titleView = titleContainer.findViewById(android.R.id.title);
-
-            if (titleView != null && titleView instanceof TextView) {
-                titleTextView = (TextView) titleView;
-                titleTextView.setTextColor(titleColor);
-
-                if (!TextUtils.isEmpty(title) || icon != null) {
-                    titleContainer.setVisibility(View.VISIBLE);
-                    titleTextView.setText(title);
-
-                    if (icon != null) {
-                        titleTextView
-                                .setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-                    }
-
-                }
-            }
-        }
+    /**
+     * Sets the custom view, which should be used to show the title of the dialog.
+     *
+     * @param resourceId
+     *         The resource id of the view, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid layout resource
+     */
+    public final void setCustomTitle(@LayoutRes final int resourceId) {
+        customTitleView = null;
+        customTitleViewId = resourceId;
+        adaptTitleView();
     }
 
     /**
@@ -2241,31 +2079,12 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      *         no custom view should be shown
      */
     public final void setView(@Nullable final View view) {
-        if (contentContainer != null) {
-            contentContainer.removeAllViews();
-            LinearLayout.LayoutParams titleLayoutParams =
-                    (LinearLayout.LayoutParams) titleContainer.getLayoutParams();
-            LinearLayout.LayoutParams messageLayoutParams =
-                    (LinearLayout.LayoutParams) messageTextView.getLayoutParams();
-            int contentSpacing = getContext().getResources()
-                    .getDimensionPixelSize(R.dimen.dialog_content_spacing);
-
-            if (view != null) {
-                contentContainer.setVisibility(View.VISIBLE);
-                titleLayoutParams.bottomMargin = contentSpacing;
-                messageLayoutParams.bottomMargin = contentSpacing;
-                contentContainer.addView(view, ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
-            } else {
-                contentContainer.setVisibility(View.GONE);
-                titleLayoutParams.bottomMargin =
-                        !TextUtils.isEmpty(getMessage()) ? contentSpacing : 0;
-                messageLayoutParams.bottomMargin = 0;
-            }
-
-            titleContainer.setLayoutParams(titleLayoutParams);
-            messageTextView.setLayoutParams(messageLayoutParams);
-        }
+        customView = view;
+        customViewId = -1;
+        listAdapter = null;
+        listViewSingleChoiceListener = null;
+        listViewChoiceMode = -1;
+        adaptContentView();
     }
 
     /**
@@ -2276,18 +2095,224 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      *         resource id must correspond to a valid layout resource
      */
     public final void setView(@LayoutRes final int resourceId) {
-        setView(View.inflate(getContext(), resourceId, null));
+        customView = null;
+        customViewId = resourceId;
+        listAdapter = null;
+        listViewSingleChoiceListener = null;
+        listViewChoiceMode = -1;
+        adaptContentView();
+    }
+
+    /**
+     * Sets the items, which should be shown by the dialog.
+     *
+     * @param items
+     *         The items, which should be set, as an array of the type {@link CharSequence}. The
+     *         items may not be null
+     * @param listener
+     *         The listener, which should be notified, when an item is clicked, as an instance of
+     *         the type {@link OnClickListener} or null, if no listener should be notified
+     */
+    public final void setItems(@NonNull final CharSequence[] items,
+                               @Nullable final OnClickListener listener) {
+        ensureNotNull(items, "The items may not be null");
+        listAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, items);
+        listViewSingleChoiceListener = listener;
+        listViewChoiceMode = ListView.CHOICE_MODE_NONE;
+        customView = null;
+        customViewId = -1;
+        adaptContentView();
+    }
+
+    /**
+     * Sets the items, which should be shown by the dialog.
+     *
+     * @param resourceId
+     *         The resource id of the items, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid array resource
+     * @param listener
+     *         The listener, which should be notified, when an item is clicked, as an instance of
+     *         the type {@link OnClickListener} or null, if no listener should be notified
+     */
+    public final void setItems(@ArrayRes final int resourceId,
+                               @Nullable final OnClickListener listener) {
+        setItems(getContext().getResources().getTextArray(resourceId), listener);
+    }
+
+    /**
+     * Sets the adapter, which provides the items, which should be shown by the dialog.
+     *
+     * @param adapter
+     *         The adapter, which should be set, as an instance of the type {@link ListAdapter}. The
+     *         adapter may not be null
+     * @param listener
+     *         The listener, which should be notified, when an item is clicked, as an instance of
+     *         the type {@link OnClickListener} or null, if no listener should be notified
+     */
+    public final void setAdapter(@NonNull final ListAdapter adapter,
+                                 @Nullable final OnClickListener listener) {
+        ensureNotNull(adapter, "The adapter may not be null");
+        listAdapter = adapter;
+        listViewSingleChoiceListener = listener;
+        listViewChoiceMode = ListView.CHOICE_MODE_NONE;
+        customView = null;
+        customViewId = -1;
+        adaptContentView();
+    }
+
+    /**
+     * Sets the selectable items, which should be shown by the dialog. Only one of the items can be
+     * selected at once.
+     *
+     * @param items
+     *         The items, which should be set, as an array of the type {@link CharSequence}. The
+     *         items may not be null
+     * @param checkedItem
+     *         The index of the item, which should be selected by default, as an {@link Integer}
+     *         value or -1, if no item should be selected by default
+     * @param listener
+     *         The listener, which should be notified, when an item is clicked, as an instance of
+     *         the type {@link OnClickListener} or null, if no listener should be notified
+     */
+    public final void setSingleChoiceItems(@NonNull final CharSequence[] items,
+                                           final int checkedItem,
+                                           @Nullable final OnClickListener listener) {
+        ensureNotNull(items, "The items may not be null");
+        listAdapter =
+                new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_single_choice,
+                        items);
+        listViewSingleChoiceListener = listener;
+        listViewChoiceMode = ListView.CHOICE_MODE_SINGLE;
+        checkedListItems = new boolean[items.length];
+        checkedListItems[checkedItem] = true;
+        customView = null;
+        customViewId = -1;
+        adaptContentView();
+    }
+
+    /**
+     * Sets the selectable items, which should be shown by the dialog. Only one of the items can be
+     * selected at once.
+     *
+     * @param resourceId
+     *         The resource id of the items, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid array resource
+     * @param checkedItem
+     *         The index of the item, which should be selected by default, as an {@link Integer}
+     *         value or -1, if no item should be selected by default
+     * @param listener
+     *         The listener, which should be notified, when an item is clicked, as an instance of
+     *         the type {@link OnClickListener} or null, if no listener should be notified
+     */
+    public final void setSingleChoiceItems(@ArrayRes final int resourceId, final int checkedItem,
+                                           @Nullable final OnClickListener listener) {
+        setSingleChoiceItems(getContext().getResources().getTextArray(resourceId), checkedItem,
+                listener);
+    }
+
+    /**
+     * Sets the adapter, which provides the selectable items, which should be shown by the dialog.
+     * Only one of the items can be selected at once.
+     *
+     * @param adapter
+     *         The adapter, which should be set, as an instance of the type {@link ListAdapter}. The
+     *         adapter may not be null
+     * @param listener
+     *         The listener, which should be notified, when an item is clicked, as an instance of
+     *         the type {@link OnClickListener} or null, if no listener should be notified
+     */
+    public final void setSingleChoiceItems(@NonNull final ListAdapter adapter,
+                                           final int checkedItem,
+                                           @Nullable final OnClickListener listener) {
+        ensureNotNull(adapter, "The adapter may not be null");
+        listAdapter = adapter;
+        listViewSingleChoiceListener = listener;
+        listViewChoiceMode = ListView.CHOICE_MODE_SINGLE;
+        checkedListItems = new boolean[adapter.getCount()];
+        checkedListItems[checkedItem] = true;
+        customView = null;
+        customViewId = -1;
+        adaptContentView();
+    }
+
+    /**
+     * Sets the selectable items, which should be shown by the dialog. Multiple items can be
+     * selected at once.
+     *
+     * @param items
+     *         The items, which should be set, as an array of the type {@link CharSequence}. The
+     *         items may not be null
+     * @param checkedItems
+     *         An array, which contains, whether the items, which correspond to the corresponding
+     *         indices, should be selected by default, or not, as a {@link Boolean} array or null,
+     *         if no items should be selected by default
+     * @param listener
+     *         The listener, which should be notified, when an item is clicked, as an instance of
+     *         the type {@link OnMultiChoiceClickListener} or null, if no listener should be
+     *         notified
+     */
+    public final void setMultiChoiceItems(@NonNull final CharSequence[] items,
+                                          @Nullable final boolean[] checkedItems,
+                                          @Nullable final OnMultiChoiceClickListener listener) {
+        ensureNotNull(items, "The items may not be null");
+        listAdapter =
+                new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_multiple_choice,
+                        items);
+        listViewMultiChoiceListener = listener;
+        listViewChoiceMode = ListView.CHOICE_MODE_MULTIPLE;
+        checkedListItems = checkedItems;
+        customView = null;
+        customViewId = -1;
+        adaptContentView();
+    }
+
+    /**
+     * Sets the selectable items, which should be shown by the dialog. Multiple items can be
+     * selected at once.
+     *
+     * @param resourceId
+     *         The resource id of the items, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid array resource
+     * @param checkedItems
+     *         An array, which contains, whether the items, which correspond to the corresponding
+     *         indices, should be selected by default, or not, as a {@link Boolean} array or null,
+     *         if no items should be selected by default
+     * @param listener
+     *         The listener, which should be notified, when an item is clicked, as an instance of
+     *         the type {@link OnMultiChoiceClickListener} or null, if no listener should be
+     *         notified
+     */
+    public final void setMultiChoiceItems(@ArrayRes final int resourceId,
+                                          @Nullable final boolean[] checkedItems,
+                                          @Nullable final OnMultiChoiceClickListener listener) {
+        setMultiChoiceItems(getContext().getResources().getTextArray(resourceId), checkedItems,
+                listener);
+    }
+
+    /**
+     * Sets the listener, which should be notified, when an item, which is shown by the dialog is
+     * selected.
+     *
+     * @param listener
+     *         The listener, which should be set, as an instance of the type {@link
+     *         OnItemSelectedListener} or null, if no listener should be notified
+     */
+    public final void setOnItemSelectedListener(@Nullable final OnItemSelectedListener listener) {
+        listViewItemSelectedListener = listener;
+
+        if (listView != null) {
+            listView.setOnItemSelectedListener(listViewItemSelectedListener);
+        }
     }
 
     /**
      * Returns the message of the dialog.
      *
      * @return The message of the dialog as an instance of the type {@link CharSequence} or null, if
-     * no message is shown or if the dialog has not been shown yet
+     * no message has been set
      */
     public final CharSequence getMessage() {
-        return (messageTextView != null && messageTextView.getVisibility() == View.VISIBLE) ?
-                messageTextView.getText() : null;
+        return message;
     }
 
     /**
@@ -2298,20 +2323,8 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      *         null, if no message should be shown
      */
     public final void setMessage(@Nullable final CharSequence message) {
-        if (messageTextView != null) {
-            messageTextView.setText(message);
-            messageTextView
-                    .setVisibility(!TextUtils.isEmpty(getMessage()) ? View.VISIBLE : View.GONE);
-        }
-
-        if (titleContainer != null) {
-            LinearLayout.LayoutParams layoutParams =
-                    (LinearLayout.LayoutParams) titleContainer.getLayoutParams();
-            layoutParams.bottomMargin = !TextUtils.isEmpty(getMessage()) ?
-                    getContext().getResources()
-                            .getDimensionPixelSize(R.dimen.dialog_content_spacing) : 0;
-            titleContainer.setLayoutParams(layoutParams);
-        }
+        this.message = message;
+        adaptMessage();
     }
 
     /**
@@ -2329,42 +2342,56 @@ public class MaterialDialog extends Dialog implements DialogInterface {
      * Returns the title of the dialog.
      *
      * @return The title of the dialog as an instance of the type {@link CharSequence} or null, if
-     * no title is shown or if the dialog has not been shown yet
+     * no title has been set
      */
     public final CharSequence getTitle() {
-        return titleTextView != null ? titleTextView.getText() : null;
+        return title;
     }
 
     @Override
     public final void setTitle(@Nullable final CharSequence title) {
         super.setTitle(title);
-
-        if (titleTextView != null) {
-            titleTextView.setText(title);
-        }
-
-        if (titleContainer != null) {
-            titleContainer.setVisibility(
-                    (!TextUtils.isEmpty(getTitle()) || getIcon() != null) ? View.VISIBLE :
-                            View.GONE);
-        }
+        this.title = title;
+        adaptTitle();
     }
 
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setAttributes(createLayoutParameters());
-        rootView = (ViewGroup) findViewById(R.id.root);
-        positiveButton = (Button) findViewById(android.R.id.button1);
-        negativeButton = (Button) findViewById(android.R.id.button2);
-        neutralButton = (Button) findViewById(android.R.id.button3);
-        listView = (ListView) findViewById(android.R.id.list);
-        titleContainer = (ViewGroup) findViewById(R.id.title_container);
-        View titleView = findViewById(android.R.id.title);
-        titleTextView =
-                (titleView != null && titleView instanceof TextView) ? (TextView) titleView : null;
-        messageTextView = (TextView) findViewById(android.R.id.message);
-        contentContainer = (ViewGroup) findViewById(R.id.content_container);
+        inflateLayout();
+        inflateTitleView();
+        inflateContentView();
+        inflateButtonBar();
+        setContentView(rootView);
+        adaptTitle();
+        adaptTitleColor();
+        adaptIcon();
+        adaptMessage();
+        adaptMessageColor();
+        adaptBackground();
+        adaptItemColor();
+        adaptItemControlColor();
+        adaptButtonTextColor();
+        adaptPositiveButton();
+        adaptNeutralButton();
+        adaptNegativeButton();
+    }
+
+    @Override
+    public final void onStop() {
+        super.onStop();
+        rootView = null;
+        titleContainer = null;
+        titleTextView = null;
+        messageTextView = null;
+        contentRootView = null;
+        contentContainer = null;
+        listView = null;
+        buttonBarContainer = null;
+        positiveButton = null;
+        negativeButton = null;
+        neutralButton = null;
     }
 
 }
