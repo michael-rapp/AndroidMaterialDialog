@@ -1,5 +1,14 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.2.1 (Mar. 15th 2016)
+
+A minor release, which introduces the following changes:
+
+- When setting a `MaterialDialog`'s item control color, the color is also used when no custom item color has been set.
+- Updated dependency "AndroidUtil" to version 1.4.4.
+- Updated AppCompat support library to version 23.2.1.
+- Minor changes of the example app.
+
 ## Version 3.2.0 (Mar. 15th 2016)
 
 A feature release, which introduces the following changes:
