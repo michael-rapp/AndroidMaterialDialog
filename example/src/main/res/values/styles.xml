@@ -16,9 +16,16 @@ License.
 <resources>
 
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">#ffd64937</item>
-        <item name="colorPrimaryDark">#ffbb4030</item>
-        <item name="colorAccent">#ffd64937</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="alertDialogTheme">@style/DialogTheme</item>
+    </style>
+
+    <style name="DialogTheme" parent="@style/Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
     </style>
 
 </resources>
