@@ -1,5 +1,13 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.2.0 (Mar. 15th 2016)
+
+A feature release, which introduces the following changes:
+
+- The width of dialogs on smartphones has been increased. It is now equal to the width of the Android SDK's `AlertDialog`.
+- The setter and getter methods of a `MaterialDialog` can now be used even if the dialog has not been shown yet.
+- Added the dialog, which is validated by an implementation of the interface `MaterialDialog.Validator`, as a parameter to its `validate`-method.
+
 ## Version 3.1.1 (Feb. 24th 2016)
 
 A minor release, which introduces the following changes:
