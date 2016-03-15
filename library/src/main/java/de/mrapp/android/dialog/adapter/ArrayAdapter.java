@@ -231,7 +231,7 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
     public final View getView(final int position, final View convertView, final ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
 
-        if (getItemColor() != -1) {
+        if (getItemColor() != -1 || getItemControlColor() != -1) {
             TextView textView = null;
 
             if (textViewResourceId != -1) {
@@ -247,7 +247,9 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
             }
 
             if (textView != null) {
-                textView.setTextColor(getItemColor());
+                if (getItemColor() != -1) {
+                    textView.setTextColor(getItemColor());
+                }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN &&
                         getItemControlColor() != -1 && textView instanceof CheckedTextView) {
