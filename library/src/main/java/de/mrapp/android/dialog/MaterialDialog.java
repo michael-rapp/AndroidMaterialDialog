@@ -996,9 +996,12 @@ public class MaterialDialog extends Dialog implements DialogInterface {
         /**
          * Validates the content of a dialog.
          *
+         * @param dialog
+         *         The dialog, whose content should be validated, as an instance of the class {@link
+         *         MaterialDialog}. The dialog may not be null
          * @return True, if the content of the dialog is valid, false otherwise
          */
-        boolean validate();
+        boolean validate(@NonNull MaterialDialog dialog);
 
     }
 

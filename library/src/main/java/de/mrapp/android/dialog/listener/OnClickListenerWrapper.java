@@ -75,7 +75,7 @@ public class OnClickListenerWrapper extends AbstractListenerWrapper
 
         if (validate) {
             for (Validator validator : getDialog().getValidators()) {
-                if (!validator.validate()) {
+                if (!validator.validate(getDialog())) {
                     return;
                 }
             }
