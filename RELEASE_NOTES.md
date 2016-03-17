@@ -1,5 +1,12 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.2.2 (Mar. 17th 2016)
+
+A minor release, which introduces the following changes:
+
+- Updated dependency "AndroidUtil" to version 1.4.5.
+- Fixed some deprecation warnings.
+
 ## Version 3.2.1 (Mar. 15th 2016)
 
 A minor release, which introduces the following changes:
