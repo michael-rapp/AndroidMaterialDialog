@@ -57,6 +57,7 @@ import de.mrapp.android.dialog.listener.OnItemClickListenerWrapper;
 import de.mrapp.android.dialog.listener.OnMultiChoiceClickListenerWrapper;
 import de.mrapp.android.util.DisplayUtil.DeviceType;
 import de.mrapp.android.util.DisplayUtil.Orientation;
+import de.mrapp.android.util.ViewUtil;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 import static de.mrapp.android.util.DisplayUtil.getDeviceType;
@@ -1478,10 +1479,9 @@ public class MaterialDialog extends Dialog implements DialogInterface {
     /**
      * Adapts the dialog's background.
      */
-    @SuppressWarnings("deprecation")
     private void adaptBackground() {
         if (rootView != null) {
-            rootView.setBackgroundDrawable(background);
+            ViewUtil.setBackground(rootView, background);
         }
     }
 

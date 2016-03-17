@@ -24,6 +24,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import de.mrapp.android.dialog.MaterialDialog;
@@ -264,7 +265,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
      * @return The builder, which has been created, as an instance of the class {@link
      * MaterialDialog.Builder}
      */
-    @SuppressWarnings("deprecation")
     private MaterialDialog.Builder createDialogBuilder() {
         MaterialDialog.Builder dialogBuilder = new MaterialDialog.Builder(getActivity());
 
@@ -277,7 +277,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         }
 
         if (shouldIconBeShown()) {
-            dialogBuilder.setIcon(getResources().getDrawable(android.R.drawable.ic_dialog_alert));
+            dialogBuilder.setIcon(
+                    ContextCompat.getDrawable(getActivity(), android.R.drawable.ic_dialog_alert));
         }
 
         if (shouldNegativeButtonBeShown()) {
@@ -306,7 +307,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             dialogBuilder.setItemControlColor(invertedAccentColor);
             dialogBuilder.setButtonTextColor(invertedAccentColor);
             dialogBuilder.setBackgroundColor(
-                    getActivity().getResources().getColor(android.R.color.background_dark));
+                    ContextCompat.getColor(getActivity(), android.R.color.background_dark));
         }
 
         return dialogBuilder;
