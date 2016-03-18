@@ -21,7 +21,6 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.ArrayRes;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
@@ -1234,19 +1233,16 @@ public class MaterialDialog extends Dialog implements DialogInterface {
         titleContainer.removeAllViews();
 
         if (customTitleView != null) {
-            titleContainer.addView(customTitleView, ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            titleContainer.addView(customTitleView);
         } else if (customTitleViewId != -1) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             View view = layoutInflater.inflate(customTitleViewId, titleContainer, false);
-            titleContainer.addView(view, ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            titleContainer.addView(view);
         } else {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             View view =
                     layoutInflater.inflate(R.layout.material_dialog_title, titleContainer, false);
-            titleContainer.addView(view, ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            titleContainer.addView(view);
         }
 
         View titleView = titleContainer.findViewById(android.R.id.title);
@@ -1265,20 +1261,17 @@ public class MaterialDialog extends Dialog implements DialogInterface {
 
         if (customView != null) {
             showContentContainer();
-            contentContainer.addView(customView, ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            contentContainer.addView(customView);
         } else if (customViewId != -1) {
             showContentContainer();
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             View view = layoutInflater.inflate(customViewId, contentContainer, false);
-            contentContainer.addView(view, ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            contentContainer.addView(view);
         } else {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             View view = layoutInflater
                     .inflate(R.layout.material_dialog_list_view, contentContainer, false);
-            contentContainer.addView(view, ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            contentContainer.addView(view);
         }
 
         showListView();
@@ -2359,8 +2352,8 @@ public class MaterialDialog extends Dialog implements DialogInterface {
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public final void onStart() {
+        super.onStart();
         getWindow().setAttributes(createLayoutParameters());
         inflateLayout();
         inflateTitleView();
