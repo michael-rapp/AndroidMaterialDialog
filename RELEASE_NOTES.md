@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.2.3 (Mar. 18th 2016)
+
+A minor release, which introduces the following changes:
+
+- When using custom content or title views, the views' width and height are not overridden anymore.
+
 ## Version 3.2.2 (Mar. 17th 2016)
 
 A minor release, which introduces the following changes:
