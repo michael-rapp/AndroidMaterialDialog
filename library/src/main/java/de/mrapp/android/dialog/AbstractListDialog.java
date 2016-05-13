@@ -482,7 +482,7 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog {
 
     /**
      * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
-     * on pre-Lollipop devices and may contains list items.
+     * on pre-Lollipop devices and may contain list items.
      *
      * @param context
      *         The context, which should be used by the dialog, as an instance of the class {@link
