@@ -772,13 +772,6 @@ public abstract class AbstractMaterialDialog extends Dialog {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             View view = layoutInflater.inflate(customViewId, contentContainer, false);
             contentContainer.addView(view);
-        } else {
-            View view = onCreateContentView(contentContainer);
-
-            if (view != null) {
-                contentContainer.addView(view);
-                showContentContainer();
-            }
         }
     }
 
@@ -980,19 +973,6 @@ public abstract class AbstractMaterialDialog extends Dialog {
     protected final ViewGroup getContentContainer() {
         return contentContainer;
     }
-
-    /**
-     * The method, which is invoked on subclasses in order to inflate the view, which should be
-     * shown as the dialog content. The method is only invoked, if no custom view has been set.
-     *
-     * @param parent
-     *         The parent of the view, which should be inflated, as an instance of the class {@link
-     *         ViewGroup}
-     * @return The view, which has been inflated, as an instance of the class {@link View}, or null,
-     * if no view should be shown as the dialog's content
-     */
-    @Nullable
-    protected abstract View onCreateContentView(@NonNull final ViewGroup parent);
 
     /**
      * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
@@ -1201,8 +1181,7 @@ public abstract class AbstractMaterialDialog extends Dialog {
      *         The view, which should be set, as an instance of the class {@link View} or null, if
      *         no custom view should be shown
      */
-    @CallSuper
-    public void setView(@Nullable final View view) {
+    public final void setView(@Nullable final View view) {
         customView = view;
         customViewId = -1;
         adaptContentView();
@@ -1215,8 +1194,7 @@ public abstract class AbstractMaterialDialog extends Dialog {
      *         The resource id of the view, which should be set, as an {@link Integer} value. The
      *         resource id must correspond to a valid layout resource
      */
-    @CallSuper
-    public void setView(@LayoutRes final int resourceId) {
+    public final void setView(@LayoutRes final int resourceId) {
         customView = null;
         customViewId = resourceId;
         adaptContentView();

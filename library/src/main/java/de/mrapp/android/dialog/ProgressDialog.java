@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.view.View;
 import android.view.ViewGroup;
@@ -313,12 +312,6 @@ public class ProgressDialog extends AbstractButtonBarDialog {
     public final void onStop() {
         super.onStop();
         progressBar = null;
-    }
-
-    @Nullable
-    @Override
-    protected final View onCreateContentView(@NonNull final ViewGroup parent) {
-        return null;
     }
 
 }
