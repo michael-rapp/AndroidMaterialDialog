@@ -420,24 +420,13 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
      * Adapts the visibility of the parent view, which contains the dialog's buttons.
      */
     private void adaptButtonBarContainerVisibility() {
-        boolean show =
-                !TextUtils.isEmpty(positiveButtonText) || !TextUtils.isEmpty(neutralButtonText) ||
-                        !TextUtils.isEmpty(negativeButtonText);
-
         if (buttonBarContainer != null) {
-            buttonBarContainer.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
-
-        if (getContentRootView() != null) {
-            int paddingLeft = show ? getContext().getResources()
-                    .getDimensionPixelSize(R.dimen.dialog_content_padding_left) : 0;
-            int paddingTop = show ? getContext().getResources()
-                    .getDimensionPixelSize(R.dimen.dialog_content_padding_top) : 0;
-            int paddingRight = show ? getContext().getResources()
-                    .getDimensionPixelSize(R.dimen.dialog_content_padding_right) : 0;
-            int paddingBottom = show ? getContext().getResources()
-                    .getDimensionPixelSize(R.dimen.dialog_content_padding_bottom) : 0;
-            getContentRootView().setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+            if (TextUtils.isEmpty(positiveButtonText) && TextUtils.isEmpty(neutralButtonText) &&
+                    TextUtils.isEmpty(negativeButtonText)) {
+                buttonBarContainer.setVisibility(View.GONE);
+            } else {
+                buttonBarContainer.setVisibility(View.VISIBLE);
+            }
         }
     }
 
