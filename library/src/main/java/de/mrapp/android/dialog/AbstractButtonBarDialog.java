@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,6 +71,36 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
             if (color != -1) {
                 setButtonTextColor(color);
             }
+        }
+
+        /**
+         * Obtains, whether the divider, which is located above the dialog's buttons, should be
+         * shown, or not, from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the visibility should be obtained from, as an
+         *         {@link Integer} value
+         */
+        private void obtainShowButtonBarDivider(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogShowButtonBarDivider});
+            showButtonBarDivider(typedArray.getBoolean(0, false));
+        }
+
+        /**
+         * Obtains the color of the divider, which is located above the dialog's buttons, from a
+         * specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the color should be obtained from, as an {@link
+         *         Integer} value
+         */
+        private void obtainButtonBarDividerColor(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogButtonBarDividerColor});
+            int defaultColor =
+                    ContextCompat.getColor(getContext(), R.color.button_bar_divider_color);
+            setButtonBarDividerColor(typedArray.getColor(0, defaultColor));
         }
 
         /**
@@ -245,11 +276,42 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
             return self();
         }
 
+        /**
+         * Sets, whether the divider, which is located above the buttons of the dialog, which is
+         * created by the builder, should be shown, or not.
+         *
+         * @param show
+         *         True, if the divider, which is located above the dialog's buttons, should be
+         *         show, false otherwise
+         * @return The builder, the method has been called upon, as an instance of the generic type
+         * BuilderType
+         */
+        public final BuilderType showButtonBarDivider(final boolean show) {
+            getDialog().showButtonBarDivider(show);
+            return self();
+        }
+
+        /**
+         * Sets the color of the divider, which is located above the buttons of the dialog, which is
+         * created by the builder.
+         *
+         * @param color
+         *         The color, which should be set, as an {@link Integer} value
+         * @return The builder, the method has been called upon, as an instance of the generic type
+         * BuilderType
+         */
+        public final BuilderType setButtonBarDividerColor(final int color) {
+            getDialog().setButtonBarDividerColor(color);
+            return self();
+        }
+
         @CallSuper
         @Override
         protected void obtainStyledAttributes(@StyleRes final int themeResourceId) {
             super.obtainStyledAttributes(themeResourceId);
             obtainButtonTextColor(themeResourceId);
+            obtainShowButtonBarDivider(themeResourceId);
+            obtainButtonBarDividerColor(themeResourceId);
         }
 
     }
@@ -273,6 +335,11 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
      * The neutral button of the dialog.
      */
     private Button neutralButton;
+
+    /**
+     * The divider, which is shown above the dialog's buttons.
+     */
+    private View buttonBarDivider;
 
     /**
      * The color of the button texts of the dialog.
@@ -315,6 +382,17 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
     private OnClickListener positiveButtonListener;
 
     /**
+     * True, if the divider, which is located above the dialog's buttons, is shown, false
+     * otherwise.
+     */
+    private boolean showButtonBarDivider;
+
+    /**
+     * The color of the divider, which is located above the dialog's buttons.
+     */
+    private int buttonBarDividerColor;
+
+    /**
      * Inflates the layout, which is used to show the dialog's buttons.
      */
     private void inflateButtonBar() {
@@ -330,6 +408,7 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
         positiveButton = (Button) view.findViewById(android.R.id.button1);
         negativeButton = (Button) view.findViewById(android.R.id.button2);
         neutralButton = (Button) view.findViewById(android.R.id.button3);
+        buttonBarDivider = view.findViewById(R.id.button_bar_divider);
     }
 
     /**
@@ -343,6 +422,8 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
             adaptNeutralButton();
             adaptButtonTextColor();
             adaptButtonBarContainerVisibility();
+            adaptButtonBarDividerVisibility();
+            adaptButtonBarDividerColor();
         }
     }
 
@@ -427,6 +508,24 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
             } else {
                 buttonBarContainer.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+    /**
+     * Adapts the visibility of the divider, which is shown above the dialog's buttons.
+     */
+    private void adaptButtonBarDividerVisibility() {
+        if (buttonBarDivider != null) {
+            buttonBarDivider.setVisibility(showButtonBarDivider ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    /**
+     * Adapts the color of the divider, which is shown above the dialog's buttons.
+     */
+    private void adaptButtonBarDividerColor() {
+        if (buttonBarDivider != null) {
+            buttonBarDivider.setBackgroundColor(buttonBarDividerColor);
         }
     }
 
@@ -625,6 +724,50 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
         adaptButtonTextColor();
     }
 
+    /**
+     * Returns, whether the divider, which is located above the dialog's buttons, is shown, or not.
+     *
+     * @return True, if the divider, which is located above the dialog's buttons, is shown, false
+     * otherwise
+     */
+    public final boolean isButtonBarDividerShown() {
+        return showButtonBarDivider;
+    }
+
+    /**
+     * Sets, whether the divider, which is located above the dialog's buttons, should be shown, or
+     * not.
+     *
+     * @param show
+     *         True, if the divider, which is located above the dialog's buttons, should be show,
+     *         false otherwise
+     */
+    public final void showButtonBarDivider(final boolean show) {
+        this.showButtonBarDivider = show;
+        adaptButtonBarDividerVisibility();
+    }
+
+    /**
+     * Returns the color of the divider, which is located above the dialog's buttons.
+     *
+     * @return The color of the divider, which is located above the dialog's buttons, as an {@link
+     * Integer} value
+     */
+    public final int getButtonBarDividerColor() {
+        return buttonBarDividerColor;
+    }
+
+    /**
+     * Sets the color of the divider, which is located above the dialog's buttons.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    public final void setButtonBarDividerColor(final int color) {
+        this.buttonBarDividerColor = color;
+        adaptButtonBarDividerColor();
+    }
+
     @CallSuper
     @Override
     public void onStart() {
@@ -634,6 +777,8 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
         adaptPositiveButton();
         adaptNeutralButton();
         adaptNegativeButton();
+        adaptButtonBarDividerVisibility();
+        adaptButtonBarDividerColor();
     }
 
     @CallSuper
@@ -644,6 +789,7 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
         positiveButton = null;
         negativeButton = null;
         neutralButton = null;
+        buttonBarDivider = null;
     }
 
 }

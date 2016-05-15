@@ -79,6 +79,11 @@ License.
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/dialog_buttons_preference_category_title">
         <CheckBoxPreference
+            android:defaultValue="@bool/show_button_bar_divider_preference_default_value"
+            android:key="@string/show_button_bar_divider_preference_key"
+            android:summary="@string/show_button_bar_divider_preference_summary"
+            android:title="@string/show_button_bar_divider_preference_title"/>
+        <CheckBoxPreference
             android:defaultValue="@bool/show_negative_button_preference_default_value"
             android:key="@string/show_negative_button_preference_key"
             android:summary="@string/show_negative_button_preference_summary"

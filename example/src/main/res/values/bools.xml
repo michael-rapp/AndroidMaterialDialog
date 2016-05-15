@@ -19,6 +19,7 @@ License.
     <bool name="show_dialog_header_preference_default_value">false</bool>
     <bool name="show_dialog_icon_preference_default_value">false</bool>
     <bool name="show_dialog_message_preference_default_value">true</bool>
+    <bool name="show_button_bar_divider_preference_default_value">false</bool>
     <bool name="show_negative_button_preference_default_value">true</bool>
     <bool name="show_neutral_button_preference_default_value">false</bool>
     <bool name="show_positive_button_preference_default_value">true</bool>

@@ -16,5 +16,6 @@ License.
 <resources>
 
     <color name="header_divider_color">#31000000</color>
+    <color name="button_bar_divider_color">#ffcecece</color>
 
 </resources>

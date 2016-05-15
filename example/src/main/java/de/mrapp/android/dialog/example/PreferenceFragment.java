@@ -333,6 +333,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         }
 
         builder.stackButtons(shouldStackButtons());
+        builder.showButtonBarDivider(shouldButtonBarDividerBeShown());
 
         if (shouldColorsBeInverted()) {
             int invertedPrimaryColor = invertColor(getThemeColor(R.attr.colorPrimary));
@@ -601,6 +602,21 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         String key = getString(R.string.invert_colors_preference_key);
         boolean defaultValue =
                 getResources().getBoolean(R.bool.invert_colors_preference_default_value);
+        return sharedPreferences.getBoolean(key, defaultValue);
+    }
+
+    /**
+     * Returns, whether the divider, which is located above the dialog's buttons, should be shown,
+     * or not.
+     *
+     * @return True, if the divider should be shown, false otherwise
+     */
+    private boolean shouldButtonBarDividerBeShown() {
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String key = getString(R.string.show_button_bar_divider_preference_key);
+        boolean defaultValue =
+                getResources().getBoolean(R.bool.show_button_bar_divider_preference_default_value);
         return sharedPreferences.getBoolean(key, defaultValue);
     }
 
