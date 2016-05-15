@@ -23,7 +23,8 @@ License.
         android:id="@android:id/message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:textSize="@dimen/dialog_message_text_size_normal"/>
 
     <de.mrapp.android.view.CircularProgressBar
         android:id="@+id/progress_bar"

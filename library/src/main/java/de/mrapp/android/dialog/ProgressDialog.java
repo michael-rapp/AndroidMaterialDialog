@@ -5,6 +5,8 @@ import android.content.res.TypedArray;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
+import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -327,6 +329,7 @@ public class ProgressDialog extends AbstractButtonBarDialog {
             adaptProgressBarColor();
             adaptProgressBarSize();
             adaptProgressBarThickness();
+            adaptMessageTextSize();
         }
     }
 
@@ -357,6 +360,23 @@ public class ProgressDialog extends AbstractButtonBarDialog {
     private void adaptProgressBarThickness() {
         if (progressBar != null) {
             progressBar.setThickness(progressBarThickness);
+        }
+    }
+
+    /**
+     * Adapts the text size of the dialog's message, depending on whether a title is shown.
+     */
+    private void adaptMessageTextSize() {
+        if (getMessageTextView() != null) {
+            if (TextUtils.isEmpty(getTitle())) {
+                getMessageTextView().setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getContext().getResources()
+                                .getDimensionPixelSize(R.dimen.dialog_message_text_size_large));
+            } else {
+                getMessageTextView().setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getContext().getResources()
+                                .getDimensionPixelSize(R.dimen.dialog_message_text_size_normal));
+            }
         }
     }
 
