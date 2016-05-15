@@ -944,6 +944,16 @@ public abstract class AbstractMaterialDialog extends Dialog {
     }
 
     /**
+     * Returns the text view, which is used to show the dialog's title.
+     *
+     * @return The text view, which is used to show the dialog's title, as an instance of the class
+     * {@link TextView}
+     */
+    protected final TextView getTitleTextView() {
+        return titleTextView;
+    }
+
+    /**
      * Returns the parent view of the view, which is used to show the dialog's message.
      *
      * @return The parent view of the view, which is used to show the dialog's message, as an
@@ -951,6 +961,16 @@ public abstract class AbstractMaterialDialog extends Dialog {
      */
     protected final ViewGroup getMessageContainer() {
         return messageContainer;
+    }
+
+    /**
+     * Returns the text view, which is used to show the dialog's message.
+     *
+     * @return The text view, which is used to show the dialog's message, as an instance of the
+     * class {@link TextView}
+     */
+    protected final TextView getMessageTextView() {
+        return messageTextView;
     }
 
     /**
