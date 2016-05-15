@@ -233,15 +233,6 @@ public class ProgressDialog extends AbstractButtonBarDialog {
         setCustomMessage(R.layout.progress_dialog);
     }
 
-    @Override
-    public final void onStart() {
-        super.onStart();
-        progressBar = (CircularProgressBar) findViewById(R.id.progress_bar);
-        adaptProgressBarColor();
-        adaptProgressBarSize();
-        adaptProgressBarThickness();
-    }
-
     /**
      * Returns the color of the dialog's progress bar.
      *
@@ -303,6 +294,18 @@ public class ProgressDialog extends AbstractButtonBarDialog {
     public final void setProgressBarThickness(final int thickness) {
         ensureAtLeast(thickness, 1, "The thickness must be at least 1");
         this.progressBarThickness = thickness;
+        adaptProgressBarThickness();
+    }
+
+    @Override
+    public final void onStart() {
+        super.onStart();
+        View progressView = getMessageContainer().findViewById(R.id.progress_bar);
+        progressBar =
+                progressView instanceof CircularProgressBar ? (CircularProgressBar) progressView :
+                        null;
+        adaptProgressBarColor();
+        adaptProgressBarSize();
         adaptProgressBarThickness();
     }
 
