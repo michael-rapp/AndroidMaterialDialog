@@ -28,5 +28,11 @@ License.
     <attr name="materialDialogProgressBarColor" format="color"/>
     <attr name="materialDialogProgressBarSize" format="dimension"/>
     <attr name="materialDialogProgressBarThickness" format="dimension"/>
+    <attr name="materialDialogProgressBarPosition" format="enum">
+        <enum name="left" value="0"/>
+        <enum name="top" value="1"/>
+        <enum name="right" value="2"/>
+        <enum name="bottom" value="3"/>
+    </attr>
 
 </resources>

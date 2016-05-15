@@ -12,6 +12,7 @@ import de.mrapp.android.util.ThemeUtil;
 import de.mrapp.android.view.CircularProgressBar;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
+import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * A dialog, which is designed according to Android 5's Material Design guidelines even on
@@ -25,6 +26,75 @@ import static de.mrapp.android.util.Condition.ensureAtLeast;
  * @since 3.2.0
  */
 public class ProgressDialog extends AbstractButtonBarDialog {
+
+    /**
+     * Contains all possible positions of the dialog's progress bar.
+     */
+    public enum ProgressBarPosition {
+
+        /**
+         * When the progress bar is located to the left of the dialog's message.
+         */
+        LEFT(0),
+
+        /**
+         * When the progress bar is located above the dialog's message.
+         */
+        TOP(1),
+
+        /**
+         * When the progress bar is located to the right of the dialog's message.
+         */
+        RIGHT(2),
+
+        /**
+         * When the progress bar is located below the dialog's message.
+         */
+        BOTTOM(3);
+
+        /**
+         * The position's value.
+         */
+        private int value;
+
+        /**
+         * Creates a new position.
+         *
+         * @param value
+         *         The position's value
+         */
+        ProgressBarPosition(final int value) {
+            this.value = value;
+        }
+
+        /**
+         * Returns the position's value.
+         *
+         * @return The position's value as an {@link Integer} value
+         */
+        public final int getValue() {
+            return value;
+        }
+
+        /**
+         * Creates and returns the position, which corresponds to a specific value.
+         *
+         * @param value
+         *         The value of the position, which should be created
+         * @return The position, which corresponds to the given value, as a value of the enum {@link
+         * ProgressBarPosition}
+         */
+        public static ProgressBarPosition fromValue(final int value) {
+            for (ProgressBarPosition position : values()) {
+                if (position.getValue() == value) {
+                    return position;
+                }
+            }
+
+            throw new IllegalArgumentException("Invalid enum value: " + value);
+        }
+
+    }
 
     /**
      * A builder, which allows to create and show dialogs, which are designed according to Android
@@ -78,6 +148,21 @@ public class ProgressDialog extends AbstractButtonBarDialog {
             int defaultHeight = getContext().getResources()
                     .getDimensionPixelSize(R.dimen.circular_progress_bar_thickness_normal);
             setProgressBarThickness(typedArray.getDimensionPixelSize(0, defaultHeight));
+        }
+
+        /**
+         * Obtains the position of the dialog's progress bar from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the position should be obtained from, as an {@link
+         *         Integer} value
+         */
+        private void obtainProgressBarPosition(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogProgressBarPosition});
+            ProgressBarPosition defaultPosition = ProgressBarPosition.LEFT;
+            setProgressBarPosition(ProgressBarPosition
+                    .fromValue(typedArray.getInt(0, defaultPosition.getValue())));
         }
 
         /**
@@ -150,6 +235,21 @@ public class ProgressDialog extends AbstractButtonBarDialog {
             return self();
         }
 
+        /**
+         * Sets the position of the progress bar of the dialog, which is created by the builder.
+         *
+         * @param position
+         *         The position, which should be set, as a value of the enum {@link
+         *         ProgressBarPosition}. The position may either be <code>LEFT</code>,
+         *         <code>TOP</code>, <code>RIGHT</code> or <code>BOTTOM</code>
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setProgressBarPosition(@NonNull final ProgressBarPosition position) {
+            getDialog().setProgressBarPosition(position);
+            return self();
+        }
+
         @Override
         protected final ProgressDialog onCreateDialog(@NonNull final Context context,
                                                       @StyleRes final int themeResourceId) {
@@ -162,6 +262,7 @@ public class ProgressDialog extends AbstractButtonBarDialog {
             obtainProgressBarColor(themeResourceId);
             obtainProgressBarSize(themeResourceId);
             obtainProgressBarThickness(themeResourceId);
+            obtainProgressBarPosition(themeResourceId);
         }
 
     }
@@ -185,6 +286,49 @@ public class ProgressDialog extends AbstractButtonBarDialog {
      * The thickness of the dialog's progress bar.
      */
     private int progressBarThickness;
+
+    /**
+     * The position of the dialog's progress bar.
+     */
+    private ProgressBarPosition progressBarPosition;
+
+    /**
+     * Returns the resource id of the layout, which should be used as the dialog's custom message,
+     * depending on the position of the dialog's progress bar.
+     *
+     * @return The resource id of the layout, which should be used as the diaog's custom message, as
+     * an {@link Integer} value
+     */
+    private int getCustomMessageId() {
+        switch (progressBarPosition) {
+            case LEFT:
+                return R.layout.progress_dialog_left;
+            case TOP:
+                return R.layout.progress_dialog_top;
+            case RIGHT:
+                return R.layout.progress_dialog_right;
+            case BOTTOM:
+                return R.layout.progress_dialog_bottom;
+            default:
+                return R.layout.progress_dialog_left;
+        }
+    }
+
+    /**
+     * Adapts the dialog's progress bar.
+     */
+    public final void adaptProgressBar() {
+        setCustomMessage(getCustomMessageId());
+
+        if (getMessageContainer() != null) {
+            View progressView = getMessageContainer().findViewById(R.id.progress_bar);
+            progressBar = progressView instanceof CircularProgressBar ?
+                    (CircularProgressBar) progressView : null;
+            adaptProgressBarColor();
+            adaptProgressBarSize();
+            adaptProgressBarThickness();
+        }
+    }
 
     /**
      * Adapts the color of the dialog's circular progress bar.
@@ -229,7 +373,6 @@ public class ProgressDialog extends AbstractButtonBarDialog {
      */
     protected ProgressDialog(@NonNull final Context context, @StyleRes final int themeResourceId) {
         super(context, themeResourceId);
-        setCustomMessage(R.layout.progress_dialog);
     }
 
     /**
@@ -296,16 +439,35 @@ public class ProgressDialog extends AbstractButtonBarDialog {
         adaptProgressBarThickness();
     }
 
+    /**
+     * Returns the position of the dialog's progress bar.
+     *
+     * @return The position of the dialog's progress bar as a value of the enum {@link
+     * ProgressBarPosition}. The position may either be <code>LEFT</code>, <code>TOP</code>,
+     * <code>RIGHT</code> or <code>BOTTOM</code>
+     */
+    public final ProgressBarPosition getProgressBarPosition() {
+        return progressBarPosition;
+    }
+
+    /**
+     * Sets the position of the dialog's progress bar.
+     *
+     * @param position
+     *         The position, which should be set, as a value of the enum {@link
+     *         ProgressBarPosition}. The position may either be <code>LEFT</code>, <code>TOP</code>,
+     *         <code>RIGHT</code> or <code>BOTTOM</code>
+     */
+    public final void setProgressBarPosition(@NonNull final ProgressBarPosition position) {
+        ensureNotNull(position, "The position may not be null");
+        this.progressBarPosition = position;
+        adaptProgressBar();
+    }
+
     @Override
     public final void onStart() {
         super.onStart();
-        View progressView = getMessageContainer().findViewById(R.id.progress_bar);
-        progressBar =
-                progressView instanceof CircularProgressBar ? (CircularProgressBar) progressView :
-                        null;
-        adaptProgressBarColor();
-        adaptProgressBarSize();
-        adaptProgressBarThickness();
+        adaptProgressBar();
     }
 
     @Override
