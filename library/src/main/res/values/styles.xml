@@ -15,8 +15,13 @@ License.
 -->
 <resources>
 
-    <color name="header_divider_color">#31000000</color>
-    <color name="button_bar_divider_color_light">#ffcecece</color>
-    <color name="button_bar_divider_color_dark">#ff757575</color>
+    <style name="MaterialDialog.Light" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="materialDialogButtonBarDividerColor">@color/button_bar_divider_color_light
+        </item>
+    </style>
+
+    <style name="MaterialDialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="materialDialogButtonBarDividerColor">@color/button_bar_divider_color_dark</item>
+    </style>
 
 </resources>

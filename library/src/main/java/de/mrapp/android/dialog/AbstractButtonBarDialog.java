@@ -99,7 +99,7 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
             TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                     new int[]{R.attr.materialDialogButtonBarDividerColor});
             int defaultColor =
-                    ContextCompat.getColor(getContext(), R.color.button_bar_divider_color);
+                    ContextCompat.getColor(getContext(), R.color.button_bar_divider_color_light);
             setButtonBarDividerColor(typedArray.getColor(0, defaultColor));
         }
 

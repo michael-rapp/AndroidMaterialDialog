@@ -15,7 +15,9 @@ package de.mrapp.android.dialog.example;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
 /**
@@ -33,6 +35,20 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment, fragment);
         transaction.commit();
+    }
+
+    @Override
+    public final void setTheme(final int resid) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String key = getString(R.string.theme_preference_key);
+        String defaultValue = getString(R.string.theme_preference_default_value);
+        int theme = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
+
+        if (theme != 0) {
+            super.setTheme(R.style.DarkTheme);
+        } else {
+            super.setTheme(R.style.LightTheme);
+        }
     }
 
     @Override

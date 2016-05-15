@@ -17,8 +17,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -29,7 +27,6 @@ import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import de.mrapp.android.dialog.AbstractButtonBarDialog;
-import de.mrapp.android.dialog.AbstractListDialog;
 import de.mrapp.android.dialog.MaterialDialog;
 import de.mrapp.android.dialog.ProgressDialog;
 
@@ -45,6 +42,33 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
      * unselected.
      */
     private Toast toast;
+
+    /**
+     * Initializes the preference, which allows to change the app's theme.
+     */
+    private void initializeThemePreference() {
+        Preference themePreference = findPreference(getString(R.string.theme_preference_key));
+        themePreference.setOnPreferenceChangeListener(createThemeChangeListener());
+    }
+
+    /**
+     * Creates and returns a listener, which allows to adapt the app's theme, when the value of the
+     * corresponding preference has been changed.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * Preference.OnPreferenceChangeListener}
+     */
+    private Preference.OnPreferenceChangeListener createThemeChangeListener() {
+        return new Preference.OnPreferenceChangeListener() {
+
+            @Override
+            public boolean onPreferenceChange(final Preference preference, final Object newValue) {
+                getActivity().recreate();
+                return true;
+            }
+
+        };
+    }
 
     /**
      * Initializes the preference, which allows to show an alert dialog.
@@ -67,8 +91,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-                configureButtonBarDialogBuilder(builder);
+                MaterialDialog.Builder builder =
+                        new MaterialDialog.Builder(getActivity(), getThemeId());
+                configureBuilder(builder);
                 builder.show();
                 return true;
             }
@@ -96,9 +121,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-                configureButtonBarDialogBuilder(builder);
-                configureListDialogBuilder(builder);
+                MaterialDialog.Builder builder =
+                        new MaterialDialog.Builder(getActivity(), getThemeId());
+                configureBuilder(builder);
                 builder.setItems(R.array.list_items, createSingleChoiceListener());
                 builder.show();
                 return true;
@@ -128,9 +153,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-                configureButtonBarDialogBuilder(builder);
-                configureListDialogBuilder(builder);
+                MaterialDialog.Builder builder =
+                        new MaterialDialog.Builder(getActivity(), getThemeId());
+                configureBuilder(builder);
                 builder.setSingleChoiceItems(R.array.list_items, 0, createSingleChoiceListener());
                 builder.show();
                 return true;
@@ -179,9 +204,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-                configureButtonBarDialogBuilder(builder);
-                configureListDialogBuilder(builder);
+                MaterialDialog.Builder builder =
+                        new MaterialDialog.Builder(getActivity(), getThemeId());
+                configureBuilder(builder);
                 builder.setMultiChoiceItems(R.array.list_items, new boolean[]{true, false, false},
                         createMultiChoiceListener());
                 builder.show();
@@ -241,8 +266,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-                configureButtonBarDialogBuilder(builder);
+                MaterialDialog.Builder builder =
+                        new MaterialDialog.Builder(getActivity(), getThemeId());
+                configureBuilder(builder);
                 builder.setView(R.layout.custom_dialog_content);
                 builder.setCustomTitle(R.layout.custom_dialog_title);
                 builder.show();
@@ -274,7 +300,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 ProgressDialog.Builder builder = new ProgressDialog.Builder(getActivity());
-                configureButtonBarDialogBuilder(builder);
+                configureBuilder(builder);
                 builder.show();
                 return true;
             }
@@ -305,8 +331,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
      *         The builder, which should be configured, as an instance of the class {@link
      *         AbstractButtonBarDialog.AbstractBuilder}
      */
-    private void configureButtonBarDialogBuilder(
-            @NonNull final AbstractButtonBarDialog.AbstractBuilder builder) {
+    private void configureBuilder(@NonNull final AbstractButtonBarDialog.AbstractBuilder builder) {
         if (shouldTitleBeShown()) {
             builder.setTitle(getDialogTitle());
         }
@@ -335,38 +360,10 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         builder.stackButtons(shouldStackButtons());
         builder.showButtonBarDivider(shouldButtonBarDividerBeShown());
 
-        if (shouldColorsBeInverted()) {
-            int invertedPrimaryColor = invertColor(getThemeColor(R.attr.colorPrimary));
-            int invertedAccentColor = invertColor(getThemeColor(R.attr.colorAccent));
-            int invertedTextColor = invertColor(getThemeColor(android.R.attr.textColorPrimary));
-            builder.setTitleColor(invertedPrimaryColor);
-            builder.setMessageColor(invertedTextColor);
-            builder.setButtonTextColor(invertedAccentColor);
-            builder.setBackgroundColor(
-                    ContextCompat.getColor(getActivity(), android.R.color.background_dark));
-        }
-
         if (shouldHeaderBeShown()) {
             builder.showHeader(true);
             builder.setHeaderBackground(R.drawable.dialog_header_background);
             builder.setHeaderIcon(R.drawable.dialog_header_icon);
-        }
-    }
-
-    /**
-     * Configures a builder, which allows to create list dialogs, depending on the app's settings.
-     *
-     * @param builder
-     *         The builder, which should be configured, as an instance of the class {@link
-     *         AbstractListDialog.AbstractBuilder}
-     */
-    private void configureListDialogBuilder(
-            @NonNull final AbstractListDialog.AbstractBuilder builder) {
-        if (shouldColorsBeInverted()) {
-            int invertedAccentColor = invertColor(getThemeColor(R.attr.colorAccent));
-            int invertedTextColor = invertColor(getThemeColor(android.R.attr.textColorPrimary));
-            builder.setItemColor(invertedTextColor);
-            builder.setItemControlColor(invertedAccentColor);
         }
     }
 
@@ -591,21 +588,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     }
 
     /**
-     * Returns, whether the colors of all elements of the example dialog should be inverted, or
-     * not.
-     *
-     * @return True, if the colors should be inverted, false otherwise
-     */
-    private boolean shouldColorsBeInverted() {
-        SharedPreferences sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String key = getString(R.string.invert_colors_preference_key);
-        boolean defaultValue =
-                getResources().getBoolean(R.bool.invert_colors_preference_default_value);
-        return sharedPreferences.getBoolean(key, defaultValue);
-    }
-
-    /**
      * Returns, whether the divider, which is located above the dialog's buttons, should be shown,
      * or not.
      *
@@ -635,37 +617,24 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     }
 
     /**
-     * Returns the color of a specific theme attribute.
+     * Returns the resource id of the dialog theme, which should be used.
      *
-     * @param resourceId
-     *         The resource id of the theme attribute
-     * @return The color of the given theme attribute
+     * @return The resource id of the dialog theme, which should be used
      */
-    private int getThemeColor(final int resourceId) {
-        TypedArray typedArray =
-                getActivity().getTheme().obtainStyledAttributes(new int[]{resourceId});
-        return typedArray.getColor(0, 0);
-    }
-
-    /**
-     * Inverts a specific color.
-     *
-     * @param color
-     *         The color, which should be inverted
-     * @return The inverted color
-     */
-    private int invertColor(final int color) {
-        int alpha = Color.alpha(color);
-        int invertedRed = 255 - Color.red(color);
-        int invertedGreen = 255 - Color.green(color);
-        int invertedBlue = 255 - Color.blue(color);
-        return Color.argb(alpha, invertedRed, invertedGreen, invertedBlue);
+    private int getThemeId() {
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String key = getString(R.string.theme_preference_key);
+        String defaultValue = getString(R.string.theme_preference_default_value);
+        return Integer.valueOf(sharedPreferences.getString(key, defaultValue)) == 0 ?
+                R.style.LightDialogTheme : R.style.DarkDialogTheme;
     }
 
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
+        initializeThemePreference();
         initializeShowAlertDialogPreference();
         initializeShowListDialogPreference();
         initializeShowSingleChoiceDialogPreference();

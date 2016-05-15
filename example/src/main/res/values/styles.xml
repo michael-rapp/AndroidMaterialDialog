@@ -15,14 +15,27 @@ License.
 -->
 <resources>
 
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="LightTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
-        <item name="alertDialogTheme">@style/DialogTheme</item>
+        <item name="android:alertDialogTheme">@style/LightDialogTheme</item>
     </style>
 
-    <style name="DialogTheme" parent="@style/Theme.AppCompat.Light.Dialog.Alert">
+    <style name="DarkTheme" parent="@style/Theme.AppCompat">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="android:alertDialogTheme">@style/DarkDialogTheme</item>
+    </style>
+
+    <style name="LightDialogTheme" parent="@style/MaterialDialog.Light">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+    </style>
+
+    <style name="DarkDialogTheme" parent="@style/MaterialDialog">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>

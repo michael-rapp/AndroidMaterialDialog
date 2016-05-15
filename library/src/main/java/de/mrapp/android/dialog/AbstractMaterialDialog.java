@@ -81,14 +81,7 @@ public abstract class AbstractMaterialDialog extends Dialog {
          */
         private void initialize(@NonNull final Context context,
                                 @StyleRes final int themeResourceId) {
-            int themeId = themeResourceId;
-
-            if (themeResourceId == -1) {
-                TypedValue typedValue = new TypedValue();
-                context.getTheme().resolveAttribute(R.attr.alertDialogTheme, typedValue, true);
-                themeId = typedValue.resourceId;
-            }
-
+            int themeId = themeResourceId != -1 ? themeResourceId : R.style.MaterialDialog_Light;
             dialog = onCreateDialog(context, themeId);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             obtainStyledAttributes(themeId);

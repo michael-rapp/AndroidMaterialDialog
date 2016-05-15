@@ -81,10 +81,11 @@ License.
     <string name="stack_buttons_preference_key">stack_buttons_preference_key</string>
     <string name="stack_buttons_preference_title">Stack dialog buttons</string>
     <string name="stack_buttons_preference_summary">Allows to set, whether the example dialog\'s buttons should be aligned verticaly, or not</string>
-    <string name="colors_preference_category_title">Colors</string>
-    <string name="invert_colors_preference_key">invert_colors_preference_key</string>
-    <string name="invert_colors_preference_title">Invert colors</string>
-    <string name="invert_colors_preference_summary">Allows to set, whether the colors of all elements of the example dialog should be inverted, or not</string>
+    <string name="theme_preference_category_title">Theme</string>
+    <string name="theme_preference_default_value">0</string>
+    <string name="theme_preference_key">theme_preference_key</string>
+    <string name="theme_preference_title">Theme</string>
+    <string name="theme_preference_summary">Allows to choose the theme, which should be used by the example app</string>
     <string name="multi_choice_listener_selected_text">Selected item at position %s</string>
     <string name="multi_choice_listener_unselected_text">Unselected item at position %s</string>
     <string name="single_choice_listener_text">Selected item at position %s</string>
@@ -98,6 +99,16 @@ License.
         <item>Item 1</item>
         <item>Item 2</item>
         <item>Item 3</item>
+    </string-array>
+
+    <string-array name="theme_entries">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="theme_values">
+        <item>0</item>
+        <item>1</item>
     </string-array>
 
 </resources>

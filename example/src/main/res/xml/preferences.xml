@@ -128,12 +128,14 @@ License.
             android:summary="@string/stack_buttons_preference_summary"
             android:title="@string/stack_buttons_preference_title"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/colors_preference_category_title">
-        <CheckBoxPreference
-            android:defaultValue="@bool/invert_colors_preference_default_value"
-            android:key="@string/invert_colors_preference_key"
-            android:summary="@string/invert_colors_preference_summary"
-            android:title="@string/invert_colors_preference_title"/>
+    <PreferenceCategory android:title="@string/theme_preference_category_title">
+        <ListPreference
+            android:defaultValue="@string/theme_preference_default_value"
+            android:entries="@array/theme_entries"
+            android:entryValues="@array/theme_values"
+            android:key="@string/theme_preference_key"
+            android:summary="@string/theme_preference_summary"
+            android:title="@string/theme_preference_title"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
