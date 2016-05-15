@@ -28,9 +28,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
+import de.mrapp.android.dialog.AbstractButtonBarDialog;
 import de.mrapp.android.dialog.AbstractListDialog;
 import de.mrapp.android.dialog.HeaderDialog;
 import de.mrapp.android.dialog.MaterialDialog;
+import de.mrapp.android.dialog.ProgressDialog;
 
 /**
  * A preference fragment, which contains the example app's settings.
@@ -67,7 +69,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-                configureDialogBuilder(builder);
+                configureButtonBarDialogBuilder(builder);
                 builder.show();
                 return true;
             }
@@ -96,7 +98,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-                configureDialogBuilder(builder);
+                configureButtonBarDialogBuilder(builder);
+                configureListDialogBuilder(builder);
                 builder.setItems(R.array.list_items, createSingleChoiceListener());
                 builder.show();
                 return true;
@@ -127,7 +130,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-                configureDialogBuilder(builder);
+                configureButtonBarDialogBuilder(builder);
+                configureListDialogBuilder(builder);
                 builder.setSingleChoiceItems(R.array.list_items, 0, createSingleChoiceListener());
                 builder.show();
                 return true;
@@ -177,7 +181,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-                configureDialogBuilder(builder);
+                configureButtonBarDialogBuilder(builder);
+                configureListDialogBuilder(builder);
                 builder.setMultiChoiceItems(R.array.list_items, new boolean[]{true, false, false},
                         createMultiChoiceListener());
                 builder.show();
@@ -238,9 +243,39 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-                configureDialogBuilder(builder);
+                configureButtonBarDialogBuilder(builder);
                 builder.setView(R.layout.custom_dialog_content);
                 builder.setCustomTitle(R.layout.custom_dialog_title);
+                builder.show();
+                return true;
+            }
+
+        };
+    }
+
+    /**
+     * Initializes the preference, which allows to show a progress dialog.
+     */
+    private void initializeShowProgressDialogPreference() {
+        Preference showDialogPreference =
+                findPreference(getString(R.string.show_progress_dialog_preference_key));
+        showDialogPreference
+                .setOnPreferenceClickListener(createShowProgressDialogPreferenceListener());
+    }
+
+    /**
+     * Creates and returns a listener, which allows to show a progress dialog.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnPreferenceClickListener}
+     */
+    private OnPreferenceClickListener createShowProgressDialogPreferenceListener() {
+        return new OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(final Preference preference) {
+                ProgressDialog.Builder builder = new ProgressDialog.Builder(getActivity());
+                configureButtonBarDialogBuilder(builder);
                 builder.show();
                 return true;
             }
@@ -272,7 +307,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
                 HeaderDialog.Builder builder = new HeaderDialog.Builder(getActivity());
                 builder.setHeaderBackground(R.drawable.dialog_header_background);
                 builder.setHeaderIcon(R.drawable.dialog_header_icon);
-                configureDialogBuilder(builder);
+                configureButtonBarDialogBuilder(builder);
                 builder.show();
                 return true;
             }
@@ -301,9 +336,10 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
      *
      * @param builder
      *         The builder, which should be configured, as an instance of the class {@link
-     *         MaterialDialog.Builder}
+     *         AbstractButtonBarDialog.AbstractBuilder}
      */
-    private void configureDialogBuilder(@NonNull final AbstractListDialog.AbstractBuilder builder) {
+    private void configureButtonBarDialogBuilder(
+            @NonNull final AbstractButtonBarDialog.AbstractBuilder builder) {
         if (shouldTitleBeShown()) {
             builder.setTitle(getDialogTitle());
         }
@@ -337,11 +373,26 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             int invertedTextColor = invertColor(getThemeColor(android.R.attr.textColorPrimary));
             builder.setTitleColor(invertedPrimaryColor);
             builder.setMessageColor(invertedTextColor);
-            builder.setItemColor(invertedTextColor);
-            builder.setItemControlColor(invertedAccentColor);
             builder.setButtonTextColor(invertedAccentColor);
             builder.setBackgroundColor(
                     ContextCompat.getColor(getActivity(), android.R.color.background_dark));
+        }
+    }
+
+    /**
+     * Configures a builder, which allows to create list dialogs, depending on the app's settings.
+     *
+     * @param builder
+     *         The builder, which should be configured, as an instance of the class {@link
+     *         AbstractListDialog.AbstractBuilder}
+     */
+    private void configureListDialogBuilder(
+            @NonNull final AbstractListDialog.AbstractBuilder builder) {
+        if (shouldColorsBeInverted()) {
+            int invertedAccentColor = invertColor(getThemeColor(R.attr.colorAccent));
+            int invertedTextColor = invertColor(getThemeColor(android.R.attr.textColorPrimary));
+            builder.setItemColor(invertedTextColor);
+            builder.setItemControlColor(invertedAccentColor);
         }
     }
 
@@ -617,6 +668,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         initializeShowSingleChoiceDialogPreference();
         initializeShowMultiChoiceDialogPreference();
         initializeShowCustomDialogPreference();
+        initializeShowProgressDialogPreference();
         initializeShowHeaderDialogPreference();
     }
 

@@ -523,13 +523,43 @@ public abstract class AbstractMaterialDialog extends Dialog {
          * created by the builder.
          *
          * @param resourceId
-         *         The resource id of the vieww, which should be set, as an {@link Integer} value.
+         *         The resource id of the view, which should be set, as an {@link Integer} value.
          *         The resource id must correspond to a valid layout resource
          * @return The builder, the method has been called upon, as an instance of the generic type
          * BuilderType
          */
         public final BuilderType setCustomTitle(@LayoutRes final int resourceId) {
             getDialog().setCustomTitle(resourceId);
+            return self();
+        }
+
+        /**
+         * Sets the custom view, which should be used to show the message of the dialog, which is
+         * created by the builder.
+         *
+         * @param view
+         *         The view, which should be set, as an instance of the class {@link View} or null,
+         *         if no custom view should be used to show the message
+         * @return The builder, the method has been called upon, as an instance of the generic type
+         * BuilderType
+         */
+        public final BuilderType setCustomMessage(@Nullable final View view) {
+            getDialog().setCustomMessage(view);
+            return self();
+        }
+
+        /**
+         * Sets the custom view, which should be used to show the message of the dialog, which is
+         * created by the builder.
+         *
+         * @param resourceId
+         *         The resource id of the view, which should be set, as an {@link Integer} value.
+         *         The resource id must correspond to a valid layout resource
+         * @return The builder, the method has been called upon, as an instance of the generic type
+         * BuilderType
+         */
+        public final BuilderType setCustomMessage(@LayoutRes final int resourceId) {
+            getDialog().setCustomMessage(resourceId);
             return self();
         }
 
@@ -562,9 +592,14 @@ public abstract class AbstractMaterialDialog extends Dialog {
     private ViewGroup rootView;
 
     /**
-     * The parent view of the layout, which is used to show the dialog's title.
+     * The parent view of the view, which is used to show the dialog's title.
      */
     private ViewGroup titleContainer;
+
+    /**
+     * The parent view of the view, which is used to show the dialog's message.
+     */
+    private ViewGroup messageContainer;
 
     /**
      * The text view, which is used to show the title of the dialog.
@@ -577,13 +612,12 @@ public abstract class AbstractMaterialDialog extends Dialog {
     private TextView messageTextView;
 
     /**
-     * The root view of all layouts, which are used to show the dialog's title, message and
-     * content.
+     * The root view of all views, which are used to show the dialog's title, message and content.
      */
     private ViewGroup contentRootView;
 
     /**
-     * The parent view of the layout, which is used to show the dialog's content.
+     * The parent view of the view, which is used to show the dialog's content.
      */
     private ViewGroup contentContainer;
 
@@ -638,6 +672,16 @@ public abstract class AbstractMaterialDialog extends Dialog {
     private int customTitleViewId = -1;
 
     /**
+     * The custom message view of the dialog.
+     */
+    private View customMessageView;
+
+    /**
+     * The resource id of the custom message view of the dialog.
+     */
+    private int customMessageViewId = -1;
+
+    /**
      * Creates and returns the layout params, which should be used by the dialog.
      *
      * @return The layout params, which should be used by the dialog, as an instance of the class
@@ -655,14 +699,14 @@ public abstract class AbstractMaterialDialog extends Dialog {
     }
 
     /**
-     * Inflates the dialog's layout.
+     * Inflates the dialog's root view.
      */
     private void inflateLayout() {
         rootView = (ViewGroup) View.inflate(getContext(), R.layout.material_dialog, null);
     }
 
     /**
-     * Inflates the layout, which is used to show the dialog's title. The layout may either be the
+     * Inflates the view, which is used to show the dialog's title. The view may either be the
      * default one or a custom view, if one has been set before.
      */
     private void inflateTitleView() {
@@ -687,11 +731,35 @@ public abstract class AbstractMaterialDialog extends Dialog {
     }
 
     /**
-     * Inflates the layout, which is used to show the dialog's content. The layout may either be the
+     * Inflates the view, which is used to show the dialog's message. The view may either be the
+     * default one or a custom view, if one has been set before.
+     */
+    private void inflateMessageView() {
+        messageContainer = (ViewGroup) rootView.findViewById(R.id.message_container);
+        messageContainer.removeAllViews();
+
+        if (customMessageView != null) {
+            messageContainer.addView(customMessageView);
+        } else if (customMessageViewId != -1) {
+            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+            View view = layoutInflater.inflate(customMessageViewId, messageContainer, false);
+            messageContainer.addView(view);
+        } else {
+            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+            View view = layoutInflater
+                    .inflate(R.layout.material_dialog_message, messageContainer, false);
+            messageContainer.addView(view);
+        }
+
+        View messageView = messageContainer.findViewById(android.R.id.message);
+        messageTextView = messageView instanceof TextView ? (TextView) messageView : null;
+    }
+
+    /**
+     * Inflates the view, which is used to show the dialog's content. The view may either be the
      * default one or a custom view, if one has been set before.
      */
     private void inflateContentView() {
-        messageTextView = (TextView) rootView.findViewById(android.R.id.message);
         contentRootView = (ViewGroup) rootView.findViewById(R.id.content_root);
         contentContainer = (ViewGroup) rootView.findViewById(R.id.content_container);
         contentContainer.removeAllViews();
@@ -732,6 +800,17 @@ public abstract class AbstractMaterialDialog extends Dialog {
             adaptTitle();
             adaptTitleColor();
             adaptIcon();
+        }
+    }
+
+    /**
+     * Adapts the view, which is used to show the dialog's message.
+     */
+    private void adaptMessageView() {
+        if (messageContainer != null) {
+            inflateMessageView();
+            adaptMessage();
+            adaptMessageColor();
         }
     }
 
@@ -798,6 +877,8 @@ public abstract class AbstractMaterialDialog extends Dialog {
                     .getDimensionPixelSize(R.dimen.dialog_content_spacing) : 0;
             titleContainer.setLayoutParams(layoutParams);
         }
+
+        adaptMessageContainerVisibility();
     }
 
     /**
@@ -806,6 +887,21 @@ public abstract class AbstractMaterialDialog extends Dialog {
     private void adaptMessageColor() {
         if (messageTextView != null && messageColor != -1) {
             messageTextView.setTextColor(messageColor);
+        }
+    }
+
+    /**
+     * Adapts the visibility of the parent view of the text view, which is used to show the message
+     * of the dialog.
+     */
+    private void adaptMessageContainerVisibility() {
+        if (titleContainer != null) {
+            if (customMessageView == null && customMessageViewId == -1) {
+                messageContainer
+                        .setVisibility(!TextUtils.isEmpty(message) ? View.VISIBLE : View.GONE);
+            } else {
+                messageContainer.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -819,7 +915,7 @@ public abstract class AbstractMaterialDialog extends Dialog {
     }
 
     /**
-     * Shows the parent view of the layout, which is used to show the dialog's content.
+     * Shows the parent view of the view, which is used to show the dialog's content.
      */
     private void showContentContainer() {
         contentContainer.setVisibility(View.VISIBLE);
@@ -830,9 +926,9 @@ public abstract class AbstractMaterialDialog extends Dialog {
         titleLayoutParams.bottomMargin = contentSpacing;
         titleContainer.setLayoutParams(titleLayoutParams);
         LinearLayout.LayoutParams messageLayoutParams =
-                (LinearLayout.LayoutParams) messageTextView.getLayoutParams();
+                (LinearLayout.LayoutParams) messageContainer.getLayoutParams();
         messageLayoutParams.bottomMargin = contentSpacing;
-        messageTextView.setLayoutParams(messageLayoutParams);
+        messageContainer.setLayoutParams(messageLayoutParams);
     }
 
     /**
@@ -845,20 +941,30 @@ public abstract class AbstractMaterialDialog extends Dialog {
     }
 
     /**
-     * Returns the parent view of the layout, which is used to show the dialog's title.
+     * Returns the parent view of the view, which is used to show the dialog's title.
      *
-     * @return The parent view of the layout, which is used to show the dialog's title, as an
-     * instance of the class {@link ViewGroup}
+     * @return The parent view of the view, which is used to show the dialog's title, as an instance
+     * of the class {@link ViewGroup}
      */
     protected final ViewGroup getTitleContainer() {
         return titleContainer;
     }
 
     /**
-     * Returns the root view of all layouts, which are used to show the dialog's title, message and
+     * Returns the parent view of the view, which is used to show the dialog's message.
+     *
+     * @return The parent view of the view, which is used to show the dialog's message, as an
+     * instance of the class {@link ViewGroup}
+     */
+    protected final ViewGroup getMessageContainer() {
+        return messageContainer;
+    }
+
+    /**
+     * Returns the root view of all views, which are used to show the dialog's title, message and
      * content.
      *
-     * @return The root view of all layouts, which are used to show the dialog's title, message and
+     * @return The root view of all views, which are used to show the dialog's title, message and
      * content, as an instance of the class {@link ViewGroup}
      */
     protected final ViewGroup getContentRootView() {
@@ -866,9 +972,9 @@ public abstract class AbstractMaterialDialog extends Dialog {
     }
 
     /**
-     * Returns the parent view of the layout, which is used to show the dialog's content.
+     * Returns the parent view of the view, which is used to show the dialog's content.
      *
-     * @return The parent view of the layout, which is used to show the dialog's content, as an
+     * @return The parent view of the view, which is used to show the dialog's content, as an
      * instance of the class {@link ViewGroup}.
      */
     protected final ViewGroup getContentContainer() {
@@ -1063,6 +1169,32 @@ public abstract class AbstractMaterialDialog extends Dialog {
     }
 
     /**
+     * Sets the custom view, which should be used to show the message of the dialog.
+     *
+     * @param view
+     *         The view, which should be set, as an instance of the class {@link View} or null, if
+     *         no custom view should be used to show the title
+     */
+    public final void setCustomMessage(@Nullable final View view) {
+        customMessageView = view;
+        customMessageViewId = -1;
+        adaptMessageView();
+    }
+
+    /**
+     * Sets the custom view, which should be used to show the message of the dialog.
+     *
+     * @param resourceId
+     *         The resource id of the view, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid layout resource
+     */
+    public final void setCustomMessage(@LayoutRes final int resourceId) {
+        customMessageView = null;
+        customMessageViewId = resourceId;
+        adaptMessageView();
+    }
+
+    /**
      * Sets the custom view, which should be shown by the dialog.
      *
      * @param view
@@ -1147,6 +1279,7 @@ public abstract class AbstractMaterialDialog extends Dialog {
         getWindow().setAttributes(createLayoutParameters());
         inflateLayout();
         inflateTitleView();
+        inflateMessageView();
         inflateContentView();
         setContentView(rootView);
         adaptTitle();
@@ -1163,6 +1296,7 @@ public abstract class AbstractMaterialDialog extends Dialog {
         super.onStop();
         rootView = null;
         titleContainer = null;
+        messageContainer = null;
         titleTextView = null;
         messageTextView = null;
         contentRootView = null;

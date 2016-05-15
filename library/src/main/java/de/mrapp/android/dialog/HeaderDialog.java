@@ -166,7 +166,8 @@ public class HeaderDialog extends AbstractListDialog {
          * Sets the height of the header of the dialog, which is created by the builder.
          *
          * @param height
-         *         The height, which should be set, in pixels as an {@link Integer} value
+         *         The height, which should be set, in pixels as an {@link Integer} value. The
+         *         height must be at least 0
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}
          */
@@ -264,7 +265,6 @@ public class HeaderDialog extends AbstractListDialog {
             return new HeaderDialog(context, themeResourceId);
         }
 
-        @CallSuper
         @Override
         protected final void obtainStyledAttributes(@StyleRes final int themeResourceId) {
             super.obtainStyledAttributes(themeResourceId);
@@ -396,7 +396,8 @@ public class HeaderDialog extends AbstractListDialog {
      * Sets the height of the dialog's header.
      *
      * @param height
-     *         The height, which should be set, in pixels as an {@link Integer} value
+     *         The height, which should be set, in pixels as an {@link Integer} value. The height
+     *         must be at least 0
      */
     public final void setHeaderHeight(final int height) {
         ensureAtLeast(height, 0, "The height must be at least 0");

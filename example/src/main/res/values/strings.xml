@@ -29,6 +29,8 @@ License.
     <string name="show_custom_dialog_preference_title">Show dialog with custom content</string>
     <string name="show_header_dialog_preference_key">show_header_dialog_preference_key</string>
     <string name="show_header_dialog_preference_title">Show dialog with header</string>
+    <string name="show_progress_dialog_preference_key">show_progress_dialog_preference_key</string>
+    <string name="show_progress_dialog_preference_title">Show progress dialog</string>
     <string name="dialog_title_preference_category_title">Title</string>
     <string name="show_dialog_title_preference_key">show_dialog_title_preference_key</string>
     <string name="show_dialog_title_preference_title">Show dialog title</string>
