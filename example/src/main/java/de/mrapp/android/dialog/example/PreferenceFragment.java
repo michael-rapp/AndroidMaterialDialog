@@ -23,10 +23,13 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
+import de.mrapp.android.dialog.AbstractListDialog;
+import de.mrapp.android.dialog.HeaderDialog;
 import de.mrapp.android.dialog.MaterialDialog;
 
 /**
@@ -63,8 +66,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder dialogBuilder = createDialogBuilder();
-                dialogBuilder.show();
+                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+                configureDialogBuilder(builder);
+                builder.show();
                 return true;
             }
 
@@ -91,9 +95,10 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder dialogBuilder = createDialogBuilder();
-                dialogBuilder.setItems(R.array.list_items, createSingleChoiceListener());
-                dialogBuilder.show();
+                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+                configureDialogBuilder(builder);
+                builder.setItems(R.array.list_items, createSingleChoiceListener());
+                builder.show();
                 return true;
             }
 
@@ -121,10 +126,10 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder dialogBuilder = createDialogBuilder();
-                dialogBuilder
-                        .setSingleChoiceItems(R.array.list_items, 0, createSingleChoiceListener());
-                dialogBuilder.show();
+                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+                configureDialogBuilder(builder);
+                builder.setSingleChoiceItems(R.array.list_items, 0, createSingleChoiceListener());
+                builder.show();
                 return true;
             }
 
@@ -171,11 +176,11 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder dialogBuilder = createDialogBuilder();
-                dialogBuilder
-                        .setMultiChoiceItems(R.array.list_items, new boolean[]{true, false, false},
-                                createMultiChoiceListener());
-                dialogBuilder.show();
+                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+                configureDialogBuilder(builder);
+                builder.setMultiChoiceItems(R.array.list_items, new boolean[]{true, false, false},
+                        createMultiChoiceListener());
+                builder.show();
                 return true;
             }
 
@@ -232,10 +237,43 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder dialogBuilder = createDialogBuilder();
-                dialogBuilder.setView(R.layout.custom_dialog_content);
-                dialogBuilder.setCustomTitle(R.layout.custom_dialog_title);
-                dialogBuilder.show();
+                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+                configureDialogBuilder(builder);
+                builder.setView(R.layout.custom_dialog_content);
+                builder.setCustomTitle(R.layout.custom_dialog_title);
+                builder.show();
+                return true;
+            }
+
+        };
+    }
+
+    /**
+     * Initializes the preference, which allows to show a header dialog.
+     */
+    private void initializeShowHeaderDialogPreference() {
+        Preference showDialogPreference =
+                findPreference(getString(R.string.show_header_dialog_preference_key));
+        showDialogPreference
+                .setOnPreferenceClickListener(createShowHeaderDialogPreferenceListener());
+    }
+
+    /**
+     * Creates and returns a listener, which allows to show a header dialog.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnPreferenceClickListener}
+     */
+    private OnPreferenceClickListener createShowHeaderDialogPreferenceListener() {
+        return new OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(final Preference preference) {
+                HeaderDialog.Builder builder = new HeaderDialog.Builder(getActivity());
+                builder.setHeaderBackground(R.drawable.dialog_header_background);
+                builder.setHeaderIcon(R.drawable.dialog_header_icon);
+                configureDialogBuilder(builder);
+                builder.show();
                 return true;
             }
 
@@ -259,58 +297,52 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     }
 
     /**
-     * Creates and returns a builder, which allows to create dialogs, depending on the app's
-     * settings.
+     * Configures a builder, which allows to create dialogs, depending on the app's settings.
      *
-     * @return The builder, which has been created, as an instance of the class {@link
-     * MaterialDialog.Builder}
+     * @param builder
+     *         The builder, which should be configured, as an instance of the class {@link
+     *         MaterialDialog.Builder}
      */
-    private MaterialDialog.Builder createDialogBuilder() {
-        MaterialDialog.Builder dialogBuilder = new MaterialDialog.Builder(getActivity());
-
+    private void configureDialogBuilder(@NonNull final AbstractListDialog.AbstractBuilder builder) {
         if (shouldTitleBeShown()) {
-            dialogBuilder.setTitle(getDialogTitle());
+            builder.setTitle(getDialogTitle());
         }
 
         if (shouldMessageBeShown()) {
-            dialogBuilder.setMessage(getDialogMessage());
+            builder.setMessage(getDialogMessage());
         }
 
         if (shouldIconBeShown()) {
-            dialogBuilder.setIcon(
+            builder.setIcon(
                     ContextCompat.getDrawable(getActivity(), android.R.drawable.ic_dialog_alert));
         }
 
         if (shouldNegativeButtonBeShown()) {
-            dialogBuilder
-                    .setNegativeButton(getNegativeButtonText(), createNegativeButtonListener());
+            builder.setNegativeButton(getNegativeButtonText(), createNegativeButtonListener());
         }
 
         if (shouldNeutralButtonBeShown()) {
-            dialogBuilder.setNeutralButton(getNeutralButtonText(), createNeutralButtonListener());
+            builder.setNeutralButton(getNeutralButtonText(), createNeutralButtonListener());
         }
 
         if (shouldPositiveButtonBeShown()) {
-            dialogBuilder
-                    .setPositiveButton(getPositiveButtonText(), createPositiveButtonListener());
+            builder.setPositiveButton(getPositiveButtonText(), createPositiveButtonListener());
         }
 
-        dialogBuilder.stackButtons(shouldStackButtons());
+        builder.stackButtons(shouldStackButtons());
 
         if (shouldColorsBeInverted()) {
             int invertedPrimaryColor = invertColor(getThemeColor(R.attr.colorPrimary));
             int invertedAccentColor = invertColor(getThemeColor(R.attr.colorAccent));
             int invertedTextColor = invertColor(getThemeColor(android.R.attr.textColorPrimary));
-            dialogBuilder.setTitleColor(invertedPrimaryColor);
-            dialogBuilder.setMessageColor(invertedTextColor);
-            dialogBuilder.setItemColor(invertedTextColor);
-            dialogBuilder.setItemControlColor(invertedAccentColor);
-            dialogBuilder.setButtonTextColor(invertedAccentColor);
-            dialogBuilder.setBackgroundColor(
+            builder.setTitleColor(invertedPrimaryColor);
+            builder.setMessageColor(invertedTextColor);
+            builder.setItemColor(invertedTextColor);
+            builder.setItemControlColor(invertedAccentColor);
+            builder.setButtonTextColor(invertedAccentColor);
+            builder.setBackgroundColor(
                     ContextCompat.getColor(getActivity(), android.R.color.background_dark));
         }
-
-        return dialogBuilder;
     }
 
     /**
@@ -585,6 +617,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         initializeShowSingleChoiceDialogPreference();
         initializeShowMultiChoiceDialogPreference();
         initializeShowCustomDialogPreference();
+        initializeShowHeaderDialogPreference();
     }
 
 }

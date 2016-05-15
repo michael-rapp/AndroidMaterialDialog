@@ -42,8 +42,8 @@ public abstract class AbstractValidateableDialog extends AbstractMaterialDialog 
      * @param <BuilderType>
      *         The type of the builder
      */
-    protected static abstract class Builder<DialogType extends AbstractValidateableDialog, BuilderType extends AbstractMaterialDialog.Builder<DialogType, ?>>
-            extends AbstractMaterialDialog.Builder<DialogType, BuilderType> {
+    public static abstract class AbstractBuilder<DialogType extends AbstractValidateableDialog, BuilderType extends AbstractMaterialDialog.AbstractBuilder<DialogType, ?>>
+            extends AbstractMaterialDialog.AbstractBuilder<DialogType, BuilderType> {
 
         /**
          * Creates a new builder, which allows to create dialogs, which allow to create and show
@@ -54,7 +54,7 @@ public abstract class AbstractValidateableDialog extends AbstractMaterialDialog 
          *         The context, which should be used by the builder, as an instance of the class
          *         {@link Context}. The context may not be null
          */
-        public Builder(@NonNull final Context context) {
+        public AbstractBuilder(@NonNull final Context context) {
             super(context);
         }
 
@@ -70,7 +70,8 @@ public abstract class AbstractValidateableDialog extends AbstractMaterialDialog 
          *         The resource id of the theme, which should be used by the dialog, as an {@link
          *         Integer} value. The resource id must correspond to a valid theme
          */
-        public Builder(@NonNull final Context context, @StyleRes final int themeResourceId) {
+        public AbstractBuilder(@NonNull final Context context,
+                               @StyleRes final int themeResourceId) {
             super(context, themeResourceId);
         }
 

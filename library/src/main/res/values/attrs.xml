@@ -21,5 +21,9 @@ License.
     <attr name="materialDialogItemControlColor" format="color"/>
     <attr name="materialDialogMessageColor" format="color"/>
     <attr name="materialDialogTitleColor" format="color"/>
+    <attr name="materialDialogHeaderHeight" format="dimension"/>
+    <attr name="materialDialogHeaderBackground" format="color|reference"/>
+    <attr name="materialDialogHeaderIcon" format="reference"/>
+    <attr name="materialDialogHeaderDividerColor" format="reference"/>
 
 </resources>

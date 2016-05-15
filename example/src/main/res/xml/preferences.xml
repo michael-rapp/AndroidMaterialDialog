@@ -31,6 +31,9 @@ License.
         <Preference
             android:key="@string/show_custom_dialog_preference_key"
             android:title="@string/show_custom_dialog_preference_title"/>
+        <Preference
+            android:key="@string/show_header_dialog_preference_key"
+            android:title="@string/show_header_dialog_preference_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/dialog_title_preference_category_title">
         <CheckBoxPreference

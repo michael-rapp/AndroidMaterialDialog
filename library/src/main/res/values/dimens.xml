@@ -30,5 +30,6 @@ License.
     <item name="dialog_button_padding" type="dimen">8dp</item>
     <item name="dialog_button_text_size" type="dimen">14sp</item>
     <item name="dialog_title_drawable_padding" type="dimen">8dp</item>
+    <item name="dialog_header_height" type="dimen">112dp</item>
 
 </resources>

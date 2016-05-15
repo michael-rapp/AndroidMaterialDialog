@@ -62,7 +62,7 @@ public abstract class AbstractMaterialDialog extends Dialog {
      * @param <BuilderType>
      *         The type of the builder
      */
-    protected abstract static class Builder<DialogType extends AbstractMaterialDialog, BuilderType extends Builder<DialogType, ?>> {
+    public abstract static class AbstractBuilder<DialogType extends AbstractMaterialDialog, BuilderType extends AbstractBuilder<DialogType, ?>> {
 
         /**
          * The dialog, which is configured by the builder.
@@ -208,7 +208,7 @@ public abstract class AbstractMaterialDialog extends Dialog {
          *         The context, which should be used by the builder, as an instance of the class
          *         {@link Context}. The context may not be null
          */
-        public Builder(@NonNull final Context context) {
+        public AbstractBuilder(@NonNull final Context context) {
             this(context, -1);
         }
 
@@ -223,7 +223,8 @@ public abstract class AbstractMaterialDialog extends Dialog {
          *         The resource id of the theme, which should be used by the dialog, as an {@link
          *         Integer} value. The resource id must correspond to a valid theme
          */
-        public Builder(@NonNull final Context context, @StyleRes final int themeResourceId) {
+        public AbstractBuilder(@NonNull final Context context,
+                               @StyleRes final int themeResourceId) {
             initialize(context, themeResourceId);
         }
 

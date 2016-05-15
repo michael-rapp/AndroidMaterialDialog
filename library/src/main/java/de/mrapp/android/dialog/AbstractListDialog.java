@@ -19,6 +19,7 @@ import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.annotation.ArrayRes;
+import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -56,8 +57,8 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog {
      * @param <BuilderType>
      *         The type of the builder
      */
-    protected static abstract class Builder<DialogType extends AbstractListDialog, BuilderType extends Builder<DialogType, ?>>
-            extends AbstractButtonBarDialog.Builder<DialogType, BuilderType> {
+    public static abstract class AbstractBuilder<DialogType extends AbstractListDialog, BuilderType extends AbstractBuilder<DialogType, ?>>
+            extends AbstractButtonBarDialog.AbstractBuilder<DialogType, BuilderType> {
 
         /**
          * Obtains the item color from a specific theme.
@@ -102,7 +103,7 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog {
          *         The context, which should be used by the builder, as an instance of the class
          *         {@link Context}. The context may not be null
          */
-        public Builder(@NonNull final Context context) {
+        public AbstractBuilder(@NonNull final Context context) {
             super(context);
         }
 
@@ -118,7 +119,8 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog {
          *         The resource id of the theme, which should be used by the dialog, as an {@link
          *         Integer} value. The resource id must correspond to a valid theme
          */
-        public Builder(@NonNull final Context context, @StyleRes final int themeResourceId) {
+        public AbstractBuilder(@NonNull final Context context,
+                               @StyleRes final int themeResourceId) {
             super(context, themeResourceId);
         }
 
@@ -181,8 +183,8 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog {
          * @return The builder, the method has been called upon, as an instance of the generic type
          * BuilderType
          */
-        public final Builder setItems(@ArrayRes final int resourceId,
-                                      @Nullable final OnClickListener listener) {
+        public final AbstractBuilder setItems(@ArrayRes final int resourceId,
+                                              @Nullable final OnClickListener listener) {
             getDialog().setItems(resourceId, listener);
             return self();
         }
@@ -336,8 +338,9 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog {
             return self();
         }
 
+        @CallSuper
         @Override
-        protected final void obtainStyledAttributes(@StyleRes final int themeResourceId) {
+        protected void obtainStyledAttributes(@StyleRes final int themeResourceId) {
             super.obtainStyledAttributes(themeResourceId);
             obtainItemColor(themeResourceId);
             obtainItemControlColor(themeResourceId);
@@ -769,15 +772,17 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog {
         super.setView(resourceId);
     }
 
+    @CallSuper
     @Override
-    public final void onStart() {
+    public void onStart() {
         super.onStart();
         adaptItemColor();
         adaptItemControlColor();
     }
 
+    @CallSuper
     @Override
-    public final void onStop() {
+    public void onStop() {
         super.onStop();
         listView = null;
     }

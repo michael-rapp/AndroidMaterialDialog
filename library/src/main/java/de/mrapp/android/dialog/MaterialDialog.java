@@ -39,7 +39,8 @@ public class MaterialDialog extends AbstractListDialog {
      * items. It is possible to customize the color of the dialog's title and button texts and the
      * title as well as the dialog's content can be replaced with a custom view.
      */
-    public static class Builder extends AbstractListDialog.Builder<MaterialDialog, Builder> {
+    public static class Builder
+            extends AbstractListDialog.AbstractBuilder<MaterialDialog, Builder> {
 
         /**
          * Creates a new builder, which allows to create dialogs, which are designed according to

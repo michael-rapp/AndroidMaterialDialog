@@ -52,8 +52,8 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
      * @param <BuilderType>
      *         The type of the builder
      */
-    protected static abstract class Builder<DialogType extends AbstractButtonBarDialog, BuilderType extends Builder<DialogType, ?>>
-            extends AbstractValidateableDialog.Builder<DialogType, BuilderType> {
+    public static abstract class AbstractBuilder<DialogType extends AbstractButtonBarDialog, BuilderType extends AbstractBuilder<DialogType, ?>>
+            extends AbstractValidateableDialog.AbstractBuilder<DialogType, BuilderType> {
 
         /**
          * Obtains the button text color from a specific theme.
@@ -81,7 +81,7 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
          *         The context, which should be used by the builder, as an instance of the class
          *         {@link Context}. The context may not be null
          */
-        public Builder(@NonNull final Context context) {
+        public AbstractBuilder(@NonNull final Context context) {
             super(context);
         }
 
@@ -97,7 +97,8 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
          *         The resource id of the theme, which should be used by the dialog, as an {@link
          *         Integer} value. The resource id must correspond to a valid theme
          */
-        public Builder(@NonNull final Context context, @StyleRes final int themeResourceId) {
+        public AbstractBuilder(@NonNull final Context context,
+                               @StyleRes final int themeResourceId) {
             super(context, themeResourceId);
         }
 
