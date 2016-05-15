@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -34,31 +35,39 @@ import static de.mrapp.android.util.Condition.ensureAtLeast;
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
- * A dialog, which is designed according to Android 5's Material Design guidelines even on
- * pre-Lollipop devices and may contain a header. Such a dialog consists of a title, a message and
- * up to three buttons. Furthermore, the dialog can be used to show list items. It is possible to
- * customize the color of the dialog's title and button texts and the title as well as the dialog's
- * content can be replaced with a custom view. The dialog's header displays a background color or
- * image and may contain an optional icon.
- *
- * For creating or showing such dialogs, the methods {@link HeaderDialog#create()} or {@link
- * HeaderDialog#show()} of the builder {@link HeaderDialog.Builder} can be used.
+ * An abstract base class for all dialogs, which are designed according to Android 5's Material
+ * Design guidelines even on pre-Lollipop devices and may contain a header.
  *
  * @author Michael Rapp
  * @since 3.2.0
  */
-public class HeaderDialog extends AbstractListDialog {
+public abstract class AbstractHeaderDialog extends AbstractMaterialDialog {
 
     /**
-     * A builder, which allows to create and show dialogs, which are designed according to Android
-     * 5's Material Design guidelines even on pre-Lollipop devices and may contain a header. Such a
-     * dialog consists of a title, a message and up to three buttons. Furthermore, the dialog can be
-     * used to show list items. It is possible to customize the color of the dialog's title and
-     * button texts and the title as well as the dialog's content can be replaced with a custom
-     * view. The dialog's header displays a background color or image and may contain an optional
-     * icon.
+     * An abstract base class for all builders, which allow to create and show dialogs, which are
+     * designed according to Android 5's Material Design guidelines even on pre-Lollipop devices and
+     * may contain a header.
+     *
+     * @param <DialogType>
+     *         The type of the dialog, which is created by the builder
+     * @param <BuilderType>
+     *         The type of the builder
      */
-    public static class Builder extends AbstractListDialog.AbstractBuilder<HeaderDialog, Builder> {
+    public static abstract class AbstractBuilder<DialogType extends AbstractHeaderDialog, BuilderType extends AbstractBuilder<DialogType, ?>>
+            extends AbstractMaterialDialog.AbstractBuilder<DialogType, BuilderType> {
+
+        /**
+         * Obtains, whether the dialog's header should be shown, or not, from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the visibility should be obtained from, as an
+         *         {@link Integer} value
+         */
+        private void obtainHeaderVisibility(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogShowHeader});
+            showHeader(typedArray.getBoolean(0, false));
+        }
 
         /**
          * Obtains the height of the dialog's header from a specific theme.
@@ -133,6 +142,20 @@ public class HeaderDialog extends AbstractListDialog {
         }
 
         /**
+         * Obtains, whether the divider of the dialog's header should be shown, or not, from a
+         * specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the visibility should be obtained from, as an
+         *         {@link Integer} value
+         */
+        private void obtainShowHeaderDivider(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogShowHeaderDivider});
+            showHeaderDivider(typedArray.getBoolean(0, true));
+        }
+
+        /**
          * Creates a new builder, which allows to create dialogs, which are designed according to
          * Android 5's Material Design guidelines even on pre-Lollipop devices and may contain a
          * header.
@@ -141,7 +164,7 @@ public class HeaderDialog extends AbstractListDialog {
          *         The context, which should be used by the builder, as an instance of the class
          *         {@link Context}. The context may not be null
          */
-        public Builder(@NonNull final Context context) {
+        public AbstractBuilder(@NonNull final Context context) {
             super(context);
         }
 
@@ -157,8 +180,23 @@ public class HeaderDialog extends AbstractListDialog {
          *         The resource id of the theme, which should be used by the dialog, as an {@link
          *         Integer} value. The resource id must correspond to a valid theme
          */
-        public Builder(@NonNull final Context context, @StyleRes final int themeResourceId) {
+        public AbstractBuilder(@NonNull final Context context,
+                               @StyleRes final int themeResourceId) {
             super(context, themeResourceId);
+        }
+
+        /**
+         * Sets, whether the header of the dialog, which is created by the builder, should be shown,
+         * or not.
+         *
+         * @param show
+         *         True, if the header of the dialog should be shown, false otherwise
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * AbstractBuilder}
+         */
+        public final AbstractBuilder showHeader(final boolean show) {
+            getDialog().showHeader(show);
+            return self();
         }
 
         /**
@@ -168,9 +206,9 @@ public class HeaderDialog extends AbstractListDialog {
          *         The height, which should be set, in pixels as an {@link Integer} value. The
          *         height must be at least 0
          * @return The builder, the method has been called upon, as an instance of the class {@link
-         * Builder}
+         * AbstractBuilder}
          */
-        public final Builder setHeaderHeight(final int height) {
+        public final AbstractBuilder setHeaderHeight(final int height) {
             getDialog().setHeaderHeight(height);
             return self();
         }
@@ -181,9 +219,9 @@ public class HeaderDialog extends AbstractListDialog {
          * @param color
          *         The background color, which should be set, as an {@link Integer} value
          * @return The builder, the method has been called upon, as an instance of the class {@link
-         * Builder}
+         * AbstractBuilder}
          */
-        public final Builder setHeaderBackgroundColor(@ColorInt final int color) {
+        public final AbstractBuilder setHeaderBackgroundColor(@ColorInt final int color) {
             getDialog().setHeaderBackground(new ColorDrawable(color));
             return self();
         }
@@ -195,9 +233,9 @@ public class HeaderDialog extends AbstractListDialog {
          *         The resource id of the background, which should be set, as an {@link Integer}
          *         value. The resource id must correspond to a valid drawable resource
          * @return The builder, the method has been called upon, as an instance of the class {@link
-         * Builder}
+         * AbstractBuilder}
          */
-        public final Builder setHeaderBackground(@DrawableRes final int resourceId) {
+        public final AbstractBuilder setHeaderBackground(@DrawableRes final int resourceId) {
             getDialog().setHeaderBackground(ContextCompat.getDrawable(getContext(), resourceId));
             return self();
         }
@@ -209,9 +247,9 @@ public class HeaderDialog extends AbstractListDialog {
          *         The background, which should be set, as an instance of the class {@link
          *         Drawable}. The background may not be null
          * @return The builder, the method has been called upon, as an instance of the class {@link
-         * Builder}
+         * AbstractBuilder}
          */
-        public final Builder setHeaderBackground(@NonNull final Drawable background) {
+        public final AbstractBuilder setHeaderBackground(@NonNull final Drawable background) {
             getDialog().setHeaderBackground(background);
             return self();
         }
@@ -223,9 +261,9 @@ public class HeaderDialog extends AbstractListDialog {
          *         The resource id of the icon, which should be set, as an {@link Integer} value.
          *         The resource id must correspond to a valid drawable resource
          * @return The builder, the method has been called upon, as an instance of class {@link
-         * Builder}
+         * AbstractBuilder}
          */
-        public final Builder setHeaderIcon(@DrawableRes final int resourceId) {
+        public final AbstractBuilder setHeaderIcon(@DrawableRes final int resourceId) {
             getDialog().setHeaderIcon(ContextCompat.getDrawable(getContext(), resourceId));
             return self();
         }
@@ -237,9 +275,9 @@ public class HeaderDialog extends AbstractListDialog {
          *         The icon, which should be set, as an instance of the class {@link Drawable} or
          *         null, if no icon should be set
          * @return The builder, the method has been called upon, as an instance of the class {@link
-         * Builder}
+         * AbstractBuilder}
          */
-        public final Builder setHeaderIcon(@Nullable final Drawable icon) {
+        public final AbstractBuilder setHeaderIcon(@Nullable final Drawable icon) {
             getDialog().setHeaderIcon(icon);
             return self();
         }
@@ -251,26 +289,36 @@ public class HeaderDialog extends AbstractListDialog {
          * @param color
          *         The color, which should be set, as an {@link Integer} value
          * @return The builder, the method has been called upon, as an instance of the class {@link
-         * Builder}
+         * AbstractBuilder}
          */
-        public final Builder setHeaderDividerColor(@ColorInt final int color) {
+        public final AbstractBuilder setHeaderDividerColor(@ColorInt final int color) {
             getDialog().setHeaderDividerColor(color);
             return self();
         }
 
-        @Override
-        protected final HeaderDialog onCreateDialog(@NonNull final Context context,
-                                                    @StyleRes final int themeResourceId) {
-            return new HeaderDialog(context, themeResourceId);
+        /**
+         * Sets, wehther the divider of the header of the dialog, which is created by the builder,
+         * should be shown, or not.
+         *
+         * @param show
+         *         True, if the divider of the dialog's header should be shown, false otherwise
+         * @return The builder the method has been called upon, as an instance of the class {@link
+         * AbstractBuilder}
+         */
+        public final AbstractBuilder showHeaderDivider(final boolean show) {
+            getDialog().showHeaderDivider(show);
+            return self();
         }
 
+        @CallSuper
         @Override
-        protected final void obtainStyledAttributes(@StyleRes final int themeResourceId) {
+        protected void obtainStyledAttributes(@StyleRes final int themeResourceId) {
             super.obtainStyledAttributes(themeResourceId);
             obtainHeaderHeight(themeResourceId);
             obtainHeaderBackground(themeResourceId);
             obtainHeaderIcon(themeResourceId);
             obtainHeaderDividerColor(themeResourceId);
+            obtainShowHeaderDivider(themeResourceId);
         }
 
     }
@@ -296,6 +344,11 @@ public class HeaderDialog extends AbstractListDialog {
     private View headerDivider;
 
     /**
+     * True, if the dialog's header is shown, false otherwise.
+     */
+    private boolean showHeader;
+
+    /**
      * The height of the dialog's header.
      */
     private int headerHeight;
@@ -309,6 +362,11 @@ public class HeaderDialog extends AbstractListDialog {
      * The icon of the dialog's header.
      */
     private Drawable headerIcon;
+
+    /**
+     * True, if the divider of the dialog's header is shown, false otherwise.
+     */
+    private boolean showHeaderDivider;
 
     /**
      * The color of the divider of the dialog's header.
@@ -330,11 +388,19 @@ public class HeaderDialog extends AbstractListDialog {
     }
 
     /**
+     * Adapts the visibility of the dialog's header.
+     */
+    private void adaptHeaderVisibility() {
+        if (headerContainer != null) {
+            headerContainer.setVisibility(showHeader ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    /**
      * Adapts the height of the dialog's header.
      */
     private void adaptHeaderHeight() {
         if (headerContainer != null) {
-            headerContainer.setVisibility(headerHeight > 0 ? View.VISIBLE : View.GONE);
             ViewGroup.LayoutParams layoutParams = headerContainer.getLayoutParams();
             layoutParams.height = headerHeight;
         }
@@ -361,9 +427,18 @@ public class HeaderDialog extends AbstractListDialog {
     /**
      * Adapt's the color of the divider of the dialog's header.
      */
-    private void adaptHeaderDivider() {
+    private void adaptHeaderDividerColor() {
         if (headerDivider != null) {
             headerDivider.setBackgroundColor(headerDividerColor);
+        }
+    }
+
+    /**
+     * Adapts the visibility of the divider of the dialog's header.
+     */
+    private void adaptHeaderDividerVisibility() {
+        if (headerDivider != null) {
+            headerDivider.setVisibility(showHeaderDivider ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -378,8 +453,29 @@ public class HeaderDialog extends AbstractListDialog {
      *         The resource id of the theme, which should be used by the dialog, as an {@link
      *         Integer} value. The resource id must correspond to a valid theme
      */
-    protected HeaderDialog(@NonNull final Context context, @StyleRes final int themeResourceId) {
+    protected AbstractHeaderDialog(@NonNull final Context context,
+                                   @StyleRes final int themeResourceId) {
         super(context, themeResourceId);
+    }
+
+    /**
+     * Returns, whether the dialog's header is shown, or not.
+     *
+     * @return True, if the dialog's header is shown, false otherwise
+     */
+    public final boolean isHeaderShown() {
+        return showHeader;
+    }
+
+    /**
+     * Sets, whether the dialog's header should be shown, or not.
+     *
+     * @param show
+     *         True, if the dialog's header should be shown, false otherwise
+     */
+    public final void showHeader(final boolean show) {
+        this.showHeader = show;
+        adaptHeaderVisibility();
     }
 
     /**
@@ -497,21 +593,45 @@ public class HeaderDialog extends AbstractListDialog {
      */
     public final void setHeaderDividerColor(@ColorInt final int color) {
         this.headerDividerColor = color;
-        adaptHeaderDivider();
+        adaptHeaderDividerColor();
     }
 
+    /**
+     * Returns, whether the divider of the dialog's header is shown, or not.
+     *
+     * @return True, if the divider of the dialog's header is shown, false otherwise
+     */
+    public final boolean isHeaderDividerShown() {
+        return showHeaderDivider;
+    }
+
+    /**
+     * Sets, whether the divider of the dialog's header should be shown, or not.
+     *
+     * @param show
+     *         True, if the divider of the dialog's header should be shown, false otherwise
+     */
+    public final void showHeaderDivider(final boolean show) {
+        this.showHeaderDivider = show;
+        adaptHeaderDividerVisibility();
+    }
+
+    @CallSuper
     @Override
-    public final void onStart() {
+    public void onStart() {
         super.onStart();
         inflateHeader();
+        adaptHeaderVisibility();
         adaptHeaderBackground();
-        adaptHeaderDivider();
+        adaptHeaderDividerColor();
+        adaptHeaderDividerVisibility();
         adaptHeaderIcon();
         adaptHeaderHeight();
     }
 
+    @CallSuper
     @Override
-    public final void onStop() {
+    public void onStop() {
         super.onStop();
         headerBackgroundImageView = null;
         headerIconImageView = null;

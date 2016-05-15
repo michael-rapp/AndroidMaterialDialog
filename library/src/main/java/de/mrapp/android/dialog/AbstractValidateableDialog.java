@@ -30,7 +30,7 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @author Michael Rapp
  * @since 3.2.0
  */
-public abstract class AbstractValidateableDialog extends AbstractMaterialDialog {
+public abstract class AbstractValidateableDialog extends AbstractHeaderDialog {
 
     /**
      * An abstract base class for all builders, which allow to create and show dialogs, which are
@@ -42,8 +42,8 @@ public abstract class AbstractValidateableDialog extends AbstractMaterialDialog 
      * @param <BuilderType>
      *         The type of the builder
      */
-    public static abstract class AbstractBuilder<DialogType extends AbstractValidateableDialog, BuilderType extends AbstractMaterialDialog.AbstractBuilder<DialogType, ?>>
-            extends AbstractMaterialDialog.AbstractBuilder<DialogType, BuilderType> {
+    public static abstract class AbstractBuilder<DialogType extends AbstractValidateableDialog, BuilderType extends AbstractBuilder<DialogType, ?>>
+            extends AbstractHeaderDialog.AbstractBuilder<DialogType, BuilderType> {
 
         /**
          * Creates a new builder, which allows to create dialogs, which allow to create and show

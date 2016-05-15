@@ -34,9 +34,6 @@ License.
         <Preference
             android:key="@string/show_progress_dialog_preference_key"
             android:title="@string/show_progress_dialog_preference_title"/>
-        <Preference
-            android:key="@string/show_header_dialog_preference_key"
-            android:title="@string/show_header_dialog_preference_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/dialog_title_preference_category_title">
         <CheckBoxPreference
@@ -51,6 +48,13 @@ License.
             android:key="@string/dialog_title_preference_key"
             android:summary="@string/dialog_title_preference_summary"
             android:title="@string/dialog_title_preference_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/dialog_header_preference_category_title">
+        <CheckBoxPreference
+            android:defaultValue="@bool/show_dialog_header_preference_default_value"
+            android:key="@string/show_dialog_header_preference_key"
+            android:summary="@string/show_dialog_header_preference_summary"
+            android:title="@string/show_dialog_header_preference_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/dialog_icon_preference_category_title">
         <CheckBoxPreference

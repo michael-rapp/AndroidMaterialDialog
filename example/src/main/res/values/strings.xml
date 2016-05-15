@@ -27,8 +27,6 @@ License.
     <string name="show_multi_choice_dialog_preference_title">Show example multi choice dialog</string>
     <string name="show_custom_dialog_preference_key">show_custom_dialog_preference_key</string>
     <string name="show_custom_dialog_preference_title">Show dialog with custom content</string>
-    <string name="show_header_dialog_preference_key">show_header_dialog_preference_key</string>
-    <string name="show_header_dialog_preference_title">Show dialog with header</string>
     <string name="show_progress_dialog_preference_key">show_progress_dialog_preference_key</string>
     <string name="show_progress_dialog_preference_title">Show progress dialog</string>
     <string name="dialog_title_preference_category_title">Title</string>
@@ -47,6 +45,10 @@ License.
     <string name="dialog_message_preference_title">Dialog message</string>
     <string name="dialog_message_preference_summary">Allows to change the message of the example dialog</string>
     <string name="dialog_message_preference_default_value">This is the message of the Material Design-styled dialog.</string>
+    <string name="dialog_header_preference_category_title">Header</string>
+    <string name="show_dialog_header_preference_key">show_dialog_header_preference_key</string>
+    <string name="show_dialog_header_preference_title">Show dialog header</string>
+    <string name="show_dialog_header_preference_summary">Allows to set, whether the example dialog should contain a header with an icon, or not</string>
     <string name="dialog_icon_preference_category_title">Icon</string>
     <string name="show_dialog_icon_preference_key">show_dialog_icon_preference_key</string>
     <string name="show_dialog_icon_preference_title">Show dialog icon</string>

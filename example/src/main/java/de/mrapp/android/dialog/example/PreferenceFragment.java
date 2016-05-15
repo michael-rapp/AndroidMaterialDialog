@@ -30,7 +30,6 @@ import android.widget.Toast;
 
 import de.mrapp.android.dialog.AbstractButtonBarDialog;
 import de.mrapp.android.dialog.AbstractListDialog;
-import de.mrapp.android.dialog.HeaderDialog;
 import de.mrapp.android.dialog.MaterialDialog;
 import de.mrapp.android.dialog.ProgressDialog;
 
@@ -284,38 +283,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     }
 
     /**
-     * Initializes the preference, which allows to show a header dialog.
-     */
-    private void initializeShowHeaderDialogPreference() {
-        Preference showDialogPreference =
-                findPreference(getString(R.string.show_header_dialog_preference_key));
-        showDialogPreference
-                .setOnPreferenceClickListener(createShowHeaderDialogPreferenceListener());
-    }
-
-    /**
-     * Creates and returns a listener, which allows to show a header dialog.
-     *
-     * @return The listener, which has been created, as an instance of the type {@link
-     * OnPreferenceClickListener}
-     */
-    private OnPreferenceClickListener createShowHeaderDialogPreferenceListener() {
-        return new OnPreferenceClickListener() {
-
-            @Override
-            public boolean onPreferenceClick(final Preference preference) {
-                HeaderDialog.Builder builder = new HeaderDialog.Builder(getActivity());
-                builder.setHeaderBackground(R.drawable.dialog_header_background);
-                builder.setHeaderIcon(R.drawable.dialog_header_icon);
-                configureButtonBarDialogBuilder(builder);
-                builder.show();
-                return true;
-            }
-
-        };
-    }
-
-    /**
      * Shows a specific toast and cancels a previous one, if existing.
      *
      * @param text
@@ -376,6 +343,12 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             builder.setButtonTextColor(invertedAccentColor);
             builder.setBackgroundColor(
                     ContextCompat.getColor(getActivity(), android.R.color.background_dark));
+        }
+
+        if (shouldHeaderBeShown()) {
+            builder.showHeader(true);
+            builder.setHeaderBackground(R.drawable.dialog_header_background);
+            builder.setHeaderIcon(R.drawable.dialog_header_icon);
         }
     }
 
@@ -632,6 +605,20 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     }
 
     /**
+     * Returns, whether the header of the example dialog should be shown, or not.
+     *
+     * @return True, if the header should be shown, false otherwise
+     */
+    private boolean shouldHeaderBeShown() {
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String key = getString(R.string.show_dialog_header_preference_key);
+        boolean defaultValue =
+                getResources().getBoolean(R.bool.show_dialog_header_preference_default_value);
+        return sharedPreferences.getBoolean(key, defaultValue);
+    }
+
+    /**
      * Returns the color of a specific theme attribute.
      *
      * @param resourceId
@@ -669,7 +656,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         initializeShowMultiChoiceDialogPreference();
         initializeShowCustomDialogPreference();
         initializeShowProgressDialogPreference();
-        initializeShowHeaderDialogPreference();
     }
 
 }

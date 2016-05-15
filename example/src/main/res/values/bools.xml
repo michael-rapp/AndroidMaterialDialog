@@ -16,6 +16,7 @@ License.
 <resources>
 
     <bool name="show_dialog_title_preference_default_value">true</bool>
+    <bool name="show_dialog_header_preference_default_value">false</bool>
     <bool name="show_dialog_icon_preference_default_value">false</bool>
     <bool name="show_dialog_message_preference_default_value">true</bool>
     <bool name="show_negative_button_preference_default_value">true</bool>
