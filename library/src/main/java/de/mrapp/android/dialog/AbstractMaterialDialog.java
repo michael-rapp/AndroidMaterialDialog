@@ -556,7 +556,7 @@ public abstract class AbstractMaterialDialog extends Dialog {
         }
 
         /**
-         * Creates a dialog with the arguments, which have been suppplied to the builder. Calling
+         * Creates a dialog with the arguments, which have been supplied to the builder. Calling
          * this method does not display the dialog.
          *
          * @return The dialog, which has been created as an instance of the generic type DialogType
