@@ -83,7 +83,25 @@ public abstract class AbstractMaterialDialog extends Dialog {
             int themeId = themeResourceId != -1 ? themeResourceId : R.style.MaterialDialog_Light;
             dialog = onCreateDialog(context, themeId);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setAttributes(createLayoutParams());
             obtainStyledAttributes(themeId);
+        }
+
+        /**
+         * Creates and returns the layout params, which should be used by the dialog.
+         *
+         * @return The layout params, which should be used by the dialog, as an instance of the
+         * class {@link WindowManager.LayoutParams}
+         */
+        private WindowManager.LayoutParams createLayoutParams() {
+            WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+
+            if (getDeviceType(getContext()) == DisplayUtil.DeviceType.PHONE &&
+                    getOrientation(getContext()) == DisplayUtil.Orientation.PORTRAIT) {
+                layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+            }
+
+            return layoutParams;
         }
 
         /**
@@ -674,23 +692,6 @@ public abstract class AbstractMaterialDialog extends Dialog {
     private int customMessageViewId = -1;
 
     /**
-     * Creates and returns the layout params, which should be used by the dialog.
-     *
-     * @return The layout params, which should be used by the dialog, as an instance of the class
-     * {@link WindowManager.LayoutParams}
-     */
-    private WindowManager.LayoutParams createLayoutParameters() {
-        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
-
-        if (getDeviceType(getContext()) == DisplayUtil.DeviceType.PHONE &&
-                getOrientation(getContext()) == DisplayUtil.Orientation.PORTRAIT) {
-            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-        }
-
-        return layoutParams;
-    }
-
-    /**
      * Inflates the dialog's root view.
      */
     private void inflateLayout() {
@@ -1266,7 +1267,6 @@ public abstract class AbstractMaterialDialog extends Dialog {
     @Override
     public void onStart() {
         super.onStart();
-        getWindow().setAttributes(createLayoutParameters());
         inflateLayout();
         inflateTitleView();
         inflateMessageView();
