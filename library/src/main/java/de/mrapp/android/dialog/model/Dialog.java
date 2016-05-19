@@ -11,29 +11,23 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.mrapp.android.dialog;
+package de.mrapp.android.dialog.model;
 
-import android.support.annotation.NonNull;
-
-import de.mrapp.android.dialog.model.ValidateableDialog;
+import android.content.Context;
 
 /**
- * Defines the interface, a class, which should be able to validate the content of a dialog, must
- * implement.
+ * Defines the interface, all dialogs must implement.
  *
  * @author Michael Rapp
  * @since 3.2.0
  */
-public interface DialogValidator {
+public interface Dialog {
 
     /**
-     * Validates the content of a dialog.
+     * Returns the context, which is used by the dialog.
      *
-     * @param dialog
-     *         The dialog, whose content should be validated, as an instance of the type {@link
-     *         ValidateableDialog}. The dialog may not be null
-     * @return True, if the content of the dialog is valid, false otherwise
+     * @return The context, which is used by the dialog, as an instance of the class {@link Context}
      */
-    boolean validate(@NonNull ValidateableDialog dialog);
+    Context getContext();
 
 }

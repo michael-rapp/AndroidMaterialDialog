@@ -18,8 +18,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import de.mrapp.android.dialog.AbstractValidateableDialog;
 import de.mrapp.android.dialog.DialogValidator;
+import de.mrapp.android.dialog.model.ValidateableDialog;
 
 /**
  * A wrapper, which implements the interface {@link android.view.View.OnClickListener} in order to
@@ -54,15 +54,14 @@ public class OnClickListenerWrapper extends AbstractListenerWrapper
      *         True, if the dialog, the listener belongs to, should be validated when the listener
      *         is called, false otherwise
      * @param dialog
-     *         The dialog, the listener should belong to, as an instance of the class {@link
-     *         AbstractValidateableDialog}. The dialog may not be null
+     *         The dialog, the listener should belong to, as an instance of the type {@link
+     *         ValidateableDialog}. The dialog may not be null
      * @param buttonType
      *         The type of the button or list item, the listener belongs to, as an {@link Integer}
      *         value
      */
     public OnClickListenerWrapper(@Nullable final OnClickListener listener, final boolean validate,
-                                  @NonNull final AbstractValidateableDialog dialog,
-                                  final int buttonType) {
+                                  @NonNull final ValidateableDialog dialog, final int buttonType) {
         super(dialog, buttonType);
         this.wrappedListener = listener;
         this.validate = validate;

@@ -16,7 +16,6 @@ package de.mrapp.android.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.AttrRes;
 import android.support.annotation.CallSuper;
@@ -27,18 +26,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
-import android.support.v4.content.ContextCompat;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
+import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
+import de.mrapp.android.dialog.model.MaterialDialog;
 import de.mrapp.android.util.DisplayUtil;
-import de.mrapp.android.util.ViewUtil;
 
 import static de.mrapp.android.util.DisplayUtil.getDeviceType;
 import static de.mrapp.android.util.DisplayUtil.getOrientation;
@@ -50,7 +44,7 @@ import static de.mrapp.android.util.DisplayUtil.getOrientation;
  * @author Michael Rapp
  * @since 3.2.0
  */
-public abstract class AbstractMaterialDialog extends Dialog {
+public abstract class AbstractMaterialDialog extends Dialog implements MaterialDialog {
 
     /**
      * An abstract base class for all builders, which allow to create and show dialogs, which are
@@ -597,394 +591,18 @@ public abstract class AbstractMaterialDialog extends Dialog {
     }
 
     /**
-     * The root view of the dialog.
+     * The decorator, which is used by the dialog.
      */
-    private ViewGroup rootView;
-
-    /**
-     * The parent view of the view, which is used to show the dialog's title.
-     */
-    private ViewGroup titleContainer;
-
-    /**
-     * The parent view of the view, which is used to show the dialog's message.
-     */
-    private ViewGroup messageContainer;
-
-    /**
-     * The text view, which is used to show the title of the dialog.
-     */
-    private TextView titleTextView;
-
-    /**
-     * The text view, which is used to show the dialog's message.
-     */
-    private TextView messageTextView;
-
-    /**
-     * The root view of all views, which are used to show the dialog's title, message and content.
-     */
-    private ViewGroup contentRootView;
-
-    /**
-     * The parent view of the view, which is used to show the dialog's content.
-     */
-    private ViewGroup contentContainer;
-
-    /**
-     * The title of the dialog.
-     */
-    private CharSequence title;
-
-    /**
-     * The message of the dialog.
-     */
-    private CharSequence message;
-
-    /**
-     * The icon of the dialog.
-     */
-    private Drawable icon;
-
-    /**
-     * The color of the title of the dialog.
-     */
-    private int titleColor = -1;
-
-    /**
-     * The color of the message of the dialog.
-     */
-    private int messageColor = -1;
-
-    /**
-     * The background of the dialog.
-     */
-    private Drawable background;
-
-    /**
-     * The custom content view of the dialog.
-     */
-    private View customView;
-
-    /**
-     * The resource id of the custom content view of the dialog. builder.
-     */
-    private int customViewId = -1;
-
-    /**
-     * The custom title view of the dialog.
-     */
-    private View customTitleView;
-
-    /**
-     * The resource id of the custom title view of the dialog.
-     */
-    private int customTitleViewId = -1;
-
-    /**
-     * The custom message view of the dialog.
-     */
-    private View customMessageView;
-
-    /**
-     * The resource id of the custom message view of the dialog.
-     */
-    private int customMessageViewId = -1;
+    private final MaterialDialogDecorator decorator;
 
     /**
      * Inflates the dialog's root view.
-     */
-    private void inflateLayout() {
-        rootView = (ViewGroup) View.inflate(getContext(), R.layout.material_dialog, null);
-    }
-
-    /**
-     * Inflates the view, which is used to show the dialog's title. The view may either be the
-     * default one or a custom view, if one has been set before.
-     */
-    private void inflateTitleView() {
-        titleContainer = (ViewGroup) rootView.findViewById(R.id.title_container);
-        titleContainer.removeAllViews();
-
-        if (customTitleView != null) {
-            titleContainer.addView(customTitleView);
-        } else if (customTitleViewId != -1) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            View view = layoutInflater.inflate(customTitleViewId, titleContainer, false);
-            titleContainer.addView(view);
-        } else {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            View view =
-                    layoutInflater.inflate(R.layout.material_dialog_title, titleContainer, false);
-            titleContainer.addView(view);
-        }
-
-        View titleView = titleContainer.findViewById(android.R.id.title);
-        titleTextView = titleView instanceof TextView ? (TextView) titleView : null;
-    }
-
-    /**
-     * Inflates the view, which is used to show the dialog's message. The view may either be the
-     * default one or a custom view, if one has been set before.
-     */
-    private void inflateMessageView() {
-        messageContainer = (ViewGroup) rootView.findViewById(R.id.message_container);
-        messageContainer.removeAllViews();
-
-        if (customMessageView != null) {
-            messageContainer.addView(customMessageView);
-        } else if (customMessageViewId != -1) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            View view = layoutInflater.inflate(customMessageViewId, messageContainer, false);
-            messageContainer.addView(view);
-        } else {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            View view = layoutInflater
-                    .inflate(R.layout.material_dialog_message, messageContainer, false);
-            messageContainer.addView(view);
-        }
-
-        View messageView = messageContainer.findViewById(android.R.id.message);
-        messageTextView = messageView instanceof TextView ? (TextView) messageView : null;
-    }
-
-    /**
-     * Inflates the view, which is used to show the dialog's content. The view may either be the
-     * default one or a custom view, if one has been set before.
-     */
-    private void inflateContentView() {
-        contentRootView = (ViewGroup) rootView.findViewById(R.id.content_root);
-        contentContainer = (ViewGroup) rootView.findViewById(R.id.content_container);
-        contentContainer.removeAllViews();
-
-        if (customView != null) {
-            showContentContainer();
-            contentContainer.addView(customView);
-        } else if (customViewId != -1) {
-            showContentContainer();
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            View view = layoutInflater.inflate(customViewId, contentContainer, false);
-            contentContainer.addView(view);
-        }
-    }
-
-    /**
-     * Adapts the view, which is used to show the dialog's content.
-     */
-    private void adaptContentView() {
-        if (contentContainer != null) {
-            inflateContentView();
-        }
-    }
-
-    /**
-     * Adapts the view, which is used to show the dialog's title.
-     */
-    private void adaptTitleView() {
-        if (titleContainer != null) {
-            inflateTitleView();
-            adaptTitle();
-            adaptTitleColor();
-            adaptIcon();
-        }
-    }
-
-    /**
-     * Adapts the view, which is used to show the dialog's message.
-     */
-    private void adaptMessageView() {
-        if (messageContainer != null) {
-            inflateMessageView();
-            adaptMessage();
-            adaptMessageColor();
-        }
-    }
-
-    /**
-     * Adapts the color of the dialog's title.
-     */
-    private void adaptTitleColor() {
-        if (titleTextView != null && titleColor != -1) {
-            titleTextView.setTextColor(titleColor);
-        }
-    }
-
-    /**
-     * Adapts the dialog's title.
-     */
-    private void adaptTitle() {
-        if (titleTextView != null) {
-            titleTextView.setText(title);
-        }
-
-        adaptTitleContainerVisibility();
-    }
-
-    /**
-     * Adapts the dialog's icon.
-     */
-    private void adaptIcon() {
-        if (titleTextView != null) {
-            titleTextView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-        }
-
-        adaptTitleContainerVisibility();
-    }
-
-    /**
-     * Adapts the visibility of the parent view of the text view, which is used to show the title of
-     * the dialog.
-     */
-    private void adaptTitleContainerVisibility() {
-        if (titleContainer != null) {
-            if (customTitleView == null && customTitleViewId == -1) {
-                titleContainer.setVisibility(
-                        !TextUtils.isEmpty(title) || icon != null ? View.VISIBLE : View.GONE);
-            } else {
-                titleContainer.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    /**
-     * Adapts the dialog's message.
-     */
-
-    private void adaptMessage() {
-        if (messageTextView != null) {
-            messageTextView.setText(message);
-            messageTextView.setVisibility(!TextUtils.isEmpty(message) ? View.VISIBLE : View.GONE);
-        }
-
-        if (titleContainer != null) {
-            LinearLayout.LayoutParams layoutParams =
-                    (LinearLayout.LayoutParams) titleContainer.getLayoutParams();
-            layoutParams.bottomMargin = !TextUtils.isEmpty(message) ? getContext().getResources()
-                    .getDimensionPixelSize(R.dimen.dialog_content_spacing) : 0;
-            titleContainer.setLayoutParams(layoutParams);
-        }
-
-        adaptMessageContainerVisibility();
-    }
-
-    /**
-     * Adapts the color of the dialog's message.
-     */
-    private void adaptMessageColor() {
-        if (messageTextView != null && messageColor != -1) {
-            messageTextView.setTextColor(messageColor);
-        }
-    }
-
-    /**
-     * Adapts the visibility of the parent view of the text view, which is used to show the message
-     * of the dialog.
-     */
-    private void adaptMessageContainerVisibility() {
-        if (titleContainer != null) {
-            if (customMessageView == null && customMessageViewId == -1) {
-                messageContainer
-                        .setVisibility(!TextUtils.isEmpty(message) ? View.VISIBLE : View.GONE);
-            } else {
-                messageContainer.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    /**
-     * Adapts the dialog's background.
-     */
-    private void adaptBackground() {
-        if (rootView != null) {
-            ViewUtil.setBackground(rootView, background);
-        }
-    }
-
-    /**
-     * Shows the parent view of the view, which is used to show the dialog's content.
-     */
-    private void showContentContainer() {
-        contentContainer.setVisibility(View.VISIBLE);
-        int contentSpacing =
-                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_content_spacing);
-        LinearLayout.LayoutParams titleLayoutParams =
-                (LinearLayout.LayoutParams) titleContainer.getLayoutParams();
-        titleLayoutParams.bottomMargin = contentSpacing;
-        titleContainer.setLayoutParams(titleLayoutParams);
-        LinearLayout.LayoutParams messageLayoutParams =
-                (LinearLayout.LayoutParams) messageContainer.getLayoutParams();
-        messageLayoutParams.bottomMargin = contentSpacing;
-        messageContainer.setLayoutParams(messageLayoutParams);
-    }
-
-    /**
-     * Returns the root view of the dialog.
      *
-     * @return The root view of the dialog as an instance of the class {@link ViewGroup}
+     * @return The view, which has been inflated, as an instance of the class {@link View}. The view
+     * may not be null
      */
-    protected final ViewGroup getRootView() {
-        return rootView;
-    }
-
-    /**
-     * Returns the parent view of the view, which is used to show the dialog's title.
-     *
-     * @return The parent view of the view, which is used to show the dialog's title, as an instance
-     * of the class {@link ViewGroup}
-     */
-    protected final ViewGroup getTitleContainer() {
-        return titleContainer;
-    }
-
-    /**
-     * Returns the text view, which is used to show the dialog's title.
-     *
-     * @return The text view, which is used to show the dialog's title, as an instance of the class
-     * {@link TextView}
-     */
-    protected final TextView getTitleTextView() {
-        return titleTextView;
-    }
-
-    /**
-     * Returns the parent view of the view, which is used to show the dialog's message.
-     *
-     * @return The parent view of the view, which is used to show the dialog's message, as an
-     * instance of the class {@link ViewGroup}
-     */
-    protected final ViewGroup getMessageContainer() {
-        return messageContainer;
-    }
-
-    /**
-     * Returns the text view, which is used to show the dialog's message.
-     *
-     * @return The text view, which is used to show the dialog's message, as an instance of the
-     * class {@link TextView}
-     */
-    protected final TextView getMessageTextView() {
-        return messageTextView;
-    }
-
-    /**
-     * Returns the root view of all views, which are used to show the dialog's title, message and
-     * content.
-     *
-     * @return The root view of all views, which are used to show the dialog's title, message and
-     * content, as an instance of the class {@link ViewGroup}
-     */
-    protected final ViewGroup getContentRootView() {
-        return contentRootView;
-    }
-
-    /**
-     * Returns the parent view of the view, which is used to show the dialog's content.
-     *
-     * @return The parent view of the view, which is used to show the dialog's content, as an
-     * instance of the class {@link ViewGroup}.
-     */
-    protected final ViewGroup getContentContainer() {
-        return contentContainer;
+    private View inflateLayout() {
+        return View.inflate(getContext(), R.layout.material_dialog, null);
     }
 
     /**
@@ -1001,296 +619,159 @@ public abstract class AbstractMaterialDialog extends Dialog {
     protected AbstractMaterialDialog(@NonNull final Context context,
                                      @StyleRes final int themeResourceId) {
         super(context, themeResourceId);
+        this.decorator = new MaterialDialogDecorator(this);
     }
 
     /**
-     * Returns the icon of the dialog.
+     * The method, which is invoked when the dialog's decorators should be attached. This method may
+     * be overridden by subclasses in order to attach additional decorators.
      *
-     * @return The icon of the dialog, as an instance of the class {@link Drawable} or null, if no
-     * icon has been set
+     * @param view
+     *         The root view of the view hierarchy, which should be modified by the decorators, as
+     *         an instance of the class {@link View}. The view may not be null
      */
+    @CallSuper
+    protected void onAttachDecorators(@NonNull final View view) {
+        decorator.attach(view);
+    }
+
+    /**
+     * The method, which is invoked when the dialog's decorators should be detached. This method
+     * must be overridden by subclasses if they attach additional decorators.
+     */
+    @CallSuper
+    protected void onDetachDecorators() {
+        decorator.detach();
+    }
+
+    @Override
     public final Drawable getIcon() {
-        return icon;
+        return decorator.getIcon();
     }
 
-    /**
-     * Sets the icon of the dialog.
-     *
-     * @param icon
-     *         The icon, which should be set, as an instance of the class {@link Drawable} or null,
-     *         if no icon should be shown
-     */
+    @Override
     public final void setIcon(final Drawable icon) {
-        this.icon = icon;
-        adaptIcon();
+        decorator.setIcon(icon);
     }
 
-    /**
-     * Sets the icon of the dialog.
-     *
-     * @param resourceId
-     *         The resource id of the icon, which should be set, as an {@link Integer} value. The
-     *         resource id must correspond to a valid drawable resource
-     */
+    @Override
     public final void setIcon(@DrawableRes final int resourceId) {
-        setIcon(ContextCompat.getDrawable(getContext(), resourceId));
+        decorator.setIcon(resourceId);
     }
 
-    /**
-     * Set the icon of the dialog.
-     *
-     * @param attributeId
-     *         The id of the theme attribute, which supplies the icon, which should be set, as an
-     *         {@link Integer} value. The id must point to a valid drawable resource
-     */
+    @Override
     public final void setIconAttribute(@AttrRes final int attributeId) {
-        TypedArray typedArray =
-                getContext().getTheme().obtainStyledAttributes(new int[]{attributeId});
-        setIcon(typedArray.getDrawable(0));
+        decorator.setIconAttribute(attributeId);
     }
 
-    /**
-     * Returns the color of the title of the dialog.
-     *
-     * @return The color of the title of the dialog as an {@link Integer} value or -1, if no custom
-     * color has been set
-     */
+    @Override
     public final int getTitleColor() {
-        return titleColor;
+        return decorator.getTitleColor();
     }
 
-    /**
-     * Sets the color of the title of the dialog.
-     *
-     * @param color
-     *         The color, which should be set, as an {@link Integer} value
-     */
+    @Override
     public final void setTitleColor(@ColorInt final int color) {
-        titleColor = color;
-        adaptTitleColor();
+        decorator.setTitleColor(color);
     }
 
-    /**
-     * Returns the color of the message of the dialog.
-     *
-     * @return The color of the message of the dialog as an {@link Integer} value or -1, if no
-     * custom color has been set
-     */
+    @Override
     public final int getMessageColor() {
-        return messageColor;
+        return decorator.getMessageColor();
     }
 
-    /**
-     * Sets the color of the message of the dialog.
-     *
-     * @param color
-     *         The color, which should be set, as an {@link Integer} value
-     */
+    @Override
     public final void setMessageColor(@ColorInt final int color) {
-        messageColor = color;
-        adaptMessageColor();
+        decorator.setMessageColor(color);
     }
 
-    /**
-     * Returns the background of the dialog.
-     *
-     * @return The background of the dialog as an instance of the class {@link Drawable} or null, if
-     * no custom background has been set
-     */
+    @Override
     public final Drawable getBackground() {
-        return background;
+        return decorator.getBackground();
     }
 
-    /**
-     * Sets the background of the dialog.
-     *
-     * @param background
-     *         The background, which should be set, as an instance of the class {@link Drawable} or
-     *         null, if no custom background should be set
-     */
+    @Override
     public final void setBackground(@Nullable final Drawable background) {
-        this.background = background;
-        adaptBackground();
+        decorator.setBackground(background);
     }
 
-    /**
-     * Sets the background of the dialog.
-     *
-     * @param resourceId
-     *         The resource id of the background, which should be set, as an {@link Integer} value.
-     *         The resource id must correspond to a valid drawable resource
-     */
+    @Override
     public final void setBackground(@DrawableRes final int resourceId) {
-        setBackground(ContextCompat.getDrawable(getContext(), resourceId));
+        decorator.setBackground(resourceId);
     }
 
-    /**
-     * Sets the background color of the dialog.
-     *
-     * @param color
-     *         The background color, which should be set, as an {@link Integer} value or -1, if no
-     *         custom background color should be set
-     */
+    @Override
     public final void setBackgroundColor(@ColorInt final int color) {
-        setBackground(color != -1 ? new ColorDrawable(color) : null);
+        decorator.setBackgroundColor(color);
     }
 
-    /**
-     * Sets the custom view, which should be used to show the title of the dialog.
-     *
-     * @param view
-     *         The view, which should be set, as an instance of the class {@link View} or null, if
-     *         no custom view should be used to show the title
-     */
+    @Override
     public final void setCustomTitle(@Nullable final View view) {
-        customTitleView = view;
-        customTitleViewId = -1;
-        adaptTitleView();
+        decorator.setCustomTitle(view);
     }
 
-    /**
-     * Sets the custom view, which should be used to show the title of the dialog.
-     *
-     * @param resourceId
-     *         The resource id of the view, which should be set, as an {@link Integer} value. The
-     *         resource id must correspond to a valid layout resource
-     */
+    @Override
     public final void setCustomTitle(@LayoutRes final int resourceId) {
-        customTitleView = null;
-        customTitleViewId = resourceId;
-        adaptTitleView();
+        decorator.setCustomTitle(resourceId);
     }
 
-    /**
-     * Sets the custom view, which should be used to show the message of the dialog.
-     *
-     * @param view
-     *         The view, which should be set, as an instance of the class {@link View} or null, if
-     *         no custom view should be used to show the title
-     */
+    @Override
     public final void setCustomMessage(@Nullable final View view) {
-        customMessageView = view;
-        customMessageViewId = -1;
-        adaptMessageView();
+        decorator.setCustomMessage(view);
     }
 
-    /**
-     * Sets the custom view, which should be used to show the message of the dialog.
-     *
-     * @param resourceId
-     *         The resource id of the view, which should be set, as an {@link Integer} value. The
-     *         resource id must correspond to a valid layout resource
-     */
+    @Override
     public final void setCustomMessage(@LayoutRes final int resourceId) {
-        customMessageView = null;
-        customMessageViewId = resourceId;
-        adaptMessageView();
+        decorator.setCustomMessage(resourceId);
     }
 
-    /**
-     * Sets the custom view, which should be shown by the dialog.
-     *
-     * @param view
-     *         The view, which should be set, as an instance of the class {@link View} or null, if
-     *         no custom view should be shown
-     */
+    @Override
     public final void setView(@Nullable final View view) {
-        customView = view;
-        customViewId = -1;
-        adaptContentView();
+        decorator.setView(view);
     }
 
-    /**
-     * Sets the custom view, which should be shown by the dialog.
-     *
-     * @param resourceId
-     *         The resource id of the view, which should be set, as an {@link Integer} value. The
-     *         resource id must correspond to a valid layout resource
-     */
+    @Override
     public final void setView(@LayoutRes final int resourceId) {
-        customView = null;
-        customViewId = resourceId;
-        adaptContentView();
+        decorator.setView(resourceId);
     }
 
-    /**
-     * Returns the message of the dialog.
-     *
-     * @return The message of the dialog as an instance of the type {@link CharSequence} or null, if
-     * no message has been set
-     */
+    @Override
     public final CharSequence getMessage() {
-        return message;
+        return decorator.getMessage();
     }
 
-    /**
-     * Sets the message of the dialog.
-     *
-     * @param message
-     *         The message, which should be set, as an instance of the type {@link CharSequence} or
-     *         null, if no message should be shown
-     */
+    @Override
     public final void setMessage(@Nullable final CharSequence message) {
-        this.message = message;
-        adaptMessage();
+        decorator.setMessage(message);
     }
 
-    /**
-     * Sets the message of the dialog.
-     *
-     * @param resourceId
-     *         The resource id of the message, which should be set, as an {@link Integer} value. The
-     *         resource id must correspond to a valid string resource
-     */
+    @Override
     public final void setMessage(@StringRes final int resourceId) {
-        setMessage(getContext().getText(resourceId));
+        decorator.setMessage(resourceId);
     }
 
-    /**
-     * Returns the title of the dialog.
-     *
-     * @return The title of the dialog as an instance of the type {@link CharSequence} or null, if
-     * no title has been set
-     */
+    @Override
     public final CharSequence getTitle() {
-        return title;
+        return decorator.getTitle();
     }
 
     @Override
     public final void setTitle(@Nullable final CharSequence title) {
         super.setTitle(title);
-        this.title = title;
-        adaptTitle();
+        decorator.setTitle(title);
     }
 
-    @CallSuper
     @Override
-    public void onStart() {
+    public final void onStart() {
         super.onStart();
-        inflateLayout();
-        inflateTitleView();
-        inflateMessageView();
-        inflateContentView();
-        setContentView(rootView);
-        adaptTitle();
-        adaptTitleColor();
-        adaptIcon();
-        adaptMessage();
-        adaptMessageColor();
-        adaptBackground();
+        View view = inflateLayout();
+        setContentView(view);
+        onAttachDecorators(view);
     }
 
-    @CallSuper
     @Override
-    public void onStop() {
+    public final void onStop() {
         super.onStop();
-        rootView = null;
-        titleContainer = null;
-        messageContainer = null;
-        titleTextView = null;
-        messageTextView = null;
-        contentRootView = null;
-        contentContainer = null;
+        onDetachDecorators();
     }
 
 }

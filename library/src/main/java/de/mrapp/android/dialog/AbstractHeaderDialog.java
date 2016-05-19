@@ -24,15 +24,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 
+import de.mrapp.android.dialog.decorator.HeaderDialogDecorator;
+import de.mrapp.android.dialog.model.HeaderDialog;
 import de.mrapp.android.util.ThemeUtil;
-
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * An abstract base class for all dialogs, which are designed according to Android 5's Material
@@ -41,7 +37,7 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @author Michael Rapp
  * @since 3.2.0
  */
-public abstract class AbstractHeaderDialog extends AbstractMaterialDialog {
+public abstract class AbstractHeaderDialog extends AbstractMaterialDialog implements HeaderDialog {
 
     /**
      * An abstract base class for all builders, which allow to create and show dialogs, which are
@@ -324,123 +320,9 @@ public abstract class AbstractHeaderDialog extends AbstractMaterialDialog {
     }
 
     /**
-     * The view group, which contains the views of the dialog's header.
+     * The decorator, which is used by the dialog.
      */
-    private ViewGroup headerContainer;
-
-    /**
-     * The image view, which is used to show the background of the dialog's header.
-     */
-    private ImageView headerBackgroundImageView;
-
-    /**
-     * The image view, which is used to show the icon of the dialog's header.
-     */
-    private ImageView headerIconImageView;
-
-    /**
-     * The view, which is used to show the divider of the dialog's header.
-     */
-    private View headerDivider;
-
-    /**
-     * True, if the dialog's header is shown, false otherwise.
-     */
-    private boolean showHeader;
-
-    /**
-     * The height of the dialog's header.
-     */
-    private int headerHeight;
-
-    /**
-     * The background of the dialog's header.
-     */
-    private Drawable headerBackground;
-
-    /**
-     * The icon of the dialog's header.
-     */
-    private Drawable headerIcon;
-
-    /**
-     * True, if the divider of the dialog's header is shown, false otherwise.
-     */
-    private boolean showHeaderDivider;
-
-    /**
-     * The color of the divider of the dialog's header.
-     */
-    private int headerDividerColor;
-
-    /**
-     * Inflates the dialog's header.
-     */
-    private void inflateHeader() {
-        ViewGroup rootView = getRootView();
-        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-        headerContainer = (ViewGroup) layoutInflater
-                .inflate(R.layout.material_dialog_header, rootView, false);
-        headerBackgroundImageView =
-                (ImageView) headerContainer.findViewById(R.id.header_background_image_view);
-        headerIconImageView = (ImageView) headerContainer.findViewById(R.id.header_icon_image_view);
-        rootView.addView(headerContainer, 0);
-    }
-
-    /**
-     * Adapts the visibility of the dialog's header.
-     */
-    private void adaptHeaderVisibility() {
-        if (headerContainer != null) {
-            headerContainer.setVisibility(showHeader ? View.VISIBLE : View.GONE);
-        }
-    }
-
-    /**
-     * Adapts the height of the dialog's header.
-     */
-    private void adaptHeaderHeight() {
-        if (headerContainer != null) {
-            ViewGroup.LayoutParams layoutParams = headerContainer.getLayoutParams();
-            layoutParams.height = headerHeight;
-        }
-    }
-
-    /**
-     * Adapts the background of the dialog's header.
-     */
-    private void adaptHeaderBackground() {
-        if (headerBackgroundImageView != null) {
-            headerBackgroundImageView.setImageDrawable(headerBackground);
-        }
-    }
-
-    /**
-     * Adapt's the icon of the dialog's header.
-     */
-    private void adaptHeaderIcon() {
-        if (headerIconImageView != null) {
-            headerIconImageView.setImageDrawable(headerIcon);
-        }
-    }
-
-    /**
-     * Adapt's the color of the divider of the dialog's header.
-     */
-    private void adaptHeaderDividerColor() {
-        if (headerDivider != null) {
-            headerDivider.setBackgroundColor(headerDividerColor);
-        }
-    }
-
-    /**
-     * Adapts the visibility of the divider of the dialog's header.
-     */
-    private void adaptHeaderDividerVisibility() {
-        if (headerDivider != null) {
-            headerDivider.setVisibility(showHeaderDivider ? View.VISIBLE : View.GONE);
-        }
-    }
+    private final HeaderDialogDecorator decorator;
 
     /**
      * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
@@ -456,185 +338,97 @@ public abstract class AbstractHeaderDialog extends AbstractMaterialDialog {
     protected AbstractHeaderDialog(@NonNull final Context context,
                                    @StyleRes final int themeResourceId) {
         super(context, themeResourceId);
+        this.decorator = new HeaderDialogDecorator(this);
     }
 
-    /**
-     * Returns, whether the dialog's header is shown, or not.
-     *
-     * @return True, if the dialog's header is shown, false otherwise
-     */
+    @Override
     public final boolean isHeaderShown() {
-        return showHeader;
+        return decorator.isHeaderShown();
     }
 
-    /**
-     * Sets, whether the dialog's header should be shown, or not.
-     *
-     * @param show
-     *         True, if the dialog's header should be shown, false otherwise
-     */
+    @Override
     public final void showHeader(final boolean show) {
-        this.showHeader = show;
-        adaptHeaderVisibility();
+        decorator.showHeader(show);
     }
 
-    /**
-     * Returns the height of the dialog's header.
-     *
-     * @return The height of the dialog's header in pixels as an {@link Integer} value
-     */
+    @Override
     public final int getHeaderHeight() {
-        return headerHeight;
+        return decorator.getHeaderHeight();
     }
 
-    /**
-     * Sets the height of the dialog's header.
-     *
-     * @param height
-     *         The height, which should be set, in pixels as an {@link Integer} value. The height
-     *         must be at least 0
-     */
+    @Override
     public final void setHeaderHeight(final int height) {
-        ensureAtLeast(height, 0, "The height must be at least 0");
-        this.headerHeight = height;
-        adaptHeaderHeight();
+        decorator.setHeaderHeight(height);
     }
 
-    /**
-     * Returns the background of the dialog's header.
-     *
-     * @return The background of the dialog's header as an instance of the class {@link Drawable}
-     */
+    @Override
     public final Drawable getHeaderBackground() {
-        return headerBackground;
+        return decorator.getHeaderBackground();
     }
 
-    /**
-     * Sets the background color of the dialog's header.
-     *
-     * @param color
-     *         The background color, which should be set, as an {@link Integer} value
-     */
+    @Override
     public final void setHeaderBackgroundColor(@ColorInt final int color) {
-        setHeaderBackground(new ColorDrawable(color));
+        decorator.setHeaderBackgroundColor(color);
     }
 
-    /**
-     * Sets the background of the dialog's header.
-     *
-     * @param resourceId
-     *         The resource id of the background, which should be set, as an {@link Integer} value.
-     *         The resource id must correspond to a valid drawable resource
-     */
+    @Override
     public final void setHeaderBackground(@DrawableRes final int resourceId) {
-        setHeaderBackground(ContextCompat.getDrawable(getContext(), resourceId));
+        decorator.setHeaderBackground(resourceId);
     }
 
-    /**
-     * Sets the background of the dialog's header.
-     *
-     * @param background
-     *         The background, which should be set, as an instance of the class {@link Drawable}.
-     *         The background may not be null
-     */
+    @Override
     public final void setHeaderBackground(@NonNull final Drawable background) {
-        ensureNotNull(background, "The background may not be null");
-        this.headerBackground = background;
-        adaptHeaderBackground();
+        decorator.setHeaderBackground(background);
     }
 
-    /**
-     * Returns the icon of the dialog's header.
-     *
-     * @return The icon of the dialog's header as an instance of the class {@link Drawable} or null,
-     * if no icon has been set
-     */
+    @Override
     public final Drawable getHeaderIcon() {
-        return headerIcon;
+        return decorator.getHeaderIcon();
     }
 
-    /**
-     * Sets the icon of the dialog's header.
-     *
-     * @param resourceId
-     *         The resource id of the icon, which should be set, as an {@link Integer} value. The
-     *         resource id must correspond to a valid drawable resource
-     */
+    @Override
     public final void setHeaderIcon(@DrawableRes final int resourceId) {
         setHeaderIcon(ContextCompat.getDrawable(getContext(), resourceId));
     }
 
-    /**
-     * Sets the icon of the dialog's header.
-     *
-     * @param icon
-     *         The icon, which should be set, as an instance of the class {@link Drawable} or null,
-     *         if no icon should be set
-     */
+    @Override
     public final void setHeaderIcon(@Nullable final Drawable icon) {
-        this.headerIcon = icon;
-        adaptHeaderIcon();
+        decorator.setHeaderIcon(icon);
     }
 
-    /**
-     * Returns the color of the divider of the dialog's header.
-     *
-     * @return The color of the divider of the dialog's header as an {@link Integer} value
-     */
+    @Override
     public final int getHeaderDividerColor() {
-        return headerDividerColor;
+        return decorator.getHeaderDividerColor();
     }
 
-    /**
-     * Sets the color of the divider of the dialog's header.
-     *
-     * @param color
-     *         The color, which should be set, as an {@link Integer} value
-     */
+    @Override
     public final void setHeaderDividerColor(@ColorInt final int color) {
-        this.headerDividerColor = color;
-        adaptHeaderDividerColor();
+        decorator.setHeaderDividerColor(color);
     }
 
-    /**
-     * Returns, whether the divider of the dialog's header is shown, or not.
-     *
-     * @return True, if the divider of the dialog's header is shown, false otherwise
-     */
+    @Override
     public final boolean isHeaderDividerShown() {
-        return showHeaderDivider;
+        return decorator.isHeaderDividerShown();
     }
 
-    /**
-     * Sets, whether the divider of the dialog's header should be shown, or not.
-     *
-     * @param show
-     *         True, if the divider of the dialog's header should be shown, false otherwise
-     */
+    @Override
     public final void showHeaderDivider(final boolean show) {
-        this.showHeaderDivider = show;
-        adaptHeaderDividerVisibility();
+        decorator.showHeaderDivider(show);
     }
 
     @CallSuper
     @Override
-    public void onStart() {
-        super.onStart();
-        inflateHeader();
-        adaptHeaderVisibility();
-        adaptHeaderBackground();
-        adaptHeaderDividerColor();
-        adaptHeaderDividerVisibility();
-        adaptHeaderIcon();
-        adaptHeaderHeight();
+    protected void onAttachDecorators(@NonNull final View view) {
+        super.onAttachDecorators(view);
+        decorator.attach(view);
+
     }
 
     @CallSuper
     @Override
-    public void onStop() {
-        super.onStop();
-        headerBackgroundImageView = null;
-        headerIconImageView = null;
+    protected void onDetachDecorators() {
+        super.onDetachDecorators();
+        decorator.detach();
     }
 
 }

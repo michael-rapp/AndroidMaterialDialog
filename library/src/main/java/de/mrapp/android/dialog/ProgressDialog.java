@@ -5,16 +5,10 @@ import android.content.res.TypedArray;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
-import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 
+import de.mrapp.android.dialog.model.ProgressDialogDecorator;
 import de.mrapp.android.util.ThemeUtil;
-import de.mrapp.android.view.CircularProgressBar;
-
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * A dialog, which is designed according to Android 5's Material Design guidelines even on
@@ -27,7 +21,7 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @author Michael Rapp
  * @since 3.2.0
  */
-public class ProgressDialog extends AbstractButtonBarDialog {
+public class ProgressDialog extends AbstractButtonBarDialog implements ProgressDialogDecorator {
 
     /**
      * Contains all possible positions of the dialog's progress bar.
@@ -270,115 +264,9 @@ public class ProgressDialog extends AbstractButtonBarDialog {
     }
 
     /**
-     * The dialog's circular progress bar.
+     * The decorator, which is used by the dialog.
      */
-    private CircularProgressBar progressBar;
-
-    /**
-     * The color of the dialog's progress bar.
-     */
-    private int progressBarColor;
-
-    /**
-     * The size of the dialog's progress bar.
-     */
-    private int progressBarSize;
-
-    /**
-     * The thickness of the dialog's progress bar.
-     */
-    private int progressBarThickness;
-
-    /**
-     * The position of the dialog's progress bar.
-     */
-    private ProgressBarPosition progressBarPosition;
-
-    /**
-     * Returns the resource id of the layout, which should be used as the dialog's custom message,
-     * depending on the position of the dialog's progress bar.
-     *
-     * @return The resource id of the layout, which should be used as the diaog's custom message, as
-     * an {@link Integer} value
-     */
-    private int getCustomMessageId() {
-        switch (progressBarPosition) {
-            case LEFT:
-                return R.layout.progress_dialog_left;
-            case TOP:
-                return R.layout.progress_dialog_top;
-            case RIGHT:
-                return R.layout.progress_dialog_right;
-            case BOTTOM:
-                return R.layout.progress_dialog_bottom;
-            default:
-                return R.layout.progress_dialog_left;
-        }
-    }
-
-    /**
-     * Adapts the dialog's progress bar.
-     */
-    public final void adaptProgressBar() {
-        setCustomMessage(getCustomMessageId());
-
-        if (getMessageContainer() != null) {
-            View progressView = getMessageContainer().findViewById(R.id.progress_bar);
-            progressBar = progressView instanceof CircularProgressBar ?
-                    (CircularProgressBar) progressView : null;
-            adaptProgressBarColor();
-            adaptProgressBarSize();
-            adaptProgressBarThickness();
-            adaptMessageTextSize();
-        }
-    }
-
-    /**
-     * Adapts the color of the dialog's circular progress bar.
-     */
-    private void adaptProgressBarColor() {
-        if (progressBar != null) {
-            progressBar.setColor(progressBarColor);
-        }
-    }
-
-    /**
-     * Adapts the size of the dialog's circular progress bar.
-     */
-    private void adaptProgressBarSize() {
-        if (progressBar != null) {
-            progressBar.setVisibility(progressBarSize > 0 ? View.VISIBLE : View.GONE);
-            ViewGroup.LayoutParams layoutParams = progressBar.getLayoutParams();
-            layoutParams.width = progressBarSize;
-            layoutParams.height = progressBarSize;
-        }
-    }
-
-    /**
-     * Adapts the thickness of the dialog's circular progress bar.
-     */
-    private void adaptProgressBarThickness() {
-        if (progressBar != null) {
-            progressBar.setThickness(progressBarThickness);
-        }
-    }
-
-    /**
-     * Adapts the text size of the dialog's message, depending on whether a title is shown.
-     */
-    private void adaptMessageTextSize() {
-        if (getMessageTextView() != null) {
-            if (TextUtils.isEmpty(getTitle())) {
-                getMessageTextView().setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                        getContext().getResources()
-                                .getDimensionPixelSize(R.dimen.dialog_message_text_size_large));
-            } else {
-                getMessageTextView().setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                        getContext().getResources()
-                                .getDimensionPixelSize(R.dimen.dialog_message_text_size_normal));
-            }
-        }
-    }
+    private final de.mrapp.android.dialog.decorator.ProgressDialogDecorator decorator;
 
     /**
      * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
@@ -393,107 +281,59 @@ public class ProgressDialog extends AbstractButtonBarDialog {
      */
     protected ProgressDialog(@NonNull final Context context, @StyleRes final int themeResourceId) {
         super(context, themeResourceId);
+        this.decorator = new de.mrapp.android.dialog.decorator.ProgressDialogDecorator(this);
     }
 
-    /**
-     * Returns the color of the dialog's progress bar.
-     *
-     * @return The color of the dialog's progress bar, as an {@link Integer} value
-     */
+    @Override
     public final int getProgressBarColor() {
-        return progressBarColor;
+        return decorator.getProgressBarColor();
     }
 
-    /**
-     * Sets the color of the dialog's progress bar.
-     *
-     * @param color
-     *         The color, which should be set, as an {@link Integer} value
-     */
+    @Override
     public final void setProgressBarColor(@ColorInt final int color) {
-        this.progressBarColor = color;
-        adaptProgressBarColor();
+        decorator.setProgressBarColor(color);
     }
 
-    /**
-     * Returns the size of the dialog's progress bar.
-     *
-     * @return The size of the dialog's progress bar in pixels as an {@link Integer} value
-     */
+    @Override
     public final int getProgressBarSize() {
-        return progressBarSize;
+        return decorator.getProgressBarSize();
     }
 
-    /**
-     * Sets the size of the dialog's progress bar.
-     *
-     * @param size
-     *         The size, which should be set, in pixels as an {@link Integer} value. The size must
-     *         be at least 0
-     */
+    @Override
     public final void setProgressBarSize(final int size) {
-        ensureAtLeast(size, 0, "The size must be at least 0");
-        this.progressBarSize = size;
-        adaptProgressBarSize();
+        decorator.setProgressBarSize(size);
     }
 
-    /**
-     * Returns the thickness of the dialog's progress bar.
-     *
-     * @return The thickness of the dialog's progress bar in pixels as an {@link Integer} value
-     */
+    @Override
     public final int getProgressBarThickness() {
-        return progressBarThickness;
+        return decorator.getProgressBarThickness();
     }
 
-    /**
-     * Sets the thickness of the dialog's progress bar.
-     *
-     * @param thickness
-     *         The thickness, which should be set, in pixels as an {@link Integer} value. The
-     *         thickness must be at least 1
-     */
+    @Override
     public final void setProgressBarThickness(final int thickness) {
-        ensureAtLeast(thickness, 1, "The thickness must be at least 1");
-        this.progressBarThickness = thickness;
-        adaptProgressBarThickness();
+        decorator.setProgressBarThickness(thickness);
     }
 
-    /**
-     * Returns the position of the dialog's progress bar.
-     *
-     * @return The position of the dialog's progress bar as a value of the enum {@link
-     * ProgressBarPosition}. The position may either be <code>LEFT</code>, <code>TOP</code>,
-     * <code>RIGHT</code> or <code>BOTTOM</code>
-     */
+    @Override
     public final ProgressBarPosition getProgressBarPosition() {
-        return progressBarPosition;
+        return decorator.getProgressBarPosition();
     }
 
-    /**
-     * Sets the position of the dialog's progress bar.
-     *
-     * @param position
-     *         The position, which should be set, as a value of the enum {@link
-     *         ProgressBarPosition}. The position may either be <code>LEFT</code>, <code>TOP</code>,
-     *         <code>RIGHT</code> or <code>BOTTOM</code>
-     */
+    @Override
     public final void setProgressBarPosition(@NonNull final ProgressBarPosition position) {
-        ensureNotNull(position, "The position may not be null");
-        this.progressBarPosition = position;
-        adaptProgressBar();
+        decorator.setProgressBarPosition(position);
     }
 
     @Override
-    public final void onStart() {
-        super.onStart();
-        adaptProgressBar();
+    protected final void onAttachDecorators(@NonNull final View view) {
+        super.onAttachDecorators(view);
+        decorator.attach(view);
     }
 
     @Override
-    public final void onStop() {
-        super.onStop();
-        progressBar = null;
+    public final void onDetachDecorators() {
+        super.onDetachDecorators();
+        decorator.detach();
     }
 
 }

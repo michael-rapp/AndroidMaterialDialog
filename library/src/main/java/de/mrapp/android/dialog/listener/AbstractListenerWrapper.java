@@ -16,7 +16,7 @@ package de.mrapp.android.dialog.listener;
 import android.app.AlertDialog;
 import android.support.annotation.NonNull;
 
-import de.mrapp.android.dialog.AbstractValidateableDialog;
+import de.mrapp.android.dialog.model.ValidateableDialog;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -34,7 +34,7 @@ public abstract class AbstractListenerWrapper {
     /**
      * The dialog, the listener belongs to.
      */
-    private final AbstractValidateableDialog dialog;
+    private final ValidateableDialog dialog;
 
     /**
      * The type of the buttonType or list view, the listener belongs to.
@@ -64,10 +64,10 @@ public abstract class AbstractListenerWrapper {
     /**
      * Returns the dialog, the listener belongs to.
      *
-     * @return The dialog, the listener belongs to, as an instance of the class {@link
-     * AbstractValidateableDialog}
+     * @return The dialog, the listener belongs to, as an instance of the type {@link
+     * ValidateableDialog}
      */
-    protected final AbstractValidateableDialog getDialog() {
+    protected final ValidateableDialog getDialog() {
         return dialog;
     }
 
@@ -87,14 +87,13 @@ public abstract class AbstractListenerWrapper {
      * another type.
      *
      * @param dialog
-     *         The dialog, the listener should belong to, as an instance of the class {@link
-     *         AbstractValidateableDialog}. The dialog may not be null
+     *         The dialog, the listener should belong to, as an instance of the type {@link
+     *         ValidateableDialog}. The dialog may not be null
      * @param buttonType
      *         The type of the button or list item, the listener belongs to, as an {@link Integer}
      *         value
      */
-    public AbstractListenerWrapper(@NonNull final AbstractValidateableDialog dialog,
-                                   final int buttonType) {
+    public AbstractListenerWrapper(@NonNull final ValidateableDialog dialog, final int buttonType) {
         ensureNotNull(dialog, "The dialog may not be null");
         this.dialog = dialog;
         this.buttonType = buttonType;

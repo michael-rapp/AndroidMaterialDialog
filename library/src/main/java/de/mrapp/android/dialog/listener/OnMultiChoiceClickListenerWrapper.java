@@ -21,7 +21,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import de.mrapp.android.dialog.AbstractValidateableDialog;
+import de.mrapp.android.dialog.model.ValidateableDialog;
 
 /**
  * A wrapper, which implements the interface {@link OnItemClickListener} in order to delegate the
@@ -47,15 +47,15 @@ public class OnMultiChoiceClickListenerWrapper extends AbstractListenerWrapper
      *         The listener, which should be encapsulated by the wrapper, as an instance of the type
      *         {@link OnMultiChoiceClickListener} or null, if no listener should be encapsulated
      * @param dialog
-     *         The dialog, the listener should belong to, as an instance of the class {@link
-     *         AbstractValidateableDialog}. The dialog may not be null
+     *         The dialog, the listener should belong to, as an instance of the type {@link
+     *         ValidateableDialog}. The dialog may not be null
      * @param buttonType
      *         The type of the button or list item, the listener belongs to, as an {@link Integer}
      *         value
      */
 
     public OnMultiChoiceClickListenerWrapper(@Nullable final OnMultiChoiceClickListener listener,
-                                             @NonNull final AbstractValidateableDialog dialog,
+                                             @NonNull final ValidateableDialog dialog,
                                              final int buttonType) {
         super(dialog, buttonType);
         this.wrappedListener = listener;

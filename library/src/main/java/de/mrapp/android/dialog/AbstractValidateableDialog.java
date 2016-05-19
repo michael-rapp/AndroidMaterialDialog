@@ -18,19 +18,22 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.Set;
+
+import de.mrapp.android.dialog.decorator.ValidateableDialogDecorator;
+import de.mrapp.android.dialog.model.ValidateableDialog;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
- * An abstract base class for all dialogs, all dialogs, which are designed according to Android 5's
- * Material design guidelines even on pre-Lollipop devices and can be validated.
+ * An abstract base class for all dialogs, which are designed according to Android 5's Material
+ * design guidelines even on pre-Lollipop devices and can be validated.
  *
  * @author Michael Rapp
  * @since 3.2.0
  */
-public abstract class AbstractValidateableDialog extends AbstractHeaderDialog {
+public abstract class AbstractValidateableDialog extends AbstractHeaderDialog
+        implements ValidateableDialog {
 
     /**
      * An abstract base class for all builders, which allow to create and show dialogs, which are
@@ -112,9 +115,9 @@ public abstract class AbstractValidateableDialog extends AbstractHeaderDialog {
     }
 
     /**
-     * A set, which contains the validators of the dialog.
+     * The decorator, which is used by the dialog.
      */
-    private final Set<DialogValidator> validators;
+    private final ValidateableDialogDecorator decorator;
 
     /**
      * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
@@ -130,72 +133,32 @@ public abstract class AbstractValidateableDialog extends AbstractHeaderDialog {
     protected AbstractValidateableDialog(@NonNull final Context context,
                                          @StyleRes final int themeResourceId) {
         super(context, themeResourceId);
-        this.validators = new LinkedHashSet<>();
+        this.decorator = new ValidateableDialogDecorator(this);
     }
 
-    /**
-     * Returns a set, which contains the validators, which are executed when the positive button of
-     * the dialog is clicked.
-     *
-     * @return A set, which contains the validators, which are executed when the positive button of
-     * the dialog is clicked, as an instance of the type {@link Set} or an empty set, if no
-     * validators are executed
-     */
+    @Override
     public final Set<DialogValidator> getValidators() {
-        return validators;
+        return decorator.getValidators();
     }
 
-    /**
-     * Adds a new validator, which should be executed when the positive button of the dialog is
-     * clicked.
-     *
-     * @param validator
-     *         The validator, which should be added, as an instance of the type {@link
-     *         DialogValidator}. The validator may not be null
-     */
+    @Override
     public final void addValidator(@NonNull final DialogValidator validator) {
-        ensureNotNull(validator, "The validator may not be null");
-        validators.add(validator);
+        decorator.addValidator(validator);
     }
 
-    /**
-     * Adds all validators, which are contained by a specific collection and should be executed when
-     * the positive button of the dialog is clicked.
-     *
-     * @param validators
-     *         A collection, which contains all validators, which should be added, as an instance of
-     *         the type {@link Collection} or an empty collection, if no validators should be added
-     */
+    @Override
     public final void addAllValidators(@NonNull final Collection<DialogValidator> validators) {
-        ensureNotNull(validators, "The collection may not be null");
-        this.validators.addAll(validators);
+        decorator.addAllValidators(validators);
     }
 
-    /**
-     * Removes a specific validator, which should not be executed, when the positive button of the
-     * dialog is clicked, anymore.
-     *
-     * @param validator
-     *         The validator, which should be removed, as an instance of the type {@link
-     *         DialogValidator}. The validator may not be null
-     */
+    @Override
     public final void removeValidator(@NonNull final DialogValidator validator) {
-        ensureNotNull(validator, "The validator may not be null");
-        validators.remove(validator);
+        decorator.removeValidator(validator);
     }
 
-    /**
-     * Removes all validators, which are contained by a specific collection and should not be
-     * executed, when the positive button of the dialog is clicked, anymore.
-     *
-     * @param validators
-     *         A collection, which contains the validators, which should be removed, as an instance
-     *         of the type {@link Collection} or an empty collection, if no validators should be
-     *         removed
-     */
+    @Override
     public final void removeAllValidators(@NonNull final Collection<DialogValidator> validators) {
-        ensureNotNull(validators, "The collection may not be null");
-        this.validators.removeAll(validators);
+        decorator.removeAllValidators(validators);
     }
 
 }
