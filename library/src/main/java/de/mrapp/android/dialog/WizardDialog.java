@@ -435,17 +435,17 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
     }
 
     @Override
-    public void setTabTextColor(@ColorInt int textColor) {
+    public final void setTabTextColor(@ColorInt final int textColor) {
         decorator.setTabTextColor(textColor);
     }
 
     @Override
-    public int getTabSelectedTextColor() {
+    public final int getTabSelectedTextColor() {
         return decorator.getTabSelectedTextColor();
     }
 
     @Override
-    public void setTabSelectedTextColor(@ColorInt int selectedTextColor) {
+    public final void setTabSelectedTextColor(@ColorInt final int selectedTextColor) {
         decorator.setTabSelectedTextColor(selectedTextColor);
     }
 
@@ -455,7 +455,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
     }
 
     @Override
-    public void enableSwipe(boolean enable) {
+    public final void enableSwipe(final boolean enable) {
         decorator.enableSwipe(enable);
     }
 
