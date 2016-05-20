@@ -26,8 +26,8 @@ import de.mrapp.android.dialog.builder.AbstractListDialogBuilder;
  * the dialog's title and button texts and the title as well as the dialog's content can be replaced
  * with a custom view.
  *
- * For creating or showing such dialogs, the methods {@link MaterialDialog#create()} or {@link
- * MaterialDialog#show()} of the builder {@link MaterialDialog.Builder} can be used.
+ * For creating or showing such dialogs, the methods <code>MaterialDialog#create()</code> or
+ * <code>MaterialDialog#show()</code> of the builder {@link MaterialDialog.Builder} can be used.
  *
  * @author Michael Rapp
  * @since 3.0.0
