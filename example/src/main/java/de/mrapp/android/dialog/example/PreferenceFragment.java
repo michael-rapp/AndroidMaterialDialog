@@ -362,10 +362,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
      *         The index of the fragment, which should be added
      */
     private void addFragment(@NonNull final WizardDialog.Builder builder, final int index) {
-        CharSequence title = String.format(getString(R.string.dialog_fragment_text), index);
         Bundle arguments = new Bundle();
         arguments.putInt(DialogFragment.INDEX_EXTRA, index);
-        builder.addFragment(title, DialogFragment.class, arguments);
+        builder.addFragment(DialogFragment.class, arguments);
     }
 
     /**

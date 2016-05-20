@@ -16,6 +16,7 @@ package de.mrapp.android.dialog;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -43,6 +44,75 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  */
 @SuppressLint("ValidFragment")
 public class WizardDialog extends AbstractHeaderDialogFragment implements WizardDialogDecorator {
+
+    /**
+     * Contains all possible positions of the dialog's tabs.
+     */
+    public enum TabPosition {
+
+        /**
+         * If the tabs should be shown in the header, if the dialog contains a header and if no
+         * title and message are shown.
+         */
+        USE_HEADER("use_header"),
+
+        /**
+         * If the tabs should be shown in the header, if the dialog contains a header, regardless of
+         * whether a title or message is shown.
+         */
+        PREFER_HEADER("prefer_header"),
+
+        /**
+         * If the tabs should never be shown in the header.
+         */
+        NO_HEADER("no_header");
+
+        /**
+         * The position's value.
+         */
+        private String value;
+
+        /**
+         * Creates a new position.
+         *
+         * @param value
+         *         The position's value
+         */
+        TabPosition(final String value) {
+            this.value = value;
+        }
+
+        /**
+         * Returns the position's value.
+         *
+         * @return The positions value as a {@link String}
+         */
+        public final String getValue() {
+            return value;
+        }
+
+        /**
+         * Creates and returns the position, which corresponds to a specific value.
+         *
+         * @param value
+         *         The value, the position, which should be returned, corresponds to, as a {@link
+         *         String}. The value may not be null
+         * @return The position, which corresponds to the given value as a value of the enum {@link
+         * TabPosition}
+         */
+        public static TabPosition fromValue(@NonNull final String value) {
+            ensureNotNull(value, "The value may not be null");
+
+            for (TabPosition position : values()) {
+                if (position.getValue().equals(value)) {
+                    return position;
+                }
+            }
+
+            throw new IllegalArgumentException("Invalid enum value: " + value);
+        }
+
+    }
 
     /**
      * A builder, which allows to create and show dialogs, which are designed according to Android
@@ -307,6 +377,86 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
     @Override
     public final int getFragmentCount() {
         return decorator.getFragmentCount();
+    }
+
+    @Override
+    public final TabPosition getTabPosition() {
+        return decorator.getTabPosition();
+    }
+
+    @Override
+    public void setTabPosition(@NonNull final TabPosition tabPosition) {
+        decorator.setTabPosition(tabPosition);
+    }
+
+    @Override
+    public final boolean isTabLayoutEnabled() {
+        return decorator.isTabLayoutEnabled();
+    }
+
+    @Override
+    public final void enableTabLayout(final boolean enable) {
+        decorator.enableTabLayout(enable);
+    }
+
+    @Override
+    public final boolean isTabLayoutShown() {
+        return decorator.isTabLayoutShown();
+    }
+
+    @Override
+    public final void showTabLayout(final boolean show) {
+        decorator.showTabLayout(show);
+    }
+
+    @Override
+    public final int getTabIndicatorHeight() {
+        return decorator.getTabIndicatorHeight();
+    }
+
+    @Override
+    public final void setTabIndicatorHeight(final int height) {
+        decorator.setTabIndicatorHeight(height);
+    }
+
+    @Override
+    public final int getTabIndicatorColor() {
+        return decorator.getTabIndicatorColor();
+    }
+
+    @Override
+    public final void setTabIndicatorColor(@ColorInt final int color) {
+        decorator.setTabIndicatorColor(color);
+    }
+
+    @Override
+    public final int getTabTextColor() {
+        return decorator.getTabTextColor();
+    }
+
+    @Override
+    public void setTabTextColor(@ColorInt int textColor) {
+        decorator.setTabTextColor(textColor);
+    }
+
+    @Override
+    public int getTabSelectedTextColor() {
+        return decorator.getTabSelectedTextColor();
+    }
+
+    @Override
+    public void setTabSelectedTextColor(@ColorInt int selectedTextColor) {
+        decorator.setTabSelectedTextColor(selectedTextColor);
+    }
+
+    @Override
+    public final boolean isSwipeEnabled() {
+        return decorator.isSwipeEnabled();
+    }
+
+    @Override
+    public void enableSwipe(boolean enable) {
+        decorator.enableSwipe(enable);
     }
 
     @Override

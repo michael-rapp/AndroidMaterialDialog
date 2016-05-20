@@ -14,12 +14,15 @@
 package de.mrapp.android.dialog.model;
 
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+
+import de.mrapp.android.dialog.WizardDialog.TabPosition;
 
 /**
  * Defines the interface a decorator, which allows to modify the view hierary of a dialog, which is
@@ -156,5 +159,138 @@ public interface WizardDialogDecorator {
      * value
      */
     int getFragmentCount();
+
+    /**
+     * Returns the position of the tabs, which indicate the currently shown fragment.
+     *
+     * @return The position of the tabs, which indicate the currently shown fragment, as a value of
+     * the enum {@link TabPosition}
+     */
+    TabPosition getTabPosition();
+
+    /**
+     * Sets the position of the tabs, which indicate the currently shown fragment.
+     *
+     * @param tabPosition
+     *         The position, which should be set, as a value of the enum {@link TabPosition}. The
+     *         position may either be <code>USE_HEADER</code>, <code>PREFER_HEADER</code> or
+     *         <code>NO_HEADER</code>
+     */
+    void setTabPosition(@NonNull TabPosition tabPosition);
+
+    /**
+     * Returns, whether the tabs, which indicate the currently shown fragment, are enabled, or not.
+     *
+     * @return True, if the tabs, which indicate the currently shown fragment, are enabled, false
+     * otherwise
+     */
+    boolean isTabLayoutEnabled();
+
+    /**
+     * Enables or disables the tabs, which indicate the currently shown fragment. When the tabs are
+     * enabled, it is possible to switch between the fragments by clicking the tabs.
+     *
+     * @param enable
+     *         True, if the tabs should be enabled, false otherwise
+     */
+    void enableTabLayout(boolean enable);
+
+    /**
+     * Returns, whether the tabs, which indicate the currently shown fragment, are shown, or not.
+     *
+     * @return True, if the tabs, which indicate the currently shown fragment, are shown, false
+     * otherwise
+     */
+    boolean isTabLayoutShown();
+
+    /**
+     * Sets, whether the tabs, which indicate the currently shown fragment, should be shown shown,
+     * or not.
+     *
+     * @param show
+     *         True, if the tabs, which indicate the currently shown fragment, should be shown,
+     *         false otherwise
+     */
+    void showTabLayout(boolean show);
+
+    /**
+     * Returns the height of the indicator, which indicates the currently shown fragment.
+     *
+     * @return The height of the indicator, which indicates the currently shown fragment, in pixels
+     * as an {@link Integer} value
+     */
+    int getTabIndicatorHeight();
+
+    /**
+     * Sets the height of the indicator, which indicates the currently shown fragment.
+     *
+     * @param height
+     *         The height, which should be set, in pixels as an {@link Integer} value. The height
+     *         must be at least 1
+     */
+    void setTabIndicatorHeight(int height);
+
+    /**
+     * Returns the color of the indicator, which indicates the currently shown fragment.
+     *
+     * @return The color of the indicator, which indicates the currently shown fragment, as an
+     * {@link Integer} value
+     */
+    int getTabIndicatorColor();
+
+    /**
+     * Sets the color of the indicator, which indicates the currently shown fragment.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    void setTabIndicatorColor(@ColorInt int color);
+
+    /**
+     * Returns the text color of the tabs, which indicate the currently shown fragment.
+     *
+     * @return The text color of the tabs, which indicate the currently shown fragment, as an {@link
+     * Integer} value
+     */
+    int getTabTextColor();
+
+    /**
+     * Sets the text color of the tabs, which indicates the currently shown fragment.
+     *
+     * @param textColor
+     *         The text color, which should be set, as an {@link Integer} value
+     */
+    void setTabTextColor(@ColorInt int textColor);
+
+    /**
+     * Returns the selected text color of the tabs, which indicate the currently shown fragment.
+     *
+     * @return The selected text color of the tabs, which indicate the currently shown fragment, as
+     * an {@link Integer} value
+     */
+    int getTabSelectedTextColor();
+
+    /**
+     * Sets the selected text color of the tabs, which indicate the currently shown fragment.
+     *
+     * @param selectedTextColor
+     *         The selected text color, which should be set, as an {@link Integer} value
+     */
+    void setTabSelectedTextColor(@ColorInt int selectedTextColor);
+
+    /**
+     * Returns, whether switching fragments using swipe gestures is enabled, or not.
+     *
+     * @return True, if switching fragments using swipe gestures is enabled, false otherwise
+     */
+    boolean isSwipeEnabled();
+
+    /**
+     * Sets, whether switching fragments using swipe gestures should be enabled, or not.
+     *
+     * @param enable
+     *         True, if switching fragments using swipe gestures should be enabled, false otherwise
+     */
+    void enableSwipe(boolean enable);
 
 }
