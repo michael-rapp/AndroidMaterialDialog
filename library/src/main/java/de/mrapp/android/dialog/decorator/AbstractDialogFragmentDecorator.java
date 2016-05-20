@@ -16,6 +16,7 @@ package de.mrapp.android.dialog.decorator;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import de.mrapp.android.dialog.model.Dialog;
@@ -23,14 +24,15 @@ import de.mrapp.android.dialog.model.Dialog;
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
- * An abstract base class for all decorators, which allow to modify the view hierarchy of a dialog.
+ * An abstract base class for all decorators, which allow to modify the view hierarchy of a dialog,
+ * which is able to show fragments.
  *
  * @param <DialogType>
  *         The type of the dialog, whose view hierarchy is modified by the decorator
  * @author Michael Rapp
  * @since 3.2.0
  */
-public abstract class AbstractDialogDecorator<DialogType extends Dialog> implements Dialog {
+public abstract class AbstractDialogFragmentDecorator<DialogType extends Dialog> implements Dialog {
 
     /**
      * The dialog, whose view hierarchy is modified by the decorator.
@@ -48,8 +50,12 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog> impleme
      * @param view
      *         The root view of the dialog, which is modified by the decorator, as an instance of
      *         the class {@link View}. The view may not be null
+     * @param fragmentManager
+     *         The fragment manager, which should be used by the decorator, as an instance of the
+     *         class {@link FragmentManager}. The fragment manager may not be null
      */
-    protected abstract void onAttach(@NonNull final View view);
+    protected abstract void onAttach(@NonNull final View view,
+                                     @NonNull final FragmentManager fragmentManager);
 
     /**
      * The method, which is invoked, when the decorator is detached from the view hierarchy.
@@ -63,7 +69,7 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog> impleme
      *         The dialog, whose view hierarchy should be modified by the decorator, as an instance
      *         of the generic type DialogType. The dialog may not be null
      */
-    public AbstractDialogDecorator(@NonNull final DialogType dialog) {
+    public AbstractDialogFragmentDecorator(@NonNull final DialogType dialog) {
         ensureNotNull(dialog, "The dialog may not be null");
         this.dialog = dialog;
         this.view = null;
@@ -96,7 +102,6 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog> impleme
         return dialog.getContext();
     }
 
-
     /**
      * Attaches the decorator to the view hierarchy. This enables the decorator to modify the view
      * hierarchy until it is detached.
@@ -104,11 +109,16 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog> impleme
      * @param view
      *         The root view of the view hierarchy, which should be modified by the decorator, as an
      *         instance of the class {@link View}. The view may not be null
+     * @param fragmentManager
+     *         The fragment manager, which should be used by the decorator, as an instance of the
+     *         class {@link FragmentManager}. The fragment manager may not be null
      */
-    public final void attach(@NonNull final View view) {
+    public final void attach(@NonNull final View view,
+                             @NonNull final FragmentManager fragmentManager) {
         ensureNotNull(view, "The view may not be null");
+        ensureNotNull(fragmentManager, "The fragment manager may not be null");
         this.view = view;
-        onAttach(view);
+        onAttach(view, fragmentManager);
     }
 
     /**

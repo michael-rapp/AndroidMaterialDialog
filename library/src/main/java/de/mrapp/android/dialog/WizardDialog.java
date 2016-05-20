@@ -24,14 +24,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import de.mrapp.android.dialog.adapter.ViewPagerAdapter;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
-import de.mrapp.android.util.datastructure.Triple;
+import de.mrapp.android.dialog.model.WizardDialogDecorator;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -46,7 +42,7 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @since 3.0.0
  */
 @SuppressLint("ValidFragment")
-public class WizardDialog extends AbstractHeaderDialogFragment implements OnPageChangeListener {
+public class WizardDialog extends AbstractHeaderDialogFragment implements WizardDialogDecorator {
 
     /**
      * A builder, which allows to create and show dialogs, which are designed according to Android
@@ -225,24 +221,9 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements OnPage
     }
 
     /**
-     * A list, which contains the fragments, which are contained by the dialog.
+     * The decorator, which is used by the dialog.
      */
-    private final List<Triple<CharSequence, Class<? extends Fragment>, Bundle>> fragments;
-
-    /**
-     * The adapter, which is used to manage the dialog's fragments.
-     */
-    private ViewPagerAdapter viewPagerAdapter;
-
-    /**
-     * The view pager, which is used to show the dialog's fragments.
-     */
-    private ViewPager viewPager;
-
-    /**
-     * The tab layout, which allows to switch between the dialog's fragments.
-     */
-    private TabLayout tabLayout;
+    private final de.mrapp.android.dialog.decorator.WizardDialogDecorator decorator;
 
     /**
      * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
@@ -254,202 +235,88 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements OnPage
      */
     protected WizardDialog(@StyleRes final int themeResourceId) {
         super(themeResourceId);
-        fragments = new ArrayList<>();
-        setView(R.layout.wizard_dialog);
+        decorator = new de.mrapp.android.dialog.decorator.WizardDialogDecorator(this);
+        setView(R.layout.wizard_dialog_view_pager);
     }
 
-    /**
-     * Returns the view pager, which is contained by the dialog.
-     *
-     * @return The view pager, which is contained by the dialog, as an instance of the class {@link
-     * ViewPager} or null, if the dialog does not show any fragments or has not been shown yet
-     */
+    @Override
     public final ViewPager getViewPager() {
-        return viewPager;
+        return decorator.getViewPager();
     }
 
-    /**
-     * Returns the tab layout, which is contained by the dialog.
-     *
-     * @return The tab layout, which is contained by the dialog, as an instance of the class {@link
-     * TabLayout} or null, if the dialog does not show any fragments or has not been shown yet
-     */
+    @Override
     public final TabLayout getTabLayout() {
-        return tabLayout;
+        return decorator.getTabLayout();
     }
 
-    /**
-     * Adds a new fragment to the dialog.
-     *
-     * @param fragmentClass
-     *         The class of the fragment, which should be added, as an instance of the class {@link
-     *         Class}. The class may not be null
-     */
+    @Override
     public final void addFragment(@NonNull final Class<? extends Fragment> fragmentClass) {
-        addFragment(fragmentClass, null);
+        decorator.addFragment(fragmentClass);
     }
 
-    /**
-     * Adds a new fragment to the dialog.
-     *
-     * @param fragmentClass
-     *         The class of the fragment, which should be added, as an instance of the class {@link
-     *         Class}. The class may not be null
-     * @param arguments
-     *         A bundle, which should be passed to the fragment, when it is shown, as an instance of
-     *         the class {@link Bundle} or null, if no arguments should be passed to the fragment
-     */
+    @Override
     public final void addFragment(@NonNull final Class<? extends Fragment> fragmentClass,
                                   @Nullable final Bundle arguments) {
-        addFragment(null, fragmentClass, arguments);
+        decorator.addFragment(fragmentClass, arguments);
     }
 
-    /**
-     * Adds a new fragment to the dialog.
-     *
-     * @param resourceId
-     *         The resource id of the title of the fragment, which should be added, as an {@link
-     *         Integer}  value. The resource id must correspond to a valid string resource
-     * @param fragmentClass
-     *         The class of the fragment, which should be added, as an instance of the class {@link
-     *         Class}. The class may not be null
-     */
+    @Override
     public final void addFragment(@StringRes final int resourceId,
                                   @NonNull final Class<? extends Fragment> fragmentClass) {
-        addFragment(resourceId, fragmentClass, null);
+        decorator.addFragment(resourceId, fragmentClass);
     }
 
-    /**
-     * Adds a new fragment to the dialog.
-     *
-     * @param resourceId
-     *         The resource id of the title of the fragment, which should be added, as an {@link
-     *         Integer}  value. The resource id must correspond to a valid string resource
-     * @param fragmentClass
-     *         The class of the fragment, which should be added, as an instance of the class {@link
-     *         Class}. The class may not be null
-     * @param arguments
-     *         A bundle, which should be passed to the fragment, when it is shown, as an instance of
-     *         the class {@link Bundle} or null, if no arguments should be passed to the fragment
-     */
+    @Override
     public final void addFragment(@StringRes final int resourceId,
                                   @NonNull final Class<? extends Fragment> fragmentClass,
                                   @Nullable final Bundle arguments) {
-        addFragment(getContext().getText(resourceId), fragmentClass, arguments);
+        decorator.addFragment(resourceId, fragmentClass, arguments);
     }
 
-    /**
-     * Adds a new fragment to the dialog.
-     *
-     * @param title
-     *         The title of the fragment, which should be added, as an instance of the type {@link
-     *         CharSequence} or null, if no title should be set
-     * @param fragmentClass
-     *         The class of the fragment, which should be added, as an instance of the class {@link
-     *         Class}. The class may not be null
-     */
+    @Override
     public final void addFragment(@Nullable final CharSequence title,
                                   @NonNull final Class<? extends Fragment> fragmentClass) {
-        addFragment(title, fragmentClass, null);
+        decorator.addFragment(title, fragmentClass);
     }
 
-    /**
-     * Adds a new fragment to the dialog.
-     *
-     * @param title
-     *         The title of the fragment, which should be added, as an instance of the type {@link
-     *         CharSequence} or null, if no title should be set
-     * @param fragmentClass
-     *         The class of the fragment, which should be added, as an instance of the class {@link
-     *         Class}. The class may not be null
-     * @param arguments
-     *         A bundle, which should be passed to the fragment, when it is shown, as an instance of
-     *         the class {@link Bundle} or null, if no arguments should be passed to the fragment
-     */
+    @Override
     public final void addFragment(@Nullable final CharSequence title,
                                   @NonNull final Class<? extends Fragment> fragmentClass,
                                   @Nullable final Bundle arguments) {
-        ensureNotNull(fragmentClass, "The fragment class may not be null");
-        fragments.add(new Triple<CharSequence, Class<? extends Fragment>, Bundle>(title,
-                fragmentClass, arguments));
-
-        if (viewPagerAdapter != null) {
-            viewPagerAdapter.addItem(title, fragmentClass, arguments);
-        }
+        decorator.addFragment(title, fragmentClass, arguments);
     }
 
-    /**
-     * Removes the fragment at a specific index from the dialog>.
-     *
-     * @param index
-     *         The index of the fragment, which should be removed, as an {@link Integer value}
-     */
+    @Override
     public final void removeFragment(final int index) {
-        fragments.remove(index);
-
-        if (viewPagerAdapter != null) {
-            viewPagerAdapter.removeItem(index);
-        }
+        decorator.removeFragment(index);
     }
 
-    /**
-     * Removes all fragments from the dialog.
-     */
+    @Override
     public final void clearFragments() {
-        fragments.clear();
-
-        if (viewPagerAdapter != null) {
-            viewPagerAdapter.clear();
-        }
+        decorator.clearFragments();
     }
 
-    /**
-     * Returns the index of a specific fragment.
-     *
-     * @param fragmentClass
-     *         The class of the fragment, whose index should be returned, as an instance of the
-     *         class {@link Class}. The class may not be null
-     * @return The index of the given fragment as an {@link Integer} value or -1, if the adapter
-     * does not contain the given fragment
-     */
+    @Override
     public final int indexOfFragment(@NonNull final Class<? extends Fragment> fragmentClass) {
-        ensureNotNull(fragmentClass, "The fragment class may not be null");
-
-        for (int i = 0; i < fragments.size(); i++) {
-            Triple<CharSequence, Class<? extends Fragment>, Bundle> item = fragments.get(i);
-
-            if (item.second.equals(fragmentClass)) {
-                return i;
-            }
-        }
-
-        return -1;
+        return decorator.indexOfFragment(fragmentClass);
     }
 
-    /**
-     * Returns the number of fragments, which are contained by the dialog.
-     *
-     * @return The number of fragments, which are contained by the dialog, as an {@link Integer}
-     * value
-     */
+    @Override
     public final int getFragmentCount() {
-        return fragments.size();
+        return decorator.getFragmentCount();
     }
 
     @Override
-    public final void onPageScrolled(final int position, final float positionOffset,
-                                     final int positionOffsetPixels) {
-
+    protected final void onAttachDecorators(@NonNull final View view,
+                                            @NonNull final FragmentManager fragmentManager) {
+        super.onAttachDecorators(view, fragmentManager);
+        decorator.attach(view, fragmentManager);
     }
 
     @Override
-    public final void onPageSelected(final int position) {
-
-    }
-
-    @Override
-    public final void onPageScrollStateChanged(final int state) {
-
+    protected final void onDetachDecorators() {
+        super.onDetachDecorators();
+        decorator.detach();
     }
 
 }
