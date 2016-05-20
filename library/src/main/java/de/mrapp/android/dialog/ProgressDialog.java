@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 import android.view.View;
 
+import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.model.ProgressDialogDecorator;
 import de.mrapp.android.util.ThemeUtil;
 
@@ -98,8 +99,7 @@ public class ProgressDialog extends AbstractButtonBarDialog implements ProgressD
      * progress. Such a dialog consists of a title, a message and a circular progress bar.
      * Optionally, up to three buttons can be shown.
      */
-    public static class Builder
-            extends AbstractButtonBarDialog.AbstractBuilder<ProgressDialog, Builder> {
+    public static class Builder extends AbstractButtonBarDialogBuilder<ProgressDialog, Builder> {
 
         /**
          * Obtains the color of the dialog's progress bar from a specific theme.
@@ -244,6 +244,18 @@ public class ProgressDialog extends AbstractButtonBarDialog implements ProgressD
         public final Builder setProgressBarPosition(@NonNull final ProgressBarPosition position) {
             getDialog().setProgressBarPosition(position);
             return self();
+        }
+
+        /**
+         * Creates a dialog with the arguments, which have been supplied to the builder and
+         * immediately displays it.
+         *
+         * @return The dialog, which has been shown, as an instance of the generic type DialogType
+         */
+        public final ProgressDialog show() {
+            ProgressDialog dialog = create();
+            dialog.show();
+            return dialog;
         }
 
         @Override

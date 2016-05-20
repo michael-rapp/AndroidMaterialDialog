@@ -14,6 +14,7 @@
 package de.mrapp.android.dialog.model;
 
 import android.content.DialogInterface;
+import android.support.annotation.Nullable;
 
 /**
  * Defines the interface, a dialog, which is designed according to Android 5's Material Design
@@ -23,5 +24,49 @@ import android.content.DialogInterface;
  * @since 3.2.0
  */
 public interface MaterialDialog extends MaterialDialogDecorator, DialogInterface {
+
+    /**
+     * Sets, whether the dialog should be cancelable, or not.
+     *
+     * @param cancelable
+     *         True, if the dialog, which is created by the builder, should be cancelable, false
+     *         otherwise
+     */
+    void setCancelable(boolean cancelable);
+
+    /**
+     * Sets the listener, which should be notified, when the dialog is canceled.
+     *
+     * Even in a cancelable dialog, the dialog may be dismissed for reasons other than being
+     * canceled or one of the supplied choices being selected. If you are interested in listening
+     * for all cases where the dialog is dismissed and not just when it is canceled, see {@link
+     * #setOnDismissListener(android.content.DialogInterface.OnDismissListener)
+     * setOnDismissListener}.
+     *
+     * @param listener
+     *         The listener, which should be set, as an instance of the type {@link
+     *         DialogInterface.OnCancelListener}, or null, if no listener should be set
+     * @see #setCancelable(boolean)
+     * @see #setOnDismissListener(android.content.DialogInterface.OnDismissListener)
+     */
+    void setOnCancelListener(@Nullable DialogInterface.OnCancelListener listener);
+
+    /**
+     * Sets the listener, which should be notified, when the dialog is dismissed for any reason.
+     *
+     * @param listener
+     *         The listener, which should be set, as an instance of the type {@link
+     *         DialogInterface.OnDismissListener}, or null, if no listener should be set
+     */
+    void setOnDismissListener(@Nullable DialogInterface.OnDismissListener listener);
+
+    /**
+     * Sets the listener, which should be notified, if a key is dispatched to the dialog.
+     *
+     * @param listener
+     *         The listener, which should be set, as an instance of the type {@link
+     *         DialogInterface.OnKeyListener}, or null, if no listener should be set
+     */
+    void setOnKeyListener(@Nullable DialogInterface.OnKeyListener listener);
 
 }
