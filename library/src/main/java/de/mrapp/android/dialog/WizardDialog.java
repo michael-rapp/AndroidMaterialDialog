@@ -215,7 +215,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
         @Override
         protected final WizardDialog onCreateDialog(@NonNull final Context context,
                                                     @StyleRes final int themeResourceId) {
-            return new WizardDialog(themeResourceId);
+            return new WizardDialog(context, themeResourceId);
         }
 
     }
@@ -229,12 +229,15 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
      * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
      * on pre-Lollipop devices and provides a navigation for switching between multiple fragments.
      *
+     * @param context
+     *         The context, which should be used by the dialog, as an instance of the class {@link
+     *         Context}. The context may not be null
      * @param themeResourceId
      *         The resource id of the theme, which should be used by the dialog, as an {@link
      *         Integer} value. The resource id must correspond to a valid theme
      */
-    protected WizardDialog(@StyleRes final int themeResourceId) {
-        super(themeResourceId);
+    protected WizardDialog(@NonNull final Context context, @StyleRes final int themeResourceId) {
+        super(context, themeResourceId);
         decorator = new de.mrapp.android.dialog.decorator.WizardDialogDecorator(this);
         setView(R.layout.wizard_dialog_view_pager);
     }

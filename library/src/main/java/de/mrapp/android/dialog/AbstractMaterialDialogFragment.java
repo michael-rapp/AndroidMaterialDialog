@@ -14,6 +14,7 @@
 package de.mrapp.android.dialog;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.AttrRes;
@@ -37,6 +38,7 @@ import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
 import de.mrapp.android.dialog.model.MaterialDialog;
 import de.mrapp.android.util.DisplayUtil;
 
+import static de.mrapp.android.util.Condition.ensureNotNull;
 import static de.mrapp.android.util.DisplayUtil.getDeviceType;
 import static de.mrapp.android.util.DisplayUtil.getOrientation;
 
@@ -49,6 +51,11 @@ import static de.mrapp.android.util.DisplayUtil.getOrientation;
  */
 public abstract class AbstractMaterialDialogFragment extends DialogFragment
         implements MaterialDialog {
+
+    /**
+     * The context, which is used by the dialog.
+     */
+    private final Context context;
 
     /**
      * The decorator, which is used by the dialog.
@@ -94,11 +101,17 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
      * on pre-Lollipop devices and is able to show fragments.
      *
+     * @param context
+     *         The context, which should be used by the dialog, as an instance of the class {@link
+     *         Context}. The context may not be null
      * @param themeResourceId
      *         The resource id of the theme, which should be used by the dialog, as an {@link
      *         Integer} value. The resource id must correspond to a valid theme
      */
-    protected AbstractMaterialDialogFragment(@StyleRes final int themeResourceId) {
+    protected AbstractMaterialDialogFragment(@NonNull final Context context,
+                                             @StyleRes final int themeResourceId) {
+        ensureNotNull(context, "The context may not be null");
+        this.context = context;
         this.themeResourceId = themeResourceId;
         this.decorator = new MaterialDialogDecorator(this);
     }
@@ -127,6 +140,11 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     @CallSuper
     protected void onDetachDecorators() {
         decorator.detach();
+    }
+
+    @Override
+    public final Context getContext() {
+        return context;
     }
 
     @Override
