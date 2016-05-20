@@ -378,7 +378,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     @Override
-    public final void setIcon(final Drawable icon) {
+    public final void setIcon(@Nullable final Drawable icon) {
         this.icon = icon;
         adaptIcon();
     }
@@ -505,6 +505,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     public final void setTitle(@Nullable final CharSequence title) {
         this.title = title;
         adaptTitle();
+    }
+
+    @Override
+    public final void setTitle(@StringRes final int resourceId) {
+        setTitle(getContext().getText(resourceId));
     }
 
     @Override

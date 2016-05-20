@@ -47,7 +47,7 @@ public interface MaterialDialogDecorator extends Dialog {
      *         The icon, which should be set, as an instance of the class {@link Drawable} or null,
      *         if no icon should be shown
      */
-    void setIcon(Drawable icon);
+    void setIcon(@Nullable Drawable icon);
 
     /**
      * Sets the icon of the dialog.
@@ -230,5 +230,14 @@ public interface MaterialDialogDecorator extends Dialog {
      *         null, if no title should be set
      */
     void setTitle(@Nullable CharSequence title);
+
+    /**
+     * Sets the title of the dialog.
+     *
+     * @param resourceId
+     *         The resource id of the title, which should be set, as an {@link Integer}. The
+     *         resource id must correspond to a valid string resource
+     */
+    void setTitle(@StringRes final int resourceId);
 
 }

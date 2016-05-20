@@ -650,7 +650,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     }
 
     @Override
-    public final void setIcon(final Drawable icon) {
+    public final void setIcon(@Nullable final Drawable icon) {
         decorator.setIcon(icon);
     }
 
