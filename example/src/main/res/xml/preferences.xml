@@ -34,6 +34,9 @@ License.
         <Preference
             android:key="@string/show_progress_dialog_preference_key"
             android:title="@string/show_progress_dialog_preference_title"/>
+        <Preference
+            android:key="@string/show_wizard_dialog_preference_key"
+            android:title="@string/show_wizard_dialog_preference_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/dialog_title_preference_category_title">
         <CheckBoxPreference
@@ -79,11 +82,6 @@ License.
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/dialog_buttons_preference_category_title">
         <CheckBoxPreference
-            android:defaultValue="@bool/show_button_bar_divider_preference_default_value"
-            android:key="@string/show_button_bar_divider_preference_key"
-            android:summary="@string/show_button_bar_divider_preference_summary"
-            android:title="@string/show_button_bar_divider_preference_title"/>
-        <CheckBoxPreference
             android:defaultValue="@bool/show_negative_button_preference_default_value"
             android:key="@string/show_negative_button_preference_key"
             android:summary="@string/show_negative_button_preference_summary"
@@ -121,6 +119,12 @@ License.
             android:key="@string/positive_button_text_preference_key"
             android:summary="@string/positive_button_text_preference_summary"
             android:title="@string/positive_button_text_preference_title"/>
+
+        <CheckBoxPreference
+            android:defaultValue="@bool/show_button_bar_divider_preference_default_value"
+            android:key="@string/show_button_bar_divider_preference_key"
+            android:summary="@string/show_button_bar_divider_preference_summary"
+            android:title="@string/show_button_bar_divider_preference_title"/>
 
         <CheckBoxPreference
             android:defaultValue="@bool/stack_buttons_preference_default_value"

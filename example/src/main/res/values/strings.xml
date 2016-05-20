@@ -29,6 +29,8 @@ License.
     <string name="show_custom_dialog_preference_title">Show dialog with custom content</string>
     <string name="show_progress_dialog_preference_key">show_progress_dialog_preference_key</string>
     <string name="show_progress_dialog_preference_title">Show progress dialog</string>
+    <string name="show_wizard_dialog_preference_key">show_wizard_dialog_preference_key</string>
+    <string name="show_wizard_dialog_preference_title">Show wizard dialog</string>
     <string name="dialog_title_preference_category_title">Title</string>
     <string name="show_dialog_title_preference_key">show_dialog_title_preference_key</string>
     <string name="show_dialog_title_preference_title">Show dialog title</string>
@@ -94,6 +96,7 @@ License.
     <string name="positive_button_toast">Clicked positive button</string>
     <string name="neutral_button_toast">Clicked neutral button</string>
     <string name="negative_button_toast">Clicked negative button</string>
+    <string name="dialog_fragment_text" formatted="false">Fragment #%d</string>
 
     <string-array name="list_items">
         <item>Item 1</item>

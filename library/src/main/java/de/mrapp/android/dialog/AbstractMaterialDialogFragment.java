@@ -24,7 +24,9 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.annotation.StyleRes;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +54,11 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      * The decorator, which is used by the dialog.
      */
     private final MaterialDialogDecorator decorator;
+
+    /**
+     * The resource id of the theme, which should be used by the dialog.
+     */
+    private int themeResourceId;
 
     /**
      * Inflates the dialog's root view.
@@ -86,10 +93,22 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     /**
      * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
      * on pre-Lollipop devices and is able to show fragments.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, which should be used by the dialog, as an {@link
+     *         Integer} value. The resource id must correspond to a valid theme
+     */
+    protected AbstractMaterialDialogFragment(@StyleRes final int themeResourceId) {
+        this.themeResourceId = themeResourceId;
+        this.decorator = new MaterialDialogDecorator(this);
+    }
+
+    /**
+     * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
+     * on pre-Lollipop devices and is able to show fragments.
      */
     public AbstractMaterialDialogFragment() {
-        super();
-        this.decorator = new MaterialDialogDecorator(this);
+        this(-1);
     }
 
     /**
@@ -99,9 +118,13 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      * @param view
      *         The root view of the view hierarchy, which should be modified by the decorators, as
      *         an instance of the class {@link View}. The view may not be null
+     * @param fragmentManager
+     *         The fragment manager, which can be used to show fragment within the dialog, as an
+     *         instance of the class {@link FragmentManager}. The fragment manager may not be null
      */
     @CallSuper
-    protected void onAttachDecorators(@NonNull final View view) {
+    protected void onAttachDecorators(@NonNull final View view,
+                                      @NonNull final FragmentManager fragmentManager) {
         decorator.attach(view);
     }
 
@@ -257,7 +280,7 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     @NonNull
     @Override
     public final Dialog onCreateDialog(final Bundle savedInstanceState) {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        Dialog dialog = new Dialog(getContext(), themeResourceId);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setAttributes(createLayoutParams(dialog.getWindow()));
         return dialog;
@@ -267,7 +290,7 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
         View view = inflateLayout();
-        onAttachDecorators(view);
+        onAttachDecorators(view, getChildFragmentManager());
         return view;
     }
 

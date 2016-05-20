@@ -43,6 +43,11 @@ import de.mrapp.android.dialog.model.MaterialDialog;
 public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialDialog, BuilderType extends AbstractMaterialDialogBuilder<DialogType, ?>> {
 
     /**
+     * The context, which is used by the builder.
+     */
+    private final Context context;
+
+    /**
      * The dialog, which is configured by the builder.
      */
     private DialogType dialog;
@@ -50,16 +55,13 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     /**
      * Initializes the builder.
      *
-     * @param context
-     *         The context, which should be used by the builder, as an instance of the class {@link
-     *         Context}. The context may not be null
      * @param themeResourceId
      *         The resource id of the theme, which should be used by the dialog, as an {@link
      *         Integer} value, or -1, if the default theme should be used
      */
-    private void initialize(@NonNull final Context context, @StyleRes final int themeResourceId) {
+    private void initialize(@StyleRes final int themeResourceId) {
         int themeId = themeResourceId != -1 ? themeResourceId : R.style.MaterialDialog_Light;
-        dialog = onCreateDialog(context, themeId);
+        dialog = onCreateDialog(getContext(), themeId);
         obtainStyledAttributes(themeId);
     }
 
@@ -194,7 +196,8 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      */
     public AbstractMaterialDialogBuilder(@NonNull final Context context,
                                          @StyleRes final int themeResourceId) {
-        initialize(context, themeResourceId);
+        this.context = context;
+        initialize(themeResourceId);
     }
 
     /**
@@ -204,7 +207,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * Context}
      */
     public final Context getContext() {
-        return getDialog().getContext();
+        return context;
     }
 
     /**

@@ -19,6 +19,8 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
@@ -44,10 +46,22 @@ public abstract class AbstractHeaderDialogFragment extends AbstractMaterialDialo
     /**
      * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
      * on pre-Lollipop devices, is able to show fragments and may contain a header.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, which should be used by the dialog, as an {@link
+     *         Integer} value. The resource id must correspond to a valid theme
+     */
+    protected AbstractHeaderDialogFragment(@StyleRes final int themeResourceId) {
+        super(themeResourceId);
+        this.decorator = new HeaderDialogDecorator(this);
+    }
+
+    /**
+     * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
+     * on pre-Lollipop devices, is able to show fragments and may contain a header.
      */
     public AbstractHeaderDialogFragment() {
-        super();
-        this.decorator = new HeaderDialogDecorator(this);
+        this(-1);
     }
 
     @Override
@@ -127,8 +141,9 @@ public abstract class AbstractHeaderDialogFragment extends AbstractMaterialDialo
 
     @CallSuper
     @Override
-    protected void onAttachDecorators(@NonNull final View view) {
-        super.onAttachDecorators(view);
+    protected void onAttachDecorators(@NonNull final View view,
+                                      @NonNull final FragmentManager fragmentManager) {
+        super.onAttachDecorators(view, fragmentManager);
         decorator.attach(view);
     }
 

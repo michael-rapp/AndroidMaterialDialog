@@ -24,11 +24,14 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import de.mrapp.android.dialog.AbstractButtonBarDialog;
 import de.mrapp.android.dialog.MaterialDialog;
 import de.mrapp.android.dialog.ProgressDialog;
+import de.mrapp.android.dialog.WizardDialog;
+import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
+import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
 
 /**
  * A preference fragment, which contains the example app's settings.
@@ -93,7 +96,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             public boolean onPreferenceClick(final Preference preference) {
                 MaterialDialog.Builder builder =
                         new MaterialDialog.Builder(getActivity(), getThemeId());
-                configureBuilder(builder);
+                configureHeaderDialogBuilder(builder);
+                configureButtonBarDialogBuilder(builder);
                 builder.show();
                 return true;
             }
@@ -123,7 +127,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             public boolean onPreferenceClick(final Preference preference) {
                 MaterialDialog.Builder builder =
                         new MaterialDialog.Builder(getActivity(), getThemeId());
-                configureBuilder(builder);
+                configureHeaderDialogBuilder(builder);
+                configureButtonBarDialogBuilder(builder);
                 builder.setItems(R.array.list_items, createSingleChoiceListener());
                 builder.show();
                 return true;
@@ -155,7 +160,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             public boolean onPreferenceClick(final Preference preference) {
                 MaterialDialog.Builder builder =
                         new MaterialDialog.Builder(getActivity(), getThemeId());
-                configureBuilder(builder);
+                configureHeaderDialogBuilder(builder);
+                configureButtonBarDialogBuilder(builder);
                 builder.setSingleChoiceItems(R.array.list_items, 0, createSingleChoiceListener());
                 builder.show();
                 return true;
@@ -206,7 +212,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             public boolean onPreferenceClick(final Preference preference) {
                 MaterialDialog.Builder builder =
                         new MaterialDialog.Builder(getActivity(), getThemeId());
-                configureBuilder(builder);
+                configureHeaderDialogBuilder(builder);
+                configureButtonBarDialogBuilder(builder);
                 builder.setMultiChoiceItems(R.array.list_items, new boolean[]{true, false, false},
                         createMultiChoiceListener());
                 builder.show();
@@ -268,7 +275,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             public boolean onPreferenceClick(final Preference preference) {
                 MaterialDialog.Builder builder =
                         new MaterialDialog.Builder(getActivity(), getThemeId());
-                configureBuilder(builder);
+                configureHeaderDialogBuilder(builder);
+                configureButtonBarDialogBuilder(builder);
                 builder.setView(R.layout.custom_dialog_content);
                 builder.setCustomTitle(R.layout.custom_dialog_title);
                 builder.show();
@@ -299,13 +307,65 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                ProgressDialog.Builder builder = new ProgressDialog.Builder(getActivity());
-                configureBuilder(builder);
+                ProgressDialog.Builder builder =
+                        new ProgressDialog.Builder(getActivity(), getThemeId());
+                configureHeaderDialogBuilder(builder);
+                configureButtonBarDialogBuilder(builder);
                 builder.show();
                 return true;
             }
 
         };
+    }
+
+    /**
+     * Initializes the preference, which allows to show a wizard dialog.
+     */
+    private void initializeShowWizardDialogPreference() {
+        Preference showDialogPreference =
+                findPreference(getString(R.string.show_wizard_dialog_preference_key));
+        showDialogPreference
+                .setOnPreferenceClickListener(createShowWizardDialogPreferenceListener());
+    }
+
+    /**
+     * Creates and returns a listener, which allows to show a wizard dialog.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnPreferenceClickListener}
+     */
+    private OnPreferenceClickListener createShowWizardDialogPreferenceListener() {
+        return new OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(final Preference preference) {
+                WizardDialog.Builder builder =
+                        new WizardDialog.Builder(getActivity(), getThemeId());
+                configureHeaderDialogBuilder(builder);
+                addFragment(builder, 1);
+                addFragment(builder, 2);
+                addFragment(builder, 3);
+                builder.show(((AppCompatActivity) getActivity()).getSupportFragmentManager());
+                return true;
+            }
+
+        };
+    }
+
+    /**
+     * Adds a new fragment to a builder, which allows to create wizard dialogs.
+     *
+     * @param builder
+     *         The builder, the fragment should be added to, as an instance of the class {@link
+     *         WizardDialog.Builder}
+     * @param index
+     *         The index of the fragment, which should be added
+     */
+    private void addFragment(@NonNull final WizardDialog.Builder builder, final int index) {
+        CharSequence title = String.format(getString(R.string.dialog_fragment_text), index);
+        Bundle arguments = new Bundle();
+        arguments.putInt(DialogFragment.INDEX_EXTRA, index);
+        builder.addFragment(title, DialogFragment.class, arguments);
     }
 
     /**
@@ -325,13 +385,14 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     }
 
     /**
-     * Configures a builder, which allows to create dialogs, depending on the app's settings.
+     * Configures a builder, which allows to create header dialogs, depending on the app's
+     * settings.
      *
      * @param builder
      *         The builder, which should be configured, as an instance of the class {@link
-     *         AbstractButtonBarDialog.AbstractBuilder}
+     *         AbstractHeaderDialogBuilder}
      */
-    private void configureBuilder(@NonNull final AbstractButtonBarDialog.AbstractBuilder builder) {
+    private void configureHeaderDialogBuilder(@NonNull final AbstractHeaderDialogBuilder builder) {
         if (shouldTitleBeShown()) {
             builder.setTitle(getDialogTitle());
         }
@@ -345,6 +406,23 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
                     ContextCompat.getDrawable(getActivity(), android.R.drawable.ic_dialog_alert));
         }
 
+        if (shouldHeaderBeShown()) {
+            builder.showHeader(true);
+            builder.setHeaderBackground(R.drawable.dialog_header_background);
+            builder.setHeaderIcon(R.drawable.dialog_header_icon);
+        }
+    }
+
+    /**
+     * Configures a builder, which allows to create button bar dialogs, depending on the app's
+     * settings.
+     *
+     * @param builder
+     *         The builder, which should be configured as an instance of the class {@link
+     *         AbstractButtonBarDialogBuilder}
+     */
+    private void configureButtonBarDialogBuilder(
+            @NonNull final AbstractButtonBarDialogBuilder builder) {
         if (shouldNegativeButtonBeShown()) {
             builder.setNegativeButton(getNegativeButtonText(), createNegativeButtonListener());
         }
@@ -359,12 +437,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
         builder.stackButtons(shouldStackButtons());
         builder.showButtonBarDivider(shouldButtonBarDividerBeShown());
-
-        if (shouldHeaderBeShown()) {
-            builder.showHeader(true);
-            builder.setHeaderBackground(R.drawable.dialog_header_background);
-            builder.setHeaderIcon(R.drawable.dialog_header_icon);
-        }
     }
 
     /**
@@ -641,6 +713,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         initializeShowMultiChoiceDialogPreference();
         initializeShowCustomDialogPreference();
         initializeShowProgressDialogPreference();
+        initializeShowWizardDialogPreference();
     }
 
 }
