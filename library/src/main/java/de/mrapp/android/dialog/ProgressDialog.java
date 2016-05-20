@@ -16,8 +16,8 @@ import de.mrapp.android.util.ThemeUtil;
  * pre-Lollipop devices and allows to indicate a running progress. Such a dialog consists of a
  * title, a message and a circular progress bar. Optionally, up to three buttons can be shown.
  *
- * For creating or showing such dialogs, the methods {@link ProgressDialog#create()} or {@link
- * ProgressDialog#show()} of the builder {@link ProgressDialog.Builder} can be used.
+ * For creating or showing such dialogs, the methods <code>ProgressDialog#create()</code> or
+ * <code>ProgressDialog#show()</code> of the builder {@link ProgressDialog.Builder} can be used.
  *
  * @author Michael Rapp
  * @since 3.2.0
