@@ -250,7 +250,8 @@ public class ProgressDialog extends AbstractButtonBarDialog implements ProgressD
          * Creates a dialog with the arguments, which have been supplied to the builder and
          * immediately displays it.
          *
-         * @return The dialog, which has been shown, as an instance of the generic type DialogType
+         * @return The dialog, which has been shown, as an instance of the class {@link
+         * ProgressDialog}
          */
         public final ProgressDialog show() {
             ProgressDialog dialog = create();
