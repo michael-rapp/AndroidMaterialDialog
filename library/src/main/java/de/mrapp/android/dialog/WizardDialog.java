@@ -45,6 +45,7 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @author Michael Rapp
  * @since 3.0.0
  */
+@SuppressLint("ValidFragment")
 public class WizardDialog extends AbstractHeaderDialogFragment implements OnPageChangeListener {
 
     /**
@@ -251,19 +252,10 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements OnPage
      *         The resource id of the theme, which should be used by the dialog, as an {@link
      *         Integer} value. The resource id must correspond to a valid theme
      */
-    @SuppressLint("ValidFragment")
     protected WizardDialog(@StyleRes final int themeResourceId) {
         super(themeResourceId);
         fragments = new ArrayList<>();
         setView(R.layout.wizard_dialog);
-    }
-
-    /**
-     * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
-     * on pre-Lollipop devices and provides a navigation for switching between multiple fragments.
-     */
-    public WizardDialog() {
-        this(-1);
     }
 
     /**

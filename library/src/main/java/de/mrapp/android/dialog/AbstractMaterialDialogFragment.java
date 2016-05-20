@@ -104,14 +104,6 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     }
 
     /**
-     * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
-     * on pre-Lollipop devices and is able to show fragments.
-     */
-    public AbstractMaterialDialogFragment() {
-        this(-1);
-    }
-
-    /**
      * The method, which is invoked when the dialog's decorators should be attached. This method may
      * be overridden by subclasses in order to attach additional decorators.
      *

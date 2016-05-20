@@ -56,14 +56,6 @@ public abstract class AbstractHeaderDialogFragment extends AbstractMaterialDialo
         this.decorator = new HeaderDialogDecorator(this);
     }
 
-    /**
-     * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
-     * on pre-Lollipop devices, is able to show fragments and may contain a header.
-     */
-    public AbstractHeaderDialogFragment() {
-        this(-1);
-    }
-
     @Override
     public final boolean isHeaderShown() {
         return decorator.isHeaderShown();
