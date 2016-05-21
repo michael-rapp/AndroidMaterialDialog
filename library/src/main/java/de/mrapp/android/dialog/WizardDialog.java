@@ -50,6 +50,64 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
 public class WizardDialog extends AbstractHeaderDialogFragment implements WizardDialogDecorator {
 
     /**
+     * Defines the interface a class, which should be notified when the user navigates within a
+     * {@link WizardDialog}, by using its next-, back- and finish-button. The return values of the
+     * interface's methods allow to take influence on the navigation, e.g. if the currently shown
+     * fragment should be validated.
+     */
+    public interface WizardListener {
+
+        /**
+         * The method, which is invoked, when the user wants to navigate to the next fragment of the
+         * dialog.
+         *
+         * @param position
+         *         The position of the currently shown fragment as an {@link Integer} value
+         * @param fragment
+         *         The currently shown fragment as an instance of the class {@link Fragment}
+         * @param bundle
+         *         A bundle, which contains the parameters, which have been passed to the currently
+         *         shown fragment or null, if no parameters have been passed to the fragment
+         * @return The bundle, which should be passed to the next fragment, as an instance of the
+         * class {@link Bundle} or null, if navigating to the next fragment should not be allowed
+         */
+        Bundle onNextStep(int position, @NonNull Fragment fragment, @Nullable Bundle bundle);
+
+        /**
+         * The method, which is invoked, when the user wants to navigate to the previous frament of
+         * the dialog.
+         *
+         * @param position
+         *         The position of the currently shown fragment as an {@link Integer} value
+         * @param fragment
+         *         The currently shown fragment as an instance of the class {@link Fragment}
+         * @param bundle
+         *         A bundle, which contains the parameters, which have been passed to the currently
+         *         shown fragment or null, if no parameters have been passed to the fragment
+         * @return The bundle, which should be passed to the next fragment, as an instance of the
+         * class {@link Bundle} or null, if navigating to the previous fragment should not be
+         * allowed
+         */
+        Bundle onPreviousStep(int position, @NonNull Fragment fragment, @Nullable Bundle bundle);
+
+        /**
+         * The method, which is invoked, when the user wants to finish the last fragment of the
+         * dialog.
+         *
+         * @param position
+         *         The position of the currently shown fragment as an {@link Integer} value
+         * @param fragment
+         *         The currently shown fragment as an instance of the class {@link Fragment}
+         * @param bundle
+         *         A bundle, which contains the parameters, which have been passed to the currently
+         *         shown fragment or null, if no parameters have been passed to the fragment
+         * @return True, if finishing the dialog should be allowed, false otherwise
+         */
+        boolean onFinish(int position, @NonNull Fragment fragment, @Nullable Bundle bundle);
+
+    }
+
+    /**
      * Contains all possible positions of the dialog's tabs.
      */
     public enum TabPosition {
@@ -732,6 +790,21 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
         }
 
         /**
+         * Adds a new listener, which should be notified, when the user navigates within the dialog,
+         * which is created by the builder.
+         *
+         * @param listener
+         *         The listener, which should be added, as an instance of the type {@link
+         *         WizardListener}. The listener may not be null
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder addWizardListener(@NonNull final WizardListener listener) {
+            getDialog().addWizardListener(listener);
+            return self();
+        }
+
+        /**
          * Creates a dialog with the arguments, which have been supplied to the builder and
          * immediately displays it.
          *
@@ -795,6 +868,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
     protected WizardDialog(@NonNull final Context context, @StyleRes final int themeResourceId) {
         super(context, themeResourceId);
         decorator = new de.mrapp.android.dialog.decorator.WizardDialogDecorator(this);
+        setCancelable(false);
         setView(R.layout.wizard_dialog_view_pager);
     }
 
@@ -1043,6 +1117,16 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
     @Override
     public final void setFinishButtonText(@NonNull final CharSequence text) {
         decorator.setFinishButtonText(text);
+    }
+
+    @Override
+    public final void addWizardListener(@NonNull final WizardListener listener) {
+        decorator.addWizardListener(listener);
+    }
+
+    @Override
+    public final void removeWizardListener(@NonNull final WizardListener listener) {
+        decorator.addWizardListener(listener);
     }
 
     @Override

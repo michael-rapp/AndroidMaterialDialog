@@ -24,6 +24,7 @@ import android.support.v4.view.ViewPager;
 import android.widget.Button;
 
 import de.mrapp.android.dialog.WizardDialog.TabPosition;
+import de.mrapp.android.dialog.WizardDialog.WizardListener;
 
 /**
  * Defines the interface a decorator, which allows to modify the view hierary of a dialog, which is
@@ -461,5 +462,24 @@ public interface WizardDialogDecorator {
      *         text may neither be null, nor empty
      */
     void setFinishButtonText(@NonNull CharSequence text);
+
+    /**
+     * Adds a new listener, which should be notified, when the user navigates within the dialog.
+     *
+     * @param listener
+     *         The listener, which should be added, as an instance of the type {@link
+     *         WizardListener}. The listener may not be null
+     */
+    void addWizardListener(@NonNull WizardListener listener);
+
+    /**
+     * Removes a specific listener, which should not be notified, when the user navigates within the
+     * dialog.
+     *
+     * @param listener
+     *         The listener, which should be removed, as an instance of the type {@link
+     *         WizardListener}. The listener may not be null
+     */
+    void removeWizardListener(@NonNull WizardListener listener);
 
 }

@@ -33,11 +33,14 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.WizardDialog.TabPosition;
+import de.mrapp.android.dialog.WizardDialog.WizardListener;
 import de.mrapp.android.dialog.adapter.ViewPagerAdapter;
 import de.mrapp.android.dialog.model.HeaderDialog;
 import de.mrapp.android.dialog.view.ViewPager;
@@ -61,6 +64,11 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
      * A list, which contains the fragments, which are contained by the dialog.
      */
     private final List<Triple<CharSequence, Class<? extends Fragment>, Bundle>> fragments;
+
+    /**
+     * The listeners, which should be notified, when the user navigates within the dialog.
+     */
+    private final Set<WizardListener> listeners;
 
     /**
      * The adapter, which is used to manage the dialog's fragments.
@@ -462,7 +470,8 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
      */
     public WizardDialogDecorator(@NonNull final HeaderDialog dialog) {
         super(dialog);
-        fragments = new ArrayList<>();
+        this.fragments = new ArrayList<>();
+        this.listeners = new LinkedHashSet<>();
     }
 
     @Override
@@ -757,6 +766,18 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
         ensureNotEmpty(text, "The text may not be empty");
         this.finishButtonText = text;
         adaptFinishButton();
+    }
+
+    @Override
+    public final void addWizardListener(@NonNull final WizardListener listener) {
+        ensureNotNull(listener, "The listener may not be null");
+        listeners.add(listener);
+    }
+
+    @Override
+    public final void removeWizardListener(@NonNull final WizardListener listener) {
+        ensureNotNull(listener, "The listener may not be null");
+        listeners.remove(listener);
     }
 
     @Override
