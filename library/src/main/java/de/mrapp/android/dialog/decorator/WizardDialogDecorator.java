@@ -403,6 +403,21 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
     }
 
     @Override
+    public final Button getBackButton() {
+        return backButton;
+    }
+
+    @Override
+    public final Button getNextButton() {
+        return nextButton;
+    }
+
+    @Override
+    public final Button getFinishButton() {
+        return finishButton;
+    }
+
+    @Override
     public final void addFragment(@NonNull final Class<? extends Fragment> fragmentClass) {
         addFragment(fragmentClass, null);
     }

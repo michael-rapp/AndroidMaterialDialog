@@ -26,6 +26,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.Button;
 
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
 import de.mrapp.android.dialog.model.WizardDialogDecorator;
@@ -320,6 +321,21 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
     @Override
     public final TabLayout getTabLayout() {
         return decorator.getTabLayout();
+    }
+
+    @Override
+    public final Button getBackButton() {
+        return decorator.getBackButton();
+    }
+
+    @Override
+    public final Button getNextButton() {
+        return decorator.getNextButton();
+    }
+
+    @Override
+    public final Button getFinishButton() {
+        return decorator.getFinishButton();
     }
 
     @Override

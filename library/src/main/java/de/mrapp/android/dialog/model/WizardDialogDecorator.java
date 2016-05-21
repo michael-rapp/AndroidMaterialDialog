@@ -21,6 +21,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.widget.Button;
 
 import de.mrapp.android.dialog.WizardDialog.TabPosition;
 
@@ -49,6 +50,33 @@ public interface WizardDialogDecorator {
      * TabLayout} or null, if the dialog does not show any fragments or has not been shown yet
      */
     TabLayout getTabLayout();
+
+    /**
+     * Returns the button, which allows to show the previous fragment of the dialog.
+     *
+     * @return The button, which allows to show the previous fragment of the dialog, as an instance
+     * of the class {@link Button} or null, if the dialog does not show any fragments or has not
+     * been shown yet
+     */
+    Button getBackButton();
+
+    /**
+     * Returns the button, which allows to show the next fragment of the dialog.
+     *
+     * @return The button, which allows to show the next fragment of the dialog, as an instance of
+     * the class {@link Button} or null, if the dialog does not show any fragments or has not been
+     * shown yet
+     */
+    Button getNextButton();
+
+    /**
+     * Returns the button, which allows to close dialog when the last fragment is shown.
+     *
+     * @return The button, which allows to close dialog when the last fragment is shown, as an
+     * instance of the class {@link Button} or null, if the dialog does not show any fragments or
+     * has not been shown yet
+     */
+    Button getFinishButton();
 
     /**
      * Adds a new fragment to the dialog.
