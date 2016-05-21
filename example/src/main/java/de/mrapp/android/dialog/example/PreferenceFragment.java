@@ -342,6 +342,12 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
                 WizardDialog.Builder builder =
                         new WizardDialog.Builder(getActivity(), getThemeId());
                 configureHeaderDialogBuilder(builder);
+                builder.enableTabLayout(false);
+
+                if (shouldButtonBarDividerBeShown()) {
+                    builder.showButtonBar(true);
+                }
+
                 addFragment(builder, 1);
                 addFragment(builder, 2);
                 addFragment(builder, 3);
@@ -364,7 +370,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     private void addFragment(@NonNull final WizardDialog.Builder builder, final int index) {
         Bundle arguments = new Bundle();
         arguments.putInt(DialogFragment.INDEX_EXTRA, index);
-        builder.addFragment("Title", DialogFragment.class, arguments);
+        builder.addFragment(DialogFragment.class, arguments);
     }
 
     /**
