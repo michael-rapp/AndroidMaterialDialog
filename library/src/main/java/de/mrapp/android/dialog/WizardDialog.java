@@ -65,13 +65,9 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          *         The position of the currently shown fragment as an {@link Integer} value
          * @param fragment
          *         The currently shown fragment as an instance of the class {@link Fragment}
-         * @param bundle
-         *         A bundle, which contains the parameters, which have been passed to the currently
-         *         shown fragment or null, if no parameters have been passed to the fragment
-         * @return The bundle, which should be passed to the next fragment, as an instance of the
-         * class {@link Bundle} or null, if navigating to the next fragment should not be allowed
+         * @return True, if navigating to the next fragment should be allowed, false otherwise
          */
-        Bundle onNextStep(int position, @NonNull Fragment fragment, @Nullable Bundle bundle);
+        boolean onNextStep(int position, @NonNull Fragment fragment);
 
         /**
          * The method, which is invoked, when the user wants to navigate to the previous frament of
@@ -81,14 +77,9 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          *         The position of the currently shown fragment as an {@link Integer} value
          * @param fragment
          *         The currently shown fragment as an instance of the class {@link Fragment}
-         * @param bundle
-         *         A bundle, which contains the parameters, which have been passed to the currently
-         *         shown fragment or null, if no parameters have been passed to the fragment
-         * @return The bundle, which should be passed to the next fragment, as an instance of the
-         * class {@link Bundle} or null, if navigating to the previous fragment should not be
-         * allowed
+         * @return True, if navigating to the previous fragment should be allowed, false otherwise
          */
-        Bundle onPreviousStep(int position, @NonNull Fragment fragment, @Nullable Bundle bundle);
+        boolean onPreviousStep(int position, @NonNull Fragment fragment);
 
         /**
          * The method, which is invoked, when the user wants to finish the last fragment of the
@@ -98,12 +89,9 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          *         The position of the currently shown fragment as an {@link Integer} value
          * @param fragment
          *         The currently shown fragment as an instance of the class {@link Fragment}
-         * @param bundle
-         *         A bundle, which contains the parameters, which have been passed to the currently
-         *         shown fragment or null, if no parameters have been passed to the fragment
          * @return True, if finishing the dialog should be allowed, false otherwise
          */
-        boolean onFinish(int position, @NonNull Fragment fragment, @Nullable Bundle bundle);
+        boolean onFinish(int position, @NonNull Fragment fragment);
 
     }
 
