@@ -460,6 +460,91 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
     }
 
     @Override
+    public final boolean isButtonBarShown() {
+        return decorator.isButtonBarShown();
+    }
+
+    @Override
+    public final void showButtonBar(final boolean show) {
+        decorator.showButtonBar(show);
+    }
+
+    @Override
+    public final int getButtonTextColor() {
+        return decorator.getButtonTextColor();
+    }
+
+    @Override
+    public final void setButtonTextColor(@ColorInt final int color) {
+        decorator.setButtonTextColor(color);
+    }
+
+    @Override
+    public final boolean isButtonBarDividerShown() {
+        return decorator.isButtonBarDividerShown();
+    }
+
+    @Override
+    public final void showButtonBarDivider(final boolean show) {
+        decorator.showButtonBarDivider(show);
+    }
+
+    @Override
+    public final int getButtonBarDividerColor() {
+        return decorator.getButtonBarDividerColor();
+    }
+
+    @Override
+    public final void setButtonBarDividerColor(final int color) {
+        decorator.getButtonBarDividerColor();
+    }
+
+    @Override
+    public final CharSequence getBackButtonText() {
+        return decorator.getBackButtonText();
+    }
+
+    @Override
+    public final void setBackButtonText(@StringRes final int resourceId) {
+        decorator.setBackButtonText(resourceId);
+    }
+
+    @Override
+    public final void setBackButtonText(@NonNull final CharSequence text) {
+        decorator.setBackButtonText(text);
+    }
+
+    @Override
+    public final CharSequence getNextButtonText() {
+        return decorator.getNextButtonText();
+    }
+
+    @Override
+    public final void setNextButtonText(@StringRes final int resourceId) {
+        decorator.setNextButtonText(resourceId);
+    }
+
+    @Override
+    public final void setNextButtonText(@NonNull final CharSequence text) {
+        decorator.setNextButtonText(text);
+    }
+
+    @Override
+    public final CharSequence getFinishButtonText() {
+        return decorator.getFinishButtonText();
+    }
+
+    @Override
+    public final void setFinishButtonText(@StringRes final int resourceId) {
+        decorator.setFinishButtonText(resourceId);
+    }
+
+    @Override
+    public final void setFinishButtonText(@NonNull final CharSequence text) {
+        decorator.setFinishButtonText(text);
+    }
+
+    @Override
     protected final void onAttachDecorators(@NonNull final View view,
                                             @NonNull final FragmentManager fragmentManager) {
         super.onAttachDecorators(view, fragmentManager);

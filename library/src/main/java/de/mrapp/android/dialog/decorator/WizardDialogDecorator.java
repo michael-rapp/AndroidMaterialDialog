@@ -27,11 +27,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.WizardDialog.TabPosition;
@@ -40,6 +42,7 @@ import de.mrapp.android.dialog.model.HeaderDialog;
 import de.mrapp.android.dialog.view.ViewPager;
 import de.mrapp.android.util.datastructure.Triple;
 
+import static de.mrapp.android.util.Condition.ensureNotEmpty;
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
@@ -79,6 +82,31 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
     private TabPosition tabPosition;
 
     /**
+     * The parent view of the layout, which is used to show the dialog's buttons.
+     */
+    private ViewGroup buttonBarContainer;
+
+    /**
+     * The back button of the dialog.
+     */
+    private Button backButton;
+
+    /**
+     * The next button of the dialog.
+     */
+    private Button nextButton;
+
+    /**
+     * The finish button of the dialog.
+     */
+    private Button finishButton;
+
+    /**
+     * The divider, which is shown above the dialog's buttons.
+     */
+    private View buttonBarDivider;
+
+    /**
      * True, if the tabs, which indicate the currently shown fragment, are enabled, false
      * otherwise.
      */
@@ -115,6 +143,42 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
     private boolean swipeEnabled;
 
     /**
+     * True, if the dialogÄs buttons are shown, false otherwise.
+     */
+    private boolean buttonBarShown;
+
+    /**
+     * The color of the button texts of the dialog.
+     */
+    private int buttonTextColor = -1;
+
+    /**
+     * The text of the back button of the dialog.
+     */
+    private CharSequence backButtonText;
+
+    /**
+     * The text of the next button of the dialog.
+     */
+    private CharSequence nextButtonText;
+
+    /**
+     * The text of the finish button of the dialog.
+     */
+    private CharSequence finishButtonText;
+
+    /**
+     * True, if the divider, which is located above the dialog's buttons, is shown, false
+     * otherwise.
+     */
+    private boolean showButtonBarDivider;
+
+    /**
+     * The color of the divider, which is located above the dialog's buttons.
+     */
+    private int buttonBarDividerColor;
+
+    /**
      * Inflates the tab layout, which indicates the currently shown fragment.
      */
     private void inflateTabLayout() {
@@ -147,6 +211,27 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
             }
 
             tabLayout.setupWithViewPager(viewPager);
+        }
+    }
+
+    /**
+     * Inflates the layout, which is used to show the dialog's buttons.
+     */
+    private void inflateButtonBar() {
+        ViewGroup rootView = (ViewGroup) getView();
+
+        if (rootView != null) {
+            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+            buttonBarContainer = (ViewGroup) layoutInflater
+                    .inflate(R.layout.button_bar_container, rootView, false);
+            rootView.addView(buttonBarContainer);
+            View view = layoutInflater
+                    .inflate(R.layout.horizontal_button_bar, buttonBarContainer, false);
+            buttonBarContainer.addView(view);
+            nextButton = (Button) view.findViewById(android.R.id.button1);
+            finishButton = (Button) view.findViewById(android.R.id.button2);
+            backButton = (Button) view.findViewById(android.R.id.button3);
+            buttonBarDivider = view.findViewById(R.id.button_bar_divider);
         }
     }
 
@@ -217,6 +302,79 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
     private void adaptViewPager() {
         if (viewPager != null) {
             viewPager.enableSwipe(swipeEnabled);
+        }
+    }
+
+    /**
+     * Adapts the text color of the dialog's buttons.
+     */
+    private void adaptButtonTextColor() {
+        if (buttonTextColor != -1) {
+            if (backButton != null) {
+                backButton.setTextColor(buttonTextColor);
+            }
+
+            if (nextButton != null) {
+                nextButton.setTextColor(buttonTextColor);
+            }
+
+            if (finishButton != null) {
+                finishButton.setTextColor(buttonTextColor);
+            }
+        }
+    }
+
+    /**
+     * Adapts the dialog's back button.
+     */
+    private void adaptBackButton() {
+        if (backButton != null) {
+            backButton.setText(backButtonText.toString().toUpperCase(Locale.getDefault()));
+        }
+    }
+
+    /**
+     * Adapts the dialog's next button.
+     */
+    private void adaptNextButton() {
+        if (nextButton != null) {
+            nextButton.setText(nextButtonText.toString().toUpperCase(Locale.getDefault()));
+        }
+    }
+
+    /**
+     * Adapts the dialog's finish button.
+     */
+    private void adaptFinishButton() {
+        if (finishButton != null) {
+            finishButton.setText(finishButtonText.toString().toUpperCase(Locale.getDefault()));
+        }
+    }
+
+    /**
+     * Adapts the visibility of the dialog's buttons.
+     */
+    private void adaptButtonBarVisibility() {
+        if (buttonBarContainer != null) {
+            buttonBarContainer.setVisibility(buttonBarShown ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    /**
+     * Adapts the visibility of the divider, which is shown above the dialog's buttons.
+     */
+    private void adaptButtonBarDividerVisibility() {
+        if (buttonBarDivider != null) {
+            buttonBarDivider.setVisibility(showButtonBarDivider ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    /**
+     * Adapts the color of the divider, which is shown above the dialog's buttons.
+     */
+    private void adaptButtonBarDividerColor() {
+        if (buttonBarDivider != null) {
+            buttonBarDivider.setBackgroundColor(buttonBarDividerColor);
         }
     }
 
@@ -332,6 +490,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
 
     @Override
     public final void setTabPosition(@NonNull final TabPosition tabPosition) {
+        ensureNotNull(tabPosition, "The tab position may not be null");
         this.tabPosition = tabPosition;
         inflateTabLayout();
         adaptTabLayout();
@@ -415,6 +574,104 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
     }
 
     @Override
+    public final boolean isButtonBarShown() {
+        return buttonBarShown;
+    }
+
+    @Override
+    public final void showButtonBar(final boolean show) {
+        this.buttonBarShown = show;
+        adaptButtonBarVisibility();
+    }
+
+    @Override
+    public final int getButtonTextColor() {
+        return buttonTextColor;
+    }
+
+    @Override
+    public final void setButtonTextColor(@ColorInt final int color) {
+        this.buttonTextColor = color;
+        adaptButtonTextColor();
+    }
+
+    @Override
+    public final boolean isButtonBarDividerShown() {
+        return showButtonBarDivider;
+    }
+
+    @Override
+    public final void showButtonBarDivider(final boolean show) {
+        this.showButtonBarDivider = show;
+        adaptButtonBarDividerVisibility();
+    }
+
+    @Override
+    public final int getButtonBarDividerColor() {
+        return buttonBarDividerColor;
+    }
+
+    @Override
+    public final void setButtonBarDividerColor(final int color) {
+        this.buttonBarDividerColor = color;
+        adaptButtonBarDividerColor();
+    }
+
+    @Override
+    public final CharSequence getBackButtonText() {
+        return backButtonText;
+    }
+
+    @Override
+    public final void setBackButtonText(@StringRes final int resourceId) {
+        setBackButtonText(getContext().getText(resourceId));
+    }
+
+    @Override
+    public final void setBackButtonText(@NonNull final CharSequence text) {
+        ensureNotNull(text, "The text may not be null");
+        ensureNotEmpty(text, "The text may not be empty");
+        this.backButtonText = text;
+        adaptBackButton();
+    }
+
+    @Override
+    public final CharSequence getNextButtonText() {
+        return nextButtonText;
+    }
+
+    @Override
+    public final void setNextButtonText(@StringRes final int resourceId) {
+        setNextButtonText(getContext().getText(resourceId));
+    }
+
+    @Override
+    public final void setNextButtonText(@NonNull final CharSequence text) {
+        ensureNotNull(text, "The text may not be null");
+        ensureNotEmpty(text, "The text may not be empty");
+        this.nextButtonText = text;
+        adaptNextButton();
+    }
+
+    @Override
+    public final CharSequence getFinishButtonText() {
+        return finishButtonText;
+    }
+
+    @Override
+    public final void setFinishButtonText(@StringRes final int resourceId) {
+        setFinishButtonText(getContext().getText(resourceId));
+    }
+
+    @Override
+    public final void setFinishButtonText(@NonNull final CharSequence text) {
+        ensureNotNull(text, "The text may not be null");
+        ensureNotEmpty(text, "The text may not be empty");
+        this.finishButtonText = text;
+        adaptFinishButton();
+    }
+
+    @Override
     public final void onPageScrolled(final int position, final float positionOffset,
                                      final int positionOffsetPixels) {
 
@@ -442,6 +699,14 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
             viewPager.setAdapter(viewPagerAdapter);
             inflateTabLayout();
             adaptTabLayout();
+            inflateButtonBar();
+            adaptButtonTextColor();
+            adaptBackButton();
+            adaptNextButton();
+            adaptFinishButton();
+            adaptButtonBarVisibility();
+            adaptButtonBarDividerVisibility();
+            adaptButtonBarDividerColor();
         }
     }
 
@@ -450,6 +715,11 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
         tabLayout = null;
         viewPager = null;
         viewPagerAdapter = null;
+        buttonBarContainer = null;
+        backButton = null;
+        nextButton = null;
+        finishButton = null;
+        buttonBarDivider = null;
     }
 
 }

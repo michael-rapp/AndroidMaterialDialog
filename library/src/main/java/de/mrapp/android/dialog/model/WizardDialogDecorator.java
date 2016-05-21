@@ -293,4 +293,145 @@ public interface WizardDialogDecorator {
      */
     void enableSwipe(boolean enable);
 
+    /**
+     * Returns, whether the dialog's buttons are shown, or not.
+     *
+     * @return True, if the dialog's buttons are shown, false otherwise
+     */
+    boolean isButtonBarShown();
+
+    /**
+     * Sets, whether the dialog's buttons should be shown, or not.
+     *
+     * @param show
+     *         True, if the dialog's buttons should be shown, false otherwise
+     */
+    void showButtonBar(boolean show);
+
+    /**
+     * Returns the color of the button texts of the dialog.
+     *
+     * @return The color of the button texts of the dialog as an {@link Integer} value or -1, if no
+     * custom color has been set
+     */
+    int getButtonTextColor();
+
+    /**
+     * Sets the color of the button texts of the dialog.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    void setButtonTextColor(@ColorInt int color);
+
+    /**
+     * Returns, whether the divider, which is located above the dialog's buttons, is shown, or not.
+     *
+     * @return True, if the divider, which is located above the dialog's buttons, is shown, false
+     * otherwise
+     */
+    boolean isButtonBarDividerShown();
+
+    /**
+     * Sets, whether the divider, which is located above the dialog's buttons, should be shown, or
+     * not.
+     *
+     * @param show
+     *         True, if the divider, which is located above the dialog's buttons, should be show,
+     *         false otherwise
+     */
+    void showButtonBarDivider(boolean show);
+
+    /**
+     * Returns the color of the divider, which is located above the dialog's buttons.
+     *
+     * @return The color of the divider, which is located above the dialog's buttons, as an {@link
+     * Integer} value
+     */
+    int getButtonBarDividerColor();
+
+    /**
+     * Sets the color of the divider, which is located above the dialog's buttons.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    void setButtonBarDividerColor(int color);
+
+    /**
+     * Returns the text of the dialog's back button.
+     *
+     * @return The text of the dialog's back button as an instance of the type {@link CharSequence}
+     */
+    CharSequence getBackButtonText();
+
+    /**
+     * Sets the text of the dialog's back button.
+     *
+     * @param resourceId
+     *         The resource id of the text, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid string resource
+     */
+    void setBackButtonText(@StringRes int resourceId);
+
+    /**
+     * Sets the text of the dialog's back button.
+     *
+     * @param text
+     *         The text, which should be set, as an instance of the class {@link CharSequence}. The
+     *         text may neither be null, nor empty
+     */
+    void setBackButtonText(@NonNull CharSequence text);
+
+    /**
+     * Returns the text of the dialog's next button.
+     *
+     * @return The text of the dialog's next button as an instance of the type {@link CharSequence}
+     */
+    CharSequence getNextButtonText();
+
+    /**
+     * Sets the text of the dialog's next button.
+     *
+     * @param resourceId
+     *         The resource id of the text, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid string resource
+     */
+    void setNextButtonText(@StringRes int resourceId);
+
+    /**
+     * Sets the text of the dialog's next button.
+     *
+     * @param text
+     *         The text, which should be set, as an instance of the class {@link CharSequence}. The
+     *         text may neither be null, nor empty
+     */
+    void setNextButtonText(@NonNull CharSequence text);
+
+    /**
+     * Returns the text of the dialog's finish button.
+     *
+     * @return The text of the dialog's finish button as an instance of the type {@link
+     * CharSequence}
+     */
+    CharSequence getFinishButtonText();
+
+    /**
+     * Sets the text of the dialog's finish button.
+     *
+     * @param resourceId
+     *         The resource id of the text, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid string resource
+     */
+    void setFinishButtonText(@StringRes int resourceId);
+
+    /**
+     * Sets the text of the dialog's finish button.
+     *
+     * @param text
+     *         The text, which should be set, as an instance of the class {@link CharSequence}. The
+     *         text may neither be null, nor empty
+     */
+    void setFinishButtonText(@NonNull CharSequence text);
+
 }
