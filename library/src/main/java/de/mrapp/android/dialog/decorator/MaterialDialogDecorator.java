@@ -299,11 +299,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             messageTextView.setVisibility(!TextUtils.isEmpty(message) ? View.VISIBLE : View.GONE);
         }
 
-        if (titleContainer != null) {
+        if (titleContainer != null && !TextUtils.isEmpty(message)) {
             LinearLayout.LayoutParams layoutParams =
                     (LinearLayout.LayoutParams) titleContainer.getLayoutParams();
-            layoutParams.bottomMargin = !TextUtils.isEmpty(message) ? getContext().getResources()
-                    .getDimensionPixelSize(R.dimen.dialog_content_spacing) : 0;
+            layoutParams.bottomMargin = getContext().getResources()
+                    .getDimensionPixelSize(R.dimen.dialog_content_spacing);
             titleContainer.setLayoutParams(layoutParams);
         }
 
