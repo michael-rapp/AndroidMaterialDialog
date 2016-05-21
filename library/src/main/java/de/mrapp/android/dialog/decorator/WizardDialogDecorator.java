@@ -26,6 +26,7 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -330,7 +331,26 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
     private void adaptBackButton() {
         if (backButton != null) {
             backButton.setText(backButtonText.toString().toUpperCase(Locale.getDefault()));
+            backButton.setOnClickListener(createBackButtonListener());
         }
+    }
+
+    /**
+     * Creates and returns a listener, which allows to show the previous fragment, when the
+     * corresponding button is clicked.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnClickListener}
+     */
+    private OnClickListener createBackButtonListener() {
+        return new OnClickListener() {
+
+            @Override
+            public void onClick(final View v) {
+                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+            }
+
+        };
     }
 
     /**
@@ -339,7 +359,26 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
     private void adaptNextButton() {
         if (nextButton != null) {
             nextButton.setText(nextButtonText.toString().toUpperCase(Locale.getDefault()));
+            nextButton.setOnClickListener(createNextButtonListener());
         }
+    }
+
+    /**
+     * Creates and returns a listener, which allows to show the next fragment, when the
+     * corresponding button is clicked.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnClickListener}
+     */
+    private OnClickListener createNextButtonListener() {
+        return new OnClickListener() {
+
+            @Override
+            public void onClick(final View v) {
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+            }
+
+        };
     }
 
     /**
@@ -348,7 +387,26 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
     private void adaptFinishButton() {
         if (finishButton != null) {
             finishButton.setText(finishButtonText.toString().toUpperCase(Locale.getDefault()));
+            finishButton.setOnClickListener(createFinishButtonListener());
         }
+    }
+
+    /**
+     * Creates and returns a listener, which allows to close the dialog, when the corresponding
+     * button is clicked.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnClickListener}
+     */
+    private OnClickListener createFinishButtonListener() {
+        return new OnClickListener() {
+
+            @Override
+            public void onClick(final View v) {
+                getDialog().dismiss();
+            }
+
+        };
     }
 
     /**
@@ -375,6 +433,21 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
     private void adaptButtonBarDividerColor() {
         if (buttonBarDivider != null) {
             buttonBarDivider.setBackgroundColor(buttonBarDividerColor);
+        }
+    }
+
+    /**
+     * Adapts the visibility of the dialog's buttons, depending on the currently shown fragment.
+     */
+    private void adaptButtonVisibility() {
+        if (viewPager != null && viewPagerAdapter != null && backButton != null &&
+                nextButton != null && finishButton != null) {
+            int selectedIndex = viewPager.getCurrentItem();
+            backButton.setVisibility(selectedIndex > 0 ? View.VISIBLE : View.GONE);
+            nextButton.setVisibility(
+                    selectedIndex < viewPagerAdapter.getCount() - 1 ? View.VISIBLE : View.GONE);
+            finishButton.setVisibility(
+                    selectedIndex == viewPagerAdapter.getCount() - 1 ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -694,7 +767,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
 
     @Override
     public final void onPageSelected(final int position) {
-
+        adaptButtonVisibility();
     }
 
     @Override
@@ -723,6 +796,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
             adaptButtonBarVisibility();
             adaptButtonBarDividerVisibility();
             adaptButtonBarDividerColor();
+            adaptButtonVisibility();
         }
     }
 
