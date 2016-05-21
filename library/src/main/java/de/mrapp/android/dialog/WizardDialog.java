@@ -267,6 +267,255 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
         }
 
         /**
+         * Sets the position of the tabs, which indicate the currently shown fragment.
+         *
+         * @param tabPosition
+         *         The position, which should be set, as a value of the enum {@link TabPosition}.
+         *         The position may either be <code>USE_HEADER</code>, <code>PREFER_HEADER</code> or
+         *         <code>NO_HEADER</code>
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setTabPosition(@NonNull final TabPosition tabPosition) {
+            getDialog().setTabPosition(tabPosition);
+            return self();
+        }
+
+        /**
+         * Enables or disables the tabs, which indicate the currently shown fragment. When the tabs
+         * are enabled, it is possible to switch between the fragments by clicking the tabs.
+         *
+         * @param enable
+         *         True, if the tabs should be enabled, false otherwise
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder enableTabLayout(final boolean enable) {
+            getDialog().enableTabLayout(enable);
+            return self();
+        }
+
+        /**
+         * Sets, whether the tabs, which indicate the currently shown fragment, should be shown
+         * shown, or not.
+         *
+         * @param show
+         *         True, if the tabs, which indicate the currently shown fragment, should be shown,
+         *         false otherwise
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder showTabLayout(final boolean show) {
+            getDialog().enableTabLayout(show);
+            return self();
+        }
+
+        /**
+         * Sets the height of the indicator, which indicates the currently shown fragment.
+         *
+         * @param height
+         *         The height, which should be set, in pixels as an {@link Integer} value. The
+         *         height must be at least 1
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setTabIndicatorHeight(final int height) {
+            getDialog().setTabIndicatorHeight(height);
+            return self();
+        }
+
+        /**
+         * Sets the color of the indicator, which indicates the currently shown fragment.
+         *
+         * @param color
+         *         The color, which should be set, as an {@link Integer} value
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setTabIndicatorColor(@ColorInt final int color) {
+            getDialog().setTabIndicatorColor(color);
+            return self();
+        }
+
+        /**
+         * Sets the text color of the tabs, which indicates the currently shown fragment.
+         *
+         * @param textColor
+         *         The text color, which should be set, as an {@link Integer} value
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setTabTextColor(@ColorInt final int textColor) {
+            getDialog().setTabTextColor(textColor);
+            return self();
+        }
+
+        /**
+         * Sets the selected text color of the tabs, which indicate the currently shown fragment.
+         *
+         * @param selectedTextColor
+         *         The selected text color, which should be set, as an {@link Integer} value
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setTabSelectedTextColor(@ColorInt final int selectedTextColor) {
+            getDialog().setTabSelectedTextColor(selectedTextColor);
+            return self();
+        }
+
+        /**
+         * Sets, whether switching fragments using swipe gestures should be enabled, or not.
+         *
+         * @param enable
+         *         True, if switching fragments using swipe gestures should be enabled, false
+         *         otherwise
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder enableSwipe(final boolean enable) {
+            getDialog().enableSwipe(enable);
+            return self();
+        }
+
+        /**
+         * Sets, whether the dialog's buttons should be shown, or not.
+         *
+         * @param show
+         *         True, if the dialog's buttons should be shown, false otherwise
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder showButtonBar(final boolean show) {
+            getDialog().showButtonBar(show);
+            return self();
+        }
+
+        /**
+         * Sets the color of the button texts of the dialog.
+         *
+         * @param color
+         *         The color, which should be set, as an {@link Integer} value
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setButtonTextColor(@ColorInt final int color) {
+            getDialog().setButtonTextColor(color);
+            return self();
+        }
+
+        /**
+         * Sets, whether the divider, which is located above the dialog's buttons, should be shown,
+         * or not.
+         *
+         * @param show
+         *         True, if the divider, which is located above the dialog's buttons, should be
+         *         show, false otherwise
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder showButtonBarDivider(final boolean show) {
+            getDialog().showButtonBarDivider(show);
+            return self();
+        }
+
+        /**
+         * Sets the color of the divider, which is located above the dialog's buttons.
+         *
+         * @param color
+         *         The color, which should be set, as an {@link Integer} value
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setButtonBarDividerColor(final int color) {
+            getDialog().setButtonBarDividerColor(color);
+            return self();
+        }
+
+        /**
+         * Sets the text of the dialog's back button.
+         *
+         * @param resourceId
+         *         The resource id of the text, which should be set, as an {@link Integer} value.
+         *         The resource id must correspond to a valid string resource
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setBackButtonText(@StringRes final int resourceId) {
+            getDialog().setBackButtonText(resourceId);
+            return self();
+        }
+
+        /**
+         * Sets the text of the dialog's back button.
+         *
+         * @param text
+         *         The text, which should be set, as an instance of the class {@link CharSequence}.
+         *         The text may neither be null, nor empty
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setBackButtonText(@NonNull final CharSequence text) {
+            getDialog().setBackButtonText(text);
+            return self();
+        }
+
+        /**
+         * Sets the text of the dialog's next button.
+         *
+         * @param resourceId
+         *         The resource id of the text, which should be set, as an {@link Integer} value.
+         *         The resource id must correspond to a valid string resource
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setNextButtonText(@StringRes final int resourceId) {
+            getDialog().setNextButtonText(resourceId);
+            return self();
+        }
+
+        /**
+         * Sets the text of the dialog's next button.
+         *
+         * @param text
+         *         The text, which should be set, as an instance of the class {@link CharSequence}.
+         *         The text may neither be null, nor empty
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setNextButtonText(@NonNull final CharSequence text) {
+            getDialog().setNextButtonText(text);
+            return self();
+        }
+
+        /**
+         * Sets the text of the dialog's finish button.
+         *
+         * @param resourceId
+         *         The resource id of the text, which should be set, as an {@link Integer} value.
+         *         The resource id must correspond to a valid string resource
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setFinishButtonText(@StringRes final int resourceId) {
+            getDialog().setNextButtonText(resourceId);
+            return self();
+        }
+
+        /**
+         * Sets the text of the dialog's finish button.
+         *
+         * @param text
+         *         The text, which should be set, as an instance of the class {@link CharSequence}.
+         *         The text may neither be null, nor empty
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setFinishButtonText(@NonNull final CharSequence text) {
+            getDialog().setFinishButtonText(text);
+            return self();
+        }
+
+        /**
          * Creates a dialog with the arguments, which have been supplied to the builder and
          * immediately displays it.
          *
