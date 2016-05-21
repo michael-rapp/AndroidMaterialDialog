@@ -31,7 +31,7 @@ License.
     <string name="show_progress_dialog_preference_title">Show progress dialog</string>
     <string name="show_wizard_dialog_preference_key">show_wizard_dialog_preference_key</string>
     <string name="show_wizard_dialog_preference_title">Show wizard dialog</string>
-    <string name="dialog_title_preference_category_title">Title</string>
+    <string name="dialog_title_preference_category_title">Title and icon</string>
     <string name="show_dialog_title_preference_key">show_dialog_title_preference_key</string>
     <string name="show_dialog_title_preference_title">Show dialog title</string>
     <string name="show_dialog_title_preference_summary">Allows to set, whether the example dialog should contain a title, or not</string>
@@ -51,7 +51,6 @@ License.
     <string name="show_dialog_header_preference_key">show_dialog_header_preference_key</string>
     <string name="show_dialog_header_preference_title">Show dialog header</string>
     <string name="show_dialog_header_preference_summary">Allows to set, whether the example dialog should contain a header with an icon, or not</string>
-    <string name="dialog_icon_preference_category_title">Icon</string>
     <string name="show_dialog_icon_preference_key">show_dialog_icon_preference_key</string>
     <string name="show_dialog_icon_preference_title">Show dialog icon</string>
     <string name="show_dialog_icon_preference_summary">Allows to set, whether the example dialog should contain an icon, or not</string>

@@ -38,20 +38,7 @@ License.
             android:key="@string/show_wizard_dialog_preference_key"
             android:title="@string/show_wizard_dialog_preference_title"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/dialog_title_preference_category_title">
-        <CheckBoxPreference
-            android:defaultValue="@bool/show_dialog_title_preference_default_value"
-            android:key="@string/show_dialog_title_preference_key"
-            android:summary="@string/show_dialog_title_preference_summary"
-            android:title="@string/show_dialog_title_preference_title"/>
 
-        <EditTextPreference
-            android:defaultValue="@string/dialog_title_preference_default_value"
-            android:dependency="@string/show_dialog_title_preference_key"
-            android:key="@string/dialog_title_preference_key"
-            android:summary="@string/dialog_title_preference_summary"
-            android:title="@string/dialog_title_preference_title"/>
-    </PreferenceCategory>
     <PreferenceCategory android:title="@string/dialog_header_preference_category_title">
         <CheckBoxPreference
             android:defaultValue="@bool/show_dialog_header_preference_default_value"
@@ -59,20 +46,32 @@ License.
             android:summary="@string/show_dialog_header_preference_summary"
             android:title="@string/show_dialog_header_preference_title"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/dialog_icon_preference_category_title">
+
+    <PreferenceCategory android:title="@string/dialog_title_preference_category_title">
+        <CheckBoxPreference
+            android:defaultValue="@bool/show_dialog_title_preference_default_value"
+            android:key="@string/show_dialog_title_preference_key"
+            android:summary="@string/show_dialog_title_preference_summary"
+            android:title="@string/show_dialog_title_preference_title"/>
+        <EditTextPreference
+            android:defaultValue="@string/dialog_title_preference_default_value"
+            android:dependency="@string/show_dialog_title_preference_key"
+            android:key="@string/dialog_title_preference_key"
+            android:summary="@string/dialog_title_preference_summary"
+            android:title="@string/dialog_title_preference_title"/>
         <CheckBoxPreference
             android:defaultValue="@bool/show_dialog_icon_preference_default_value"
             android:key="@string/show_dialog_icon_preference_key"
             android:summary="@string/show_dialog_icon_preference_summary"
             android:title="@string/show_dialog_icon_preference_title"/>
     </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/dialog_message_preference_category_title">
         <CheckBoxPreference
             android:defaultValue="@bool/show_dialog_message_preference_default_value"
             android:key="@string/show_dialog_message_preference_key"
             android:summary="@string/show_dialog_message_preference_summary"
             android:title="@string/show_dialog_message_preference_title"/>
-
         <EditTextPreference
             android:defaultValue="@string/dialog_message_preference_default_value"
             android:dependency="@string/show_dialog_message_preference_key"
@@ -80,58 +79,53 @@ License.
             android:summary="@string/dialog_message_preference_summary"
             android:title="@string/dialog_message_preference_title"/>
     </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/dialog_buttons_preference_category_title">
         <CheckBoxPreference
             android:defaultValue="@bool/show_negative_button_preference_default_value"
             android:key="@string/show_negative_button_preference_key"
             android:summary="@string/show_negative_button_preference_summary"
             android:title="@string/show_negative_button_preference_title"/>
-
         <EditTextPreference
             android:defaultValue="@string/negative_button_text_preference_default_value"
             android:dependency="@string/show_negative_button_preference_key"
             android:key="@string/negative_button_text_preference_key"
             android:summary="@string/negative_button_text_preference_summary"
             android:title="@string/negative_button_text_preference_title"/>
-
         <CheckBoxPreference
             android:defaultValue="@bool/show_neutral_button_preference_default_value"
             android:key="@string/show_neutral_button_preference_key"
             android:summary="@string/show_neutral_button_preference_summary"
             android:title="@string/show_neutral_button_preference_title"/>
-
         <EditTextPreference
             android:defaultValue="@string/neutral_button_text_preference_default_value"
             android:dependency="@string/show_neutral_button_preference_key"
             android:key="@string/neutral_button_text_preference_key"
             android:summary="@string/neutral_button_text_preference_summary"
             android:title="@string/neutral_button_text_preference_title"/>
-
         <CheckBoxPreference
             android:defaultValue="@bool/show_positive_button_preference_default_value"
             android:key="@string/show_positive_button_preference_key"
             android:summary="@string/show_positive_button_preference_summary"
             android:title="@string/show_positive_button_preference_title"/>
-
         <EditTextPreference
             android:defaultValue="@string/positive_button_text_preference_default_value"
             android:dependency="@string/show_positive_button_preference_key"
             android:key="@string/positive_button_text_preference_key"
             android:summary="@string/positive_button_text_preference_summary"
             android:title="@string/positive_button_text_preference_title"/>
-
         <CheckBoxPreference
             android:defaultValue="@bool/show_button_bar_divider_preference_default_value"
             android:key="@string/show_button_bar_divider_preference_key"
             android:summary="@string/show_button_bar_divider_preference_summary"
             android:title="@string/show_button_bar_divider_preference_title"/>
-
         <CheckBoxPreference
             android:defaultValue="@bool/stack_buttons_preference_default_value"
             android:key="@string/stack_buttons_preference_key"
             android:summary="@string/stack_buttons_preference_summary"
             android:title="@string/stack_buttons_preference_title"/>
     </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/theme_preference_category_title">
         <ListPreference
             android:defaultValue="@string/theme_preference_default_value"
