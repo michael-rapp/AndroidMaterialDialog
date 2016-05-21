@@ -67,7 +67,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          *         The currently shown fragment as an instance of the class {@link Fragment}
          * @return True, if navigating to the next fragment should be allowed, false otherwise
          */
-        boolean onNextStep(int position, @NonNull Fragment fragment);
+        boolean onNext(int position, @NonNull Fragment fragment);
 
         /**
          * The method, which is invoked, when the user wants to navigate to the previous frament of
@@ -79,7 +79,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          *         The currently shown fragment as an instance of the class {@link Fragment}
          * @return True, if navigating to the previous fragment should be allowed, false otherwise
          */
-        boolean onPreviousStep(int position, @NonNull Fragment fragment);
+        boolean onPrevious(int position, @NonNull Fragment fragment);
 
         /**
          * The method, which is invoked, when the user wants to finish the last fragment of the

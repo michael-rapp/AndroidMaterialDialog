@@ -355,7 +355,11 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
 
             @Override
             public void onClick(final View v) {
-                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+                int selectedIndex = viewPager.getCurrentItem();
+
+                if (notifyOnPrevious(selectedIndex)) {
+                    viewPager.setCurrentItem(selectedIndex - 1);
+                }
             }
 
         };
@@ -383,7 +387,11 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
 
             @Override
             public void onClick(final View v) {
-                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                int selectedIndex = viewPager.getCurrentItem();
+
+                if (notifyOnNext(selectedIndex)) {
+                    viewPager.setCurrentItem(selectedIndex + 1);
+                }
             }
 
         };
@@ -411,7 +419,11 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
 
             @Override
             public void onClick(final View v) {
-                getDialog().dismiss();
+                int selectedIndex = viewPager.getCurrentItem();
+
+                if (notifyOnFinish(selectedIndex)) {
+                    getDialog().dismiss();
+                }
             }
 
         };
@@ -457,6 +469,58 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
             finishButton.setVisibility(
                     selectedIndex == viewPagerAdapter.getCount() - 1 ? View.VISIBLE : View.GONE);
         }
+    }
+
+    /**
+     * Notifies all listeners, when the next fragment is about to be shown.
+     *
+     * @param index
+     *         The index of the fragment, which is about to be shown, as an {@link Integer} value
+     * @return True, if the fragment is allowed to be shown, false otherwise
+     */
+    private boolean notifyOnNext(final int index) {
+        boolean result = true;
+
+        for (WizardListener listener : listeners) {
+            result &= listener.onNext(index, viewPagerAdapter.getItem(index));
+        }
+
+        return result;
+    }
+
+    /**
+     * Notifies all listeners, when the previous fragment is about to be shown.
+     *
+     * @param index
+     *         The index of the fragment, which is about to be shown, as an {@link Integer} value
+     * @return True, if the fragment is allowed to be shown, false otherwise
+     */
+    private boolean notifyOnPrevious(final int index) {
+        boolean result = true;
+
+        for (WizardListener listener : listeners) {
+            result &= listener.onPrevious(index, viewPagerAdapter.getItem(index));
+        }
+
+        return result;
+    }
+
+    /**
+     * Notifies all listeners, when the last fragment is about to be finished.
+     *
+     * @param index
+     *         The index of the fragment, which is about to be finished, as an {@link Integer}
+     *         value
+     * @return True, if the last fragment is allowed to be finished, false otherwise
+     */
+    private boolean notifyOnFinish(final int index) {
+        boolean result = true;
+
+        for (WizardListener listener : listeners) {
+            result &= listener.onFinish(index, viewPagerAdapter.getItem(index));
+        }
+
+        return result;
     }
 
     /**
