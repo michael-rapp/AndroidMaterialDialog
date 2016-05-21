@@ -200,14 +200,14 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             contentContainer.removeAllViews();
 
             if (customView != null) {
-                showContentContainer();
                 contentContainer.addView(customView);
             } else if (customViewId != -1) {
-                showContentContainer();
                 LayoutInflater layoutInflater = LayoutInflater.from(getContext());
                 View view = layoutInflater.inflate(customViewId, contentContainer, false);
                 contentContainer.addView(view);
             }
+
+            adaptContentContainerVisibility();
         }
     }
 
@@ -299,14 +299,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             messageTextView.setVisibility(!TextUtils.isEmpty(message) ? View.VISIBLE : View.GONE);
         }
 
-        if (titleContainer != null && !TextUtils.isEmpty(message)) {
-            LinearLayout.LayoutParams layoutParams =
-                    (LinearLayout.LayoutParams) titleContainer.getLayoutParams();
-            layoutParams.bottomMargin = getContext().getResources()
-                    .getDimensionPixelSize(R.dimen.dialog_content_spacing);
-            titleContainer.setLayoutParams(layoutParams);
-        }
-
+        adaptTitleContainerMargin();
         adaptMessageContainerVisibility();
     }
 
@@ -344,20 +337,54 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     /**
-     * Shows the parent view of the view, which is used to show the dialog's content.
+     * Adapts the visibility of the parent view of the view, which is used to show the dialog's
+     * content.
      */
-    private void showContentContainer() {
-        contentContainer.setVisibility(View.VISIBLE);
-        int contentSpacing =
-                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_content_spacing);
-        LinearLayout.LayoutParams titleLayoutParams =
-                (LinearLayout.LayoutParams) titleContainer.getLayoutParams();
-        titleLayoutParams.bottomMargin = contentSpacing;
-        titleContainer.setLayoutParams(titleLayoutParams);
-        LinearLayout.LayoutParams messageLayoutParams =
-                (LinearLayout.LayoutParams) messageContainer.getLayoutParams();
-        messageLayoutParams.bottomMargin = contentSpacing;
-        messageContainer.setLayoutParams(messageLayoutParams);
+    private void adaptContentContainerVisibility() {
+
+        if (customView != null || customViewId != -1) {
+            contentContainer.setVisibility(View.VISIBLE);
+        } else {
+            contentContainer.setVisibility(View.GONE);
+        }
+
+        adaptTitleContainerMargin();
+        adaptMessageContainerMargin();
+    }
+
+    /**
+     * Adapts the margin of the parent view of the view, which is used to show the dialog's title.
+     */
+    private void adaptTitleContainerMargin() {
+        if (titleContainer != null) {
+            LinearLayout.LayoutParams titleLayoutParams =
+                    (LinearLayout.LayoutParams) titleContainer.getLayoutParams();
+
+            if (customView != null || customViewId != -1 || !TextUtils.isEmpty(message)) {
+                titleLayoutParams.bottomMargin = getContext().getResources()
+                        .getDimensionPixelSize(R.dimen.dialog_content_spacing);
+            } else {
+                titleLayoutParams.bottomMargin = 0;
+            }
+        }
+    }
+
+    /**
+     * Adapts the margin of the parent view of the view, which is used to show the dialog's
+     * message.
+     */
+    private void adaptMessageContainerMargin() {
+        if (messageContainer != null) {
+            LinearLayout.LayoutParams messageLayoutParams =
+                    (LinearLayout.LayoutParams) messageContainer.getLayoutParams();
+
+            if (customView != null || customViewId != -1) {
+                messageLayoutParams.bottomMargin = getContext().getResources()
+                        .getDimensionPixelSize(R.dimen.dialog_content_spacing);
+            } else {
+                messageLayoutParams.bottomMargin = 0;
+            }
+        }
     }
 
     /**

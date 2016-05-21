@@ -58,7 +58,6 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     protected AbstractListDialog(@NonNull final Context context,
                                  @StyleRes final int themeResourceId) {
         super(context, themeResourceId);
-        setView(R.layout.material_dialog_list_view);
         this.decorator = new ListDialogDecorator(this);
     }
 

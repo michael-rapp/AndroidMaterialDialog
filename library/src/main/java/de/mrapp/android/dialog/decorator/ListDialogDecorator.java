@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.adapter.ArrayAdapter;
 import de.mrapp.android.dialog.listener.OnItemClickListenerWrapper;
 import de.mrapp.android.dialog.listener.OnMultiChoiceClickListenerWrapper;
@@ -95,17 +96,21 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     /**
      * Adapts the list view, which is used to show the dialog's list items.
      */
-    private void adaptListView() {
-        if (listView != null) {
-            if (listAdapter != null && !listAdapter.isEmpty()) {
-                listView.setVisibility(View.VISIBLE);
-                listView.setChoiceMode(listViewChoiceMode);
-                listView.setAdapter(listAdapter);
-                listView.setOnItemSelectedListener(listViewItemSelectedListener);
+    private void inflateListView() {
+        if (getView() != null) {
+            getDialog().setView(R.layout.material_dialog_list_view);
+            View listView = getView().findViewById(android.R.id.list);
+            this.listView = listView instanceof ListView ? (ListView) listView : null;
+
+            if (this.listView != null && listAdapter != null && !listAdapter.isEmpty()) {
+                this.listView.setVisibility(View.VISIBLE);
+                this.listView.setChoiceMode(listViewChoiceMode);
+                this.listView.setAdapter(listAdapter);
+                this.listView.setOnItemSelectedListener(listViewItemSelectedListener);
                 initializeListViewSelectionListener();
                 initializeListViewCheckedItems();
             } else {
-                listView.setVisibility(View.GONE);
+                getDialog().setView(null);
             }
         }
     }
@@ -219,7 +224,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         listAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, items);
         listViewSingleChoiceListener = listener;
         listViewChoiceMode = ListView.CHOICE_MODE_NONE;
-        adaptListView();
+        inflateListView();
     }
 
     @Override
@@ -235,7 +240,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         listAdapter = adapter;
         listViewSingleChoiceListener = listener;
         listViewChoiceMode = ListView.CHOICE_MODE_NONE;
-        adaptListView();
+        inflateListView();
     }
 
     @Override
@@ -250,7 +255,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         listViewChoiceMode = ListView.CHOICE_MODE_SINGLE;
         checkedListItems = new boolean[items.length];
         checkedListItems[checkedItem] = true;
-        adaptListView();
+        inflateListView();
     }
 
     @Override
@@ -270,7 +275,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         listViewChoiceMode = ListView.CHOICE_MODE_SINGLE;
         checkedListItems = new boolean[adapter.getCount()];
         checkedListItems[checkedItem] = true;
-        adaptListView();
+        inflateListView();
     }
 
     @Override
@@ -284,7 +289,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         listViewMultiChoiceListener = listener;
         listViewChoiceMode = ListView.CHOICE_MODE_MULTIPLE;
         checkedListItems = checkedItems;
-        adaptListView();
+        inflateListView();
     }
 
     @Override
@@ -307,9 +312,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
 
     @Override
     protected final void onAttach(@NonNull final View view) {
-        View listView = view.findViewById(android.R.id.list);
-        this.listView = listView instanceof ListView ? (ListView) listView : null;
-        adaptListView();
+        inflateListView();
         adaptItemColor();
         adaptItemControlColor();
     }
