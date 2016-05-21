@@ -26,6 +26,7 @@ import android.support.v4.content.ContextCompat;
 
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.ButtonBarDialog;
+import de.mrapp.android.util.ThemeUtil;
 
 /**
  * An abstract base class for all builders, which allow to create and show dialogs, which are
@@ -50,11 +51,8 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
     private void obtainButtonTextColor(@StyleRes final int themeResourceId) {
         TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                 new int[]{R.attr.materialDialogButtonTextColor});
-        int color = typedArray.getColor(0, -1);
-
-        if (color != -1) {
-            setButtonTextColor(color);
-        }
+        int defaultColor = ThemeUtil.getColor(getContext(), themeResourceId, R.attr.colorAccent);
+        setButtonTextColor(typedArray.getColor(0, defaultColor));
     }
 
     /**
