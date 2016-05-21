@@ -77,11 +77,6 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
     private TabLayout tabLayout;
 
     /**
-     * The position of the tabs, which indicate the currently shown fragment.
-     */
-    private TabPosition tabPosition;
-
-    /**
      * The parent view of the layout, which is used to show the dialog's buttons.
      */
     private ViewGroup buttonBarContainer;
@@ -105,6 +100,11 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
      * The divider, which is shown above the dialog's buttons.
      */
     private View buttonBarDivider;
+
+    /**
+     * The position of the tabs, which indicate the currently shown fragment.
+     */
+    private TabPosition tabPosition;
 
     /**
      * True, if the tabs, which indicate the currently shown fragment, are enabled, false
@@ -714,6 +714,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
             viewPager.setAdapter(viewPagerAdapter);
             inflateTabLayout();
             adaptTabLayout();
+            adaptViewPager();
             inflateButtonBar();
             adaptButtonTextColor();
             adaptBackButton();

@@ -39,4 +39,22 @@ License.
         <enum name="bottom" value="3"/>
     </attr>
 
+
+    <attr name="materialDialogTabPosition" format="enum">
+        <enum name="use_header" value="0"/>
+        <enum name="prefer_header" value="1"/>
+        <enum name="no_header" value="2"/>
+    </attr>
+    <attr name="materialDialogEnableTabLayout" format="boolean"/>
+    <attr name="materialDialogShowTabLayout" format="boolean"/>
+    <attr name="materialDialogTabIndicatorHeight" format="dimension"/>
+    <attr name="materialDialogTabIndicatorColor" format="color"/>
+    <attr name="materialDialogTabTextColor" format="color"/>
+    <attr name="materialDialogTabSelectedTextColor" format="color"/>
+    <attr name="materialDialogEnableSwipe" format="boolean"/>
+    <attr name="materialDialogShowButtonBar" format="boolean"/>
+    <attr name="materialDialogBackButtonText" format="string"/>
+    <attr name="materialDialogNextButtonText" format="string"/>
+    <attr name="materialDialogFinishButtonText" format="string"/>
+
 </resources>

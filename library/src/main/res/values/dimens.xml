@@ -33,5 +33,6 @@ License.
     <item name="dialog_header_height" type="dimen">112dp</item>
     <item name="dialog_message_text_size_normal" type="dimen">14sp</item>
     <item name="dialog_message_text_size_large" type="dimen">18sp</item>
+    <item name="dialog_tab_indicator_height" type="dimen">2dp</item>
 
 </resources>

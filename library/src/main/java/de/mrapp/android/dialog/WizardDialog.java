@@ -15,6 +15,7 @@ package de.mrapp.android.dialog;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -24,12 +25,14 @@ import android.support.annotation.StyleRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
 
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
 import de.mrapp.android.dialog.model.WizardDialogDecorator;
+import de.mrapp.android.util.ThemeUtil;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -55,40 +58,40 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * If the tabs should be shown in the header, if the dialog contains a header and if no
          * title and message are shown.
          */
-        USE_HEADER("use_header"),
+        USE_HEADER(0),
 
         /**
          * If the tabs should be shown in the header, if the dialog contains a header, regardless of
          * whether a title or message is shown.
          */
-        PREFER_HEADER("prefer_header"),
+        PREFER_HEADER(1),
 
         /**
          * If the tabs should never be shown in the header.
          */
-        NO_HEADER("no_header");
+        NO_HEADER(2);
 
         /**
          * The position's value.
          */
-        private String value;
+        private int value;
 
         /**
          * Creates a new position.
          *
          * @param value
-         *         The position's value
+         *         The position's value as an {@link Integer} value
          */
-        TabPosition(final String value) {
+        TabPosition(final int value) {
             this.value = value;
         }
 
         /**
          * Returns the position's value.
          *
-         * @return The positions value as a {@link String}
+         * @return The positions value as an {@link Integer} value
          */
-        public final String getValue() {
+        public final int getValue() {
             return value;
         }
 
@@ -96,16 +99,14 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Creates and returns the position, which corresponds to a specific value.
          *
          * @param value
-         *         The value, the position, which should be returned, corresponds to, as a {@link
-         *         String}. The value may not be null
+         *         The value, the position, which should be returned, corresponds to, as an {@link
+         *         Integer} value
          * @return The position, which corresponds to the given value as a value of the enum {@link
          * TabPosition}
          */
-        public static TabPosition fromValue(@NonNull final String value) {
-            ensureNotNull(value, "The value may not be null");
-
+        public static TabPosition fromValue(final int value) {
             for (TabPosition position : values()) {
-                if (position.getValue().equals(value)) {
+                if (position.getValue() == value) {
                     return position;
                 }
             }
@@ -121,6 +122,221 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
      * switching between multiple fragments.
      */
     public static class Builder extends AbstractHeaderDialogBuilder<WizardDialog, Builder> {
+
+        /**
+         * Obtains, the position of the dialog's tab layout from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the enable state should be obtained from, as an
+         *         {@link Integer} value
+         */
+        private void obtainTabPosition(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogTabPosition});
+            TabPosition defaultPosition = TabPosition.USE_HEADER;
+            setTabPosition(TabPosition.fromValue(typedArray.getInt(0, defaultPosition.getValue())));
+        }
+
+        /**
+         * Obtains, whether the dialog's tab layout should be enabled, or nor, from a specific
+         * theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the enable state should be obtained from, as an
+         *         {@link Integer} value
+         */
+        private void obtainEnableTabLayout(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogEnableTabLayout});
+            enableTabLayout(typedArray.getBoolean(0, true));
+        }
+
+        /**
+         * Obtains, whether the dialog's tab layout should be shown, or nor, from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the visibility should be obtained from, as an
+         *         {@link Integer} value
+         */
+        private void obtainShowTabLayout(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogShowTabLayout});
+            showTabLayout(typedArray.getBoolean(0, true));
+        }
+
+        /**
+         * Obtains the height of the tab indicator from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the height should be obtained from, as an {@link
+         *         Integer} value
+         */
+        private void obtainTabIndicatorHeight(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogTabIndicatorHeight});
+            int defaultHeight = getContext().getResources()
+                    .getDimensionPixelSize(R.dimen.dialog_tab_indicator_height);
+            setTabIndicatorHeight(typedArray.getDimensionPixelSize(0, defaultHeight));
+        }
+
+        /**
+         * Obtains the color of the tab indicator from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the color should be obtained from, as an {@link
+         *         Integer} value
+         */
+        private void obtainTabIndicatorColor(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogTabIndicatorColor});
+            int defaultColor =
+                    ThemeUtil.getColor(getContext(), themeResourceId, R.attr.colorAccent);
+            setTabIndicatorColor(typedArray.getColor(0, defaultColor));
+        }
+
+        /**
+         * Obtains the text color of the tabs from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the text color should be obtained from, as an
+         *         {@link Integer} value
+         */
+        private void obtainTabTextColor(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogTabTextColor});
+            int defaultColor = ThemeUtil
+                    .getColor(getContext(), themeResourceId, android.R.attr.textColorSecondary);
+            setTabTextColor(typedArray.getColor(0, defaultColor));
+        }
+
+        /**
+         * Obtains the selected text color of the tabs from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the text color should be obtained from, as an
+         *         {@link Integer} value
+         */
+        private void obtainTabSelectedTextColor(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogTabSelectedTextColor});
+            int defaultColor = ThemeUtil
+                    .getColor(getContext(), themeResourceId, android.R.attr.textColorSecondary);
+            setTabSelectedTextColor(typedArray.getColor(0, defaultColor));
+        }
+
+        /**
+         * Obtains, whether switching between the dialog's fragment using swipe gestures should be
+         * enabled, or not, from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the enable state should be obtained from, as an
+         *         {@link Integer} value
+         */
+        private void obtainEnableSwipe(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogEnableSwipe});
+            enableSwipe(typedArray.getBoolean(0, true));
+        }
+
+        /**
+         * Obtains, whether the dialog's button should be shown, or not, from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the visibility should be obtained from, as an
+         *         {@link Integer} value
+         */
+        private void obtainShowButtonBar(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogShowButtonBar});
+            showButtonBar(typedArray.getBoolean(0, true));
+        }
+
+        /**
+         * Obtains the button text color from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the text color should be obtained from, as an
+         *         {@link Integer} value
+         */
+        private void obtainButtonTextColor(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogButtonTextColor});
+            int defaultColor =
+                    ThemeUtil.getColor(getContext(), themeResourceId, R.attr.colorAccent);
+            setButtonTextColor(typedArray.getColor(0, defaultColor));
+        }
+
+        /**
+         * Obtains the text color of the dialog's back button from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the text color should be obtained from, as an
+         *         {@link Integer} value
+         */
+        private void obtainBackButtonText(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogBackButtonText});
+            CharSequence defaultText = getContext().getText(R.string.back_button_text);
+            setBackButtonText(defaultText);
+        }
+
+        /**
+         * Obtains the text color of the dialog's next button from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the text color should be obtained from, as an
+         *         {@link Integer} value
+         */
+        private void obtainNextButtonText(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogNextButtonText});
+            CharSequence defaultText = getContext().getText(R.string.next_button_text);
+            setNextButtonText(defaultText);
+        }
+
+        /**
+         * Obtains the text color of the dialog's finish button from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the text color should be obtained from, as an
+         *         {@link Integer} value
+         */
+        private void obtainFinishButtonText(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogFinishButtonText});
+            CharSequence defaultText = getContext().getText(R.string.finish_button_text);
+            setFinishButtonText(defaultText);
+        }
+
+        /**
+         * Obtains, whether the divider, which is located above the dialog's buttons, should be
+         * shown, or not, from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the visibility should be obtained from, as an
+         *         {@link Integer} value
+         */
+        private void obtainShowButtonBarDivider(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogShowButtonBarDivider});
+            showButtonBarDivider(typedArray.getBoolean(0, false));
+        }
+
+        /**
+         * Obtains the color of the divider, which is located above the dialog's buttons, from a
+         * specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the color should be obtained from, as an {@link
+         *         Integer} value
+         */
+        private void obtainButtonBarDividerColor(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogButtonBarDividerColor});
+            int defaultColor =
+                    ContextCompat.getColor(getContext(), R.color.button_bar_divider_color_light);
+            setButtonBarDividerColor(typedArray.getColor(0, defaultColor));
+        }
 
         /**
          * Creates a new builder, which allows to create dialogs, which are designed according to
@@ -306,7 +522,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder showTabLayout(final boolean show) {
-            getDialog().enableTabLayout(show);
+            getDialog().showTabLayout(show);
             return self();
         }
 
@@ -497,7 +713,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder setFinishButtonText(@StringRes final int resourceId) {
-            getDialog().setNextButtonText(resourceId);
+            getDialog().setFinishButtonText(resourceId);
             return self();
         }
 
@@ -536,6 +752,26 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
         protected final WizardDialog onCreateDialog(@NonNull final Context context,
                                                     @StyleRes final int themeResourceId) {
             return new WizardDialog(context, themeResourceId);
+        }
+
+        @Override
+        protected final void obtainStyledAttributes(@StyleRes final int themeResourceId) {
+            super.obtainStyledAttributes(themeResourceId);
+            obtainTabPosition(themeResourceId);
+            obtainEnableTabLayout(themeResourceId);
+            obtainShowTabLayout(themeResourceId);
+            obtainTabIndicatorHeight(themeResourceId);
+            obtainTabIndicatorColor(themeResourceId);
+            obtainTabTextColor(themeResourceId);
+            obtainTabSelectedTextColor(themeResourceId);
+            obtainEnableSwipe(themeResourceId);
+            obtainShowButtonBar(themeResourceId);
+            obtainButtonTextColor(themeResourceId);
+            obtainBackButtonText(themeResourceId);
+            obtainNextButtonText(themeResourceId);
+            obtainFinishButtonText(themeResourceId);
+            obtainShowButtonBarDivider(themeResourceId);
+            obtainButtonBarDividerColor(themeResourceId);
         }
 
     }
