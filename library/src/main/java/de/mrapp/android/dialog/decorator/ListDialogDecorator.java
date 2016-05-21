@@ -308,7 +308,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     @Override
     protected final void onAttach(@NonNull final View view) {
         View listView = view.findViewById(android.R.id.list);
-        this.listView = view instanceof ListView ? (ListView) view : null;
+        this.listView = listView instanceof ListView ? (ListView) listView : null;
         adaptListView();
         adaptItemColor();
         adaptItemControlColor();
