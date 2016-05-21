@@ -179,7 +179,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
         private void obtainTabPosition(@StyleRes final int themeResourceId) {
             TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                     new int[]{R.attr.materialDialogTabPosition});
-            TabPosition defaultPosition = TabPosition.USE_HEADER;
+            TabPosition defaultPosition = TabPosition.PREFER_HEADER;
             setTabPosition(TabPosition.fromValue(typedArray.getInt(0, defaultPosition.getValue())));
         }
 
