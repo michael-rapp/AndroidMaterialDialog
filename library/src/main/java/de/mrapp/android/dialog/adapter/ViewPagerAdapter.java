@@ -20,7 +20,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ import de.mrapp.android.util.datastructure.Triple;
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
- * An adapter, which allows to manage the fragments of a {@link ViewPager}.
+ * An adapter, which allows to manage the fragments of a view pager.
  *
  * @author Michael Rapp
  * @since 3.2.0
@@ -47,14 +46,14 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     private final List<Triple<CharSequence, Class<? extends Fragment>, Bundle>> items;
 
     /**
-     * Creates a new adapter, which allows to manage the fragments of a {@link ViewPager}.
+     * Creates a new adapter, which allows to manage the fragments of a view pager.
      *
      * @param context
      *         The context, which should be used by the adapter, as an instance of the class {@link
      *         Context}. The context may not be null
      * @param fragmentManager
      *         The fragment manager, which should be used by the adapter, as an instance of the
-     *         class {@link FragmentManager}. The fragment manager may not be null
+     *         class FragmentManager. The fragment manager may not be null
      */
     public ViewPagerAdapter(@NonNull final Context context,
                             @NonNull final FragmentManager fragmentManager,

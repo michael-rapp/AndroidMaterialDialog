@@ -64,7 +64,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * @param position
          *         The position of the currently shown fragment as an {@link Integer} value
          * @param fragment
-         *         The currently shown fragment as an instance of the class {@link Fragment}
+         *         The currently shown fragment as an instance of the class Fragment
          * @return True, if navigating to the next fragment should be allowed, false otherwise
          */
         boolean onNext(int position, @NonNull Fragment fragment);
@@ -76,7 +76,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * @param position
          *         The position of the currently shown fragment as an {@link Integer} value
          * @param fragment
-         *         The currently shown fragment as an instance of the class {@link Fragment}
+         *         The currently shown fragment as an instance of the class Fragment
          * @return True, if navigating to the previous fragment should be allowed, false otherwise
          */
         boolean onPrevious(int position, @NonNull Fragment fragment);
@@ -88,7 +88,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * @param position
          *         The position of the currently shown fragment as an {@link Integer} value
          * @param fragment
-         *         The currently shown fragment as an instance of the class {@link Fragment}
+         *         The currently shown fragment as an instance of the class Fragment
          * @return True, if finishing the dialog should be allowed, false otherwise
          */
         boolean onFinish(int position, @NonNull Fragment fragment);
@@ -798,7 +798,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          *
          * @param fragmentManager
          *         The fragment manager, which should be used by the dialog, as an instance of the
-         *         class {@link FragmentManager}. The fragment manager may not be null
+         *         class FragmentManager. The fragment manager may not be null
          * @return The dialog, which has been shown, as an instance of the class {@link
          * WizardDialog}
          */

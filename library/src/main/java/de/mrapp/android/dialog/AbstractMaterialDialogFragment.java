@@ -125,7 +125,7 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      *         an instance of the class {@link View}. The view may not be null
      * @param fragmentManager
      *         The fragment manager, which can be used to show fragment within the dialog, as an
-     *         instance of the class {@link FragmentManager}. The fragment manager may not be null
+     *         instance of the class FragmentManager. The fragment manager may not be null
      */
     @CallSuper
     protected void onAttachDecorators(@NonNull final View view,

@@ -52,7 +52,7 @@ public abstract class AbstractDialogFragmentDecorator<DialogType extends Dialog>
      *         the class {@link View}. The view may not be null
      * @param fragmentManager
      *         The fragment manager, which should be used by the decorator, as an instance of the
-     *         class {@link FragmentManager}. The fragment manager may not be null
+     *         class FragmentManager. The fragment manager may not be null
      */
     protected abstract void onAttach(@NonNull final View view,
                                      @NonNull final FragmentManager fragmentManager);
@@ -111,7 +111,7 @@ public abstract class AbstractDialogFragmentDecorator<DialogType extends Dialog>
      *         instance of the class {@link View}. The view may not be null
      * @param fragmentManager
      *         The fragment manager, which should be used by the decorator, as an instance of the
-     *         class {@link FragmentManager}. The fragment manager may not be null
+     *         class FragmentManager. The fragment manager may not be null
      */
     public final void attach(@NonNull final View view,
                              @NonNull final FragmentManager fragmentManager) {

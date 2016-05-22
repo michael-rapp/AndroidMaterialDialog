@@ -39,16 +39,16 @@ public interface WizardDialogDecorator {
     /**
      * Returns the view pager, which is contained by the dialog.
      *
-     * @return The view pager, which is contained by the dialog, as an instance of the class {@link
-     * ViewPager} or null, if the dialog does not show any fragments or has not been shown yet
+     * @return The view pager, which is contained by the dialog, as an instance of the class
+     * ViewPager or null, if the dialog does not show any fragments or has not been shown yet
      */
     ViewPager getViewPager();
 
     /**
      * Returns the tab layout, which is contained by the dialog.
      *
-     * @return The tab layout, which is contained by the dialog, as an instance of the class {@link
-     * TabLayout} or null, if the dialog does not show any fragments or has not been shown yet
+     * @return The tab layout, which is contained by the dialog, as an instance of the class
+     * TabLayout or null, if the dialog does not show any fragments or has not been shown yet
      */
     TabLayout getTabLayout();
 
@@ -158,7 +158,7 @@ public interface WizardDialogDecorator {
                      @Nullable Bundle arguments);
 
     /**
-     * Removes the fragment at a specific index from the dialog>.
+     * Removes the fragment at a specific index from the dialog.
      *
      * @param index
      *         The index of the fragment, which should be removed, as an {@link Integer value}
