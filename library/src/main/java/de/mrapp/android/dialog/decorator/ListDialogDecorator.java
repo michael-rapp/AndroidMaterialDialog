@@ -98,19 +98,17 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
      */
     private void inflateListView() {
         if (getView() != null) {
-            getDialog().setView(R.layout.material_dialog_list_view);
             View listView = getView().findViewById(android.R.id.list);
             this.listView = listView instanceof ListView ? (ListView) listView : null;
 
             if (this.listView != null && listAdapter != null && !listAdapter.isEmpty()) {
+                getDialog().setView(R.layout.material_dialog_list_view);
                 this.listView.setVisibility(View.VISIBLE);
                 this.listView.setChoiceMode(listViewChoiceMode);
                 this.listView.setAdapter(listAdapter);
                 this.listView.setOnItemSelectedListener(listViewItemSelectedListener);
                 initializeListViewSelectionListener();
                 initializeListViewCheckedItems();
-            } else {
-                getDialog().setView(null);
             }
         }
     }
