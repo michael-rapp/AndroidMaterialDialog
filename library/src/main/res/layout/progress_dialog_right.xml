@@ -19,7 +19,13 @@ License.
               android:gravity="center_vertical"
               android:orientation="horizontal">
 
-    <include layout="@layout/material_dialog_message"/>
+    <TextView
+        android:id="@android:id/message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:textSize="@dimen/dialog_message_text_size_normal"/>
 
     <de.mrapp.android.view.CircularProgressBar
         android:id="@+id/progress_bar"
