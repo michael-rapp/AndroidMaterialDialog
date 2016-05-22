@@ -27,7 +27,8 @@ public class DialogFragment extends Fragment {
                                    final Bundle savedInstanceState) {
         TextView textView = (TextView) inflater.inflate(R.layout.dialog_fragment, container, false);
         int index = getArguments() != null ? getArguments().getInt(INDEX_EXTRA, 1) : 1;
-        textView.setText(String.format(getString(R.string.dialog_fragment_text), index));
+        CharSequence text = getString(R.string.dialog_fragment_text) + index;
+        textView.setText(text);
         return textView;
     }
 
