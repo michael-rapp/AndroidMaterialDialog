@@ -1,5 +1,14 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.3.0 (May 23th 2016)
+
+A feature release, which introduces the following changes:
+
+- Added the dialog `ProgressDialog`, which allows to indicate a running progress.
+- Added the dialog `WizardDialog`, which allows to show multiple fragments.
+- Updated dependency "AndroidUtil" to version 1.4.11.
+- Updated AppCompat v7 support library to version 23.4.0.
+
 ## Version 3.2.3 (Mar. 18th 2016)
 
 A minor release, which introduces the following changes:
