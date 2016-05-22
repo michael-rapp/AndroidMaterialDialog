@@ -40,6 +40,8 @@
                     <li><a href="content.html#using-custom-views">Using custom views</a></li>
                     <li><a href="content.html#creating-and-showing-the-dialog">Creating and showing the dialog</a></li>
 		    <li><a href="content.html#validating-the-dialog-content">Validating the dialog's content</a></li>
+		    <li><a href="content.html#progress-dialog">The class ProgressDialog</a></li>
+		    <li><a href="content.html#wizard-dialog">The class WizardDialog</a></li>		    
                 </ol>
 
                 <h4><a name="implementation-details">1 Implementation details</a></h4>
@@ -83,7 +85,7 @@
 
                 <p>By default the dialog's buttons are aligned horizontally, but as the "Material Design" guidelines introduced an alternative way of aligning a dialog's buttons, the builder's method <tt>stackButtons(boolean):Builder</tt> can be used to align the buttons vertically. The following screenshots shows a dialog, whose buttons are stacked:<p>
 
-                 <p><center><a href="images/example.png" target="_blank".><img src="images/example-stacked-buttons.png" width="320" alt="Example"></center></a></p>
+                 <p><center><a href="images/example.png" target="_blank".><img src="images/example-stacked-buttons.png" alt="Example"></center></a></p>
 
 		<h4><a name="modifying-the-appearance">4 Modifying the dialog's appearance</a></h4>
 
@@ -132,6 +134,42 @@
                         <td><center><tt>android.R.background</tt></center></td>
 			<td><center>When specyfied via a resource ID, the resource ID must correspond to a valid drawable resource.</center></td>
                     </tr>
+                    <tr>
+                        <td><tt>showHeader(boolean):Builder</tt></td>
+                        <td>Sets, whether the dialog's header should be shown, or not.</td>
+                        <td><center><tt>false</tt></center></td>
+			<td><center>none</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setHeaderHeight(int):Builder</tt></td>
+                        <td>Sets the height of the dialog's header in pixels.</td>
+                        <td><center><tt>112dp</tt></center></td>
+			<td><center>none</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setHeaderBackground(Drawable):Builder</br>setHeaderBackground(int):Builder</br>setHeaderBackgroundColor(int):Builder</tt></td>
+                        <td>Sets the background of the dialog's header.</td>
+                        <td><center><tt>R.attr.colorPrimary</tt></center></td>
+			<td><center>When specyfied via a resource ID, the resource ID must correspond to a valid drawable resource.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setHeaderIcon(Drawable):Builder</br>setHeaderIcon(int):Builder</tt></td>
+                        <td>Sets the icon of the dialog's header.</td>
+                        <td><center><tt>null</tt></center></td>
+			<td><center>When specyfied via a resource ID, the resource ID must correspond to a valid drawable resource.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setHeaderDividerColor(int):Builder</tt></td>
+                        <td>Sets the color of the divider of the dialog's header.</td>
+                        <td><center><tt>#ffcecece</tt> when the light theme is used, <tt>#ff757575</tt> otherwise</center></td>
+			<td><center>Must be a valid color, not a resource ID.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>showHeaderDivider(boolean):Builder</tt></td>
+                        <td>Sets, whether the divider of the dialogs' headers should be shown, or not.</td>
+                        <td><center><tt>true</tt></center></td>
+			<td><center>none</center></td>
+                    </tr>
 		</table>
 
 		<p>If a dialog, which is created by the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a>, should use an individual theme instead of the App's default theme, the theme's resource ID can be passed to the builder's constructor.</p>
@@ -174,6 +212,36 @@
                         <td>Specifies the dialogs' background.</td>
                         <td><center><tt>color|reference</tt></center></td>
                     </tr>
+                    <tr>
+                        <td><tt>materialDialogShowHeader</tt></td>
+                        <td>Specifies, whether the dialogs' headers should be shown, or not.</td>
+                        <td><center><tt>boolean</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogHeaderHeight</tt></td>
+                        <td>Specifies the height of the dialogs' headers.</td>
+                        <td><center><tt>dimension</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogHeaderBackground</tt></td>
+                        <td>Specifies the background of the dialogs' headers.</td>
+                        <td><center><tt>color|reference</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogHeaderIcon</tt></td>
+                        <td>Specifies the icon of the dialogs' headers.</td>
+                        <td><center><tt>reference</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogHeaderDividerColor</tt></td>
+                        <td>Specifies the color of the divider of the dialogs' headers.</td>
+                        <td><center><tt>color</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogShowHeaderDivider</tt></td>
+                        <td>Specifies, whether the divider of the dialogs' headers should be shown, or not.</td>
+                        <td><center><tt>boolean</tt></center></td>
+                    </tr>
 		</table>
 
                 <h4><a name="show-list-items">5 Use the dialog to show list items</a></h4>
@@ -190,7 +258,7 @@
 
                 <p>The <tt>setItems</tt>-methods mentioned above can be used to specify the list items as an array of <a href="http://developer.android.com/reference/java/lang/CharSequence.html" target="_blank" class="code">CharSequence</a> objects or by passing the resource ID of an array resource. When using these methods, the builder will create an adapter to manage the items by itself. Alternatively, the <tt>setAdapter</tt>-method allows to pass such an adapter to the builder. Such an adapter has to take care of storing and visualizing the items. Furthermore, all of the methods shown above allows to pass a listener, which has to implement the interface <a href="http://developer.android.com/reference/android/content/DialogInterface.OnClickListener.html" target="_blank" class="code">DialogInterface.OnClickListener</a>, to the builder. Such a listener will be notified, when the user clicks one of the list items. Clicking a list item when using no choice mode will cause the dialog to be closed. The following screenshot shows a dialog, which contains list views using no choice mode:</p>
 
-                <p><center><a href="images/example.png" target="_blank".><img src="images/example-no-choice-mode.png" width="320" alt="Example"></center></a></p>
+                <p><center><a href="images/example.png" target="_blank".><img src="images/example-no-choice-mode.png" alt="Example"></center></a></p>
 
                 <h5><a name="single-choice-mode">5.2 Single choice mode</a></h4>
 
@@ -202,7 +270,7 @@
 
                 <p>These methods are very similar to the methods discussed in the previous section, but all of them expect an additional <tt>Integer</tt> value, which specifies the position of the item, which should be selected by default, as a parameter. If this value is set to <tt>-1</tt>, no item will be selected by default. The semantic of the other parameters is equal to the semantics of the previously discussed method parameters. When a list item is selected while using single choice mode, the dialog will not be closed. The following screenshot shows a dialog, which contains list views using single choice mode:</p>
 
-                <p><center><a href="images/example.png" target="_blank".><img src="images/example-single-choice-mode.png" width="320" alt="Example"></center></a></p>
+                <p><center><a href="images/example.png" target="_blank".><img src="images/example-single-choice-mode.png" alt="Example"></center></a></p>
 
                 <h5><a name="multi-choice-mode">5.3 Multi choice mode</a></h4>
 
@@ -212,7 +280,7 @@
 
                 <p>These methods are slightly different from the already discussed ones, as the listener, which can be passed to be notified, when a list item's selection changes, has to implement the interface <a href="http://developer.android.com/reference/android/content/DialogInterface.OnMultiChoiceClickListener.html" target="_blank" class="code">DialogInterface.OnMultiChoiceClickListener</a>. Also, the items, which should be selected by default are specified by passing a <tt>Boolean</tt> array. The array's length must be equal to the number of items, as the <tt>Boolean</tt> at a specific index indicates, whether the list item at the according position should be selected, or not. Like when using the single choice mode, the dialog is not closed when a list item is selected while using multi choice mode. The following screenshot shows a dialog, which contains list views using multi choice mode:</p>
 
-                <p><center><a href="images/example.png" target="_blank".><img src="images/example-multi-choice-mode.png" width="320" alt="Example"></center></a></p>
+                <p><center><a href="images/example.png" target="_blank".><img src="images/example-multi-choice-mode.png" alt="Example"></center></a></p>
 
                 <h4><a name="using-custom-views">6 Using custom views</a></h4>
 
@@ -224,7 +292,7 @@
 
                 <p>The <tt>setCustomTitle</tt>-method causes the child view, which is used to show the dialog's title and icon, to be replaced by a specific custom view. If the custom view contains a <a href="http://developer.android.com/reference/android/widget/TextView.html" target="_blank" class="code">TextView</a> with the ID <tt>android.R.id.title</tt>, the dialog's title will be shown by using this view. Otherwise, the dialog's title will not be shown and the custom can be used for any other purpose. When the <tt>setView</tt> methods are used to specify a custom content view by passing the view itself or the resource ID of the appropriate layout resource, the <a href="http://developer.android.com/reference/android/widget/ListView.html" target="_blank" class="code">ListView</a>, which is used to show the dialog's list items, will be replaced. If the custom view contains a <a href="http://developer.android.com/reference/android/widget/ListView.html" target="_blank" class="code">ListView</a> with the ID <tt>android.R.id.list</tt>, this view will be used to show the dialog's list items. Otherwise, the items can not be shown. The following screenshots illustrates how a dialog, whose title and content views have been replaced by custom views, may appear:</p>
 
-                <p><center><a href="images/example.png" target="_blank".><img src="images/example-custom-views.png" width="320" alt="Example"></center></a></p>
+                <p><center><a href="images/example.png" target="_blank".><img src="images/example-custom-views.png" alt="Example"></center></a></p>
 
                 <h4><a name="creating-and-showing-the-dialog">7 Creating and showing the dialog</a></h4>
 
@@ -232,8 +300,248 @@
 
 		<h4><a name="validating-the-dialog-content">8 Validating the dialog's content</a></h4>
 		
-		<p>It is also possible to validate a dialog's content when its positive button is clicked by the user. Therfore the interface <a href="javadoc/de/mrapp/android/dialog/DialogValidator.html" target="_blank" class="code">DialogValidator</a> has to be implemented. It defines the method <tt>validate(AbstractValidateableDialog):boolean</tt>, which has to be overridden in order to return, whether the dialog's content is valid, or not. Multiple instances of this interface can be added to an instance of the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> by using its method <tt>addValidator(DialogValidator):Builder</tt> or <tt>addAllValidators(Collection):Builder</tt>. Previously added instances can be removed by using the method <tt>removeValidator(DialogValidator):Builder</tt> or <tt>removeAllValidators(Collection):Builder</tt> afterwards. When the dialog's positive button is clicked by the user, all added validators will be executed. If one of them returns <tt>false</tt> from its <tt>validate</tt>-method, the dialog will not be dismissed. When the negative or neutral button is clicked instead, no validation will be performed.</p>
+		<p>It is also possible to validate a dialog's content when its positive button is clicked by the user. Therfore the interface <a href="javadoc/de/mrapp/android/dialog/DialogValidator.html" target="_blank" class="code">DialogValidator</a> has to be implemented. It defines the method <tt>validate(AbstractValidateableDialog):boolean</tt>, which has to be overridden in order to return, whether the dialog's content is valid, or not. Multiple instances of this interface can be added to one single instance of the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> by using either one of the methods <tt>addValidator(DialogValidator):Builder</tt> or <tt>addAllValidators(Collection):Builder</tt>. Previously added listener instances can be removed afterwards by using the method <tt>removeValidator(DialogValidator):Builder</tt> or <tt>removeAllValidators(Collection):Builder</tt>. When the dialog's positive button is clicked by the user, all added validators will be executed. If one of them returns <tt>false</tt> from its <tt>validate</tt>-method, the dialog will not be dismissed. When the negative or neutral button is clicked instead, no validation will be performed.</p>
 
+		<h4><a name="progress-dialog">9 The class ProgressDialog</a></h4>
+		
+		<p>The class <a href="javadoc/de/mrapp/android/dialog/ProgressDialog.Builder.html" target="_blank" class="code">ProgressDialog.Builder</a> implements a builder, which allows to create dialogs, which can be used to indicate a running progress. Besides a circular progress bar such dialogs can contain a title, a message and up to three buttons.</p>
+		
+		<p><center><a href="images/example-progress-dialog.png" target="_blank".><img src="images/example-progress-dialog.png" alt="Example"></center></a></p>
+		
+		<p>For configuring the dialog's title, message and buttons the methods and theme attributes, which have already been discussed and are similar to those of the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> can be used. Furthermore, the following methods are provided by the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a>:</p>
+
+
+		<table>
+                    <tr>
+                        <th>Setter methods</th>
+                        <th>Explaination</th>
+                        <th>Default value</th>
+			<th>Restrictions</th>
+                    </tr>
+                    <tr>
+                        <td><tt>setProgressBarColor(int):Builder</tt></td>
+                        <td>Sets the color of the dialog's progress bar.</td>
+                        <td><center><tt>R.attr.colorAccent</center></td>
+			<td><center>Must be a valid color, not a resource ID.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setProgressBarSize(int):Builder</tt></td>
+                        <td>Sets the size of the dialog's progress bar in pixels.</td>
+                        <td><center><tt>R.dimen.</br>circular_progress_bar_size_normal</tt></center></td>
+			<td><center>The size must be at least 1.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setProgressBarThickness(int):Builder</tt></td>
+                        <td>Sets the thickness of the dialog's progress bar in pixels.</td>
+                        <td><center><tt>R.dimen.</br>circular_progress_bar_thickness_normal</tt></center></td>
+			<td><center>The thickness must be at least 1.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setProgressBarPosition(</br>ProgressBarPosition):Builder</tt></td>
+                        <td>Sets the position of the dialog's progress bar in relative to the message.</td>
+                        <td><center><tt>ProgressBarPosition.LEFT</tt></center></td>
+			<td><center>The position may not be null.</center></td>
+                    </tr>
+		</table>
+		
+		<p>As an alternative to using the setter methods shown above, theme attributes, which are shown in the table below, can be used to change the appearance of the dialog.</p>
+
+		<table>
+                    <tr>
+                        <th>Theme attribute</th>
+                        <th>Explaination</th>
+                        <th>Format</th>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogProgressBarColor</tt></td>
+                        <td>Specifies the color of the dialogs' progress bars.</td>
+                        <td><center><tt>color</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogProgressBarSize</tt></td>
+                        <td>Specifies the size of the dialogs' progress bars.</td>
+                        <td><center><tt>dimension</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogProgressBarThickness</tt></td>
+                        <td>Specifies the thickness of the dialogs' progress bars.</td>
+                        <td><center><tt>dimension</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogProgressBarPosition</tt></td>
+                        <td>Specifies the position of the dialogs' progress bars.</td>
+                        <td><center><tt>enum</tt></center></td>
+                    </tr>
+		</table>
+		
+		<h4><a name="wizard-dialog">10 The class WizardDialog</a></h4>
+		
+		<p>The class <a href="javadoc/de/mrapp/android/dialog/WizardDialog.Builder.html" target="_blank" class="code">WizardDialog.Builder</a> provides a builder, which allows to create dialogs, which can contain multiple fragments. It is possible to switch between the tabs by either clicking the tabs, which indicate the currently shown fragment, or by using buttons at the bottom of the dialog. Such a dialog can also contain a title, a message and a header. When the dialog contains a header, its tabs can be placed within the header.</p>
+		
+		<p><center><a href="images/example-wizard-dialog.png" target="_blank".><img src="images/example-wizard-dialog.png" alt="Example"></center></a></p>
+		
+		<p>In order to add fragments to the dialog, the following methods can be used. Each fragment is identified by its class. Furthermore, it is possible to specify a title for each fragment, which is shown in the dialog's tabs. When using a method, which accepts a <a href="https://developer.android.com/reference/android/os/Bundle.html" target="_blank" class="code">Bundle</a> as a paramter, the specified bundle is passed to the corresponding fragment when it is shown.</p>
+		
+		        <p class="center"><tt>addFragment(Class&lt;? extends Fragment&gt;):Builder</tt></p>
+        		<p class="center"><tt>addFragment(Class&lt;? extends Fragment&gt;, Bundle):Builder</tt></p>		
+                <p class="center"><tt>addFragment(CharSequence, Class&lt;? extends Fragment&gt;):Builder</tt></p>
+                <p class="center"><tt>addFragment(CharSequence, Class&lt;? extends Fragment&gt;, Bundle):Builder</tt></p>        
+                <p class="center"><tt>addFragment(int, Class&lt;? extends Fragment&gt;):Builder</tt></p>
+                <p class="center"><tt>addFragment(int, Class&lt;? extends Fragment&gt;, Bundle):Builder</tt></p>
+		
+		<p>For configuring the dialog's title and message, methods, which are similar to those of the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> are provided by the builder <a href="javadoc/de/mrapp/android/dialog/WizardDialog.Builder.html" target="_blank" class="code">WizardDialog.Builder</a>. Besides those methods the following ones allow to change the properties of a <a href="javadoc/de/mrapp/android/dialog/WizardDialog.html" target="_blank" class="code">WizardDialog</a>.</p>
+		
+		<table>
+                    <tr>
+                        <th>Setter methods</th>
+                        <th>Explaination</th>
+                        <th>Default value</th>
+			<th>Restrictions</th>
+                    </tr>
+                    <tr>
+                        <td><tt>setTabPosition(TabPosition):Builder</tt></td>
+                        <td>Sets the position of the dialog's tabs.</td>
+                        <td><center><tt>TabPosition.PREFER_HEADER</center></td>
+			<td><center>The position may not be null.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>enableTabLayout(boolean):Builder</tt></td>
+                        <td>Sets, whether the dialog's tabs should be clickable, or not.</td>
+                        <td><center><tt>false</tt></center></td>
+			<td><center>none</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>showTabLayout(boolean):Builder</tt></td>
+                        <td>Sets, whether the dialog's tabs should be shown, or not.</td>
+                        <td><center><tt>true</tt></center></td>
+			<td><center>none</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setTabIndicatorHeight(int):Builder</tt></td>
+                        <td>Sets the height of the indicator, which indicates the currently shown fragment.</td>
+                        <td><center><tt>2dp</tt></center></td>
+			<td><center>The height must be at least 1.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setTabIndicatorColor(int):Builder</tt></td>
+                        <td>Sets the color of the indicator, which indicates the currently shown fragment.</td>
+                        <td><center><tt>R.attr.colorAccent</tt></center></td>
+			<td><center>Must be a valid color, not a resource ID.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setTabTextColor(int):Builder</tt></td>
+                        <td>Sets the text color of the dialog's tabs.</td>
+                        <td><center><tt>android.R.attr.textColorSecondary</tt></center></td>
+			<td><center>Must be a valid color, not a resource ID.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setTabSelectedTextColor(int):Builder</tt></td>
+                        <td>Sets the selected text color of the dialog's tabs.</td>
+                        <td><center><tt>android.R.attr.textColorSecondary</tt></center></td>
+			<td><center>Must be a valid color, not a resource ID.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>enableSwipe(boolean):Builder</tt></td>
+                        <td>Sets, whether switching between fragments should be possible by using swipe gestures, or not.</td>
+                        <td><center><tt>true</tt></center></td>
+			<td><center>none</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>showButtonBar(boolean):Builder</tt></td>
+                        <td>Sets, whether the dialog's buttons should be shown, or not.</td>
+                        <td><center><tt>true</tt></center></td>
+			<td><center>none</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setBackButtonText(CharSequence):Builder</br>setBackButtonText(int):Builder</tt></td>
+                        <td>Sets the text of the back button.</td>
+                        <td><center><tt>R.string.back_button_text</tt></center></td>
+			<td><center>Must neither be null, nor empty. When specified as a resource ID, the ID must correspond to a valid string resource.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setNextButtonText(CharSequence):Builder</br>setNextButtonText(int):Builder</tt></td>
+                        <td>Sets the text of the next button.</td>
+                        <td><center><tt>R.string.next_button_text</tt></center></td>
+			<td><center>Must neither be null, nor empty. When specified as a resource ID, the ID must correspond to a valid string resource.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setFinishButtonText(CharSequence):Builder</br>setFinishButtonText(int):Builder</tt></td>
+                        <td>Sets the text of the finish button.</td>
+                        <td><center><tt>R.string.finish_button_text</tt></center></td>
+			<td><center>Must neither be null, nor empty. When specified as a resource ID, the ID must correspond to a valid string resource.</center></td>
+                    </tr>
+		</table>
+		
+		<p>As an alternative to using the setter methods shown above, theme attributes, which are shown in the table below, can be used to change the appearance of the dialog.</p>
+
+		<table>
+                    <tr>
+                        <th>Theme attribute</th>
+                        <th>Explaination</th>
+                        <th>Format</th>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogTabPosition</tt></td>
+                        <td>Specifies the position of the dialogs' tabs.</td>
+                        <td><center><tt>enum</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogEnableTabLayout</tt></td>
+                        <td>Specifies, whether the dialog's tabs should be clickable, or not.</td>
+                        <td><center><tt>boolean</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogShowTabLayout</tt></td>
+                        <td>Specifies, whether the dialog's tabs should be shown, or not.</td>
+                        <td><center><tt>boolean</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogTabIndicatorHeight</tt></td>
+                        <td>Specifies the height of the indicator, which indicates the currently shown fragment.</td>
+                        <td><center><tt>dimension</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogTabIndicatorColor</tt></td>
+                        <td>Specifies the color of the indicator, which indicates the currently shown fragment.</td>
+                        <td><center><tt>color</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogTabTextColor</tt></td>
+                        <td>Specifies the text color of the dialog's tabs.</td>
+                        <td><center><tt>color</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogTabSelectedTextColor</tt></td>
+                        <td>Specifies the selected text color of the dialog's tabs.</td>
+                        <td><center><tt>color</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogEnableSwipe</tt></td>
+                        <td>Specifies, whether switching between the dialog's fragments is possible by using swipe gestures, or not.</td>
+                        <td><center><tt>boolean</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogShowButtonBar</tt></td>
+                        <td>Specifies, whether the dialog's buttons should be shown, or not.</td>
+                        <td><center><tt>boolean</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogBackButtonText</tt></td>
+                        <td>Specifies the text of the back button.</td>
+                        <td><center><tt>string</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogNextButtonText</tt></td>
+                        <td>Specifies the text of the next button.</td>
+                        <td><center><tt>string</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogFinishButtonText</tt></td>
+                        <td>Specifies the text of the finish button.</td>
+                        <td><center><tt>string</tt></center></td>
+                    </tr>
+		</table>
+		
                 <h4>External references:</h4>
                 <div class="reference"><a name="reference1" class="reference">[1]</a><a href="http://developer.android.com/reference/android/app/AlertDialog.Builder.html" target="_blank">http://developer.android.com/reference/android/app/AlertDialog.Builder.html</a> &#150; Class AlterDialog.Builder</div>
 
@@ -252,8 +560,10 @@
                 <div class="reference"><a name="reference8" class="reference">[8]</a><a href="http://developer.android.com/reference/android/widget/ListView.html" target="_blank">http://developer.android.com/reference/android/widget/ListView.html</a> &#150; Class ListView</div>
 
                 <div class="reference"><a name="reference9" class="reference">[9]</a><a href="http://developer.android.com/reference/android/widget/TextView.html" target="_blank">http://developer.android.com/reference/android/widget/TextView.html</a> &#150; Class ImageView</div>
+                
+                <div class="reference"><a name="reference10" class="reference">[10]</a><a href="https://developer.android.com/reference/android/os/Bundle.html" target="_blank">https://developer.android.com/reference/android/os/Bundle.html</a> &#150; Class Bundle</div>
 
-                <div class="reference"><a name="reference10" class="reference">[10]</a><a href="http://www.google.com/design/spec/material-design/introduction.html" target="_blank">http://www.google.com/design/spec/material-design/introduction.html</a> &#150; Material Design guidelines</div>
+                <div class="reference"><a name="reference11" class="reference">[11]</a><a href="http://www.google.com/design/spec/material-design/introduction.html" target="_blank">http://www.google.com/design/spec/material-design/introduction.html</a> &#150; Material Design guidelines</div>
             </div>
 
             <div class="copyright">
