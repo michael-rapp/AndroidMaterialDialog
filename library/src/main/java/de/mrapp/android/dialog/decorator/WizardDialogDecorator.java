@@ -46,6 +46,7 @@ import de.mrapp.android.dialog.model.HeaderDialog;
 import de.mrapp.android.dialog.view.ViewPager;
 import de.mrapp.android.util.datastructure.Triple;
 
+import static de.mrapp.android.util.Condition.ensureAtLeast;
 import static de.mrapp.android.util.Condition.ensureNotEmpty;
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -686,6 +687,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
 
     @Override
     public final void setTabIndicatorHeight(final int height) {
+        ensureAtLeast(height, 1, "The height must be at least 1");
         this.tabIndicatorHeight = height;
         adaptTabIndicatorHeight();
     }
