@@ -2,7 +2,7 @@
 
 "AndroidMaterialDialog" is an Android-library, which provides a builder, which allows to create dialogs, which are designed according to Android 5's Material Design guidelines even on pre-Lollipop devices.
 
-![](doc/images/example.png)
+![](doc/images/example1.png)
 
 ![](doc/images/example2.png)
 
