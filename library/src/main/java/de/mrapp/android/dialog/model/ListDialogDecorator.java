@@ -168,6 +168,9 @@ public interface ListDialogDecorator extends Dialog {
      * @param adapter
      *         The adapter, which should be set, as an instance of the type {@link ListAdapter}. The
      *         adapter may not be null
+     * @param checkedItem
+     *         The index of the item, which should be selected by default, as an {@link Integer}
+     *         value or -1, if no item should be selected by default
      * @param listener
      *         The listener, which should be notified, when an item is clicked, as an instance of
      *         the type {@link DialogInterface.OnClickListener} or null, if no listener should be
