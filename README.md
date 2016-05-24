@@ -40,17 +40,26 @@ Before version 2.0.0 this project was hosted on [Sourceforge](https://sourceforg
 
 ### Creating a theme for the dialogs
 
-This library comes with a built-in dark and light theme for the dialogs it provides. By default the dark theme is used. It can be referenced by using the resource id `@style/MaterialDialog` (or the id `R.style.MaterialDialog` when referencing it in Java code). The light theme can be referenced using the resource id `@style/MaterialDialog.Light` or `R.style.MaterialDialog_Light` respectively. In order to use one of the predefined themes when creating a dialog, the id of the theme has to be passed to the constructor of the builder `MaterialDialog.Builder` (or another builder provided by the library) like shown in the examples below.
+This library comes with a built-in dark and light theme for the dialogs it provides. By default the light theme is used. It can be referenced by using the resource id `@style/MaterialDialog.Light` (or the id `R.style.MaterialDialog_Light` when referencing it in Java code). The dark theme can be referenced by using the resource id `@style/MaterialDialog` or `R.style.MaterialDialog` respectively. In order to use one of the predefined themes when creating a dialog, the id of the theme has to be passed to the constructor of the builder `MaterialDialog.Builder` (or another builder provided by the library) like shown in the examples below. In order to globally overwrite the theme, which should be used by all of the library's builders, the theme attribute `materialDialogTheme` can be specified in the app's theme.
 
-However, it might be useful to extend the predefined themes in order to overwrite some theme attributes. One common use-case is to overwrite the theme attribute `colorAccent`, which specifies the default text color of a dialog's buttons. In such case a new style resource, which extends one of the built-in themes, must be added to your app's `res/values/styles.xml` file. Such a style may look like follows:
+In addition, it might be useful to extend the predefined themes in order to overwrite some theme attributes. One common use-case is to overwrite the theme attribute `colorAccent`, which specifies the default text color of a dialog's buttons. In such case a new style resource, which extends one of the built-in themes, must be added to your app's `res/values/styles.xml` file. The following example illustrates how such a style can be defined and can be set as the default theme for all of the library's builders:
 
 ```xml
-<style name="CustomLightTheme" parent="@style/MaterialDialog.Light">
-    <item name="colorAccent">@color/color_accent</item>
-</style>
-```
+<resources>
 
-Once a custom style has been created, its resource id can be passed to the constructor of the builder, which is used to create dialog instances, in order to use it.
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="materialDialogTheme">@style/CustomLightTheme</item>
+    </style>
+
+    <style name="CustomLightTheme" parent="@style/MaterialDialog.Light">
+        <item name="colorAccent">@color/color_accent</item>
+    </style>
+
+</resources>
+```
 
 ### Creating a typical alert dialog
 
