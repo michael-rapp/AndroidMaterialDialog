@@ -97,12 +97,12 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     /**
      * The color of the title of the dialog.
      */
-    private int titleColor = -1;
+    private int titleColor;
 
     /**
      * The color of the message of the dialog.
      */
-    private int messageColor = -1;
+    private int messageColor;
 
     /**
      * The background of the dialog.
@@ -264,7 +264,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * Adapts the color of the dialog's title.
      */
     private void adaptTitleColor() {
-        if (titleTextView != null && titleColor != -1) {
+        if (titleTextView != null) {
             titleTextView.setTextColor(titleColor);
         }
     }
@@ -323,7 +323,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * Adapts the color of the dialog's message.
      */
     private void adaptMessageColor() {
-        if (messageTextView != null && messageColor != -1) {
+        if (messageTextView != null) {
             messageTextView.setTextColor(messageColor);
         }
     }
@@ -461,7 +461,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void setBackgroundColor(@ColorInt final int color) {
-        setBackground(color != -1 ? new ColorDrawable(color) : null);
+        setBackground(new ColorDrawable(color));
     }
 
     @Override

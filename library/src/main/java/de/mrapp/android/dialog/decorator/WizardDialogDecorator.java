@@ -160,7 +160,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
     /**
      * The color of the button texts of the dialog.
      */
-    private int buttonTextColor = -1;
+    private int buttonTextColor;
 
     /**
      * The text of the back button of the dialog.
@@ -319,18 +319,16 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
      * Adapts the text color of the dialog's buttons.
      */
     private void adaptButtonTextColor() {
-        if (buttonTextColor != -1) {
-            if (backButton != null) {
-                backButton.setTextColor(buttonTextColor);
-            }
+        if (backButton != null) {
+            backButton.setTextColor(buttonTextColor);
+        }
 
-            if (nextButton != null) {
-                nextButton.setTextColor(buttonTextColor);
-            }
+        if (nextButton != null) {
+            nextButton.setTextColor(buttonTextColor);
+        }
 
-            if (finishButton != null) {
-                finishButton.setTextColor(buttonTextColor);
-            }
+        if (finishButton != null) {
+            finishButton.setTextColor(buttonTextColor);
         }
     }
 

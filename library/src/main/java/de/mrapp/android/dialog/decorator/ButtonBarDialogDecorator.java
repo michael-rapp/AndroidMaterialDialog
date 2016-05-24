@@ -69,7 +69,7 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     /**
      * The color of the button texts of the dialog.
      */
-    private int buttonTextColor = -1;
+    private int buttonTextColor;
 
     /**
      * True, if the buttons of the dialog are aligned vertically, false otherwise.
@@ -159,18 +159,16 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
      * Adapts the text color of the dialog's buttons.
      */
     private void adaptButtonTextColor() {
-        if (buttonTextColor != -1) {
-            if (positiveButton != null) {
-                positiveButton.setTextColor(buttonTextColor);
-            }
+        if (positiveButton != null) {
+            positiveButton.setTextColor(buttonTextColor);
+        }
 
-            if (neutralButton != null) {
-                neutralButton.setTextColor(buttonTextColor);
-            }
+        if (neutralButton != null) {
+            neutralButton.setTextColor(buttonTextColor);
+        }
 
-            if (negativeButton != null) {
-                negativeButton.setTextColor(buttonTextColor);
-            }
+        if (negativeButton != null) {
+            negativeButton.setTextColor(buttonTextColor);
         }
     }
 
