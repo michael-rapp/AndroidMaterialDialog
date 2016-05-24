@@ -13,9 +13,7 @@
  */
 package de.mrapp.android.dialog.decorator;
 
-import android.annotation.TargetApi;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.support.annotation.ArrayRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -52,12 +50,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     /**
      * The color of the list items of the dialog.
      */
-    private int itemColor = -1;
-
-    /**
-     * The control color of the list items of the dialog.
-     */
-    private int itemControlColor = -1;
+    private int itemColor;
 
     /**
      * The adapter, which is used to manage the list items of the dialog.
@@ -162,17 +155,6 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     }
 
     /**
-     * Adapts the control color of the dialog's list items.
-     */
-    private void adaptItemControlColor() {
-        ListAdapter listAdapter = getListAdapter();
-
-        if (listAdapter instanceof ArrayAdapter<?>) {
-            ((ArrayAdapter<?>) listAdapter).setItemControlColor(itemControlColor);
-        }
-    }
-
-    /**
      * Creates a new decorator, which allows to modify the view hierarchy of a dialog, which is
      * designed according to Android 5's Material Design guidelines even on pre-Lollipop devices and
      * may contain list items.
@@ -204,18 +186,6 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     public final void setItemColor(@ColorInt final int color) {
         itemColor = color;
         adaptItemColor();
-    }
-
-    @Override
-    public final int getItemControlColor() {
-        return itemControlColor;
-    }
-
-    @Override
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public final void setItemControlColor(@ColorInt final int color) {
-        itemControlColor = color;
-        adaptItemControlColor();
     }
 
     @Override
@@ -315,7 +285,6 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     protected final void onAttach(@NonNull final View view) {
         inflateListView();
         adaptItemColor();
-        adaptItemControlColor();
     }
 
     @Override

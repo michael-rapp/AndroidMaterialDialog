@@ -13,9 +13,7 @@
  */
 package de.mrapp.android.dialog.model;
 
-import android.annotation.TargetApi;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.support.annotation.ArrayRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -64,22 +62,6 @@ public interface ListDialogDecorator extends Dialog {
      *         The color, which should be set, as an {@link Integer} value
      */
     void setItemColor(@ColorInt int color);
-
-    /**
-     * Returns the control color of the list items of the dialog.
-     *
-     * @return The color of the list items of the dialog as an {@link Integer} value
-     */
-    int getItemControlColor();
-
-    /**
-     * Sets the control color of the list items of the dialog.
-     *
-     * @param color
-     *         The control color, which should be set, as an {@link Integer} value
-     */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    void setItemControlColor(@ColorInt int color);
 
     /**
      * Sets the items, which should be shown by the dialog.

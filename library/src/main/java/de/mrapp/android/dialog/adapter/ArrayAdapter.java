@@ -13,17 +13,11 @@
  */
 package de.mrapp.android.dialog.adapter;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.ColorFilter;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffColorFilter;
-import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -52,11 +46,6 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
     private int itemColor;
 
     /**
-     * The control color of the adapter's items.
-     */
-    private int itemControlColor;
-
-    /**
      * Creates a new array adapter.
      *
      * @param context
@@ -70,7 +59,6 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
         super(context, resourceId);
         this.textViewResourceId = -1;
         this.itemColor = -1;
-        this.itemControlColor = -1;
     }
 
     /**
@@ -91,7 +79,6 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
         super(context, resourceId, textViewResourceId);
         this.textViewResourceId = textViewResourceId;
         this.itemColor = -1;
-        this.itemControlColor = -1;
     }
 
     /**
@@ -112,7 +99,6 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
         super(context, resourceId, items);
         this.textViewResourceId = -1;
         this.itemColor = -1;
-        this.itemControlColor = -1;
     }
 
     /**
@@ -136,7 +122,6 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
         super(context, resourceId, textViewResourceId, items);
         this.textViewResourceId = textViewResourceId;
         this.itemColor = -1;
-        this.itemControlColor = -1;
     }
 
     /**
@@ -157,7 +142,6 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
         super(context, resourceId, items);
         this.textViewResourceId = -1;
         this.itemColor = -1;
-        this.itemControlColor = -1;
     }
 
     /**
@@ -181,7 +165,6 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
         super(context, resourceId, textViewResourceId, items);
         this.textViewResourceId = textViewResourceId;
         this.itemColor = -1;
-        this.itemControlColor = -1;
     }
 
     /**
@@ -206,29 +189,6 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
         notifyDataSetChanged();
     }
 
-    /**
-     * Returns the control color of the adapter's items.
-     *
-     * @return The control color of the adapter's items as an {@link Integer} value or -1, if no
-     * custom color has been set
-     */
-    public final int getItemControlColor() {
-        return itemControlColor;
-    }
-
-    /**
-     * Sets the control color of the adapter's items.
-     *
-     * @param color
-     *         The control color, which should be set, as an {@link Integer} value or -1, if no
-     *         custom color should be set
-     */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public final void setItemControlColor(@ColorInt final int color) {
-        this.itemControlColor = color;
-        notifyDataSetChanged();
-    }
-
     @Override
     public final View getView(final int position, final View convertView, final ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
@@ -237,7 +197,7 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
         view.setPadding(horizontalPadding, view.getPaddingTop(), horizontalPadding,
                 view.getPaddingBottom());
 
-        if (getItemColor() != -1 || getItemControlColor() != -1) {
+        if (getItemColor() != -1) {
             TextView textView = null;
 
             if (textViewResourceId != -1) {
@@ -253,17 +213,7 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
             }
 
             if (textView != null) {
-                if (getItemColor() != -1) {
-                    textView.setTextColor(getItemColor());
-                }
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN &&
-                        getItemControlColor() != -1 && textView instanceof CheckedTextView) {
-                    CheckedTextView checkedTextView = (CheckedTextView) textView;
-                    ColorFilter colorFilter =
-                            new PorterDuffColorFilter(getItemControlColor(), Mode.SRC_IN);
-                    checkedTextView.getCheckMarkDrawable().setColorFilter(colorFilter);
-                }
+                textView.setTextColor(getItemColor());
             }
         }
 

@@ -13,9 +13,7 @@
  */
 package de.mrapp.android.dialog;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.support.annotation.ArrayRes;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
@@ -79,17 +77,6 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     @Override
     public final void setItemColor(@ColorInt final int color) {
         decorator.setItemColor(color);
-    }
-
-    @Override
-    public final int getItemControlColor() {
-        return decorator.getItemControlColor();
-    }
-
-    @Override
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public final void setItemControlColor(@ColorInt final int color) {
-        decorator.setItemControlColor(color);
     }
 
     @Override

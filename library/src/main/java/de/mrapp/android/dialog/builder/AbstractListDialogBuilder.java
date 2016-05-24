@@ -13,11 +13,9 @@
  */
 package de.mrapp.android.dialog.builder;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
-import android.os.Build;
 import android.support.annotation.ArrayRes;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
@@ -57,20 +55,6 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
         int defaultColor = ThemeUtil
                 .getColor(getContext(), themeResourceId, android.R.attr.textColorSecondary);
         setItemColor(typedArray.getColor(0, defaultColor));
-    }
-
-    /**
-     * Obtains the item control color from a specific theme.
-     *
-     * @param themeResourceId
-     *         The resource id of the theme, the item control color should be obtained from, as an
-     *         {@link Integer} value
-     */
-    private void obtainItemControlColor(@StyleRes final int themeResourceId) {
-        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
-                new int[]{R.attr.materialDialogItemControlColor});
-        int defaultColor = ThemeUtil.getColor(getContext(), themeResourceId, R.attr.colorAccent);
-        setItemControlColor(typedArray.getColor(0, defaultColor));
     }
 
     /**
@@ -114,21 +98,6 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      */
     public final BuilderType setItemColor(@ColorInt final int color) {
         getDialog().setItemColor(color);
-        return self();
-    }
-
-    /**
-     * Sets the control color of the list items of the dialog, which is created by the builder.
-     *
-     * @param color
-     *         The color, which should be set, as an {@link Integer} value or -1, if no custom color
-     *         should be set
-     * @return The builder, the method has been called upon, as an instance of the generic type
-     * BuilderType
-     */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public final BuilderType setItemControlColor(@ColorInt final int color) {
-        getDialog().setItemControlColor(color);
         return self();
     }
 
@@ -333,7 +302,6 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     protected void obtainStyledAttributes(@StyleRes final int themeResourceId) {
         super.obtainStyledAttributes(themeResourceId);
         obtainItemColor(themeResourceId);
-        obtainItemControlColor(themeResourceId);
     }
 
 }

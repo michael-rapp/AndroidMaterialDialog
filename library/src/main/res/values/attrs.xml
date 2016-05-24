@@ -20,7 +20,6 @@ License.
     <attr name="materialDialogShowButtonBarDivider" format="boolean"/>
     <attr name="materialDialogButtonBarDividerColor" format="color"/>
     <attr name="materialDialogItemColor" format="color"/>
-    <attr name="materialDialogItemControlColor" format="color"/>
     <attr name="materialDialogMessageColor" format="color"/>
     <attr name="materialDialogTitleColor" format="color"/>
     <attr name="materialDialogShowContentDivider" format="boolean"/>
