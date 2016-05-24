@@ -18,10 +18,4 @@ License.
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/dialog_button_bar_margin_bottom"
-    android:layout_marginEnd="@dimen/dialog_button_bar_margin_right"
-    android:layout_marginLeft="@dimen/dialog_button_bar_margin_left"
-    android:layout_marginRight="@dimen/dialog_button_bar_margin_right"
-    android:layout_marginStart="@dimen/dialog_button_bar_margin_left"
-    android:minHeight="@dimen/dialog_button_bar_min_height"
     android:visibility="gone"/>
