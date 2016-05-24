@@ -28,6 +28,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import de.mrapp.android.dialog.R;
+
 /**
  * An adapter, which is extended from the class {@link android.widget.ArrayAdapter} in order to be
  * able to customize the text and control color of the adapter's items.
@@ -230,6 +232,10 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
     @Override
     public final View getView(final int position, final View convertView, final ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
+        int horizontalPadding = getContext().getResources()
+                .getDimensionPixelSize(R.dimen.dialog_horizontal_padding);
+        view.setPadding(horizontalPadding, view.getPaddingTop(), horizontalPadding,
+                view.getPaddingBottom());
 
         if (getItemColor() != -1 || getItemControlColor() != -1) {
             TextView textView = null;

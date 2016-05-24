@@ -31,7 +31,7 @@ License.
         android:id="@+id/progress_bar"
         android:layout_width="@dimen/circular_progress_bar_size_normal"
         android:layout_height="@dimen/circular_progress_bar_size_normal"
-        android:layout_marginLeft="@dimen/dialog_content_padding_left"
-        android:layout_marginStart="@dimen/dialog_content_padding_left"/>
+        android:layout_marginLeft="@dimen/dialog_progress_bar_margin"
+        android:layout_marginStart="@dimen/dialog_progress_bar_margin"/>
 
 </LinearLayout>

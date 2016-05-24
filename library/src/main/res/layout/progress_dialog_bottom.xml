@@ -30,6 +30,6 @@ License.
         android:id="@+id/progress_bar"
         android:layout_width="@dimen/circular_progress_bar_size_normal"
         android:layout_height="@dimen/circular_progress_bar_size_normal"
-        android:layout_marginTop="@dimen/dialog_content_padding_top"/>
+        android:layout_marginTop="@dimen/dialog_progress_bar_margin"/>
 
 </LinearLayout>

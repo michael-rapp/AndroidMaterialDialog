@@ -28,7 +28,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import de.mrapp.android.dialog.R;
@@ -299,7 +298,6 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             messageTextView.setVisibility(!TextUtils.isEmpty(message) ? View.VISIBLE : View.GONE);
         }
 
-        adaptTitleContainerMargin();
         adaptMessageContainerVisibility();
     }
 
@@ -341,49 +339,10 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * content.
      */
     private void adaptContentContainerVisibility() {
-
         if (customView != null || customViewId != -1) {
             contentContainer.setVisibility(View.VISIBLE);
         } else {
             contentContainer.setVisibility(View.GONE);
-        }
-
-        adaptTitleContainerMargin();
-        adaptMessageContainerMargin();
-    }
-
-    /**
-     * Adapts the margin of the parent view of the view, which is used to show the dialog's title.
-     */
-    private void adaptTitleContainerMargin() {
-        if (titleContainer != null) {
-            LinearLayout.LayoutParams titleLayoutParams =
-                    (LinearLayout.LayoutParams) titleContainer.getLayoutParams();
-
-            if (customView != null || customViewId != -1 || !TextUtils.isEmpty(message)) {
-                titleLayoutParams.bottomMargin = getContext().getResources()
-                        .getDimensionPixelSize(R.dimen.dialog_content_spacing);
-            } else {
-                titleLayoutParams.bottomMargin = 0;
-            }
-        }
-    }
-
-    /**
-     * Adapts the margin of the parent view of the view, which is used to show the dialog's
-     * message.
-     */
-    private void adaptMessageContainerMargin() {
-        if (messageContainer != null) {
-            LinearLayout.LayoutParams messageLayoutParams =
-                    (LinearLayout.LayoutParams) messageContainer.getLayoutParams();
-
-            if (customView != null || customViewId != -1) {
-                messageLayoutParams.bottomMargin = getContext().getResources()
-                        .getDimensionPixelSize(R.dimen.dialog_content_spacing);
-            } else {
-                messageLayoutParams.bottomMargin = 0;
-            }
         }
     }
 
