@@ -19,4 +19,6 @@ License.
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:paddingLeft="@dimen/dialog_horizontal_padding"
+    android:paddingRight="@dimen/dialog_horizontal_padding"
     android:textAppearance="?android:attr/textAppearanceMedium"/>
