@@ -38,12 +38,26 @@ Before version 2.0.0 this project was hosted on [Sourceforge](https://sourceforg
 
 ## Examples
 
+### Creating a theme for the dialogs
+
+This library comes with a built-in dark and light theme for the dialogs it provides. By default the dark theme is used. It can be referenced by using the resource id `@style/MaterialDialog` (or the id `R.style.MaterialDialog` when referencing it in Java code). The light theme can be referenced using the resource id `@style/MaterialDialog.Light` or `R.style.MaterialDialog_Light` respectively. In order to use one of the predefined themes when creating a dialog, the id of the theme has to be passed to the constructor of the builder `MaterialDialog.Builder` (or another builder provided by the library) like shown in the examples below.
+
+However, it might be useful to extend the predefined themes in order to overwrite some theme attributes. One common use-case is to overwrite the theme attribute `colorAccent`, which specifies the default text color of a dialog's buttons. In such case a new style resource, which extends one of the built-in themes, must be added to your app's `res/values/styles.xml` file. Such a style may look like follows:
+
+```xml
+<style name="CustomLightTheme" parent="@style/MaterialDialog.Light">
+    <item name="colorAccent">@color/color_accent</item>
+</style>
+```
+
+Once a custom style has been created, its resource id can be passed to the constructor of the builder, which is used to create dialog instances, in order to use it.
+
 ### Creating a typical alert dialog
 
 The code below shows how to create and show an alert dialog by using the library's `MaterialDialog.Builder`. The dialog contains a title and message and can be closed by the user by either using a "OK" button or a "Cancel" button. The `this` parameter, which is passed to the builder's constructor in the example below, must be a `Context`, e.g. an `Activity`. The `null` parameters, which are passed to the `setPositiveButton`- and `setNegativeButton`-methods can be replaced by instances of the type `DialogInterface.OnClickListener` in order to execute some code when the user closes the dialog by clicking the corresponding button. As the methods of the class `MaterialDialog.Builder`, which is provided by this library, are nearly identical to the API of the Android SDK's class [`AlertDialog.Builder`](http://developer.android.com/reference/android/app/AlertDialog.Builder.html), the practices, which are described in [this](http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog) section of the Android developer guide, do also work together with this library.
 
 ```java
-MaterialDialog.Builder dialogBuilder = new MaterialDialog.Builder(this); 
+MaterialDialog.Builder dialogBuilder = new MaterialDialog.Builder(this, R.style.MaterialDialog_Light); 
 dialogBuilder.setTitle(R.string.dialog_title); 
 dialogBuilder.setMessage(R.string.dialog_message); 
 dialogBuilder.setTitle(R.string.dialog_title); 
@@ -68,7 +82,7 @@ dialogBuilder.setHeaderIcon(R.drawable.header_icon);
 The following source code shows how a progress dialog, which displays a circular progress bar, can be created. Such like a regular `MaterialDialog`, such a dialog can contain a title, a message and up to three buttons. By using the `setProgressBarPosition`-method, the position of the dialog's progress bar can be specified. Possible values are `LEFT`, `TOP`, `RIGHT` and `BOTTOM`, each specifying the position relative to the dialog's message.
 
 ```java
-ProgressDialog.Builder dialogBuilder = new ProgressDialog.Builder(this); 
+ProgressDialog.Builder dialogBuilder = new ProgressDialog.Builder(this, R.style.MaterialDialog_Light); 
 dialogBuilder.setTitle(R.string.dialog_title); 
 dialogBuilder.setMessage(R.string.dialog_message); 
 dialogBuilder.setPositiveButton(android.R.string.ok, null); 
@@ -83,7 +97,7 @@ dialog.show();
 A `WizardDialog` allows to show multiple fragments and provides a navigation to switch between them, either via tabs or via buttons at the bottom of the dialog. The source code below shows how such a dialog can be created. The tabs, which indicate the currently selected fragment, are shown in the dialog's header if possible. This behavior can be customized by using the `setTabPosition`-method. If the value `USE_HEADER` is passed to the method, the tabs are shown in the header, if the dialog does neither contain a title, nor a message. The default value `PREFER_HEADER` causes the tabs to be shown in the header regardless of any title or message are shown. And the value `NO_HEADER` prevents the tabs from being shown in the header at all.
 
 ```java
-WizardDialog.Builder dialogBuilder = new WizardDialog.Builder(this); 
+WizardDialog.Builder dialogBuilder = new WizardDialog.Builder(this, R.style.MaterialDialog_Light); 
 dialogBuilder.showHeader(true); 
 dialogBuilder.setHeaderBackground(R.drawable.header_background); 
 dialogBuilder.showButtonBar(android.R.string.ok, true); 
