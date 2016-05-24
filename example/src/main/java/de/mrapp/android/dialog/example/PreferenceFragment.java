@@ -345,7 +345,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
                 builder.enableTabLayout(false);
 
                 if (shouldButtonBarDividerBeShown()) {
-                    builder.showButtonBar(true);
+                    builder.showButtonBarDivider(true);
                 }
 
                 addFragment(builder, 1);

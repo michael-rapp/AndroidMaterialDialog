@@ -1059,7 +1059,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
 
     @Override
     public final void setButtonBarDividerColor(final int color) {
-        decorator.getButtonBarDividerColor();
+        decorator.setButtonBarDividerColor(color);
     }
 
     @Override
