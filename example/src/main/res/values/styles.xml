@@ -19,14 +19,14 @@ License.
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
-        <item name="android:alertDialogTheme">@style/LightDialogTheme</item>
+        <item name="materialDialogTheme">@style/LightDialogTheme</item>
     </style>
 
     <style name="DarkTheme" parent="@style/Theme.AppCompat">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
-        <item name="android:alertDialogTheme">@style/DarkDialogTheme</item>
+        <item name="materialDialogTheme">@style/DarkDialogTheme</item>
     </style>
 
     <style name="LightDialogTheme" parent="@style/MaterialDialog.Light">
