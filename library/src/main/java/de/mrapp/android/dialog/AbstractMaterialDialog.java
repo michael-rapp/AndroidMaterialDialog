@@ -238,6 +238,26 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     }
 
     @Override
+    public final boolean isContentDividerShown() {
+        return decorator.isContentDividerShown();
+    }
+
+    @Override
+    public final void showContentDivider(final boolean show) {
+        decorator.showContentDivider(show);
+    }
+
+    @Override
+    public final int getContentDividerColor() {
+        return decorator.getContentDividerColor();
+    }
+
+    @Override
+    public final void setContentDividerColor(@ColorInt final int color) {
+        decorator.setContentDividerColor(color);
+    }
+
+    @Override
     public final void onStart() {
         super.onStart();
         View view = inflateLayout();

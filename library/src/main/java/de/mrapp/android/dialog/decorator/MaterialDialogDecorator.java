@@ -75,6 +75,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     private ViewGroup contentContainer;
 
     /**
+     * The divider, which is located above the dialog's custom view.
+     */
+    private View contentDivider;
+
+    /**
      * The title of the dialog.
      */
     private CharSequence title;
@@ -133,6 +138,17 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * The resource id of the custom message view of the dialog.
      */
     private int customMessageViewId = -1;
+
+    /**
+     * True, if the divider, which is located above the dialog's custom view, is shown, false
+     * otherwise.
+     */
+    private boolean showContentDivider;
+
+    /**
+     * The color of the divider, which is located above the dialog's custom view.
+     */
+    private int contentDividerColor;
 
     /**
      * Inflates the view, which is used to show the dialog's title. The view may either be the
@@ -195,6 +211,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     private void inflateContentView() {
         if (getView() != null) {
             contentRootView = (ViewGroup) getView().findViewById(R.id.content_root);
+            contentDivider = getView().findViewById(R.id.content_divider);
             contentContainer = (ViewGroup) getView().findViewById(R.id.content_container);
             contentContainer.removeAllViews();
 
@@ -207,6 +224,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             }
 
             adaptContentContainerVisibility();
+            adaptContentDividerVisibility();
         }
     }
 
@@ -343,6 +361,28 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             contentContainer.setVisibility(View.VISIBLE);
         } else {
             contentContainer.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Adapts the color of the divider, which is shown above the dialog's custom view.
+     */
+    private void adaptContentDividerColor() {
+        if (contentDivider != null) {
+            contentDivider.setBackgroundColor(contentDividerColor);
+        }
+    }
+
+    /**
+     * Adapts the visibility of the divider, which is shown above the dialog's custom view.
+     */
+    private void adaptContentDividerVisibility() {
+        if (contentDivider != null) {
+            if (showContentDivider && (customView != null || customViewId != -1)) {
+                contentDivider.setVisibility(View.VISIBLE);
+            } else {
+                contentDivider.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -496,6 +536,28 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     @Override
     public final void setTitle(@StringRes final int resourceId) {
         setTitle(getContext().getText(resourceId));
+    }
+
+    @Override
+    public final boolean isContentDividerShown() {
+        return showContentDivider;
+    }
+
+    @Override
+    public final void showContentDivider(final boolean show) {
+        this.showContentDivider = show;
+        adaptContentDividerVisibility();
+    }
+
+    @Override
+    public final int getContentDividerColor() {
+        return contentDividerColor;
+    }
+
+    @Override
+    public final void setContentDividerColor(@ColorInt final int color) {
+        this.contentDividerColor = color;
+        adaptContentDividerColor();
     }
 
     @Override

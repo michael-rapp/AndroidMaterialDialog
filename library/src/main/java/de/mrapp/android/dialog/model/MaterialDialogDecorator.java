@@ -238,6 +238,41 @@ public interface MaterialDialogDecorator extends Dialog {
      *         The resource id of the title, which should be set, as an {@link Integer}. The
      *         resource id must correspond to a valid string resource
      */
-    void setTitle(@StringRes final int resourceId);
+    void setTitle(@StringRes int resourceId);
+
+    /**
+     * Returns, whether the divider, which is located above the dialog's custom view, is shown, or
+     * not.
+     *
+     * @return True, if the divider, which is located above the dialog's custom view, is shown,
+     * false otherwise
+     */
+    boolean isContentDividerShown();
+
+    /**
+     * Sets, whether the divider, which is located above the dialog's custom view, should be shown,
+     * or not.
+     *
+     * @param show
+     *         True, if the divider, which is located above the dialog's custom view, should be
+     *         shown, false otherwise
+     */
+    void showContentDivider(boolean show);
+
+    /**
+     * Returns the color of the divider, which is located above the dialog's custom view.
+     *
+     * @return The color of the divider, which is located above the dialog's custom view, as an
+     * {@link Integer} value
+     */
+    int getContentDividerColor();
+
+    /**
+     * Sets the color of the divider, which is located above the dialog's custom view.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    void setContentDividerColor(@ColorInt int color);
 
 }

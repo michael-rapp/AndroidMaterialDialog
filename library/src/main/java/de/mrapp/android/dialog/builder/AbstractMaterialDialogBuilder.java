@@ -26,6 +26,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import de.mrapp.android.dialog.R;
@@ -121,6 +122,36 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     }
 
     /**
+     * Obtains, whether the divider, which is located above the dialog's custom view, should be
+     * shown, or not, from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the visibility should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainShowContentDivider(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.materialDialogShowContentDivider});
+        showContentDivider(typedArray.getBoolean(0, false));
+    }
+
+    /**
+     * Obtains the color of the divider, which is located above the dialog's custom view, from a
+     * specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the divider color should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainContentDividerColor(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.materialDialogContentDividerColor});
+        int defaultColor =
+                ContextCompat.getColor(getContext(), R.color.content_divider_color_light);
+        setContentDividerColor(typedArray.getColor(0, defaultColor));
+    }
+
+    /**
      * Returns the builder itself, casted to the generic type BuilderType.
      *
      * @return The builder itself as an instance of the generic type BuilderType
@@ -152,6 +183,8 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         obtainBackground(themeResourceId);
         obtainMessageColor(themeResourceId);
         obtainTitleColor(themeResourceId);
+        obtainShowContentDivider(themeResourceId);
+        obtainContentDividerColor(themeResourceId);
     }
 
     /**
@@ -529,6 +562,35 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      */
     public final BuilderType setCustomMessage(@LayoutRes final int resourceId) {
         getDialog().setCustomMessage(resourceId);
+        return self();
+    }
+
+    /**
+     * Sets, whether the divider, which is located above the custom view of the dialog, which is
+     * created by the builder, should be shown, or not.
+     *
+     * @param show
+     *         True, if the divider, which is located above the dialog's custom view, should be
+     *         shown, false otherwise
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType showContentDivider(final boolean show) {
+        getDialog().showContentDivider(show);
+        return self();
+    }
+
+    /**
+     * Sets the color of the divider, which is located above the custom view of the dialog, which is
+     * created by the builder.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setContentDividerColor(@ColorInt final int color) {
+        getDialog().setContentDividerColor(color);
         return self();
     }
 
