@@ -295,6 +295,7 @@ public class ProgressDialog extends AbstractButtonBarDialog implements ProgressD
     protected ProgressDialog(@NonNull final Context context, @StyleRes final int themeResourceId) {
         super(context, themeResourceId);
         this.decorator = new de.mrapp.android.dialog.decorator.ProgressDialogDecorator(this);
+        setCancelable(false);
     }
 
     @Override
