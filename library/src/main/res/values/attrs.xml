@@ -15,6 +15,7 @@ License.
 -->
 <resources>
 
+    <attr name="materialDialogTheme" format="reference"/>
     <attr name="materialDialogBackground" format="color|reference"/>
     <attr name="materialDialogButtonTextColor" format="color"/>
     <attr name="materialDialogShowButtonBarDivider" format="boolean"/>

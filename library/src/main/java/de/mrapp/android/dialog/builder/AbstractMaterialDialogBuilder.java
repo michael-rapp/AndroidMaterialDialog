@@ -27,6 +27,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
 import android.view.View;
 
 import de.mrapp.android.dialog.R;
@@ -60,7 +61,10 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      *         Integer} value, or -1, if the default theme should be used
      */
     private void initialize(@NonNull final Context context, @StyleRes final int themeResourceId) {
-        int themeId = themeResourceId != -1 ? themeResourceId : R.style.MaterialDialog_Light;
+        TypedValue typedValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(R.attr.materialDialogTheme, typedValue, true);
+        int themeId = typedValue.resourceId;
+        themeId = themeId != 0 ? themeId : R.style.MaterialDialog_Light;
         dialog = onCreateDialog(context, themeId);
         obtainStyledAttributes(themeId);
     }
