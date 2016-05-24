@@ -94,8 +94,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder builder =
-                        new MaterialDialog.Builder(getActivity(), getThemeId());
+                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
                 configureHeaderDialogBuilder(builder);
                 configureButtonBarDialogBuilder(builder);
                 builder.show();
@@ -125,8 +124,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder builder =
-                        new MaterialDialog.Builder(getActivity(), getThemeId());
+                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
                 configureHeaderDialogBuilder(builder);
                 configureButtonBarDialogBuilder(builder);
                 builder.setItems(R.array.list_items, createSingleChoiceListener());
@@ -158,8 +156,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder builder =
-                        new MaterialDialog.Builder(getActivity(), getThemeId());
+                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
                 configureHeaderDialogBuilder(builder);
                 configureButtonBarDialogBuilder(builder);
                 builder.setSingleChoiceItems(R.array.list_items, 0, createSingleChoiceListener());
@@ -210,8 +207,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder builder =
-                        new MaterialDialog.Builder(getActivity(), getThemeId());
+                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
                 configureHeaderDialogBuilder(builder);
                 configureButtonBarDialogBuilder(builder);
                 builder.setMultiChoiceItems(R.array.list_items, new boolean[]{true, false, false},
@@ -273,8 +269,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder builder =
-                        new MaterialDialog.Builder(getActivity(), getThemeId());
+                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
                 configureHeaderDialogBuilder(builder);
                 configureButtonBarDialogBuilder(builder);
                 builder.setView(R.layout.custom_dialog_content);
@@ -307,8 +302,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                ProgressDialog.Builder builder =
-                        new ProgressDialog.Builder(getActivity(), getThemeId());
+                ProgressDialog.Builder builder = new ProgressDialog.Builder(getActivity());
                 configureHeaderDialogBuilder(builder);
                 configureButtonBarDialogBuilder(builder);
                 builder.show();
@@ -339,8 +333,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                WizardDialog.Builder builder =
-                        new WizardDialog.Builder(getActivity(), getThemeId());
+                WizardDialog.Builder builder = new WizardDialog.Builder(getActivity());
                 configureHeaderDialogBuilder(builder);
                 builder.enableTabLayout(false);
 
@@ -710,20 +703,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         boolean defaultValue =
                 getResources().getBoolean(R.bool.show_dialog_header_preference_default_value);
         return sharedPreferences.getBoolean(key, defaultValue);
-    }
-
-    /**
-     * Returns the resource id of the dialog theme, which should be used.
-     *
-     * @return The resource id of the dialog theme, which should be used
-     */
-    private int getThemeId() {
-        SharedPreferences sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String key = getString(R.string.theme_preference_key);
-        String defaultValue = getString(R.string.theme_preference_default_value);
-        return Integer.valueOf(sharedPreferences.getString(key, defaultValue)) == 0 ?
-                R.style.LightDialogTheme : R.style.DarkDialogTheme;
     }
 
     @Override
