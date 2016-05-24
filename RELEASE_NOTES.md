@@ -1,5 +1,14 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.4.0 (May 24th 2016)
+
+A feature release, which introduces the following changes:
+
+- The text style of a `MaterialDialog`'s title is now bold.
+- Revised the paddings and margins of a `MaterialDialog`'s views.
+- It is now possible to show a divider above a `MaterialDialog`'s custom view.
+- Removed the functionality to customize the control color of a `MaterialDialog`'s list items as it caused some problems.
+
 ## Version 3.3.0 (May 23th 2016)
 
 A feature release, which introduces the following changes:
