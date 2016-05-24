@@ -67,6 +67,10 @@ MaterialDialog dialog = dialogBuilder.create();
 dialog.show();
 ```
 
+The appearance of the dialog, which is created by the given sample code, is shown below:
+
+![](doc/images/example-alert-dialog.png)
+
 ### Showing a header
 
 All dialogs can contain a header, which shows a background image or color as well as an optional icon. The following code shows how a dialog can be configured to contain such a header once it has been instantiated like shown above. The resource IDs, which have to be passed as the parameters of the 'setHeaderBackground'- and 'setHeaderIcon'-methods, must correspond to valid drawable resources. Alternatively instances of the class [AlertDialog.Builder](http://developer.android.com/reference/android/app/AlertDialog.Builder.html) can be passed to the methods.
@@ -76,6 +80,10 @@ dialogBuilder.showHeader(true);
 dialogBuilder.setHeaderBackground(R.drawable.header_background); 
 dialogBuilder.setHeaderIcon(R.drawable.header_icon);
 ```
+
+The picture below shows a dialog, which contains a header with a background image and an icon:
+
+![](doc/images/example-header-dialog.png)
 
 ### Creating a progress dialog
 
@@ -92,22 +100,32 @@ ProgressDialog dialog = dialogBuilder.create();
 dialog.show();
 ```
 
+The screenshot below shows the appearance of a `ProgressDialog`, which has been created using the given sample code:
+
+![](doc/images/example-progress-dialog.png)
+
 ### Creating a wizard dialog
 
-A `WizardDialog` allows to show multiple fragments and provides a navigation to switch between them, either via tabs or via buttons at the bottom of the dialog. The source code below shows how such a dialog can be created. The tabs, which indicate the currently selected fragment, are shown in the dialog's header if possible. This behavior can be customized by using the `setTabPosition`-method. If the value `USE_HEADER` is passed to the method, the tabs are shown in the header, if the dialog does neither contain a title, nor a message. The default value `PREFER_HEADER` causes the tabs to be shown in the header regardless of any title or message are shown. And the value `NO_HEADER` prevents the tabs from being shown in the header at all.
+A `WizardDialog` allows to show multiple fragments and provides a navigation to switch between them, either via tabs or via buttons at the bottom of the dialog. The source code below shows how such a dialog can be created. The tabs, which indicate the currently selected fragment, are shown in the dialog's header if possible. This behavior can be customized by using the `setTabPosition`-method. If the value `USE_HEADER` is passed to the method, the tabs are shown in the header, if the dialog does neither contain a title, nor a message. The default value `PREFER_HEADER` causes the tabs to be shown in the header regardless of any title or message are shown. And the value `NO_HEADER` prevents the tabs from being shown in the header at all. By default, the tabs, which are shown by the dialog are not clickable and the currently shown fragment can only be changed using swipe gestures or the button bar. If the tabs should be clickable, the `enableTabLayout`-method has to be used. Furthermore, the detection of swipe gestures can be disabled using the `enableSwipe`-method and visibility of the dialog's button bar can be toggled using the `showButtonBar`-method. 
 
 ```java
 WizardDialog.Builder dialogBuilder = new WizardDialog.Builder(this, R.style.MaterialDialog_Light); 
 dialogBuilder.showHeader(true); 
 dialogBuilder.setHeaderBackground(R.drawable.header_background); 
-dialogBuilder.showButtonBar(android.R.string.ok, true); 
 dialogBuilder.addFragment(R.string.fragment1_title, Fragment1.class); 
 dialogBuilder.addFragment(R.string.fragment2_title, Fragment2.class); 
 dialogBuilder.addFragment(R.string.fragment3_title, Fragment3.class); 
-dialogBuilder.setTabPosition(TabPosition.PREFER_HEADER); 
+dialogBuilder.setTabPosition(TabPosition.PREFER_HEADER);
+dialogBuilder.enableTabLayout(true);
+dialogBuilder.enableSwipe(true);
+dialogBuilder.showButtonBar(true); 
 WizardDialog dialog = dialogBuilder.create(); 
 dialog.show();
 ```
+
+The following screenshot illustrates one possible appearance of a `WizardDialog`:
+
+![](doc/images/example-wizard-dialog.png)
 
 ## Contact information
 
