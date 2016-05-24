@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.4.2 (May 25th 2016)
+
+A minor release, which introduces the following changes:
+
+- Added the theme attribute `materialDialogTheme`, which allows to specify the default theme, which should be used by all of the library's builders. 
+
 ## Version 3.4.1 (May 24th 2016)
 
 A bugfix release, which fixes the following issues:
