@@ -117,15 +117,33 @@
 			<td><center>Must be a valid color, not a resource ID.</center></td>
                     </tr>
                     <tr>
-                        <td><tt>setItemControlColor(int):Builder</tt></td>
-                        <td>Sets the color of the dialog's item controls (e.g. checkboxes).</td>
-                        <td><center><tt>R.attr.colorAccent</tt></center></td>
-			<td><center>Must be a valid color, not a resource ID. Requires API level 16 or higher.</center></td>
-                    </tr>
-                    <tr>
                         <td><tt>setButtonTextColor(int):Builder</tt></td>
                         <td>Sets the text color of the dialog's buttons.</td>
                         <td><center><tt>R.attr.colorAccent</tt></center></td>
+			<td><center>Must be a valid color, not a resource ID.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>showButtonBarDivider(boolean):Builder</tt></td>
+                        <td>Sets, whether a divider above the dialog's buttons should be shown, or not.</td>
+                        <td><center><tt>false</tt></center></td>
+			<td><center>none</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setButtonBarDividerColor(int):Builder</tt></td>
+                        <td>Sets the color of the divider, which is located above the dialog's buttons.</td>
+                        <td><center><tt>false</tt></center></td>
+			<td><center>Must be a valid color, not a resource ID.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>showContentDivider(boolean):Builder</tt></td>
+                        <td>Sets, whether a divider above the dialog's custom view should be shown, or not.</td>
+                        <td><center><tt>false</tt></center></td>
+			<td><center>none</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setContentDividerColor(int):Builder</tt></td>
+                        <td>Sets the color of the divider, which is located above the dialog's custom view.</td>
+                        <td><center><tt>false</tt></center></td>
 			<td><center>Must be a valid color, not a resource ID.</center></td>
                     </tr>
                     <tr>
@@ -198,13 +216,28 @@
                         <td><center><tt>color</tt></center></td>
                     </tr>
                     <tr>
-                        <td><tt>materialDialogItemControlColor</tt></td>
-                        <td>Specifies the color of the dialogs' item controls (e.g. checkboxes).</td>
+                        <td><tt>materialDialogButtonTextColor</tt></td>
+                        <td>Specifies the text color of the dialogs' buttons.</td>
                         <td><center><tt>color</tt></center></td>
                     </tr>
                     <tr>
-                        <td><tt>materialDialogButtonTextColor</tt></td>
-                        <td>Specifies the text color of the dialogs' buttons.</td>
+                        <td><tt>materialDialogShowButtonBarDivider</tt></td>
+                        <td>Specifies, wether a divider above the dialog's buttons should be shown, or not.</td>
+                        <td><center><tt>boolean</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogButtonBarDividerColor</tt></td>
+                        <td>Specifies the color of the divider, which is located above the dialog's buttons.</td>
+                        <td><center><tt>color</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogShowContentDivider</tt></td>
+                        <td>Specifies, wether a divider above the dialog's custom view should be shown, or not.</td>
+                        <td><center><tt>boolean</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogContentDividerColor</tt></td>
+                        <td>Specifies the color of the divider, which is located above the dialog's custom view.</td>
                         <td><center><tt>color</tt></center></td>
                     </tr>
                     <tr>
