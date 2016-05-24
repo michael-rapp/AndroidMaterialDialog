@@ -143,8 +143,7 @@ public interface ButtonBarDialogDecorator extends Dialog {
     /**
      * Returns the color of the button texts of the dialog.
      *
-     * @return The color of the button texts of the dialog as an {@link Integer} value or -1, if no
-     * custom color has been set
+     * @return The color of the button texts of the dialog as an {@link Integer} value
      */
     int getButtonTextColor();
 

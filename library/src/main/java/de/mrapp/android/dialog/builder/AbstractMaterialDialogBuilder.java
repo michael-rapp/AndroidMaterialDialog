@@ -31,6 +31,7 @@ import android.view.View;
 
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.MaterialDialog;
+import de.mrapp.android.util.ThemeUtil;
 
 /**
  * An abstract base class for all builders, which allow to create and show dialogs, which are
@@ -97,11 +98,9 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     private void obtainMessageColor(@StyleRes final int themeResourceId) {
         TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                 new int[]{R.attr.materialDialogMessageColor});
-        int color = typedArray.getColor(0, -1);
-
-        if (color != -1) {
-            setMessageColor(color);
-        }
+        int defaultColor = ThemeUtil
+                .getColor(getContext(), themeResourceId, android.R.attr.textColorSecondary);
+        setMessageColor(typedArray.getColor(0, defaultColor));
     }
 
     /**
@@ -114,11 +113,9 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     private void obtainTitleColor(@StyleRes final int themeResourceId) {
         TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                 new int[]{R.attr.materialDialogTitleColor});
-        int color = typedArray.getColor(0, -1);
-
-        if (color != -1) {
-            setTitleColor(color);
-        }
+        int defaultColor =
+                ThemeUtil.getColor(getContext(), themeResourceId, android.R.attr.textColorPrimary);
+        setTitleColor(typedArray.getColor(0, defaultColor));
     }
 
     /**

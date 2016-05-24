@@ -29,6 +29,7 @@ import android.widget.ListAdapter;
 
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.ListDialog;
+import de.mrapp.android.util.ThemeUtil;
 
 /**
  * An abstract base class for all builders, which allow to create and show dialogs, which are
@@ -53,11 +54,9 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     private void obtainItemColor(@StyleRes final int themeResourceId) {
         TypedArray typedArray = getContext().getTheme()
                 .obtainStyledAttributes(themeResourceId, new int[]{R.attr.materialDialogItemColor});
-        int color = typedArray.getColor(0, -1);
-
-        if (color != -1) {
-            setItemColor(color);
-        }
+        int defaultColor = ThemeUtil
+                .getColor(getContext(), themeResourceId, android.R.attr.textColorSecondary);
+        setItemColor(typedArray.getColor(0, defaultColor));
     }
 
     /**
@@ -70,11 +69,8 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     private void obtainItemControlColor(@StyleRes final int themeResourceId) {
         TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                 new int[]{R.attr.materialDialogItemControlColor});
-        int color = typedArray.getColor(0, -1);
-
-        if (color != -1) {
-            setItemControlColor(color);
-        }
+        int defaultColor = ThemeUtil.getColor(getContext(), themeResourceId, R.attr.colorAccent);
+        setItemControlColor(typedArray.getColor(0, defaultColor));
     }
 
     /**

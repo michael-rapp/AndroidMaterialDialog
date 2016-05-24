@@ -53,8 +53,7 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Returns the color of the list items of the dialog.
      *
-     * @return The color of the list items of the dialog as an {@link Integer} value or -1, if no
-     * custom color has been set
+     * @return The color of the list items of the dialog as an {@link Integer} value
      */
     int getItemColor();
 
@@ -69,8 +68,7 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Returns the control color of the list items of the dialog.
      *
-     * @return The color of the list items of the dialog as an {@link Integer} value or -1, if no
-     * custom color has been set
+     * @return The color of the list items of the dialog as an {@link Integer} value
      */
     int getItemControlColor();
 
@@ -78,8 +76,7 @@ public interface ListDialogDecorator extends Dialog {
      * Sets the control color of the list items of the dialog.
      *
      * @param color
-     *         The control color, which should be set, as an {@link Integer} value or -1, if no list
-     *         items are shown or if the dialog has not been shown yet
+     *         The control color, which should be set, as an {@link Integer} value
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     void setItemControlColor(@ColorInt int color);

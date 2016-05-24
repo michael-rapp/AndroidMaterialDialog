@@ -70,8 +70,7 @@ public interface MaterialDialogDecorator extends Dialog {
     /**
      * Returns the color of the title of the dialog.
      *
-     * @return The color of the title of the dialog as an {@link Integer} value or -1, if no custom
-     * color has been set
+     * @return The color of the title of the dialog as an {@link Integer} value
      */
     int getTitleColor();
 
@@ -86,8 +85,7 @@ public interface MaterialDialogDecorator extends Dialog {
     /**
      * Returns the color of the message of the dialog.
      *
-     * @return The color of the message of the dialog as an {@link Integer} value or -1, if no
-     * custom color has been set
+     * @return The color of the message of the dialog as an {@link Integer} value
      */
     int getMessageColor();
 
@@ -103,7 +101,7 @@ public interface MaterialDialogDecorator extends Dialog {
      * Returns the background of the dialog.
      *
      * @return The background of the dialog as an instance of the class {@link Drawable} or null, if
-     * no custom background has been set
+     * no background has been set
      */
     Drawable getBackground();
 
@@ -112,7 +110,7 @@ public interface MaterialDialogDecorator extends Dialog {
      *
      * @param background
      *         The background, which should be set, as an instance of the class {@link Drawable} or
-     *         null, if no custom background should be set
+     *         null, if no background should be set
      */
     void setBackground(@Nullable Drawable background);
 
@@ -129,8 +127,7 @@ public interface MaterialDialogDecorator extends Dialog {
      * Sets the background color of the dialog.
      *
      * @param color
-     *         The background color, which should be set, as an {@link Integer} value or -1, if no
-     *         custom background color should be set
+     *         The background color, which should be set, as an {@link Integer} value
      */
     void setBackgroundColor(@ColorInt int color);
 
