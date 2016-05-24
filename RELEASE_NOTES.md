@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.4.1 (May 24th 2016)
+
+A bugfix release, which fixes the following issues:
+
+- When the value -1 is passed to a setter, which expects a color, the value is not ignored anymore.
+
 ## Version 3.4.0 (May 24th 2016)
 
 A feature release, which introduces the following changes:
