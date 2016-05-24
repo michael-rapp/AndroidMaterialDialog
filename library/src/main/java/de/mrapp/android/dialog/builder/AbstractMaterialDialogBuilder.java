@@ -62,7 +62,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      */
     private void initialize(@NonNull final Context context, @StyleRes final int themeResourceId) {
         TypedValue typedValue = new TypedValue();
-        getContext().getTheme().resolveAttribute(R.attr.materialDialogTheme, typedValue, true);
+        context.getTheme().resolveAttribute(R.attr.materialDialogTheme, typedValue, true);
         int themeId = typedValue.resourceId;
         themeId = themeId != 0 ? themeId : R.style.MaterialDialog_Light;
         dialog = onCreateDialog(context, themeId);
