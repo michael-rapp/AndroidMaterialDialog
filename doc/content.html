@@ -135,18 +135,6 @@
 			<td><center>Must be a valid color, not a resource ID.</center></td>
                     </tr>
                     <tr>
-                        <td><tt>showContentDivider(boolean):Builder</tt></td>
-                        <td>Sets, whether a divider above the dialog's custom view should be shown, or not.</td>
-                        <td><center><tt>false</tt></center></td>
-			<td><center>none</center></td>
-                    </tr>
-                    <tr>
-                        <td><tt>setContentDividerColor(int):Builder</tt></td>
-                        <td>Sets the color of the divider, which is located above the dialog's custom view.</td>
-                        <td><center><tt>false</tt></center></td>
-			<td><center>Must be a valid color, not a resource ID.</center></td>
-                    </tr>
-                    <tr>
                         <td><tt>setBackground(Drawable):Builder</br>setBackground(int):Builder</br>setBackgroundColor(int):Builder</tt></td>
                         <td>Sets the dialog's background.</td>
                         <td><center><tt>android.R.background</tt></center></td>
@@ -185,6 +173,12 @@
                     <tr>
                         <td><tt>showHeaderDivider(boolean):Builder</tt></td>
                         <td>Sets, whether the divider of the dialogs' headers should be shown, or not.</td>
+                        <td><center><tt>true</tt></center></td>
+			<td><center>none</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>showDividersOnScroll(boolean):Builder</tt></td>
+                        <td>Sets, whether the dividers above and below the dialog's list view should be shown, depending on the list view's scroll position, or not.</td>
                         <td><center><tt>true</tt></center></td>
 			<td><center>none</center></td>
                     </tr>
@@ -231,16 +225,6 @@
                         <td><center><tt>color</tt></center></td>
                     </tr>
                     <tr>
-                        <td><tt>materialDialogShowContentDivider</tt></td>
-                        <td>Specifies, wether a divider above the dialog's custom view should be shown, or not.</td>
-                        <td><center><tt>boolean</tt></center></td>
-                    </tr>
-                    <tr>
-                        <td><tt>materialDialogContentDividerColor</tt></td>
-                        <td>Specifies the color of the divider, which is located above the dialog's custom view.</td>
-                        <td><center><tt>color</tt></center></td>
-                    </tr>
-                    <tr>
                         <td><tt>materialDialogBackground</tt></td>
                         <td>Specifies the dialogs' background.</td>
                         <td><center><tt>color|reference</tt></center></td>
@@ -273,6 +257,11 @@
                     <tr>
                         <td><tt>materialDialogShowHeaderDivider</tt></td>
                         <td>Specifies, whether the divider of the dialogs' headers should be shown, or not.</td>
+                        <td><center><tt>boolean</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogShowDividersOnScroll</tt></td>
+                        <td>Specifies, whether dividers above and below the dialog's list view should be shown, depending on the list view's scroll position, or not.</td>
                         <td><center><tt>boolean</tt></center></td>
                     </tr>
 		</table>
