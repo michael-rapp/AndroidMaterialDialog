@@ -344,7 +344,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
                 addFragment(builder, 1);
                 addFragment(builder, 2);
                 addFragment(builder, 3);
-                builder.show(((AppCompatActivity) getActivity()).getSupportFragmentManager());
+                builder.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(), null);
                 return true;
             }
 
