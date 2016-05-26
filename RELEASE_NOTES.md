@@ -1,5 +1,13 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.5.0 (May 26th 2016)
+
+A feature release, which introduces the following changes:
+
+- It is now possible to show dividers above and below the list view of a `MaterialDialog`, depending on the list view's scroll position.
+- The functionality to show a divider above a `MaterialDialog`'s custom view is not publicly available anymore.
+- The size and paddings of a dialog's buttons have been adjusted.
+
 ## Version 3.4.2 (May 25th 2016)
 
 A minor release, which introduces the following changes:
