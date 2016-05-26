@@ -137,6 +137,16 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
         decorator.setOnItemSelectedListener(listener);
     }
 
+    @Override
+    public final boolean areDividersShownOnScroll() {
+        return decorator.areDividersShownOnScroll();
+    }
+
+    @Override
+    public final void showDividersOnScroll(final boolean show) {
+        decorator.showDividersOnScroll(show);
+    }
+
     @CallSuper
     @Override
     protected void onAttachDecorators(@NonNull final View view) {

@@ -19,6 +19,8 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -40,7 +42,7 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @since 3.2.0
  */
 public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog>
-        implements de.mrapp.android.dialog.model.ListDialogDecorator {
+        implements de.mrapp.android.dialog.model.ListDialogDecorator, OnScrollListener {
 
     /**
      * The list view, which is used to show the dialog's list items.
@@ -48,9 +50,25 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     private ListView listView;
 
     /**
+     * The divider, which is located above the dialog's custom view.
+     */
+    private View contentDivider;
+
+    /**
+     * The divider, which is located above the dialog's buttons.
+     */
+    private View buttonBarDivider;
+
+    /**
      * The color of the list items of the dialog.
      */
     private int itemColor;
+
+    /**
+     * True, if the dividers, which are located above and below the dialog's list view, are shown,
+     * when the list view is scrolled, false otherwise
+     */
+    private boolean showDividersOnScroll;
 
     /**
      * The adapter, which is used to manage the list items of the dialog.
@@ -102,6 +120,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
                     this.listView.setChoiceMode(listViewChoiceMode);
                     this.listView.setAdapter(listAdapter);
                     this.listView.setOnItemSelectedListener(listViewItemSelectedListener);
+                    this.listView.setOnScrollListener(this);
                     initializeListViewSelectionListener();
                     initializeListViewCheckedItems();
                 }
@@ -282,7 +301,26 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     }
 
     @Override
+    public final boolean areDividersShownOnScroll() {
+        return showDividersOnScroll;
+    }
+
+    @Override
+    public final void showDividersOnScroll(final boolean show) {
+        this.showDividersOnScroll = show;
+
+        if (!show && buttonBarDivider != null && contentDivider != null) {
+            buttonBarDivider.setVisibility(
+                    getDialog().isButtonBarDividerShown() ? View.VISIBLE : View.GONE);
+            contentDivider
+                    .setVisibility(getDialog().isContentDividerShown() ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    @Override
     protected final void onAttach(@NonNull final View view) {
+        contentDivider = view.findViewById(R.id.content_divider);
+        buttonBarDivider = view.findViewById(R.id.button_bar_divider);
         inflateListView();
         adaptItemColor();
     }
@@ -290,6 +328,28 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     @Override
     protected final void onDetach() {
         listView = null;
+    }
+
+    @Override
+    public final void onScrollStateChanged(final AbsListView view, final int scrollState) {
+
+    }
+
+    @Override
+    public final void onScroll(final AbsListView view, final int firstVisibleItem,
+                               final int visibleItemCount, final int totalItemCount) {
+        if (showDividersOnScroll) {
+            boolean lastItemFullyVisible = view.getLastVisiblePosition() == view.getCount() - 1 &&
+                    view.getChildAt(view.getChildCount() - 1).getBottom() <= view.getHeight();
+            boolean firstItemFullyVisible = view.getFirstVisiblePosition() == 0 &&
+                    (view.getChildCount() == 0 || view.getChildAt(0).getTop() == 0);
+            buttonBarDivider.setVisibility(lastItemFullyVisible ?
+                    (getDialog().isContentDividerShown() ? View.VISIBLE : View.GONE) :
+                    View.VISIBLE);
+            contentDivider.setVisibility(firstItemFullyVisible ?
+                    (getDialog().isButtonBarDividerShown() ? View.VISIBLE : View.GONE) :
+                    View.VISIBLE);
+        }
     }
 
 }

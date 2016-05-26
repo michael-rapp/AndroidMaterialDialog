@@ -58,6 +58,20 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     }
 
     /**
+     * Obtains, whether the dividers, which are located above and below the dialog's list view,
+     * should be shown, when the list view is scrolled, or not, from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the boolean value should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainShowDividersOnScroll(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.materialDialogShowDividersOnScroll});
+        showDividersOnScroll(typedArray.getBoolean(0, true));
+    }
+
+    /**
      * Creates a new builder, which allows to create dialogs, which allow to create and show
      * dialogs, which are designed according to Android 5's Material Design guidelines even on
      * pre-Lollipop devices and may contain list items.
@@ -297,11 +311,27 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
         return self();
     }
 
+    /**
+     * Sets, whether dividers, which are located above and below the list view of the dialog, which
+     * is created by the builder, should be shown, when the list view is scrolled, or not.
+     *
+     * @param show
+     *         True, if the dividers, which are located above and below the dialog's list view,
+     *         should be shown, when the list view is scrolled, false otherwise
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType showDividersOnScroll(boolean show) {
+        getDialog().showDividersOnScroll(show);
+        return self();
+    }
+
     @CallSuper
     @Override
     protected void obtainStyledAttributes(@StyleRes final int themeResourceId) {
         super.obtainStyledAttributes(themeResourceId);
         obtainItemColor(themeResourceId);
+        obtainShowDividersOnScroll(themeResourceId);
     }
 
 }

@@ -56,5 +56,6 @@ License.
     <attr name="materialDialogBackButtonText" format="string"/>
     <attr name="materialDialogNextButtonText" format="string"/>
     <attr name="materialDialogFinishButtonText" format="string"/>
+    <attr name="materialDialogShowDividersOnScroll" format="boolean"/>
 
 </resources>
