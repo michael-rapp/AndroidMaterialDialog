@@ -13,7 +13,7 @@ distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, e
 implied. See the License for the specific language governing permissions and limitations under the
 License.
 -->
-<LinearLayout
+<de.mrapp.android.dialog.view.DialogRootView
     android:id="@+id/root"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -63,4 +63,4 @@ License.
             android:visibility="gone"/>
     </LinearLayout>
 
-</LinearLayout>
+</de.mrapp.android.dialog.view.DialogRootView>
