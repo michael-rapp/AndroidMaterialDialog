@@ -301,9 +301,10 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     }
 
     @Override
-    public final void onStop() {
-        super.onStop();
+    public final void onPause() {
+        super.onPause();
         onDetachDecorators();
+        dismiss();
     }
 
     @Override
