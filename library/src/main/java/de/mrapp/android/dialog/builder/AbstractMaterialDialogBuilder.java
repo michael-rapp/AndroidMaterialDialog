@@ -27,6 +27,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.util.TypedValue;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 
 import de.mrapp.android.dialog.R;
@@ -43,6 +44,11 @@ import de.mrapp.android.util.ThemeUtil;
  *         The type of the builder
  */
 public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialDialog, BuilderType extends AbstractMaterialDialogBuilder<DialogType, ?>> {
+
+    /**
+     * The context, which is used by the builder.
+     */
+    private Context context;
 
     /**
      * The dialog, which is configured by the builder.
@@ -64,7 +70,8 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         context.getTheme().resolveAttribute(R.attr.materialDialogTheme, typedValue, true);
         int themeId = typedValue.resourceId;
         themeId = themeId != 0 ? themeId : R.style.MaterialDialog_Light;
-        dialog = onCreateDialog(context, themeId);
+        this.context = new ContextThemeWrapper(context, themeId);
+        this.dialog = onCreateDialog(context, themeId);
         obtainStyledAttributes(themeId);
     }
 
@@ -205,7 +212,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * Context}
      */
     public final Context getContext() {
-        return getDialog().getContext();
+        return context;
     }
 
     /**
@@ -258,22 +265,6 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     public final BuilderType setOnDismissListener(
             @Nullable final DialogInterface.OnDismissListener listener) {
         getDialog().setOnDismissListener(listener);
-        return self();
-    }
-
-    /**
-     * Sets the listener, which should be notified, if a key is dispatched to the dialog, which is
-     * created by the builder.
-     *
-     * @param listener
-     *         The listener, which should be set, as an instance of the type {@link
-     *         DialogInterface.OnKeyListener}, or null, if no listener should be set
-     * @return The builder, the method has been called upon, as an instance of the generic type
-     * BuilderType
-     */
-    public final BuilderType setOnKeyListener(
-            @Nullable final DialogInterface.OnKeyListener listener) {
-        getDialog().setOnKeyListener(listener);
         return self();
     }
 

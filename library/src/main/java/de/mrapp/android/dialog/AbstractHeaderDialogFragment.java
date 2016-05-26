@@ -13,14 +13,12 @@
  */
 package de.mrapp.android.dialog;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -47,17 +45,8 @@ public abstract class AbstractHeaderDialogFragment extends AbstractMaterialDialo
     /**
      * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
      * on pre-Lollipop devices, is able to show fragments and may contain a header.
-     *
-     * @param context
-     *         The context, which should be used by the dialog, as an instance of the class {@link
-     *         Context}. The context may not be null
-     * @param themeResourceId
-     *         The resource id of the theme, which should be used by the dialog, as an {@link
-     *         Integer} value. The resource id must correspond to a valid theme
      */
-    protected AbstractHeaderDialogFragment(@NonNull final Context context,
-                                           @StyleRes final int themeResourceId) {
-        super(context, themeResourceId);
+    public AbstractHeaderDialogFragment() {
         this.decorator = new HeaderDialogDecorator(this);
     }
 

@@ -13,7 +13,6 @@
  */
 package de.mrapp.android.dialog;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -25,6 +24,7 @@ import android.support.annotation.StyleRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -46,7 +46,6 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @author Michael Rapp
  * @since 3.0.0
  */
-@SuppressLint("ValidFragment")
 public class WizardDialog extends AbstractHeaderDialogFragment implements WizardDialogDecorator {
 
     /**
@@ -799,20 +798,47 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * @param fragmentManager
          *         The fragment manager, which should be used by the dialog, as an instance of the
          *         class FragmentManager. The fragment manager may not be null
+         * @param tag
+         *         The tag, which should be used to show the dialog, as a {@link String} or null, if
+         *         no tag should be used
          * @return The dialog, which has been shown, as an instance of the class {@link
          * WizardDialog}
          */
-        public final WizardDialog show(@NonNull final FragmentManager fragmentManager) {
+        public final WizardDialog show(@NonNull final FragmentManager fragmentManager,
+                                       @Nullable final String tag) {
             ensureNotNull(fragmentManager, "The fragment manager may not be null");
             WizardDialog dialog = create();
-            dialog.show(fragmentManager, null);
+            dialog.show(fragmentManager, tag);
+            return dialog;
+        }
+
+        /**
+         * Creates a dialog with the arguments, which have been supplied to the builder and
+         * immediately displays it.
+         *
+         * @param fragmentTransaction
+         *         The fragment transaction, which should be used to show the dialog, as an instance
+         *         of the class FragmentTransaction. The fragment transaction may not be null
+         * @param tag
+         *         The tag, which should be used to show the dialog, as a {@link String} or null, if
+         *         no tag should be used
+         * @return The dialog, which has been shown, as an instance of the class {@link
+         * WizardDialog}
+         */
+        public final WizardDialog show(@NonNull final FragmentTransaction fragmentTransaction,
+                                       @Nullable final String tag) {
+            ensureNotNull(fragmentTransaction, "The fragment transaction may not be null");
+            WizardDialog dialog = create();
+            dialog.show(fragmentTransaction, tag);
             return dialog;
         }
 
         @Override
         protected final WizardDialog onCreateDialog(@NonNull final Context context,
                                                     @StyleRes final int themeResourceId) {
-            return new WizardDialog(context, themeResourceId);
+            WizardDialog dialog = new WizardDialog();
+            dialog.setThemeResourceId(themeResourceId);
+            return dialog;
         }
 
         @Override
@@ -845,16 +871,8 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
     /**
      * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
      * on pre-Lollipop devices and provides a navigation for switching between multiple fragments.
-     *
-     * @param context
-     *         The context, which should be used by the dialog, as an instance of the class {@link
-     *         Context}. The context may not be null
-     * @param themeResourceId
-     *         The resource id of the theme, which should be used by the dialog, as an {@link
-     *         Integer} value. The resource id must correspond to a valid theme
      */
-    protected WizardDialog(@NonNull final Context context, @StyleRes final int themeResourceId) {
-        super(context, themeResourceId);
+    public WizardDialog() {
         decorator = new de.mrapp.android.dialog.decorator.WizardDialogDecorator(this);
         setCancelable(false);
         setView(R.layout.wizard_dialog_view_pager);

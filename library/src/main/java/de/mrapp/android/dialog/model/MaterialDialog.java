@@ -60,13 +60,4 @@ public interface MaterialDialog extends MaterialDialogDecorator, DialogInterface
      */
     void setOnDismissListener(@Nullable DialogInterface.OnDismissListener listener);
 
-    /**
-     * Sets the listener, which should be notified, if a key is dispatched to the dialog.
-     *
-     * @param listener
-     *         The listener, which should be set, as an instance of the type {@link
-     *         DialogInterface.OnKeyListener}, or null, if no listener should be set
-     */
-    void setOnKeyListener(@Nullable DialogInterface.OnKeyListener listener);
-
 }
