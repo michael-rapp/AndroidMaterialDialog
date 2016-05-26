@@ -67,6 +67,11 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     private View buttonBarDivider;
 
     /**
+     * The divider, which is shown above the dialog's custom view.
+     */
+    private View contentDivider;
+
+    /**
      * The color of the button texts of the dialog.
      */
     private int buttonTextColor;
@@ -253,6 +258,10 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
         if (buttonBarDivider != null) {
             buttonBarDivider.setBackgroundColor(buttonBarDividerColor);
         }
+
+        if (contentDivider != null) {
+            contentDivider.setBackgroundColor(buttonBarDividerColor);
+        }
     }
 
     /**
@@ -373,6 +382,7 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
 
     @Override
     protected final void onAttach(@NonNull final View view) {
+        contentDivider = view.findViewById(R.id.content_divider);
         inflateButtonBar();
         adaptButtonTextColor();
         adaptPositiveButton();
@@ -384,6 +394,7 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
 
     @Override
     protected final void onDetach() {
+        contentDivider = null;
         buttonBarContainer = null;
         positiveButton = null;
         negativeButton = null;

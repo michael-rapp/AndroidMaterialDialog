@@ -312,8 +312,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         if (!show && buttonBarDivider != null && contentDivider != null) {
             buttonBarDivider.setVisibility(
                     getDialog().isButtonBarDividerShown() ? View.VISIBLE : View.GONE);
-            contentDivider
-                    .setVisibility(getDialog().isContentDividerShown() ? View.VISIBLE : View.GONE);
+            contentDivider.setVisibility(View.GONE);
         }
     }
 
@@ -327,6 +326,8 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
 
     @Override
     protected final void onDetach() {
+        contentDivider = null;
+        buttonBarDivider = null;
         listView = null;
     }
 
@@ -343,9 +344,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
                     view.getChildAt(view.getChildCount() - 1).getBottom() <= view.getHeight();
             boolean firstItemFullyVisible = view.getFirstVisiblePosition() == 0 &&
                     (view.getChildCount() == 0 || view.getChildAt(0).getTop() == 0);
-            buttonBarDivider.setVisibility(lastItemFullyVisible ?
-                    (getDialog().isContentDividerShown() ? View.VISIBLE : View.GONE) :
-                    View.VISIBLE);
+            buttonBarDivider.setVisibility(lastItemFullyVisible ? View.GONE : View.VISIBLE);
             contentDivider.setVisibility(firstItemFullyVisible ?
                     (getDialog().isButtonBarDividerShown() ? View.VISIBLE : View.GONE) :
                     View.VISIBLE);

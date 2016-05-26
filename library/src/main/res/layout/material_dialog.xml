@@ -53,7 +53,7 @@ License.
             android:id="@+id/content_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/content_divider_color_light"
+            android:background="@color/button_bar_divider_color_light"
             android:visibility="gone"/>
 
         <RelativeLayout

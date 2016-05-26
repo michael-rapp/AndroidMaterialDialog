@@ -409,10 +409,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             builder.setHeaderBackground(R.drawable.dialog_header_background);
             builder.setHeaderIcon(R.drawable.dialog_header_icon);
         }
-
-        if (shouldContentDividerBeShown()) {
-            builder.showContentDivider(true);
-        }
     }
 
     /**
@@ -658,21 +654,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         String key = getString(R.string.stack_buttons_preference_key);
         boolean defaultValue =
                 getResources().getBoolean(R.bool.stack_buttons_preference_default_value);
-        return sharedPreferences.getBoolean(key, defaultValue);
-    }
-
-    /**
-     * Returns, whether the divider, which is located above the dialog's custom view, should be
-     * shown, or not.
-     *
-     * @return True, if the divider should be shown, false otherwise
-     */
-    private boolean shouldContentDividerBeShown() {
-        SharedPreferences sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String key = getString(R.string.show_content_divider_preference_key);
-        boolean defaultValue =
-                getResources().getBoolean(R.bool.show_content_divider_preference_default_value);
         return sharedPreferences.getBoolean(key, defaultValue);
     }
 

@@ -77,9 +77,6 @@ License.
     <string name="show_button_bar_divider_preference_key">show_button_bar_divider_preference_key</string>
     <string name="show_button_bar_divider_preference_title">Show button bar divider</string>
     <string name="show_button_bar_divider_preference_summary">Allows to set, whether a divider should be shown above the buttons of the example dialog, or not</string>
-    <string name="show_content_divider_preference_key">show_content_divider_preference_key</string>
-    <string name="show_content_divider_preference_title">Show content divider</string>
-    <string name="show_content_divider_preference_summary">Allows to set, whether a divider should be shown above the dialog\'s custom view, or not.</string>
     <string name="show_negative_button_preference_key">show_negative_button_preference_key</string>
     <string name="show_negative_button_preference_title">Show negative button</string>
     <string name="show_negative_button_preference_summary">Allows to set, whether the example dialog should contain a negative button, or not</string>
