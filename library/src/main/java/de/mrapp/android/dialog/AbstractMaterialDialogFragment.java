@@ -62,6 +62,11 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     private int themeResourceId;
 
     /**
+     * The listener, which should be notified, when the dialog has been shown.
+     */
+    private OnShowListener showListener;
+
+    /**
      * The listener, which is notified, when the dialog has been dismissed.
      */
     private OnDismissListener dismissListener;
@@ -144,6 +149,11 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     @CallSuper
     protected void onDetachDecorators() {
         decorator.detach();
+    }
+
+    @Override
+    public final void setOnShowListener(@Nullable final OnShowListener listener) {
+        showListener = listener;
     }
 
     @Override
@@ -298,6 +308,15 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
         View view = inflateLayout();
         onAttachDecorators(view, getChildFragmentManager());
         return view;
+    }
+
+    @Override
+    public final void onResume() {
+        super.onResume();
+
+        if (showListener != null) {
+            showListener.onShow(getDialog());
+        }
     }
 
     @Override

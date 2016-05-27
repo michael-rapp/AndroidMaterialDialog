@@ -35,6 +35,15 @@ public interface MaterialDialog extends MaterialDialogDecorator, DialogInterface
     void setCancelable(boolean cancelable);
 
     /**
+     * Sets the listener, which should be notified, when the dialog has been shown.
+     *
+     * @param listener
+     *         The listener, which should be set, as an instance of the type {@link
+     *         DialogInterface.OnShowListener}, or null, if no listener should be set
+     */
+    void setOnShowListener(@Nullable DialogInterface.OnShowListener listener);
+
+    /**
      * Sets the listener, which should be notified, when the dialog is canceled.
      *
      * Even in a cancelable dialog, the dialog may be dismissed for reasons other than being

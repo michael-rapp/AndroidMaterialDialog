@@ -230,6 +230,18 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     }
 
     /**
+     * Sets the listener, which should be notified, when the dialog has been shown.
+     *
+     * @param listener
+     *         The listener, which should be set, as an instance of the type {@link
+     *         DialogInterface.OnShowListener}, or null, if no listener should be set
+     */
+    public BuilderType setOnShowListener(@Nullable final DialogInterface.OnShowListener listener) {
+        getDialog().setOnShowListener(listener);
+        return self();
+    }
+
+    /**
      * Sets the listener, which should be notified, when the dialog, which is created by the
      * builder, is canceled.
      *
