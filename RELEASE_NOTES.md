@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.5.1 (May 27th 2016)
+
+A minor release, which introduces the following changes:
+
+- Added `setOnShowListener`-method to the class `AbstractMaterialDialogFragment`.
+
 ## Version 3.5.0 (May 26th 2016)
 
 A feature release, which introduces the following changes:
