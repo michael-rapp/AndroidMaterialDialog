@@ -1,6 +1,6 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
-## Version 3.5.2 (Jun 16th 2016)
+## Version 3.5.2 (Jun. 16th 2016)
 
 A minor release, which introduces the following changes:
 
