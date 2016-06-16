@@ -1,5 +1,12 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.5.2 (Jun 16th 2016)
+
+A minor release, which introduces the following changes:
+
+- Improved lifecycle behavior of the class `AbstractMaterialDialogFragment`: The dialog is not dismissed in the `onPause`-method anymore, but only after orientation changes occurred.
+- Updated dependency "AndroidUtil" to version 1.6.1.
+
 ## Version 3.5.1 (May 27th 2016)
 
 A minor release, which introduces the following changes:
