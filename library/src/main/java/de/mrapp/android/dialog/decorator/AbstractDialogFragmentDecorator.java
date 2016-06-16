@@ -133,9 +133,10 @@ public abstract class AbstractDialogFragmentDecorator<DialogType extends Dialog>
      * the view hierarchy until it is attached again.
      */
     public final void detach() {
-        ensureNotNull(view, "The decorator is not attached", IllegalStateException.class);
-        this.view = null;
-        onDetach();
+        if (this.view != null) {
+            this.view = null;
+            onDetach();
+        }
     }
 
 }

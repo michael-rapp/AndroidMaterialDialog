@@ -96,7 +96,6 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog> impleme
         return dialog.getContext();
     }
 
-
     /**
      * Attaches the decorator to the view hierarchy. This enables the decorator to modify the view
      * hierarchy until it is detached.
@@ -116,9 +115,10 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog> impleme
      * the view hierarchy until it is attached again.
      */
     public final void detach() {
-        ensureNotNull(view, "The decorator is not attached", IllegalStateException.class);
-        this.view = null;
-        onDetach();
+        if (this.view != null) {
+            this.view = null;
+            onDetach();
+        }
     }
 
 }
