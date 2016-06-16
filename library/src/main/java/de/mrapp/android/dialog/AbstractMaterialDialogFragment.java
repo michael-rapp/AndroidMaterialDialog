@@ -305,25 +305,33 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
-        View view = inflateLayout();
-        onAttachDecorators(view, getChildFragmentManager());
-        return view;
+        return inflateLayout();
     }
 
     @Override
-    public final void onResume() {
-        super.onResume();
+    public final void onStart() {
+        super.onStart();
 
-        if (showListener != null) {
-            showListener.onShow(getDialog());
+        try {
+            View view = getView();
+
+            if (view != null) {
+                onAttachDecorators(view, getChildFragmentManager());
+            }
+
+            if (showListener != null) {
+                showListener.onShow(getDialog());
+            }
+        } catch (IllegalStateException e) {
+            // An orientation change occurred. Close the dialog.
+            dismiss();
         }
     }
 
     @Override
-    public final void onPause() {
-        super.onPause();
+    public final void onDestroy() {
+        super.onDestroy();
         onDetachDecorators();
-        dismiss();
     }
 
     @Override
