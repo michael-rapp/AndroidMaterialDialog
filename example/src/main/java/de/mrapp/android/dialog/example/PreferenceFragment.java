@@ -383,17 +383,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     private void initializeShowWizardDialogPreference() {
         Preference preference =
                 findPreference(getString(R.string.show_wizard_dialog_preference_key));
-        preference.setOnPreferenceClickListener(createShowWizardDialogPreferenceListener());
-    }
-
-    /**
-     * Creates and returns a listener, which allows to show a wizard dialog.
-     *
-     * @return The listener, which has been created, as an instance of the type {@link
-     * OnPreferenceClickListener}
-     */
-    private OnPreferenceClickListener createShowWizardDialogPreferenceListener() {
-        return new OnPreferenceClickListener() {
+        preference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
@@ -412,7 +402,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
                 return true;
             }
 
-        };
+        });
     }
 
     /**
