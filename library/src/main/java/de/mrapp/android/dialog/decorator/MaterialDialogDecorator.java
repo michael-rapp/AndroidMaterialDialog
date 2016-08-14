@@ -16,6 +16,7 @@ package de.mrapp.android.dialog.decorator;
 import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -45,6 +46,32 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         implements de.mrapp.android.dialog.model.MaterialDialogDecorator {
 
     /**
+     * The name of the extra, which is used to store the color of the title of the dialog within a
+     * bundle.
+     */
+    private static final String TITLE_COLOR_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::titleColor";
+
+    /**
+     * The name of the extra, which is used to store the color of the message of the dialog within a
+     * bundle.
+     */
+    private static final String MESSAGE_COLOR_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::messageColor";
+
+    /**
+     * The name of the extra, which is used to store the title of the dialog within a bundle.
+     */
+    private static final String TITLE_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::title";
+
+    /**
+     * The name of the extra, which is used to store the message of the dialog within a bundle.
+     */
+    private static final String MESSAGE_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::message";
+
+    /**
      * The parent view of the view, which is used to show the dialog's title.
      */
     private ViewGroup titleContainer;
@@ -63,11 +90,6 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * The text view, which is used to show the dialog's message.
      */
     private TextView messageTextView;
-
-    /**
-     * The root view of all views, which are used to show the dialog's title, message and content.
-     */
-    private ViewGroup contentRootView;
 
     /**
      * The parent view of the view, which is used to show the dialog's content.
@@ -194,7 +216,6 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private void inflateContentView() {
         if (getView() != null) {
-            contentRootView = (ViewGroup) getView().findViewById(R.id.content_root);
             contentContainer = (ViewGroup) getView().findViewById(R.id.content_container);
             contentContainer.removeAllViews();
 
@@ -499,6 +520,22 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     @Override
+    public final void onSaveInstanceState(@NonNull final Bundle outState) {
+        outState.putInt(TITLE_COLOR_EXTRA, getTitleColor());
+        outState.putInt(MESSAGE_COLOR_EXTRA, getMessageColor());
+        outState.putCharSequence(TITLE_EXTRA, getTitle());
+        outState.putCharSequence(MESSAGE_EXTRA, getMessage());
+    }
+
+    @Override
+    public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+        setTitleColor(savedInstanceState.getInt(TITLE_COLOR_EXTRA));
+        setMessageColor(savedInstanceState.getInt(MESSAGE_COLOR_EXTRA));
+        setTitle(savedInstanceState.getCharSequence(TITLE_EXTRA));
+        setMessage(savedInstanceState.getCharSequence(MESSAGE_EXTRA));
+    }
+
+    @Override
     protected final void onAttach(@NonNull final View view) {
         inflateTitleView();
         inflateMessageView();
@@ -517,7 +554,6 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         messageContainer = null;
         titleTextView = null;
         messageTextView = null;
-        contentRootView = null;
         contentContainer = null;
     }
 

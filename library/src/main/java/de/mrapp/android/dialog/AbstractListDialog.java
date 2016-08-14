@@ -14,6 +14,7 @@
 package de.mrapp.android.dialog;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.ArrayRes;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
@@ -149,6 +150,21 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
 
     @CallSuper
     @Override
+    public Bundle onSaveInstanceState() {
+        Bundle outState = super.onSaveInstanceState();
+        decorator.onSaveInstanceState(outState);
+        return outState;
+    }
+
+    @CallSuper
+    @Override
+    public void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+        decorator.onRestoreInstanceState(savedInstanceState);
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @CallSuper
+    @Override
     protected void onAttachDecorators(@NonNull final View view) {
         super.onAttachDecorators(view);
         decorator.attach(view);
@@ -156,7 +172,7 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
 
     @CallSuper
     @Override
-    public void onDetachDecorators() {
+    protected void onDetachDecorators() {
         super.onDetachDecorators();
         decorator.detach();
     }

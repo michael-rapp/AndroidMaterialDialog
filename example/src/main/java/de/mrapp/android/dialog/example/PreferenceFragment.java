@@ -19,6 +19,7 @@ import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -41,10 +42,158 @@ import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
 public class PreferenceFragment extends android.preference.PreferenceFragment {
 
     /**
+     * The name of the extra, which is used to store the state of the alert dialog within a bundle.
+     */
+    private static final String ALERT_DIALOG_STATE_EXTRA =
+            PreferenceFragment.class.getSimpleName() + "::alertDialogState";
+
+    /**
+     * The name of the extra, which is used to store the state of the list dialog within a bundle.
+     */
+    private static final String LIST_DIALOG_STATE_EXTRA =
+            PreferenceFragment.class.getSimpleName() + "::listDialogState";
+
+    /**
+     * The name of the extra, which is used to store the state of the single choice list dialog
+     * within a bundle.
+     */
+    private static final String SINGLE_CHOICE_LIST_DIALOG_STATE_EXTRA =
+            PreferenceFragment.class.getSimpleName() + "::singleChoiceListDialogState";
+
+    /**
+     * The name of the extra, which is used to store the state of the multiple choice list dialog
+     * within a bundle.
+     */
+    private static final String MULTIPLE_CHOICE_LIST_DIALOG_STATE_EXTRA =
+            PreferenceFragment.class.getSimpleName() + "::multipleChoiceListDialogState";
+
+    /**
+     * The name of the extra, which is used to store the state of the custom dialog within a
+     * bundle.
+     */
+    private static final String CUSTOM_DIALOG_STATE_EXTRA =
+            PreferenceFragment.class.getSimpleName() + "::customDialogState";
+
+    /**
+     * The name of the extra, which is used to store the state of the progress dialog within a
+     * bundle.
+     */
+    private static final String PROGRESS_DIALOG_STATE_EXTRA =
+            PreferenceFragment.class.getSimpleName() + "::progressDialogState";
+
+    /**
+     * The alert dialog.
+     */
+    private MaterialDialog alertDialog;
+
+    /**
+     * The list dialog.
+     */
+    private MaterialDialog listDialog;
+
+    /**
+     * The single choice list dialog.
+     */
+    private MaterialDialog singleChoiceListDialog;
+
+    /**
+     * The multiple choice list dialog.
+     */
+    private MaterialDialog multipleChoiceListDialog;
+
+    /**
+     * The custom dialog.
+     */
+    private MaterialDialog customDialog;
+
+    /**
+     * The progress dialog.
+     */
+    private ProgressDialog progressDialog;
+
+    /**
      * The toast, which is used to indicate, when a dialog's list item has been selected or
      * unselected.
      */
     private Toast toast;
+
+    /**
+     * Initializes the dialogs.
+     */
+    private void initializeDialogs() {
+        initializeAlertDialog();
+        initializeListDialog();
+        initializeSingleChoiceListDialog();
+        initializeMultipleChoiceListDialog();
+        initializeCustomDialog();
+        initializeProgressDialog();
+    }
+
+    /**
+     * Initializes the alert dialog.
+     */
+    private void initializeAlertDialog() {
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+        configureHeaderDialogBuilder(builder);
+        configureButtonBarDialogBuilder(builder);
+        alertDialog = builder.create();
+    }
+
+    /**
+     * Initializes the list dialog.
+     */
+    private void initializeListDialog() {
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+        configureHeaderDialogBuilder(builder);
+        configureButtonBarDialogBuilder(builder);
+        builder.setItems(R.array.list_items, createSingleChoiceListener());
+        listDialog = builder.create();
+    }
+
+    /**
+     * Initializes the single choice list dialog.
+     */
+    private void initializeSingleChoiceListDialog() {
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+        configureHeaderDialogBuilder(builder);
+        configureButtonBarDialogBuilder(builder);
+        builder.setSingleChoiceItems(R.array.list_items, 0, createSingleChoiceListener());
+        singleChoiceListDialog = builder.create();
+    }
+
+    /**
+     * Initializes the multiple choice list dialog.
+     */
+    private void initializeMultipleChoiceListDialog() {
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+        configureHeaderDialogBuilder(builder);
+        configureButtonBarDialogBuilder(builder);
+        builder.setMultiChoiceItems(R.array.list_items, new boolean[]{true, false, false},
+                createMultiChoiceListener());
+        multipleChoiceListDialog = builder.create();
+    }
+
+    /**
+     * Initializes the custom dialog.
+     */
+    private void initializeCustomDialog() {
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+        configureHeaderDialogBuilder(builder);
+        configureButtonBarDialogBuilder(builder);
+        builder.setView(R.layout.custom_dialog_content);
+        builder.setCustomTitle(R.layout.custom_dialog_title);
+        customDialog = builder.create();
+    }
+
+    /**
+     * Initializes the progress dialog.
+     */
+    private void initializeProgressDialog() {
+        ProgressDialog.Builder builder = new ProgressDialog.Builder(getActivity());
+        configureHeaderDialogBuilder(builder);
+        configureButtonBarDialogBuilder(builder);
+        progressDialog = builder.create();
+    }
 
     /**
      * Initializes the preference, which allows to change the app's theme.
@@ -59,10 +208,10 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
      * corresponding preference has been changed.
      *
      * @return The listener, which has been created, as an instance of the type {@link
-     * Preference.OnPreferenceChangeListener}
+     * OnPreferenceChangeListener}
      */
-    private Preference.OnPreferenceChangeListener createThemeChangeListener() {
-        return new Preference.OnPreferenceChangeListener() {
+    private OnPreferenceChangeListener createThemeChangeListener() {
+        return new OnPreferenceChangeListener() {
 
             @Override
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {
@@ -74,97 +223,110 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     }
 
     /**
-     * Initializes the preference, which allows to show an alert dialog.
+     * Initializes the preference, which allows to show the alert dialog.
      */
     private void initializeShowAlertDialogPreference() {
-        Preference showDialogPreference =
+        Preference preference =
                 findPreference(getString(R.string.show_alert_dialog_preference_key));
-        showDialogPreference
-                .setOnPreferenceClickListener(createShowAlertDialogPreferenceListener());
-    }
-
-    /**
-     * Creates and returns a listener, which allows to show an alert dialog.
-     *
-     * @return The listener, which has been created, as an instance of the type {@link
-     * OnPreferenceClickListener}
-     */
-    private OnPreferenceClickListener createShowAlertDialogPreferenceListener() {
-        return new OnPreferenceClickListener() {
+        preference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-                configureHeaderDialogBuilder(builder);
-                configureButtonBarDialogBuilder(builder);
-                builder.show();
+                initializeAlertDialog();
+                alertDialog.show();
                 return true;
             }
 
-        };
+        });
     }
 
     /**
-     * Initializes the preference, which allows to show a list dialog.
+     * Initializes the preference, which allows to show the list dialog.
      */
     private void initializeShowListDialogPreference() {
-        Preference showDialogPreference =
-                findPreference(getString(R.string.show_list_dialog_preference_key));
-        showDialogPreference.setOnPreferenceClickListener(createShowListDialogPreferenceListener());
-    }
-
-    /**
-     * Creates and returns a listener, which allows to show a list dialog.
-     *
-     * @return The listener, which has been created, as an instance of the type {@link
-     * OnPreferenceClickListener}
-     */
-    private OnPreferenceClickListener createShowListDialogPreferenceListener() {
-        return new OnPreferenceClickListener() {
+        Preference preference = findPreference(getString(R.string.show_list_dialog_preference_key));
+        preference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-                configureHeaderDialogBuilder(builder);
-                configureButtonBarDialogBuilder(builder);
-                builder.setItems(R.array.list_items, createSingleChoiceListener());
-                builder.show();
+                initializeListDialog();
+                listDialog.show();
                 return true;
             }
 
-        };
+        });
     }
 
     /**
-     * Initializes the preference, which allows to show a single choice dialog.
+     * Initializes the preference, which allows to show the single choice list dialog.
      */
-    private void initializeShowSingleChoiceDialogPreference() {
-        Preference showDialogPreference =
+    private void initializeShowSingleChoiceListDialogPreference() {
+        Preference preference =
                 findPreference(getString(R.string.show_single_choice_dialog_preference_key));
-        showDialogPreference
-                .setOnPreferenceClickListener(createShowSingleChoiceDialogPreferenceListener());
-    }
-
-    /**
-     * Creates and returns a listener, which allows to show a single choice dialog.
-     *
-     * @return The listener, which has been created, as an instance of the type {@link
-     * OnPreferenceClickListener}
-     */
-    private OnPreferenceClickListener createShowSingleChoiceDialogPreferenceListener() {
-        return new OnPreferenceClickListener() {
+        preference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-                configureHeaderDialogBuilder(builder);
-                configureButtonBarDialogBuilder(builder);
-                builder.setSingleChoiceItems(R.array.list_items, 0, createSingleChoiceListener());
-                builder.show();
+                initializeSingleChoiceListDialog();
+                singleChoiceListDialog.show();
                 return true;
             }
 
-        };
+        });
+    }
+
+    /**
+     * Initializes the preference, which allows to show the multiple choice list dialog.
+     */
+    private void initializeShowMultipleChoiceListDialogPreference() {
+        Preference preference =
+                findPreference(getString(R.string.show_multi_choice_dialog_preference_key));
+        preference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(final Preference preference) {
+                initializeMultipleChoiceListDialog();
+                multipleChoiceListDialog.show();
+                return true;
+            }
+
+        });
+    }
+
+    /**
+     * Initializes the preference, which allows to show the custom dialog.
+     */
+    private void initializeShowCustomDialogPreference() {
+        Preference preference =
+                findPreference(getString(R.string.show_custom_dialog_preference_key));
+        preference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(final Preference preference) {
+                initializeCustomDialog();
+                customDialog.show();
+                return true;
+            }
+
+        });
+    }
+
+    /**
+     * Initializes the preference, which allows to show the progress dialog.
+     */
+    private void initializeShowProgressDialogPreference() {
+        Preference preference =
+                findPreference(getString(R.string.show_progress_dialog_preference_key));
+        preference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(final Preference preference) {
+                initializeProgressDialog();
+                progressDialog.show();
+                return true;
+            }
+
+        });
     }
 
     /**
@@ -181,39 +343,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             public void onClick(final DialogInterface dialog, final int position) {
                 String text = getString(R.string.single_choice_listener_text);
                 showToast(String.format(text, position));
-            }
-
-        };
-    }
-
-    /**
-     * Initializes the preference, which allows to show a multi choice dialog.
-     */
-    private void initializeShowMultiChoiceDialogPreference() {
-        Preference showDialogPreference =
-                findPreference(getString(R.string.show_multi_choice_dialog_preference_key));
-        showDialogPreference
-                .setOnPreferenceClickListener(createShowMultiChoiceDialogPreferenceListener());
-    }
-
-    /**
-     * Creates and returns a listener, which allows to show a multi choice dialog.
-     *
-     * @return The listener, which has been created, as an instance of the type {@link
-     * OnPreferenceClickListener}
-     */
-    private OnPreferenceClickListener createShowMultiChoiceDialogPreferenceListener() {
-        return new OnPreferenceClickListener() {
-
-            @Override
-            public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-                configureHeaderDialogBuilder(builder);
-                configureButtonBarDialogBuilder(builder);
-                builder.setMultiChoiceItems(R.array.list_items, new boolean[]{true, false, false},
-                        createMultiChoiceListener());
-                builder.show();
-                return true;
             }
 
         };
@@ -249,77 +378,12 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     }
 
     /**
-     * Initializes the preference, which allows to show a custom dialog.
-     */
-    private void initializeShowCustomDialogPreference() {
-        Preference showDialogPreference =
-                findPreference(getString(R.string.show_custom_dialog_preference_key));
-        showDialogPreference
-                .setOnPreferenceClickListener(createShowCustomDialogPreferenceListener());
-    }
-
-    /**
-     * Creates and returns a listener, which allows to show a custom dialog.
-     *
-     * @return The listener, which has been created, as an instance of the type {@link
-     * OnPreferenceClickListener}
-     */
-    private OnPreferenceClickListener createShowCustomDialogPreferenceListener() {
-        return new OnPreferenceClickListener() {
-
-            @Override
-            public boolean onPreferenceClick(final Preference preference) {
-                MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-                configureHeaderDialogBuilder(builder);
-                configureButtonBarDialogBuilder(builder);
-                builder.setView(R.layout.custom_dialog_content);
-                builder.setCustomTitle(R.layout.custom_dialog_title);
-                builder.show();
-                return true;
-            }
-
-        };
-    }
-
-    /**
-     * Initializes the preference, which allows to show a progress dialog.
-     */
-    private void initializeShowProgressDialogPreference() {
-        Preference showDialogPreference =
-                findPreference(getString(R.string.show_progress_dialog_preference_key));
-        showDialogPreference
-                .setOnPreferenceClickListener(createShowProgressDialogPreferenceListener());
-    }
-
-    /**
-     * Creates and returns a listener, which allows to show a progress dialog.
-     *
-     * @return The listener, which has been created, as an instance of the type {@link
-     * OnPreferenceClickListener}
-     */
-    private OnPreferenceClickListener createShowProgressDialogPreferenceListener() {
-        return new OnPreferenceClickListener() {
-
-            @Override
-            public boolean onPreferenceClick(final Preference preference) {
-                ProgressDialog.Builder builder = new ProgressDialog.Builder(getActivity());
-                configureHeaderDialogBuilder(builder);
-                configureButtonBarDialogBuilder(builder);
-                builder.show();
-                return true;
-            }
-
-        };
-    }
-
-    /**
      * Initializes the preference, which allows to show a wizard dialog.
      */
     private void initializeShowWizardDialogPreference() {
-        Preference showDialogPreference =
+        Preference preference =
                 findPreference(getString(R.string.show_wizard_dialog_preference_key));
-        showDialogPreference
-                .setOnPreferenceClickListener(createShowWizardDialogPreferenceListener());
+        preference.setOnPreferenceClickListener(createShowWizardDialogPreferenceListener());
     }
 
     /**
@@ -689,15 +753,64 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initializeDialogs();
         addPreferencesFromResource(R.xml.preferences);
         initializeThemePreference();
         initializeShowAlertDialogPreference();
         initializeShowListDialogPreference();
-        initializeShowSingleChoiceDialogPreference();
-        initializeShowMultiChoiceDialogPreference();
+        initializeShowSingleChoiceListDialogPreference();
+        initializeShowMultipleChoiceListDialogPreference();
         initializeShowCustomDialogPreference();
         initializeShowProgressDialogPreference();
         initializeShowWizardDialogPreference();
+
+        if (savedInstanceState != null) {
+            Bundle alertDialogState = savedInstanceState.getBundle(ALERT_DIALOG_STATE_EXTRA);
+            Bundle listDialogState = savedInstanceState.getBundle(LIST_DIALOG_STATE_EXTRA);
+            Bundle singleChoiceListDialogState =
+                    savedInstanceState.getBundle(SINGLE_CHOICE_LIST_DIALOG_STATE_EXTRA);
+            Bundle multipleChoiceListDialogState =
+                    savedInstanceState.getBundle(MULTIPLE_CHOICE_LIST_DIALOG_STATE_EXTRA);
+            Bundle customDialogState = savedInstanceState.getBundle(CUSTOM_DIALOG_STATE_EXTRA);
+            Bundle progressDialogState = savedInstanceState.getBundle(PROGRESS_DIALOG_STATE_EXTRA);
+
+            if (alertDialogState != null) {
+                alertDialog.onRestoreInstanceState(alertDialogState);
+            }
+
+            if (listDialogState != null) {
+                listDialog.onRestoreInstanceState(listDialogState);
+            }
+
+            if (singleChoiceListDialogState != null) {
+                singleChoiceListDialog.onRestoreInstanceState(singleChoiceListDialogState);
+            }
+
+            if (multipleChoiceListDialogState != null) {
+                multipleChoiceListDialog.onRestoreInstanceState(multipleChoiceListDialogState);
+            }
+
+            if (customDialogState != null) {
+                customDialog.onRestoreInstanceState(customDialogState);
+            }
+
+            if (progressDialogState != null) {
+                progressDialog.onRestoreInstanceState(progressDialogState);
+            }
+        }
+    }
+
+    @Override
+    public final void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBundle(ALERT_DIALOG_STATE_EXTRA, alertDialog.onSaveInstanceState());
+        outState.putBundle(LIST_DIALOG_STATE_EXTRA, listDialog.onSaveInstanceState());
+        outState.putBundle(SINGLE_CHOICE_LIST_DIALOG_STATE_EXTRA,
+                singleChoiceListDialog.onSaveInstanceState());
+        outState.putBundle(MULTIPLE_CHOICE_LIST_DIALOG_STATE_EXTRA,
+                multipleChoiceListDialog.onSaveInstanceState());
+        outState.putBundle(CUSTOM_DIALOG_STATE_EXTRA, customDialog.onSaveInstanceState());
+        outState.putBundle(PROGRESS_DIALOG_STATE_EXTRA, progressDialog.onSaveInstanceState());
     }
 
 }

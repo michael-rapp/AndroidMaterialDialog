@@ -14,8 +14,11 @@
 package de.mrapp.android.dialog;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
+import android.view.View;
 
 import java.util.Collection;
 import java.util.Set;
@@ -78,6 +81,36 @@ public abstract class AbstractValidateableDialog extends AbstractHeaderDialog
     @Override
     public final void removeAllValidators(@NonNull final Collection<DialogValidator> validators) {
         decorator.removeAllValidators(validators);
+    }
+
+    @CallSuper
+    @Override
+    public Bundle onSaveInstanceState() {
+        Bundle outState = super.onSaveInstanceState();
+        decorator.onSaveInstanceState(outState);
+        return outState;
+    }
+
+    @CallSuper
+    @Override
+    public void onRestoreInstanceState(final Bundle savedInstanceState) {
+        decorator.onRestoreInstanceState(savedInstanceState);
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @CallSuper
+    @Override
+    protected void onAttachDecorators(@NonNull final View view) {
+        super.onAttachDecorators(view);
+        decorator.attach(view);
+
+    }
+
+    @CallSuper
+    @Override
+    protected void onDetachDecorators() {
+        super.onDetachDecorators();
+        decorator.detach();
     }
 
 }

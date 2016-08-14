@@ -14,6 +14,7 @@
 package de.mrapp.android.dialog.decorator;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -40,6 +41,34 @@ import de.mrapp.android.dialog.model.ValidateableDialog;
  */
 public class ButtonBarDialogDecorator extends AbstractDialogDecorator<ValidateableDialog>
         implements de.mrapp.android.dialog.model.ButtonBarDialogDecorator {
+
+    /**
+     * The name of the extra, which is used to store, whether the dialog's buttons should be
+     * stacked, or not, within a bundle.
+     */
+    private static final String STACK_BUTTONS_EXTRA =
+            ButtonBarDialogDecorator.class.getSimpleName() + "::stackButtons";
+
+    /**
+     * The name of the extra, which is used to store the text color of the dialog's buttons within a
+     * bundle.
+     */
+    private static final String BUTTON_TEXT_COLOR_EXTRA =
+            ButtonBarDialogDecorator.class.getSimpleName() + "::buttonTextColor";
+
+    /**
+     * The name of the extra, which is used to store, whether the divider, which is shown above the
+     * dialog's buttons, should be shown, or not, within a bundle.
+     */
+    private static final String SHOW_BUTTON_BAR_DIVIDER_EXTRA =
+            ButtonBarDialogDecorator.class.getSimpleName() + "::showButtonBarDivider";
+
+    /**
+     * The name of the extra, which is used to store the color of the divider, which is shown above
+     * the dialog's buttons, within a bundle.
+     */
+    private static final String BUTTON_BAR_DIVIDER_COLOR =
+            ButtonBarDialogDecorator.class.getSimpleName() + "::buttonBarDividerColor";
 
     /**
      * The parent view of the layout, which is used to show the dialog's buttons.
@@ -378,6 +407,22 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     public final void setButtonBarDividerColor(final int color) {
         this.buttonBarDividerColor = color;
         adaptButtonBarDividerColor();
+    }
+
+    @Override
+    public final void onSaveInstanceState(@NonNull final Bundle outState) {
+        outState.putBoolean(STACK_BUTTONS_EXTRA, areButtonsStacked());
+        outState.putInt(BUTTON_TEXT_COLOR_EXTRA, getButtonTextColor());
+        outState.putBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA, isButtonBarDividerShown());
+        outState.putInt(BUTTON_BAR_DIVIDER_COLOR, getButtonBarDividerColor());
+    }
+
+    @Override
+    public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+        stackButtons(savedInstanceState.getBoolean(STACK_BUTTONS_EXTRA));
+        setButtonTextColor(savedInstanceState.getInt(BUTTON_TEXT_COLOR_EXTRA));
+        showButtonBarDivider(savedInstanceState.getBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA));
+        setButtonBarDividerColor(savedInstanceState.getInt(BUTTON_BAR_DIVIDER_COLOR));
     }
 
     @Override

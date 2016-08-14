@@ -14,6 +14,7 @@
 package de.mrapp.android.dialog;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -141,6 +142,21 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
 
     @CallSuper
     @Override
+    public Bundle onSaveInstanceState() {
+        Bundle outState = super.onSaveInstanceState();
+        decorator.onSaveInstanceState(outState);
+        return outState;
+    }
+
+    @CallSuper
+    @Override
+    public void onRestoreInstanceState(final Bundle savedInstanceState) {
+        decorator.onRestoreInstanceState(savedInstanceState);
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @CallSuper
+    @Override
     protected void onAttachDecorators(@NonNull final View view) {
         super.onAttachDecorators(view);
         decorator.attach(view);
@@ -148,7 +164,7 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
 
     @CallSuper
     @Override
-    public void onDetachDecorators() {
+    protected void onDetachDecorators() {
         super.onDetachDecorators();
         decorator.detach();
     }

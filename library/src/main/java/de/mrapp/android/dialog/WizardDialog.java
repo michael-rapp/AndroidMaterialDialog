@@ -27,6 +27,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
@@ -322,7 +323,8 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
             TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                     new int[]{R.attr.materialDialogBackButtonText});
             CharSequence defaultText = getContext().getText(R.string.back_button_text);
-            setBackButtonText(defaultText);
+            CharSequence text = typedArray.getText(0);
+            setBackButtonText(!TextUtils.isEmpty(text) ? text : defaultText);
         }
 
         /**
@@ -336,7 +338,8 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
             TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                     new int[]{R.attr.materialDialogNextButtonText});
             CharSequence defaultText = getContext().getText(R.string.next_button_text);
-            setNextButtonText(defaultText);
+            CharSequence text = typedArray.getText(0);
+            setNextButtonText(!TextUtils.isEmpty(text) ? text : defaultText);
         }
 
         /**
@@ -350,7 +353,8 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
             TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                     new int[]{R.attr.materialDialogFinishButtonText});
             CharSequence defaultText = getContext().getText(R.string.finish_button_text);
-            setFinishButtonText(defaultText);
+            CharSequence text = typedArray.getText(0);
+            setFinishButtonText(!TextUtils.isEmpty(text) ? text : defaultText);
         }
 
         /**
@@ -482,7 +486,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
         public final Builder addFragment(@StringRes final int resourceId,
                                          @NonNull final Class<? extends Fragment> fragmentClass,
                                          @Nullable final Bundle arguments) {
-            getDialog().addFragment(resourceId, fragmentClass);
+            getDialog().addFragment(resourceId, fragmentClass, arguments);
             return self();
         }
 
@@ -1133,6 +1137,21 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
     @Override
     public final void removeWizardListener(@NonNull final WizardListener listener) {
         decorator.addWizardListener(listener);
+    }
+
+    @Override
+    public final void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        decorator.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public final void onViewStateRestored(@Nullable final Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            decorator.onRestoreInstanceState(savedInstanceState);
+        }
+
+        super.onViewStateRestored(savedInstanceState);
     }
 
     @Override

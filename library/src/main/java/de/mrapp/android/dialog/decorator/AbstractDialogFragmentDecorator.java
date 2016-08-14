@@ -20,6 +20,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import de.mrapp.android.dialog.model.Dialog;
+import de.mrapp.android.dialog.model.DialogDecorator;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -32,7 +33,8 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @author Michael Rapp
  * @since 3.2.0
  */
-public abstract class AbstractDialogFragmentDecorator<DialogType extends Dialog> implements Dialog {
+public abstract class AbstractDialogFragmentDecorator<DialogType extends Dialog>
+        implements DialogDecorator {
 
     /**
      * The dialog, whose view hierarchy is modified by the decorator.

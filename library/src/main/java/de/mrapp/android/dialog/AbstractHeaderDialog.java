@@ -15,6 +15,7 @@ package de.mrapp.android.dialog;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -131,6 +132,21 @@ public abstract class AbstractHeaderDialog extends AbstractMaterialDialog implem
     @Override
     public final void showHeaderDivider(final boolean show) {
         decorator.showHeaderDivider(show);
+    }
+
+    @CallSuper
+    @Override
+    public Bundle onSaveInstanceState() {
+        Bundle outState = super.onSaveInstanceState();
+        decorator.onSaveInstanceState(outState);
+        return outState;
+    }
+
+    @CallSuper
+    @Override
+    public void onRestoreInstanceState(final Bundle savedInstanceState) {
+        decorator.onRestoreInstanceState(savedInstanceState);
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @CallSuper

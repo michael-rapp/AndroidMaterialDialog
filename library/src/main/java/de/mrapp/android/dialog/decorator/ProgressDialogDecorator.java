@@ -13,6 +13,7 @@
  */
 package de.mrapp.android.dialog.decorator;
 
+import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -39,6 +40,34 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  */
 public class ProgressDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog>
         implements de.mrapp.android.dialog.model.ProgressDialogDecorator {
+
+    /**
+     * The name of the extra, which is used to store the color of the dialog's progress bar within a
+     * bundle.
+     */
+    private static final String PROGRESS_BAR_COLOR_EXTRA =
+            ProgressDialogDecorator.class.getSimpleName() + "::progressBarColor";
+
+    /**
+     * The name of the extra, which is used to store the size of the dialog's progress bar within a
+     * bundle.
+     */
+    private static final String PROGRESS_BAR_SIZE_EXTRA =
+            ProgressDialogDecorator.class.getSimpleName() + "::progressBarSize";
+
+    /**
+     * The name of the extra, which is used to store the thickness of the dialog's progress bar
+     * within a bundle.
+     */
+    private static final String PROGRESS_BAR_THICKNESS_EXTRA =
+            ProgressDialogDecorator.class.getSimpleName() + "::progressBarThickness";
+
+    /**
+     * The name of the extra, which is used to store the position of the dialog's progress bar
+     * within a bundle.
+     */
+    private static final String PROGRESS_BAR_POSITION_EXTRA =
+            ProgressDialogDecorator.class.getSimpleName() + "::progressBarPosition";
 
     /**
      * The dialog's circular progress bar.
@@ -215,6 +244,23 @@ public class ProgressDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
         ensureNotNull(position, "The position may not be null");
         this.progressBarPosition = position;
         adaptProgressBar();
+    }
+
+    @Override
+    public final void onSaveInstanceState(@NonNull final Bundle outState) {
+        outState.putInt(PROGRESS_BAR_COLOR_EXTRA, getProgressBarColor());
+        outState.putInt(PROGRESS_BAR_SIZE_EXTRA, getProgressBarSize());
+        outState.putInt(PROGRESS_BAR_THICKNESS_EXTRA, getProgressBarThickness());
+        outState.putInt(PROGRESS_BAR_POSITION_EXTRA, getProgressBarPosition().getValue());
+    }
+
+    @Override
+    public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+        setProgressBarColor(savedInstanceState.getInt(PROGRESS_BAR_COLOR_EXTRA));
+        setProgressBarSize(savedInstanceState.getInt(PROGRESS_BAR_SIZE_EXTRA));
+        setProgressBarThickness(savedInstanceState.getInt(PROGRESS_BAR_THICKNESS_EXTRA));
+        setProgressBarPosition(ProgressBarPosition
+                .fromValue(savedInstanceState.getInt(PROGRESS_BAR_POSITION_EXTRA)));
     }
 
     @Override

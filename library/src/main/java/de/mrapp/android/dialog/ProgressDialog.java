@@ -2,6 +2,7 @@ package de.mrapp.android.dialog;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
@@ -339,13 +340,26 @@ public class ProgressDialog extends AbstractButtonBarDialog implements ProgressD
     }
 
     @Override
+    public final Bundle onSaveInstanceState() {
+        Bundle outState = super.onSaveInstanceState();
+        decorator.onSaveInstanceState(outState);
+        return outState;
+    }
+
+    @Override
+    public final void onRestoreInstanceState(final Bundle savedInstanceState) {
+        decorator.onRestoreInstanceState(savedInstanceState);
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
     protected final void onAttachDecorators(@NonNull final View view) {
         super.onAttachDecorators(view);
         decorator.attach(view);
     }
 
     @Override
-    public final void onDetachDecorators() {
+    protected final void onDetachDecorators() {
         super.onDetachDecorators();
         decorator.detach();
     }

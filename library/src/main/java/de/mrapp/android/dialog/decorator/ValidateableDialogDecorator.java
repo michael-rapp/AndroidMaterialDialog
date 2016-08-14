@@ -13,6 +13,7 @@
  */
 package de.mrapp.android.dialog.decorator;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 
@@ -81,6 +82,16 @@ public class ValidateableDialogDecorator extends AbstractDialogDecorator<HeaderD
     public final void removeAllValidators(@NonNull final Collection<DialogValidator> validators) {
         ensureNotNull(validators, "The collection may not be null");
         this.validators.removeAll(validators);
+    }
+
+    @Override
+    public final void onSaveInstanceState(@NonNull final Bundle outState) {
+
+    }
+
+    @Override
+    public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+
     }
 
     @Override

@@ -352,4 +352,21 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
         }
     }
 
+    @CallSuper
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        decorator.onSaveInstanceState(outState);
+    }
+
+    @CallSuper
+    @Override
+    public void onViewStateRestored(@Nullable final Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            decorator.onRestoreInstanceState(savedInstanceState);
+        }
+
+        super.onViewStateRestored(savedInstanceState);
+    }
+
 }

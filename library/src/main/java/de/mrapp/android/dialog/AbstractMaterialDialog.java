@@ -16,6 +16,7 @@ package de.mrapp.android.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.annotation.AttrRes;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
@@ -249,6 +250,21 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     public final void onStop() {
         super.onStop();
         onDetachDecorators();
+    }
+
+    @CallSuper
+    @Override
+    public Bundle onSaveInstanceState() {
+        Bundle outState = super.onSaveInstanceState();
+        decorator.onSaveInstanceState(outState);
+        return outState;
+    }
+
+    @CallSuper
+    @Override
+    public void onRestoreInstanceState(final Bundle savedInstanceState) {
+        decorator.onRestoreInstanceState(savedInstanceState);
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
 }

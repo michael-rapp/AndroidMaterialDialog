@@ -62,6 +62,111 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
         implements de.mrapp.android.dialog.model.WizardDialogDecorator, OnPageChangeListener {
 
     /**
+     * The name of the extra, which is used to store the position of the tabs, which indicate the
+     * currently shown fragment, within a bundle.
+     */
+    private static final String TAB_POSITION_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::tabPosition";
+
+    /**
+     * The name of the extra, which is used to store, whether the tabs, which indicate the currently
+     * shown fragment, should be enabled, or not, within a bundle.
+     */
+    private static final String TAB_LAYOUT_ENABLED_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::tabLayoutEnabled";
+
+    /**
+     * The name of the extra, which is used to store, whether the tabs, which indicate the currently
+     * shown fragment, should be shown, or not, within a bundle.
+     */
+    private static final String TAB_LAYOUT_SHOWN_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::tabLayoutShown";
+
+    /**
+     * The name of the extra, which is used to store the height of the indicator, which indicates
+     * the currently shown fragment, within a bundle.
+     */
+    private static final String TAB_INDICATOR_HEIGHT_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::tabIndicatorHeight";
+
+    /**
+     * The name of the extra, which is used to store the color of the indicator, which indicates the
+     * currently shown fragment, within a bundle.
+     */
+    private static final String TAB_INDICATOR_COLOR_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::tabIndicatorColor";
+
+    /**
+     * The name of the extra, which is used to store the color of the tabs, which indicate the
+     * currently shown fragment, within a bundle.
+     */
+    private static final String TAB_TEXT_COLOR_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::tabTextColor";
+
+    /**
+     * The name of the extra, which is used to store the selected text color of the tabs, which
+     * indicate the currently shown fragment, within a bundle.
+     */
+    private static final String TAB_SELECTED_TEXT_COLOR_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::tabSelectedTextColor";
+
+    /**
+     * The name of the extra, which is used to store, whether switching between fragments using
+     * swipe gestures, should be enabled, or not, within a bundle.
+     */
+    private static final String SWIPE_ENABLED_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::swipeEnabled";
+
+    /**
+     * The name of the extra, which is used to store, whether the dialog's buttons should be shown,
+     * or not, within a bundle.
+     */
+    private static final String BUTTON_BAR_SHOWN_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::buttonBarShown";
+
+    /**
+     * The name of the extra, which is used to store the color of the button texts of the dialog
+     * within a bundle.
+     */
+    private static final String BUTTON_TEXT_COLOR_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::buttonTextColor";
+
+    /**
+     * The name of the extra, which is used to store the text of the back button of the dialog
+     * within a bundle.
+     */
+    private static final String BACK_BUTTON_TEXT_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::backButtonText";
+
+    /**
+     * The name of the extra, which is used to store the text of the next button of the dialog
+     * within a bundle.
+     */
+    private static final String NEXT_BUTTON_TEXT_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::nextButtonText";
+
+    /**
+     * The name of the extra, which is used to store the text of the finish button of the dialog
+     * within a bundle.
+     */
+    private static final String FINISH_BUTTON_TEXT_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::finishButtonText";
+
+    /**
+     * The name of the extra, which is used to store, whether the divider, which is located above
+     * the dialog's buttons, should be shown, or not, within a bundle.
+     */
+    private static final String SHOW_BUTTON_BAR_DIVIDER_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::showButtonBarDivider";
+
+    /**
+     * The name of the extra, which is used to store the color of the divider, which is located
+     * above the dialog's buttons, within a bundle.
+     */
+    private static final String BUTTON_BAR_DIVIDER_COLOR_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::buttonBarDividerColor";
+
+    /**
      * A list, which contains the fragments, which are contained by the dialog.
      */
     private final List<Triple<CharSequence, Class<? extends Fragment>, Bundle>> fragments;
@@ -858,6 +963,44 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
     @Override
     public final void onPageScrollStateChanged(final int state) {
 
+    }
+
+    @Override
+    public final void onSaveInstanceState(@NonNull final Bundle outState) {
+        outState.putInt(TAB_POSITION_EXTRA, getTabPosition().getValue());
+        outState.putBoolean(TAB_LAYOUT_ENABLED_EXTRA, isTabLayoutEnabled());
+        outState.putBoolean(TAB_LAYOUT_SHOWN_EXTRA, isTabLayoutShown());
+        outState.putInt(TAB_INDICATOR_HEIGHT_EXTRA, getTabIndicatorHeight());
+        outState.putInt(TAB_INDICATOR_COLOR_EXTRA, getTabIndicatorColor());
+        outState.putInt(TAB_TEXT_COLOR_EXTRA, getTabTextColor());
+        outState.putInt(TAB_SELECTED_TEXT_COLOR_EXTRA, getTabSelectedTextColor());
+        outState.putBoolean(SWIPE_ENABLED_EXTRA, isSwipeEnabled());
+        outState.putBoolean(BUTTON_BAR_SHOWN_EXTRA, isButtonBarShown());
+        outState.putInt(BUTTON_TEXT_COLOR_EXTRA, getButtonTextColor());
+        outState.putCharSequence(BACK_BUTTON_TEXT_EXTRA, getBackButtonText());
+        outState.putCharSequence(NEXT_BUTTON_TEXT_EXTRA, getNextButtonText());
+        outState.putCharSequence(FINISH_BUTTON_TEXT_EXTRA, getFinishButtonText());
+        outState.putBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA, isButtonBarDividerShown());
+        outState.putInt(BUTTON_BAR_DIVIDER_COLOR_EXTRA, getButtonBarDividerColor());
+    }
+
+    @Override
+    public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+        setTabPosition(TabPosition.fromValue(savedInstanceState.getInt(TAB_POSITION_EXTRA)));
+        enableTabLayout(savedInstanceState.getBoolean(TAB_LAYOUT_ENABLED_EXTRA));
+        showTabLayout(savedInstanceState.getBoolean(TAB_LAYOUT_SHOWN_EXTRA));
+        setTabIndicatorHeight(savedInstanceState.getInt(TAB_INDICATOR_HEIGHT_EXTRA));
+        setTabIndicatorColor(savedInstanceState.getInt(TAB_INDICATOR_COLOR_EXTRA));
+        setTabTextColor(savedInstanceState.getInt(TAB_TEXT_COLOR_EXTRA));
+        setTabSelectedTextColor(savedInstanceState.getInt(TAB_SELECTED_TEXT_COLOR_EXTRA));
+        enableSwipe(savedInstanceState.getBoolean(SWIPE_ENABLED_EXTRA));
+        showButtonBar(savedInstanceState.getBoolean(BUTTON_BAR_SHOWN_EXTRA));
+        setButtonTextColor(savedInstanceState.getInt(BUTTON_TEXT_COLOR_EXTRA));
+        setBackButtonText(savedInstanceState.getCharSequence(BACK_BUTTON_TEXT_EXTRA));
+        setNextButtonText(savedInstanceState.getCharSequence(NEXT_BUTTON_TEXT_EXTRA));
+        setFinishButtonText(savedInstanceState.getCharSequence(FINISH_BUTTON_TEXT_EXTRA));
+        showButtonBarDivider(savedInstanceState.getBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA));
+        setButtonBarDividerColor(savedInstanceState.getInt(BUTTON_BAR_DIVIDER_COLOR_EXTRA));
     }
 
     @Override

@@ -15,6 +15,7 @@ package de.mrapp.android.dialog.decorator;
 
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -40,6 +41,34 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  */
 public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialog>
         implements de.mrapp.android.dialog.model.HeaderDialogDecorator {
+
+    /**
+     * The name of the extra, which is used to store, whether the dialog's header should be shown,
+     * or not, within a bundle.
+     */
+    private static final String SHOW_HEADER_EXTRA =
+            HeaderDialogDecorator.class.getSimpleName() + "::showHeader";
+
+    /**
+     * The name of the extra, which is used to store the height of the dialog's header within a
+     * bundle.
+     */
+    private static final String HEADER_HEIGHT_EXTRA =
+            HeaderDialogDecorator.class.getSimpleName() + "::headerHeight";
+
+    /**
+     * The name of the extra, which is used to store, whether the divider of the dialog's header
+     * should be shown, or not, within a bundle.
+     */
+    private static final String SHOW_HEADER_DIVIDER_EXTRA =
+            HeaderDialogDecorator.class.getSimpleName() + "::showHeaderDivider";
+
+    /**
+     * The name of the extra, which is used to store the color of the divider of the dialog's header
+     * within a bundle.
+     */
+    private static final String HEADER_DIVIDER_COLOR_EXTRA =
+            HeaderDialogDecorator.class.getSimpleName() + "::headerDividerColor";
 
     /**
      * The view group, which contains the views of the dialog's header.
@@ -105,6 +134,7 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
                     (ImageView) headerContainer.findViewById(R.id.header_background_image_view);
             headerIconImageView =
                     (ImageView) headerContainer.findViewById(R.id.header_icon_image_view);
+            headerDivider = headerContainer.findViewById(R.id.header_divider);
             rootView.addView(headerContainer, 0);
         }
     }
@@ -258,6 +288,22 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
     public final void showHeaderDivider(final boolean show) {
         this.showHeaderDivider = show;
         adaptHeaderDividerVisibility();
+    }
+
+    @Override
+    public final void onSaveInstanceState(@NonNull final Bundle outState) {
+        outState.putBoolean(SHOW_HEADER_EXTRA, isHeaderShown());
+        outState.putInt(HEADER_HEIGHT_EXTRA, getHeaderHeight());
+        outState.putBoolean(SHOW_HEADER_DIVIDER_EXTRA, isHeaderDividerShown());
+        outState.putInt(HEADER_DIVIDER_COLOR_EXTRA, getHeaderDividerColor());
+    }
+
+    @Override
+    public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+        showHeader(savedInstanceState.getBoolean(SHOW_HEADER_EXTRA));
+        setHeaderHeight(savedInstanceState.getInt(HEADER_HEIGHT_EXTRA));
+        showHeaderDivider(savedInstanceState.getBoolean(SHOW_HEADER_DIVIDER_EXTRA));
+        setHeaderDividerColor(savedInstanceState.getInt(HEADER_DIVIDER_COLOR_EXTRA));
     }
 
     @Override
