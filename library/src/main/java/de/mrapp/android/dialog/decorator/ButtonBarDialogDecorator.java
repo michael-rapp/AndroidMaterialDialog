@@ -67,8 +67,29 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
      * The name of the extra, which is used to store the color of the divider, which is shown above
      * the dialog's buttons, within a bundle.
      */
-    private static final String BUTTON_BAR_DIVIDER_COLOR =
+    private static final String BUTTON_BAR_DIVIDER_COLOR_EXTRA =
             ButtonBarDialogDecorator.class.getSimpleName() + "::buttonBarDividerColor";
+
+    /**
+     * The name of the extra, which is used to store the text of the positive button within a
+     * bundle.
+     */
+    private static final String POSITIVE_BUTTON_TEXT_EXTRA =
+            ButtonBarDialogDecorator.class.getSimpleName() + "::positiveButtonText";
+
+    /**
+     * The name of the extra, which is used to store the text of the neutral button within a
+     * bundle.
+     */
+    private static final String NEUTRAL_BUTTON_TEXT_EXTRA =
+            ButtonBarDialogDecorator.class.getSimpleName() + "::neutralButtonText";
+
+    /**
+     * The name of the extra, which is used to store the text of the negative button within a
+     * bundle.
+     */
+    private static final String NEGATIVE_BUTTON_TEXT_EXTRA =
+            ButtonBarDialogDecorator.class.getSimpleName() + "::negativeButtonText";
 
     /**
      * The parent view of the layout, which is used to show the dialog's buttons.
@@ -414,7 +435,10 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
         outState.putBoolean(STACK_BUTTONS_EXTRA, areButtonsStacked());
         outState.putInt(BUTTON_TEXT_COLOR_EXTRA, getButtonTextColor());
         outState.putBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA, isButtonBarDividerShown());
-        outState.putInt(BUTTON_BAR_DIVIDER_COLOR, getButtonBarDividerColor());
+        outState.putInt(BUTTON_BAR_DIVIDER_COLOR_EXTRA, getButtonBarDividerColor());
+        outState.putCharSequence(POSITIVE_BUTTON_TEXT_EXTRA, positiveButtonText);
+        outState.putCharSequence(NEUTRAL_BUTTON_TEXT_EXTRA, neutralButtonText);
+        outState.putCharSequence(NEGATIVE_BUTTON_TEXT_EXTRA, negativeButtonText);
     }
 
     @Override
@@ -422,7 +446,10 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
         stackButtons(savedInstanceState.getBoolean(STACK_BUTTONS_EXTRA));
         setButtonTextColor(savedInstanceState.getInt(BUTTON_TEXT_COLOR_EXTRA));
         showButtonBarDivider(savedInstanceState.getBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA));
-        setButtonBarDividerColor(savedInstanceState.getInt(BUTTON_BAR_DIVIDER_COLOR));
+        setButtonBarDividerColor(savedInstanceState.getInt(BUTTON_BAR_DIVIDER_COLOR_EXTRA));
+        setPositiveButton(savedInstanceState.getCharSequence(POSITIVE_BUTTON_TEXT_EXTRA), null);
+        setNeutralButton(savedInstanceState.getCharSequence(NEUTRAL_BUTTON_TEXT_EXTRA), null);
+        setNegativeButton(savedInstanceState.getCharSequence(NEGATIVE_BUTTON_TEXT_EXTRA), null);
     }
 
     @Override
