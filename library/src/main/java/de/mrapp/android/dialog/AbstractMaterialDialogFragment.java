@@ -14,6 +14,7 @@
 package de.mrapp.android.dialog;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
 import de.mrapp.android.dialog.model.MaterialDialog;
 import de.mrapp.android.util.DisplayUtil;
 
+import static de.mrapp.android.util.Condition.ensureNotNull;
 import static de.mrapp.android.util.DisplayUtil.getDeviceType;
 import static de.mrapp.android.util.DisplayUtil.getOrientation;
 
@@ -60,6 +62,11 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      * The resource id of the theme, which should be used by the dialog.
      */
     private int themeResourceId;
+
+    /**
+     * The context, which is used by the dialog.
+     */
+    private Context context;
 
     /**
      * The listener, which should be notified, when the dialog has been shown.
@@ -118,6 +125,18 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     }
 
     /**
+     * Sets the context, which should be used by the dialog.
+     *
+     * @param context
+     *         The context, which should be set, as an instance of the class {@link Context}. The
+     *         context may not be null
+     */
+    protected final void setContext(@NonNull final Context context) {
+        ensureNotNull(context, "The context may not be null");
+        this.context = context;
+    }
+
+    /**
      * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
      * on pre-Lollipop devices and is able to show fragments.
      */
@@ -149,6 +168,20 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     @CallSuper
     protected void onDetachDecorators() {
         decorator.detach();
+    }
+
+    /**
+     * The method, which is invoked when the dialog is re-created in order to restore its state.
+     * This method may be overridden by subclasses in order to restore the properties, which are
+     * stored in the <code>onSaveInstanceState</code>-method.
+     *
+     * @param savedInstanceState
+     *         The bundle, which has been used to store the state, as an instance of the class
+     *         {@link Bundle}. The bundle may not be null
+     */
+    @CallSuper
+    protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+        decorator.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
@@ -293,6 +326,18 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
         }
     }
 
+    @Override
+    public final Context getContext() {
+        Context context = super.getContext();
+
+        if (context == null) {
+            ensureNotNull(this.context, "No context has been set", IllegalStateException.class);
+            context = this.context;
+        }
+
+        return context;
+    }
+
     @NonNull
     @Override
     public final Dialog onCreateDialog(final Bundle savedInstanceState) {
@@ -305,26 +350,23 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
-        return inflateLayout();
+
+        View view = inflateLayout();
+
+        if (savedInstanceState != null) {
+            onRestoreInstanceState(savedInstanceState);
+        }
+
+        onAttachDecorators(view, getChildFragmentManager());
+        return view;
     }
 
     @Override
     public final void onStart() {
         super.onStart();
 
-        try {
-            View view = getView();
-
-            if (view != null) {
-                onAttachDecorators(view, getChildFragmentManager());
-            }
-
-            if (showListener != null) {
-                showListener.onShow(getDialog());
-            }
-        } catch (IllegalStateException e) {
-            // An orientation change occurred. Close the dialog.
-            dismiss();
+        if (showListener != null) {
+            showListener.onShow(getDialog());
         }
     }
 
@@ -332,6 +374,15 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     public final void onDestroy() {
         super.onDestroy();
         onDetachDecorators();
+    }
+
+    @Override
+    public final void onDestroyView() {
+        if (getDialog() != null && getRetainInstance()) {
+            getDialog().setDismissMessage(null);
+        }
+
+        super.onDestroyView();
     }
 
     @Override
@@ -357,16 +408,6 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     public void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         decorator.onSaveInstanceState(outState);
-    }
-
-    @CallSuper
-    @Override
-    public void onViewStateRestored(@Nullable final Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            decorator.onRestoreInstanceState(savedInstanceState);
-        }
-
-        super.onViewStateRestored(savedInstanceState);
     }
 
 }

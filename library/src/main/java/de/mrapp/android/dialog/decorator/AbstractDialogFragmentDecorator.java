@@ -119,15 +119,8 @@ public abstract class AbstractDialogFragmentDecorator<DialogType extends Dialog>
                              @NonNull final FragmentManager fragmentManager) {
         ensureNotNull(view, "The view may not be null");
         ensureNotNull(fragmentManager, "The fragment manager may not be null");
-
-        try {
-            this.view = view;
-            onAttach(view, fragmentManager);
-        } catch (NullPointerException e) {
-            // May occur after orientation changes. Throw IllegalStateException to close the dialog in such case.
-            this.view = null;
-            throw new IllegalStateException();
-        }
+        this.view = view;
+        onAttach(view, fragmentManager);
     }
 
     /**

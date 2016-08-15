@@ -135,12 +135,9 @@ public abstract class AbstractHeaderDialogFragment extends AbstractMaterialDialo
 
     @CallSuper
     @Override
-    public void onViewStateRestored(@Nullable final Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            decorator.onRestoreInstanceState(savedInstanceState);
-        }
-
-        super.onViewStateRestored(savedInstanceState);
+    protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        decorator.onRestoreInstanceState(savedInstanceState);
     }
 
     @CallSuper

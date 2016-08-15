@@ -842,6 +842,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
                                                     @StyleRes final int themeResourceId) {
             WizardDialog dialog = new WizardDialog();
             dialog.setThemeResourceId(themeResourceId);
+            dialog.setContext(context);
             return dialog;
         }
 
@@ -1146,12 +1147,9 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
     }
 
     @Override
-    public final void onViewStateRestored(@Nullable final Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            decorator.onRestoreInstanceState(savedInstanceState);
-        }
-
-        super.onViewStateRestored(savedInstanceState);
+    protected final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        decorator.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
