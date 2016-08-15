@@ -44,6 +44,10 @@ public interface ButtonBarDialogDecorator extends Dialog {
     /**
      * Sets the text of the positive button of the dialog.
      *
+     * Please note, that the button is not restored using a dialog's <code>onRestoreInstanceState</code>-method,
+     * because the attached listener is not serializable. Therefore this method must be called again
+     * after configuration changes, e.g when the orientation of the device has changed.
+     *
      * @param text
      *         The text, which should be set, as an instance of the type {@link CharSequence} or
      *         null, if no positive button should be shown
@@ -57,6 +61,10 @@ public interface ButtonBarDialogDecorator extends Dialog {
 
     /**
      * Sets the text of the positive button of the dialog.
+     *
+     * Please note, that the button is not restored using a dialog's <code>onRestoreInstanceState</code>-method,
+     * because the attached listener is not serializable. Therefore this method must be called again
+     * after configuration changes, e.g when the orientation of the device has changed.
      *
      * @param resourceId
      *         The resource id of the text, which should be set, as an {@link Integer} value. The
@@ -72,6 +80,10 @@ public interface ButtonBarDialogDecorator extends Dialog {
     /**
      * Sets the text of the negative button of the dialog.
      *
+     * Please note, that the button is not restored using a dialog's <code>onRestoreInstanceState</code>-method,
+     * because the attached listener is not serializable. Therefore this method must be called again
+     * after configuration changes, e.g when the orientation of the device has changed.
+     *
      * @param text
      *         The text, which should be set, as an instance of the type {@link CharSequence} or
      *         null, if no negative button should be shown
@@ -85,6 +97,10 @@ public interface ButtonBarDialogDecorator extends Dialog {
 
     /**
      * Sets the text of the negative button of the dialog.
+     *
+     * Please note, that the button is not restored using a dialog's <code>onRestoreInstanceState</code>-method,
+     * because the attached listener is not serializable. Therefore this method must be called again
+     * after configuration changes, e.g when the orientation of the device has changed.
      *
      * @param resourceId
      *         The resource id of the text, which should be set, as an {@link Integer} value. The
@@ -100,6 +116,10 @@ public interface ButtonBarDialogDecorator extends Dialog {
     /**
      * Sets the text of the neutral button of the dialog.
      *
+     * Please note, that the button is not restored using a dialog's <code>onRestoreInstanceState</code>-method,
+     * because the attached listener is not serializable. Therefore this method must be called again
+     * after configuration changes, e.g when the orientation of the device has changed.
+     *
      * @param text
      *         The text, which should be set, as an instance of the type {@link CharSequence} or
      *         null, if no neutral button should be shown
@@ -113,6 +133,10 @@ public interface ButtonBarDialogDecorator extends Dialog {
 
     /**
      * Sets the text of the neutral button of the dialog.
+     *
+     * Please note, that the button is not restored using a dialog's <code>onRestoreInstanceState</code>-method,
+     * because the attached listener is not serializable. Therefore this method must be called again
+     * after configuration changes, e.g when the orientation of the device has changed.
      *
      * @param resourceId
      *         The resource id of the text, which should be set, as an {@link Integer} value. The
