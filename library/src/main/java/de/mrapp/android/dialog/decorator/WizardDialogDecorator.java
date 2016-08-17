@@ -977,11 +977,11 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
         outState.putBoolean(SWIPE_ENABLED_EXTRA, isSwipeEnabled());
         outState.putBoolean(BUTTON_BAR_SHOWN_EXTRA, isButtonBarShown());
         outState.putInt(BUTTON_TEXT_COLOR_EXTRA, getButtonTextColor());
+        outState.putBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA, isButtonBarDividerShown());
+        outState.putInt(BUTTON_BAR_DIVIDER_COLOR_EXTRA, getButtonBarDividerColor());
         outState.putCharSequence(BACK_BUTTON_TEXT_EXTRA, getBackButtonText());
         outState.putCharSequence(NEXT_BUTTON_TEXT_EXTRA, getNextButtonText());
         outState.putCharSequence(FINISH_BUTTON_TEXT_EXTRA, getFinishButtonText());
-        outState.putBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA, isButtonBarDividerShown());
-        outState.putInt(BUTTON_BAR_DIVIDER_COLOR_EXTRA, getButtonBarDividerColor());
     }
 
     @Override
@@ -996,11 +996,24 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
         enableSwipe(savedInstanceState.getBoolean(SWIPE_ENABLED_EXTRA));
         showButtonBar(savedInstanceState.getBoolean(BUTTON_BAR_SHOWN_EXTRA));
         setButtonTextColor(savedInstanceState.getInt(BUTTON_TEXT_COLOR_EXTRA));
-        setBackButtonText(savedInstanceState.getCharSequence(BACK_BUTTON_TEXT_EXTRA));
-        setNextButtonText(savedInstanceState.getCharSequence(NEXT_BUTTON_TEXT_EXTRA));
-        setFinishButtonText(savedInstanceState.getCharSequence(FINISH_BUTTON_TEXT_EXTRA));
         showButtonBarDivider(savedInstanceState.getBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA));
         setButtonBarDividerColor(savedInstanceState.getInt(BUTTON_BAR_DIVIDER_COLOR_EXTRA));
+        CharSequence backButtonText = savedInstanceState.getCharSequence(BACK_BUTTON_TEXT_EXTRA);
+        CharSequence nextButtonText = savedInstanceState.getCharSequence(NEXT_BUTTON_TEXT_EXTRA);
+        CharSequence finishButtonText =
+                savedInstanceState.getCharSequence(FINISH_BUTTON_TEXT_EXTRA);
+
+        if (!TextUtils.isEmpty(backButtonText)) {
+            setBackButtonText(backButtonText);
+        }
+
+        if (!TextUtils.isEmpty(nextButtonText)) {
+            setNextButtonText(nextButtonText);
+        }
+
+        if (!TextUtils.isEmpty(finishButtonText)) {
+            setFinishButtonText(finishButtonText);
+        }
     }
 
     @Override
