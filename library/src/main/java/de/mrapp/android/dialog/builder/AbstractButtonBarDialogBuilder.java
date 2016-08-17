@@ -147,8 +147,8 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
     /**
      * Sets the text of the negative button of the dialog, which is created by the builder.
      *
-     * Note, that the attached listener is not restored using a dialog's
-     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
@@ -171,8 +171,8 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
     /**
      * Sets the text of the negative button of the dialog, which is created by the builder.
      *
-     * Note, that the attached listener is not restored using a dialog's
-     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
@@ -195,8 +195,8 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
     /**
      * Sets the text of the positive button of the dialog, which is created by the builder.
      *
-     * Note, that the attached listener is not restored using a dialog's
-     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
@@ -219,8 +219,8 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
     /**
      * Sets the text of the positive button of the dialog, which is created by the builder.
      *
-     * Note, that the attached listener is not restored using a dialog's
-     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
@@ -243,8 +243,8 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
     /**
      * Sets the text of the neutral button of the dialog, which is created by the builder.
      *
-     * Note, that the attached listener is not restored using a dialog's
-     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
@@ -267,8 +267,8 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
     /**
      * Sets the text of the neutral button of the dialog, which is created by the builder.
      *
-     * Note, that the attached listener is not restored using a dialog's
-     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *

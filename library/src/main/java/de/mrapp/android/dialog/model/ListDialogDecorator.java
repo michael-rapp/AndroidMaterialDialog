@@ -66,8 +66,8 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Sets the items, which should be shown by the dialog.
      *
-     * Note, that the attached listener is not restored using a dialog's
-     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
@@ -85,8 +85,8 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Sets the items, which should be shown by the dialog.
      *
-     * Note, that the attached listener is not restored using a dialog's
-     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
@@ -103,8 +103,8 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Sets the adapter, which provides the items, which should be shown by the dialog.
      *
-     * Note, that the adapter and the attached listener are not restored using a dialog's
-     * <code>onRestoreInstanceState</code>-method, because they are not serializable. Therefore this
+     * Note, that the adapter and the attached listener are not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because they are not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-set the adapter and re-register the listener.
      *
@@ -123,8 +123,8 @@ public interface ListDialogDecorator extends Dialog {
      * Sets the selectable items, which should be shown by the dialog. Only one of the items can be
      * selected at once.
      *
-     * Note, that the attached listener is not restored using a dialog's
-     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
@@ -146,8 +146,8 @@ public interface ListDialogDecorator extends Dialog {
      * Sets the selectable items, which should be shown by the dialog. Only one of the items can be
      * selected at once.
      *
-     * Note, that the attached listener is not restored using a dialog's
-     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
@@ -169,8 +169,8 @@ public interface ListDialogDecorator extends Dialog {
      * Sets the adapter, which provides the selectable items, which should be shown by the dialog.
      * Only one of the items can be selected at once.
      *
-     * Note, that the adapter and the attached listener are not restored using a dialog's
-     * <code>onRestoreInstanceState</code>-method, because they are not serializable. Therefore this
+     * Note, that the adapter and the attached listener are not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because they are not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-set the adapter and re-register the listener.
      *
@@ -192,8 +192,8 @@ public interface ListDialogDecorator extends Dialog {
      * Sets the selectable items, which should be shown by the dialog. Multiple items can be
      * selected at once.
      *
-     * Note, that the attached listener is not restored using a dialog's
-     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
@@ -216,8 +216,8 @@ public interface ListDialogDecorator extends Dialog {
      * Sets the selectable items, which should be shown by the dialog. Multiple items can be
      * selected at once.
      *
-     * Note, that the attached listener is not restored using a dialog's
-     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
@@ -240,8 +240,8 @@ public interface ListDialogDecorator extends Dialog {
      * Sets the adapter, which provides the selectable items, which should be shown by the dialog.
      * Multiple items can be selected at once.
      *
-     * Note, that the adapter and the attached listener are not restored using a dialog's
-     * <code>onRestoreInstanceState</code>-method, because they are not serializable. Therefore this
+     * Note, that the adapter and the attached listener are not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because they are not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-set the adapter and re-register the listener.
      *
@@ -264,8 +264,8 @@ public interface ListDialogDecorator extends Dialog {
      * Sets the listener, which should be notified, when an item, which is shown by the dialog is
      * selected.
      *
-     * Note, that the attached listener is not restored using a dialog's
-     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
