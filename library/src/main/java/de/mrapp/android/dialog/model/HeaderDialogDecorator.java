@@ -13,10 +13,10 @@
  */
 package de.mrapp.android.dialog.model;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
@@ -68,12 +68,13 @@ public interface HeaderDialogDecorator extends Dialog {
     Drawable getHeaderBackground();
 
     /**
-     * Sets the background color of the dialog's header.
+     * Sets the background of the dialog's header.
      *
-     * @param color
-     *         The background color, which should be set, as an {@link Integer} value
+     * @param background
+     *         The background, which should be set, as an instance of the class {@link Bitmap} or
+     *         null, if no background should be shown
      */
-    void setHeaderBackgroundColor(@ColorInt int color);
+    void setHeaderBackground(@Nullable Bitmap background);
 
     /**
      * Sets the background of the dialog's header.
@@ -85,13 +86,12 @@ public interface HeaderDialogDecorator extends Dialog {
     void setHeaderBackground(@DrawableRes int resourceId);
 
     /**
-     * Sets the background of the dialog's header.
+     * Sets the background color of the dialog's header.
      *
-     * @param background
-     *         The background, which should be set, as an instance of the class {@link Drawable}.
-     *         The background may not be null
+     * @param color
+     *         The background color, which should be set, as an {@link Integer} value
      */
-    void setHeaderBackground(@NonNull Drawable background);
+    void setHeaderBackgroundColor(@ColorInt int color);
 
     /**
      * Returns the icon of the dialog's header.
@@ -104,20 +104,20 @@ public interface HeaderDialogDecorator extends Dialog {
     /**
      * Sets the icon of the dialog's header.
      *
+     * @param icon
+     *         The icon, which should be set, as an instance of the class {@link Bitmap} or null, if
+     *         no icon should be set
+     */
+    void setHeaderIcon(@Nullable Bitmap icon);
+
+    /**
+     * Sets the icon of the dialog's header.
+     *
      * @param resourceId
      *         The resource id of the icon, which should be set, as an {@link Integer} value. The
      *         resource id must correspond to a valid drawable resource
      */
     void setHeaderIcon(@DrawableRes int resourceId);
-
-    /**
-     * Sets the icon of the dialog's header.
-     *
-     * @param icon
-     *         The icon, which should be set, as an instance of the class {@link Drawable} or null,
-     *         if no icon should be set
-     */
-    void setHeaderIcon(@Nullable Drawable icon);
 
     /**
      * Returns the color of the divider of the dialog's header.

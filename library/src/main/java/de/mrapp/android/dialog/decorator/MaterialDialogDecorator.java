@@ -14,6 +14,8 @@
 package de.mrapp.android.dialog.decorator;
 
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -72,6 +74,48 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             MaterialDialogDecorator.class.getSimpleName() + "::message";
 
     /**
+     * The name of the extra, which is used to store the bitmap of the dialog's icon within a
+     * bundle.
+     */
+    private static final String ICON_BITMAP_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::iconBitmap";
+
+    /**
+     * The name of the extra, which is used to store the resource id of the dialog's icon within a
+     * bundle.
+     */
+    private static final String ICON_ID_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::iconId";
+
+    /**
+     * The name of the extra, which is used to store the attribute id of the dialog's icon within a
+     * bundle.
+     */
+    private static final String ICON_ATTRIBUTE_ID_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::iconAttribute";
+
+    /**
+     * The name of the extra, which is used to store the bitmap of the dialog's background within a
+     * bundle.
+     */
+    private static final String BACKGROUND_BITMAP_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::backgroundBitmap";
+
+    /**
+     * The name of the extra, which is used to store the resource id of the dialog's background
+     * within a bundle.
+     */
+    private static final String BACKGROUND_ID_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::backgroundId";
+
+    /**
+     * The name of the extra, which is used to store the color of the dialog's background within a
+     * bundle.
+     */
+    private static final String BACKGROUND_COLOR_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::backgroundColor";
+
+    /**
      * The parent view of the view, which is used to show the dialog's title.
      */
     private ViewGroup titleContainer;
@@ -112,6 +156,21 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     private Drawable icon;
 
     /**
+     * The id of the dialog's icon.
+     */
+    private int iconId = -1;
+
+    /**
+     * The attribute id of the dialog's icon.
+     */
+    private int iconAttributeId = -1;
+
+    /**
+     * The bitmap of the dialog's icon.
+     */
+    private Bitmap iconBitmap;
+
+    /**
      * The color of the title of the dialog.
      */
     private int titleColor;
@@ -125,6 +184,21 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * The background of the dialog.
      */
     private Drawable background;
+
+    /**
+     * The bitmap of the dialog's background.
+     */
+    private Bitmap backgroundBitmap;
+
+    /**
+     * The resource id of the dialog's background.
+     */
+    private int backgroundId = -1;
+
+    /**
+     * The color of the dialog's background.
+     */
+    private int backgroundColor = -1;
 
     /**
      * The custom content view of the dialog.
@@ -385,21 +459,32 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     @Override
-    public final void setIcon(@Nullable final Drawable icon) {
-        this.icon = icon;
+    public final void setIcon(@Nullable final Bitmap icon) {
+        this.iconBitmap = icon;
+        this.iconId = -1;
+        this.iconAttributeId = -1;
+        this.icon = icon != null ? new BitmapDrawable(getContext().getResources(), icon) : null;
         adaptIcon();
     }
 
     @Override
     public final void setIcon(@DrawableRes final int resourceId) {
-        setIcon(ContextCompat.getDrawable(getContext(), resourceId));
+        this.iconBitmap = null;
+        this.iconId = resourceId;
+        this.iconAttributeId = -1;
+        this.icon = ContextCompat.getDrawable(getContext(), resourceId);
+        adaptIcon();
     }
 
     @Override
     public final void setIconAttribute(@AttrRes final int attributeId) {
+        this.iconBitmap = null;
+        this.iconId = -1;
+        this.iconAttributeId = attributeId;
         TypedArray typedArray =
                 getContext().getTheme().obtainStyledAttributes(new int[]{attributeId});
-        setIcon(typedArray.getDrawable(0));
+        this.icon = typedArray.getDrawable(0);
+        adaptIcon();
     }
 
     @Override
@@ -430,19 +515,32 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     @Override
-    public final void setBackground(@Nullable final Drawable background) {
-        this.background = background;
+    public final void setBackground(@Nullable final Bitmap background) {
+        this.backgroundBitmap = background;
+        this.backgroundId = -1;
+        this.backgroundColor = -1;
+        this.background =
+                background != null ? new BitmapDrawable(getContext().getResources(), background) :
+                        null;
         adaptBackground();
     }
 
     @Override
     public final void setBackground(@DrawableRes final int resourceId) {
-        setBackground(ContextCompat.getDrawable(getContext(), resourceId));
+        this.backgroundBitmap = null;
+        this.backgroundId = resourceId;
+        this.backgroundColor = -1;
+        this.background = ContextCompat.getDrawable(getContext(), resourceId);
+        adaptBackground();
     }
 
     @Override
     public final void setBackgroundColor(@ColorInt final int color) {
-        setBackground(new ColorDrawable(color));
+        this.backgroundBitmap = null;
+        this.backgroundId = -1;
+        this.backgroundColor = color;
+        this.background = new ColorDrawable(color);
+        adaptBackground();
     }
 
     @Override
@@ -525,6 +623,22 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         outState.putInt(MESSAGE_COLOR_EXTRA, getMessageColor());
         outState.putCharSequence(TITLE_EXTRA, getTitle());
         outState.putCharSequence(MESSAGE_EXTRA, getMessage());
+
+        if (iconBitmap != null) {
+            outState.putParcelable(ICON_BITMAP_EXTRA, iconBitmap);
+        } else if (iconId != -1) {
+            outState.putInt(ICON_ID_EXTRA, iconId);
+        } else if (iconAttributeId != -1) {
+            outState.putInt(ICON_ATTRIBUTE_ID_EXTRA, iconAttributeId);
+        }
+
+        if (backgroundBitmap != null) {
+            outState.putParcelable(BACKGROUND_BITMAP_EXTRA, backgroundBitmap);
+        } else if (backgroundId != -1) {
+            outState.putInt(BACKGROUND_ID_EXTRA, backgroundId);
+        } else if (backgroundColor != -1) {
+            outState.putInt(BACKGROUND_COLOR_EXTRA, backgroundColor);
+        }
     }
 
     @Override
@@ -533,6 +647,22 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         setMessageColor(savedInstanceState.getInt(MESSAGE_COLOR_EXTRA));
         setTitle(savedInstanceState.getCharSequence(TITLE_EXTRA));
         setMessage(savedInstanceState.getCharSequence(MESSAGE_EXTRA));
+
+        if (savedInstanceState.containsKey(ICON_BITMAP_EXTRA)) {
+            setIcon((Bitmap) savedInstanceState.getParcelable(ICON_BITMAP_EXTRA));
+        } else if (savedInstanceState.containsKey(ICON_ID_EXTRA)) {
+            setIcon(savedInstanceState.getInt(ICON_ID_EXTRA));
+        } else if (savedInstanceState.containsKey(ICON_ATTRIBUTE_ID_EXTRA)) {
+            setIconAttribute(savedInstanceState.getInt(ICON_ATTRIBUTE_ID_EXTRA));
+        }
+
+        if (savedInstanceState.containsKey(BACKGROUND_BITMAP_EXTRA)) {
+            setBackground(savedInstanceState.getInt(BACKGROUND_BITMAP_EXTRA));
+        } else if (savedInstanceState.containsKey(BACKGROUND_ID_EXTRA)) {
+            setBackground(savedInstanceState.getInt(BACKGROUND_ID_EXTRA));
+        } else if (savedInstanceState.containsKey(BACKGROUND_COLOR_EXTRA)) {
+            setBackgroundColor(savedInstanceState.getInt(BACKGROUND_COLOR_EXTRA));
+        }
     }
 
     @Override

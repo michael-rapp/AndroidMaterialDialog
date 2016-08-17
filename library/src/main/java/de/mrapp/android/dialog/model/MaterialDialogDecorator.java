@@ -13,6 +13,7 @@
  */
 package de.mrapp.android.dialog.model;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
@@ -44,10 +45,10 @@ public interface MaterialDialogDecorator extends Dialog {
      * Sets the icon of the dialog.
      *
      * @param icon
-     *         The icon, which should be set, as an instance of the class {@link Drawable} or null,
-     *         if no icon should be shown
+     *         The icon, which should be set, as an instance of the class {@link Bitmap} or null, if
+     *         no icon should be shown
      */
-    void setIcon(@Nullable Drawable icon);
+    void setIcon(@Nullable Bitmap icon);
 
     /**
      * Sets the icon of the dialog.
@@ -109,10 +110,10 @@ public interface MaterialDialogDecorator extends Dialog {
      * Sets the background of the dialog.
      *
      * @param background
-     *         The background, which should be set, as an instance of the class {@link Drawable} or
+     *         The background, which should be set, as an instance of the class {@link Bitmap} or
      *         null, if no background should be set
      */
-    void setBackground(@Nullable Drawable background);
+    void setBackground(@Nullable Bitmap background);
 
     /**
      * Sets the background of the dialog.

@@ -13,6 +13,8 @@
  */
 package de.mrapp.android.dialog.decorator;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -30,7 +32,6 @@ import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.MaterialDialog;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -71,6 +72,41 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
             HeaderDialogDecorator.class.getSimpleName() + "::headerDividerColor";
 
     /**
+     * The name of the extra, which is used to store the bitmap of the background of the dialog's
+     * header within a bundle.
+     */
+    private static final String HEADER_BACKGROUND_BITMAP_EXTRA =
+            HeaderDialogDecorator.class.getSimpleName() + "::headerBackgroundBitmap";
+
+    /**
+     * The name of the extra, which is used to store the resource id of the background of the
+     * dialog's header within a bundle.
+     */
+    private static final String HEADER_BACKGROUND_ID_EXTRA =
+            HeaderDialogDecorator.class.getSimpleName() + "::headerBackgroundId";
+
+    /**
+     * The name of the extra, which is used to store the color of the background of the dialog's
+     * header.
+     */
+    private static final String HEADER_BACKGROUND_COLOR_EXTRA =
+            HeaderDialogDecorator.class.getSimpleName() + "::headerBackgroundColor";
+
+    /**
+     * The name of the extra, which is used to store the bitmap of the icon of the dialog's header
+     * within a bundle.
+     */
+    private static final String HEADER_ICON_BITMAP_EXTRA =
+            HeaderDialogDecorator.class.getSimpleName() + "::headerIconBitmap";
+
+    /**
+     * The name of the extra, which is used to store the resource id of the icon of the dialog's
+     * header within a bundle.
+     */
+    private static final String HEADER_ICON_ID_EXTRA =
+            HeaderDialogDecorator.class.getSimpleName() + "::headerIconId";
+
+    /**
      * The view group, which contains the views of the dialog's header.
      */
     private ViewGroup headerContainer;
@@ -106,9 +142,34 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
     private Drawable headerBackground;
 
     /**
+     * The bitmap of the background of the dialog's header
+     */
+    private Bitmap headerBackgroundBitmap;
+
+    /**
+     * The resource id of the background of the dialog's header.
+     */
+    private int headerBackgroundId = -1;
+
+    /**
+     * The color of the background of the dialog's header.
+     */
+    private int headerBackgroundColor = -1;
+
+    /**
      * The icon of the dialog's header.
      */
     private Drawable headerIcon;
+
+    /**
+     * The bitmap of the icon of the dialog's header.
+     */
+    private Bitmap headerIconBitmap;
+
+    /**
+     * The resource id of the icon of the dialog's header.
+     */
+    private int headerIconId = -1;
 
     /**
      * True, if the divider of the dialog's header is shown, false otherwise.
@@ -236,19 +297,29 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
     }
 
     @Override
-    public final void setHeaderBackgroundColor(@ColorInt final int color) {
-        setHeaderBackground(new ColorDrawable(color));
+    public final void setHeaderBackground(@Nullable final Bitmap background) {
+        this.headerBackgroundBitmap = background;
+        this.headerBackgroundId = -1;
+        this.headerBackgroundColor = -1;
+        this.headerBackground = new BitmapDrawable(getContext().getResources(), background);
+        adaptHeaderBackground();
     }
 
     @Override
     public final void setHeaderBackground(@DrawableRes final int resourceId) {
-        setHeaderBackground(ContextCompat.getDrawable(getContext(), resourceId));
+        this.headerBackgroundBitmap = null;
+        this.headerBackgroundId = resourceId;
+        this.headerBackgroundColor = -1;
+        this.headerBackground = ContextCompat.getDrawable(getContext(), resourceId);
+        adaptHeaderBackground();
     }
 
     @Override
-    public final void setHeaderBackground(@NonNull final Drawable background) {
-        ensureNotNull(background, "The background may not be null");
-        this.headerBackground = background;
+    public final void setHeaderBackgroundColor(@ColorInt final int color) {
+        this.headerBackgroundBitmap = null;
+        this.headerBackgroundId = -1;
+        this.headerBackgroundColor = color;
+        this.headerBackground = new ColorDrawable(color);
         adaptHeaderBackground();
     }
 
@@ -258,13 +329,18 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
     }
 
     @Override
-    public final void setHeaderIcon(@DrawableRes final int resourceId) {
-        setHeaderIcon(ContextCompat.getDrawable(getContext(), resourceId));
+    public final void setHeaderIcon(@Nullable final Bitmap icon) {
+        this.headerIconBitmap = icon;
+        this.headerIconId = -1;
+        this.headerIcon = new BitmapDrawable(getContext().getResources(), icon);
+        adaptHeaderIcon();
     }
 
     @Override
-    public final void setHeaderIcon(@Nullable final Drawable icon) {
-        this.headerIcon = icon;
+    public final void setHeaderIcon(@DrawableRes final int resourceId) {
+        this.headerIconBitmap = null;
+        this.headerIconId = resourceId;
+        this.headerIcon = ContextCompat.getDrawable(getContext(), resourceId);
         adaptHeaderIcon();
     }
 
@@ -296,6 +372,20 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
         outState.putInt(HEADER_HEIGHT_EXTRA, getHeaderHeight());
         outState.putBoolean(SHOW_HEADER_DIVIDER_EXTRA, isHeaderDividerShown());
         outState.putInt(HEADER_DIVIDER_COLOR_EXTRA, getHeaderDividerColor());
+
+        if (headerBackgroundBitmap != null) {
+            outState.putParcelable(HEADER_BACKGROUND_BITMAP_EXTRA, headerBackgroundBitmap);
+        } else if (headerBackgroundId != -1) {
+            outState.putInt(HEADER_BACKGROUND_ID_EXTRA, headerBackgroundId);
+        } else if (headerBackgroundColor != -1) {
+            outState.putInt(HEADER_BACKGROUND_COLOR_EXTRA, headerBackgroundColor);
+        }
+
+        if (headerIconBitmap != null) {
+            outState.putParcelable(HEADER_ICON_BITMAP_EXTRA, headerIconBitmap);
+        } else if (headerIconId != -1) {
+            outState.putInt(HEADER_ICON_ID_EXTRA, headerIconId);
+        }
     }
 
     @Override
@@ -304,6 +394,21 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
         setHeaderHeight(savedInstanceState.getInt(HEADER_HEIGHT_EXTRA));
         showHeaderDivider(savedInstanceState.getBoolean(SHOW_HEADER_DIVIDER_EXTRA));
         setHeaderDividerColor(savedInstanceState.getInt(HEADER_DIVIDER_COLOR_EXTRA));
+
+        if (savedInstanceState.containsKey(HEADER_BACKGROUND_BITMAP_EXTRA)) {
+            setHeaderBackground(
+                    (Bitmap) savedInstanceState.getParcelable(HEADER_BACKGROUND_BITMAP_EXTRA));
+        } else if (savedInstanceState.containsKey(HEADER_BACKGROUND_ID_EXTRA)) {
+            setHeaderBackground(savedInstanceState.getInt(HEADER_BACKGROUND_ID_EXTRA));
+        } else if (savedInstanceState.containsKey(HEADER_BACKGROUND_COLOR_EXTRA)) {
+            setHeaderBackgroundColor(savedInstanceState.getInt(HEADER_BACKGROUND_COLOR_EXTRA));
+        }
+
+        if (savedInstanceState.containsKey(HEADER_ICON_BITMAP_EXTRA)) {
+            setHeaderIcon((Bitmap) savedInstanceState.getParcelable(HEADER_ICON_BITMAP_EXTRA));
+        } else if (savedInstanceState.containsKey(HEADER_ICON_ID_EXTRA)) {
+            setHeaderIcon(savedInstanceState.getInt(HEADER_ICON_ID_EXTRA));
+        }
     }
 
     @Override
