@@ -34,7 +34,6 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -132,6 +131,20 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
             WizardDialogDecorator.class.getSimpleName() + "::buttonTextColor";
 
     /**
+     * The name of the extra, which is used to store, whether the divider, which is located above
+     * the dialog's buttons, should be shown, or not, within a bundle.
+     */
+    private static final String SHOW_BUTTON_BAR_DIVIDER_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::showButtonBarDivider";
+
+    /**
+     * The name of the extra, which is used to store the color of the divider, which is located
+     * above the dialog's buttons, within a bundle.
+     */
+    private static final String BUTTON_BAR_DIVIDER_COLOR_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::buttonBarDividerColor";
+
+    /**
      * The name of the extra, which is used to store the text of the back button of the dialog
      * within a bundle.
      */
@@ -153,23 +166,16 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
             WizardDialogDecorator.class.getSimpleName() + "::finishButtonText";
 
     /**
-     * The name of the extra, which is used to store, whether the divider, which is located above
-     * the dialog's buttons, should be shown, or not, within a bundle.
+     * The name of the extra, which is used to store items of the dialog's view pager within a
+     * bundle.
      */
-    private static final String SHOW_BUTTON_BAR_DIVIDER_EXTRA =
-            WizardDialogDecorator.class.getSimpleName() + "::showButtonBarDivider";
+    private static final String VIEW_PAGER_ITEMS_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::viewPagerItems";
 
     /**
-     * The name of the extra, which is used to store the color of the divider, which is located
-     * above the dialog's buttons, within a bundle.
+     * An array list, which contains the items if the dialog's view pager.
      */
-    private static final String BUTTON_BAR_DIVIDER_COLOR_EXTRA =
-            WizardDialogDecorator.class.getSimpleName() + "::buttonBarDividerColor";
-
-    /**
-     * A list, which contains the fragments, which are contained by the dialog.
-     */
-    private final List<ViewPagerItem> fragments;
+    private final ArrayList<ViewPagerItem> viewPagerItems;
 
     /**
      * The listeners, which should be notified, when the user navigates within the dialog.
@@ -638,7 +644,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
      */
     public WizardDialogDecorator(@NonNull final HeaderDialog dialog) {
         super(dialog);
-        this.fragments = new ArrayList<>();
+        this.viewPagerItems = new ArrayList<>();
         this.listeners = new LinkedHashSet<>();
     }
 
@@ -702,7 +708,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
                                   @NonNull final Class<? extends Fragment> fragmentClass,
                                   @Nullable final Bundle arguments) {
         ensureNotNull(fragmentClass, "The fragment class may not be null");
-        fragments.add(new ViewPagerItem(title, fragmentClass, arguments));
+        viewPagerItems.add(new ViewPagerItem(title, fragmentClass, arguments));
 
         if (viewPagerAdapter != null) {
             viewPagerAdapter.addItem(title, fragmentClass, arguments);
@@ -711,7 +717,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
 
     @Override
     public final void removeFragment(final int index) {
-        fragments.remove(index);
+        viewPagerItems.remove(index);
 
         if (viewPagerAdapter != null) {
             viewPagerAdapter.removeItem(index);
@@ -720,7 +726,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
 
     @Override
     public final void clearFragments() {
-        fragments.clear();
+        viewPagerItems.clear();
 
         if (viewPagerAdapter != null) {
             viewPagerAdapter.clear();
@@ -731,8 +737,8 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
     public final int indexOfFragment(@NonNull final Class<? extends Fragment> fragmentClass) {
         ensureNotNull(fragmentClass, "The fragment class may not be null");
 
-        for (int i = 0; i < fragments.size(); i++) {
-            ViewPagerItem item = fragments.get(i);
+        for (int i = 0; i < viewPagerItems.size(); i++) {
+            ViewPagerItem item = viewPagerItems.get(i);
 
             if (item.getFragmentClass().equals(fragmentClass)) {
                 return i;
@@ -744,7 +750,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
 
     @Override
     public final int getFragmentCount() {
-        return fragments.size();
+        return viewPagerItems.size();
     }
 
     @Override
@@ -981,6 +987,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
         outState.putCharSequence(BACK_BUTTON_TEXT_EXTRA, getBackButtonText());
         outState.putCharSequence(NEXT_BUTTON_TEXT_EXTRA, getNextButtonText());
         outState.putCharSequence(FINISH_BUTTON_TEXT_EXTRA, getFinishButtonText());
+        outState.putParcelableArrayList(VIEW_PAGER_ITEMS_EXTRA, viewPagerItems);
     }
 
     @Override
@@ -1013,6 +1020,15 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
         if (!TextUtils.isEmpty(finishButtonText)) {
             setFinishButtonText(finishButtonText);
         }
+
+        ArrayList<ViewPagerItem> viewPagerItems =
+                savedInstanceState.getParcelableArrayList(VIEW_PAGER_ITEMS_EXTRA);
+
+        if (viewPagerItems != null) {
+            for (ViewPagerItem item : viewPagerItems) {
+                addFragment(item.getTitle(), item.getFragmentClass(), item.getArguments());
+            }
+        }
     }
 
     @Override
@@ -1021,7 +1037,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
         View viewPagerView = view.findViewById(R.id.view_pager);
 
         if (viewPagerView instanceof ViewPager) {
-            viewPagerAdapter = new ViewPagerAdapter(getContext(), fragmentManager, fragments);
+            viewPagerAdapter = new ViewPagerAdapter(getContext(), fragmentManager, viewPagerItems);
             viewPager = (ViewPager) viewPagerView;
             viewPager.addOnPageChangeListener(this);
             viewPager.setAdapter(viewPagerAdapter);
