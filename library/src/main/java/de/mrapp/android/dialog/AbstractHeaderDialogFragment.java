@@ -13,6 +13,7 @@
  */
 package de.mrapp.android.dialog;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -21,7 +22,6 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import de.mrapp.android.dialog.decorator.HeaderDialogDecorator;
@@ -87,7 +87,7 @@ public abstract class AbstractHeaderDialogFragment extends AbstractMaterialDialo
     }
 
     @Override
-    public final void setHeaderBackground(@NonNull final Drawable background) {
+    public final void setHeaderBackground(@Nullable final Bitmap background) {
         decorator.setHeaderBackground(background);
     }
 
@@ -98,11 +98,11 @@ public abstract class AbstractHeaderDialogFragment extends AbstractMaterialDialo
 
     @Override
     public final void setHeaderIcon(@DrawableRes final int resourceId) {
-        setHeaderIcon(ContextCompat.getDrawable(getContext(), resourceId));
+        decorator.setHeaderIcon(resourceId);
     }
 
     @Override
-    public final void setHeaderIcon(@Nullable final Drawable icon) {
+    public final void setHeaderIcon(@Nullable final Bitmap icon) {
         decorator.setHeaderIcon(icon);
     }
 

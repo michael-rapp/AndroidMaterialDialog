@@ -15,6 +15,7 @@ package de.mrapp.android.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.AttrRes;
@@ -128,7 +129,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     }
 
     @Override
-    public final void setIcon(@Nullable final Drawable icon) {
+    public final void setIcon(@Nullable final Bitmap icon) {
         decorator.setIcon(icon);
     }
 
@@ -168,7 +169,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     }
 
     @Override
-    public final void setBackground(@Nullable final Drawable background) {
+    public final void setBackground(@Nullable final Bitmap background) {
         decorator.setBackground(background);
     }
 

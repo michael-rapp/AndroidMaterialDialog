@@ -15,8 +15,7 @@ package de.mrapp.android.dialog.builder;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -208,7 +207,7 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
      * BuilderType
      */
     public final BuilderType setHeaderBackgroundColor(@ColorInt final int color) {
-        getDialog().setHeaderBackground(new ColorDrawable(color));
+        getDialog().setHeaderBackgroundColor(color);
         return self();
     }
 
@@ -222,7 +221,7 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
      * BuilderType
      */
     public final BuilderType setHeaderBackground(@DrawableRes final int resourceId) {
-        getDialog().setHeaderBackground(ContextCompat.getDrawable(getContext(), resourceId));
+        getDialog().setHeaderBackground(resourceId);
         return self();
     }
 
@@ -230,12 +229,12 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
      * Sets the background of the header of the dialog, which is created by the builder.
      *
      * @param background
-     *         The background, which should be set, as an instance of the class {@link Drawable}.
-     *         The background may not be null
+     *         The background, which should be set, as an instance of the class {@link Bitmap}. The
+     *         background may not be null
      * @return The builder, the method has been called upon, as an instance of the generic type
      * BuilderType
      */
-    public final BuilderType setHeaderBackground(@NonNull final Drawable background) {
+    public final BuilderType setHeaderBackground(@NonNull final Bitmap background) {
         getDialog().setHeaderBackground(background);
         return self();
     }
@@ -250,7 +249,7 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
      * BuilderType
      */
     public final BuilderType setHeaderIcon(@DrawableRes final int resourceId) {
-        getDialog().setHeaderIcon(ContextCompat.getDrawable(getContext(), resourceId));
+        getDialog().setHeaderIcon(resourceId);
         return self();
     }
 
@@ -258,12 +257,12 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
      * Sets the icon of the header of the dialog, which is created by the builder.
      *
      * @param icon
-     *         The icon, which should be set, as an instance of the class {@link Drawable} or null,
-     *         if no icon should be set
+     *         The icon, which should be set, as an instance of the class {@link Bitmap} or null, if
+     *         no icon should be set
      * @return The builder, the method has been called upon, as an instance of the generic type
      * BuilderType
      */
-    public final BuilderType setHeaderIcon(@Nullable final Drawable icon) {
+    public final BuilderType setHeaderIcon(@Nullable final Bitmap icon) {
         getDialog().setHeaderIcon(icon);
         return self();
     }

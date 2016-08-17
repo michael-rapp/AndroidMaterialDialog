@@ -16,7 +16,7 @@ package de.mrapp.android.dialog.builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.support.annotation.AttrRes;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
@@ -312,12 +312,12 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * Sets the background of the dialog, which is created by the builder.
      *
      * @param background
-     *         The background, which should be set, as an instance of the class {@link Drawable} or
+     *         The background, which should be set, as an instance of the class {@link Bitmap} or
      *         null, if no custom background should be set
      * @return The builder, the method has been called upon, as an instance of the generic type
      * BuilderType
      */
-    public final BuilderType setBackground(@Nullable final Drawable background) {
+    public final BuilderType setBackground(@Nullable final Bitmap background) {
         getDialog().setBackground(background);
         return self();
     }
@@ -410,12 +410,12 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * Sets the icon of the dialog, which is created by the builder.
      *
      * @param icon
-     *         The icon, which should be set, as an instance of the class {@link Drawable} or null,
-     *         if no icon should be shown
+     *         The icon, which should be set, as an instance of the class {@link Bitmap} or null, if
+     *         no icon should be shown
      * @return The builder, the method has been called upon, as an instance of the generic type
      * BuilderType
      */
-    public final BuilderType setIcon(@Nullable final Drawable icon) {
+    public final BuilderType setIcon(@Nullable final Bitmap icon) {
         getDialog().setIcon(icon);
         return self();
     }

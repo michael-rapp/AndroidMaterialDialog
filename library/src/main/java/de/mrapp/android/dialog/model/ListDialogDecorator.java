@@ -66,6 +66,11 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Sets the items, which should be shown by the dialog.
      *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
      * @param items
      *         The items, which should be set, as an array of the type {@link CharSequence}. The
      *         items may not be null
@@ -80,6 +85,11 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Sets the items, which should be shown by the dialog.
      *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
      * @param resourceId
      *         The resource id of the items, which should be set, as an {@link Integer} value. The
      *         resource id must correspond to a valid array resource
@@ -92,6 +102,11 @@ public interface ListDialogDecorator extends Dialog {
 
     /**
      * Sets the adapter, which provides the items, which should be shown by the dialog.
+     *
+     * Note, that the adapter and the attached listener are not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because they are not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-set the adapter and re-register the listener.
      *
      * @param adapter
      *         The adapter, which should be set, as an instance of the type {@link ListAdapter}. The
@@ -107,6 +122,11 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Sets the selectable items, which should be shown by the dialog. Only one of the items can be
      * selected at once.
+     *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
      *
      * @param items
      *         The items, which should be set, as an array of the type {@link CharSequence}. The
@@ -126,6 +146,11 @@ public interface ListDialogDecorator extends Dialog {
      * Sets the selectable items, which should be shown by the dialog. Only one of the items can be
      * selected at once.
      *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
      * @param resourceId
      *         The resource id of the items, which should be set, as an {@link Integer} value. The
      *         resource id must correspond to a valid array resource
@@ -144,6 +169,11 @@ public interface ListDialogDecorator extends Dialog {
      * Sets the adapter, which provides the selectable items, which should be shown by the dialog.
      * Only one of the items can be selected at once.
      *
+     * Note, that the adapter and the attached listener are not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because they are not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-set the adapter and re-register the listener.
+     *
      * @param adapter
      *         The adapter, which should be set, as an instance of the type {@link ListAdapter}. The
      *         adapter may not be null
@@ -161,6 +191,11 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Sets the selectable items, which should be shown by the dialog. Multiple items can be
      * selected at once.
+     *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
      *
      * @param items
      *         The items, which should be set, as an array of the type {@link CharSequence}. The
@@ -181,6 +216,11 @@ public interface ListDialogDecorator extends Dialog {
      * Sets the selectable items, which should be shown by the dialog. Multiple items can be
      * selected at once.
      *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
      * @param resourceId
      *         The resource id of the items, which should be set, as an {@link Integer} value. The
      *         resource id must correspond to a valid array resource
@@ -199,6 +239,11 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Sets the listener, which should be notified, when an item, which is shown by the dialog is
      * selected.
+     *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
      *
      * @param listener
      *         The listener, which should be set, as an instance of the type {@link
