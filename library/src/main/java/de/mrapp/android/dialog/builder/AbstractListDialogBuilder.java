@@ -118,6 +118,11 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     /**
      * Sets the items, which should be shown by the dialog, which is created by the builder.
      *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
      * @param items
      *         The items, which should be set, as an array of the type {@link CharSequence}. The
      *         items may not be null
@@ -136,6 +141,11 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
 
     /**
      * Sets the items, which should be shown by the dialog, which is created by the builder.
+     *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
      *
      * @param resourceId
      *         The resource id of the items, which should be set, as an {@link Integer} value. The
@@ -157,6 +167,11 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      * Sets the adapter, which provides the items, which should be shown by the dialog, which is
      * created by the builder.
      *
+     * Note, that the adapter and the attached listener are not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because they are not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-set the adapter and re-register the listener.
+     *
      * @param adapter
      *         The adapter, which should be set, as an instance of the type {@link ListAdapter}. The
      *         adapter may not be null
@@ -176,6 +191,11 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     /**
      * Sets the selectable items, which should be shown by the dialog, which is created by the
      * builder. Only one of the items can be selected at once.
+     *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
      *
      * @param items
      *         The items, which should be set, as an array of the type {@link CharSequence}. The
@@ -201,6 +221,11 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      * Sets the selectable items, which should be shown by the dialog, which is created by the
      * builder. Only one of the items can be selected at once.
      *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
      * @param resourceId
      *         The resource id of the items, which should be set, as an {@link Integer} value. The
      *         resource id must correspond to a valid array resource
@@ -225,6 +250,11 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      * Sets the adapter, which provides the selectable items, which should be shown by the dialog,
      * which is created by the builder. Only one of the items can be selected at once.
      *
+     * Note, that the adapter and the attached listener are not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because they are not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-set the adapter and re-register the listener.
+     *
      * @param adapter
      *         The adapter, which should be set, as an instance of the type {@link ListAdapter}. The
      *         adapter may not be null
@@ -248,6 +278,11 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     /**
      * Sets the selectable items, which should be shown by the dialog, which is created by the
      * builder. Multiple items can be selected at once.
+     *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
      *
      * @param items
      *         The items, which should be set, as an array of the type {@link CharSequence}. The
@@ -274,6 +309,11 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      * Sets the selectable items, which should be shown by the dialog, which is created by the
      * builder. Multiple items can be selected at once.
      *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
      * @param resourceId
      *         The resource id of the items, which should be set, as an {@link Integer} value. The
      *         resource id must correspond to a valid array resource
@@ -292,6 +332,36 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
                                                  @Nullable final boolean[] checkedItems,
                                                  @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
         getDialog().setMultiChoiceItems(resourceId, checkedItems, listener);
+        return self();
+    }
+
+    /**
+     * Sets the adapter, which provides the selectable items, which should be shown by the dialog,
+     * which is created by the builder. Multiple items can be selected at once.
+     *
+     * Note, that the adapter and the attached listener are not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because they are not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-set the adapter and re-register the listener.
+     *
+     * @param adapter
+     *         The adapter, which should be set, as an instance of the type {@link ListAdapter}. The
+     *         adapter may not be null
+     * @param checkedItems
+     *         An array, which contains, whether the items, which correspond to the corresponding
+     *         indices, should be selected by default, or not, as a {@link Boolean} array or null,
+     *         if no items should be selected by default
+     * @param listener
+     *         The listener, which should be notified, when an item is clicked, as an instance of
+     *         the type {@link DialogInterface.OnMultiChoiceClickListener} or null, if no listener
+     *         should be notified
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setMultiChoiceItems(@NonNull final ListAdapter adapter,
+                                                 @Nullable final boolean[] checkedItems,
+                                                 @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
+        getDialog().setMultiChoiceItems(adapter, checkedItems, listener);
         return self();
     }
 

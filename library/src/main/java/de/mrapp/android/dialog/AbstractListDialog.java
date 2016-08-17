@@ -133,6 +133,13 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     }
 
     @Override
+    public final void setMultiChoiceItems(@NonNull final ListAdapter adapter,
+                                          @Nullable final boolean[] checkedItems,
+                                          @Nullable final OnMultiChoiceClickListener listener) {
+        decorator.setMultiChoiceItems(adapter, checkedItems, listener);
+    }
+
+    @Override
     public final void setOnItemSelectedListener(
             @Nullable final AdapterView.OnItemSelectedListener listener) {
         decorator.setOnItemSelectedListener(listener);

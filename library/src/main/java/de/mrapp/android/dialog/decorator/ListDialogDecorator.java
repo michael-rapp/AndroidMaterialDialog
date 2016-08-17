@@ -387,6 +387,22 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     }
 
     @Override
+    public final void setMultiChoiceItems(@NonNull final ListAdapter adapter,
+                                          @Nullable final boolean[] checkedItems,
+                                          @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
+        ensureNotNull(items, "The items may not be null");
+        this.items = null;
+        this.singleChoiceItems = null;
+        this.multiChoiceItems = null;
+        this.adapter = adapter;
+        this.singleChoiceListener = null;
+        this.multiChoiceListener = listener;
+        this.choiceMode = ListView.CHOICE_MODE_MULTIPLE;
+        this.checkedItems = checkedItems;
+        inflateListView();
+    }
+
+    @Override
     public final void setOnItemSelectedListener(
             @Nullable final AdapterView.OnItemSelectedListener listener) {
         listViewItemSelectedListener = listener;

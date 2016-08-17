@@ -237,6 +237,30 @@ public interface ListDialogDecorator extends Dialog {
                              @Nullable DialogInterface.OnMultiChoiceClickListener listener);
 
     /**
+     * Sets the adapter, which provides the selectable items, which should be shown by the dialog.
+     * Multiple items can be selected at once.
+     *
+     * Note, that the adapter and the attached listener are not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because they are not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-set the adapter and re-register the listener.
+     *
+     * @param adapter
+     *         The adapter, which should be set, as an instance of the type {@link ListAdapter}. The
+     *         adapter may not be null
+     * @param checkedItems
+     *         An array, which contains, whether the items, which correspond to the corresponding
+     *         indices, should be selected by default, or not, as a {@link Boolean} array or null,
+     *         if no items should be selected by default
+     * @param listener
+     *         The listener, which should be notified, when an item is clicked, as an instance of
+     *         the type {@link DialogInterface.OnMultiChoiceClickListener} or null, if no listener
+     *         should be notified
+     */
+    void setMultiChoiceItems(@NonNull ListAdapter adapter, @Nullable boolean[] checkedItems,
+                             @Nullable DialogInterface.OnMultiChoiceClickListener listener);
+
+    /**
      * Sets the listener, which should be notified, when an item, which is shown by the dialog is
      * selected.
      *
