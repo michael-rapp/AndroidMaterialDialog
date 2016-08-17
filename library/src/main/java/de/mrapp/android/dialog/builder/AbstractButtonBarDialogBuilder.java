@@ -147,6 +147,11 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
     /**
      * Sets the text of the negative button of the dialog, which is created by the builder.
      *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
      * @param text
      *         The text, which should be set, as an instance of the type {@link CharSequence} or
      *         null, if no negative button should be shown
@@ -165,6 +170,11 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
 
     /**
      * Sets the text of the negative button of the dialog, which is created by the builder.
+     *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
      *
      * @param resourceId
      *         The resource id of the text, which should be set, as an {@link Integer} value. The
@@ -185,6 +195,11 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
     /**
      * Sets the text of the positive button of the dialog, which is created by the builder.
      *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
      * @param text
      *         The text, which should be set, as an instance of the type {@link CharSequence} or
      *         null, if no positive button should be shown
@@ -203,6 +218,11 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
 
     /**
      * Sets the text of the positive button of the dialog, which is created by the builder.
+     *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
      *
      * @param resourceId
      *         The resource id of the text, which should be set, as an {@link Integer} value. The
@@ -223,6 +243,11 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
     /**
      * Sets the text of the neutral button of the dialog, which is created by the builder.
      *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
      * @param text
      *         The text, which should be set, as an instance of the type {@link CharSequence} or
      *         null, if no neutral button should be shown
@@ -241,6 +266,11 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
 
     /**
      * Sets the text of the neutral button of the dialog, which is created by the builder.
+     *
+     * Note, that the attached listener is not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
      *
      * @param resourceId
      *         The resource id of the text, which should be set, as an {@link Integer} value. The
