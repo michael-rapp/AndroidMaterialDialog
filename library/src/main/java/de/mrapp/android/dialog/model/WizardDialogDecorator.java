@@ -466,6 +466,11 @@ public interface WizardDialogDecorator {
     /**
      * Adds a new listener, which should be notified, when the user navigates within the dialog.
      *
+     * Note, that the attached listeners are not restored using a dialog's
+     * <code>onRestoreInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listeners.
+     *
      * @param listener
      *         The listener, which should be added, as an instance of the type {@link
      *         WizardListener}. The listener may not be null
