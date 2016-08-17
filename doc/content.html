@@ -398,11 +398,11 @@
 		
 		<h4><a name="wizard-dialog">10 The class WizardDialog</a></h4>
 		
-		<p>The class <a href="javadoc/de/mrapp/android/dialog/WizardDialog.Builder.html" target="_blank" class="code">WizardDialog.Builder</a> provides a builder, which allows to create dialogs, which can contain multiple fragments. It is possible to switch between the tabs by either clicking the tabs, which indicate the currently shown fragment, or by using buttons at the bottom of the dialog. Such a dialog can also contain a title, a message and a header. When the dialog contains a header, its tabs can be placed within the header.</p>
+		<p>The class <a href="javadoc/de/mrapp/android/dialog/WizardDialog.Builder.html" target="_blank" class="code">WizardDialog.Builder</a> provides a builder, which allows to create dialogs, which can contain multiple fragments. It is possible to switch between the tabs by either clicking the tabs, which indicate the currently shown fragmentClass, or by using buttons at the bottom of the dialog. Such a dialog can also contain a title, a message and a header. When the dialog contains a header, its tabs can be placed within the header.</p>
 		
 		<p><center><a href="images/example-wizard-dialog.png" target="_blank".><img src="images/example-wizard-dialog.png" alt="Example"></center></a></p>
 		
-		<p>In order to add fragments to the dialog, the following methods can be used. Each fragment is identified by its class. Furthermore, it is possible to specify a title for each fragment, which is shown in the dialog's tabs. When using a method, which accepts a <a href="https://developer.android.com/reference/android/os/Bundle.html" target="_blank" class="code">Bundle</a> as a paramter, the specified bundle is passed to the corresponding fragment when it is shown.</p>
+		<p>In order to add fragments to the dialog, the following methods can be used. Each fragmentClass is identified by its class. Furthermore, it is possible to specify a title for each fragmentClass, which is shown in the dialog's tabs. When using a method, which accepts a <a href="https://developer.android.com/reference/android/os/Bundle.html" target="_blank" class="code">Bundle</a> as a paramter, the specified bundle is passed to the corresponding fragmentClass when it is shown.</p>
 		
 		        <p class="center"><tt>addFragment(Class&lt;? extends Fragment&gt;):Builder</tt></p>
         		<p class="center"><tt>addFragment(Class&lt;? extends Fragment&gt;, Bundle):Builder</tt></p>		
@@ -440,13 +440,13 @@
                     </tr>
                     <tr>
                         <td><tt>setTabIndicatorHeight(int):Builder</tt></td>
-                        <td>Sets the height of the indicator, which indicates the currently shown fragment.</td>
+                        <td>Sets the height of the indicator, which indicates the currently shown fragmentClass.</td>
                         <td><center><tt>2dp</tt></center></td>
 			<td><center>The height must be at least 1.</center></td>
                     </tr>
                     <tr>
                         <td><tt>setTabIndicatorColor(int):Builder</tt></td>
-                        <td>Sets the color of the indicator, which indicates the currently shown fragment.</td>
+                        <td>Sets the color of the indicator, which indicates the currently shown fragmentClass.</td>
                         <td><center><tt>R.attr.colorAccent</tt></center></td>
 			<td><center>Must be a valid color, not a resource ID.</center></td>
                     </tr>
@@ -519,12 +519,12 @@
                     </tr>
                     <tr>
                         <td><tt>materialDialogTabIndicatorHeight</tt></td>
-                        <td>Specifies the height of the indicator, which indicates the currently shown fragment.</td>
+                        <td>Specifies the height of the indicator, which indicates the currently shown fragmentClass.</td>
                         <td><center><tt>dimension</tt></center></td>
                     </tr>
                     <tr>
                         <td><tt>materialDialogTabIndicatorColor</tt></td>
-                        <td>Specifies the color of the indicator, which indicates the currently shown fragment.</td>
+                        <td>Specifies the color of the indicator, which indicates the currently shown fragmentClass.</td>
                         <td><center><tt>color</tt></center></td>
                     </tr>
                     <tr>

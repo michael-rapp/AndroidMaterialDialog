@@ -42,9 +42,9 @@ import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.WizardDialog.TabPosition;
 import de.mrapp.android.dialog.WizardDialog.WizardListener;
 import de.mrapp.android.dialog.adapter.ViewPagerAdapter;
+import de.mrapp.android.dialog.datastructure.ViewPagerItem;
 import de.mrapp.android.dialog.model.HeaderDialog;
 import de.mrapp.android.dialog.view.ViewPager;
-import de.mrapp.android.util.datastructure.Triple;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
 import static de.mrapp.android.util.Condition.ensureNotEmpty;
@@ -169,7 +169,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
     /**
      * A list, which contains the fragments, which are contained by the dialog.
      */
-    private final List<Triple<CharSequence, Class<? extends Fragment>, Bundle>> fragments;
+    private final List<ViewPagerItem> fragments;
 
     /**
      * The listeners, which should be notified, when the user navigates within the dialog.
@@ -702,8 +702,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
                                   @NonNull final Class<? extends Fragment> fragmentClass,
                                   @Nullable final Bundle arguments) {
         ensureNotNull(fragmentClass, "The fragment class may not be null");
-        fragments.add(new Triple<CharSequence, Class<? extends Fragment>, Bundle>(title,
-                fragmentClass, arguments));
+        fragments.add(new ViewPagerItem(title, fragmentClass, arguments));
 
         if (viewPagerAdapter != null) {
             viewPagerAdapter.addItem(title, fragmentClass, arguments);
@@ -733,9 +732,9 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
         ensureNotNull(fragmentClass, "The fragment class may not be null");
 
         for (int i = 0; i < fragments.size(); i++) {
-            Triple<CharSequence, Class<? extends Fragment>, Bundle> item = fragments.get(i);
+            ViewPagerItem item = fragments.get(i);
 
-            if (item.second.equals(fragmentClass)) {
+            if (item.getFragmentClass().equals(fragmentClass)) {
                 return i;
             }
         }

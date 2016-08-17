@@ -23,7 +23,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.List;
 
-import de.mrapp.android.util.datastructure.Triple;
+import de.mrapp.android.dialog.datastructure.ViewPagerItem;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -41,9 +41,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     private final Context context;
 
     /**
-     * A list, which contains the adapter's fragments and the corresponding titles.
+     * A list, which contains the adapter's items.
      */
-    private final List<Triple<CharSequence, Class<? extends Fragment>, Bundle>> items;
+    private final List<ViewPagerItem> items;
 
     /**
      * Creates a new adapter, which allows to manage the fragments of a view pager.
@@ -54,14 +54,17 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
      * @param fragmentManager
      *         The fragment manager, which should be used by the adapter, as an instance of the
      *         class FragmentManager. The fragment manager may not be null
+     * @param items
+     *         A list, which contains the adapter's items, as an instance of the type {@link List}.
+     *         The list may not be null
      */
     public ViewPagerAdapter(@NonNull final Context context,
                             @NonNull final FragmentManager fragmentManager,
-                            @NonNull final List<Triple<CharSequence, Class<? extends Fragment>, Bundle>> items) {
+                            @NonNull final List<ViewPagerItem> items) {
         super(fragmentManager);
         ensureNotNull(context, "The context may not be null");
         ensureNotNull(fragmentManager, "The fragment manager may not be null");
-        ensureNotNull(items, "The items may not be null");
+        ensureNotNull(items, "The list may not be null");
         this.context = context;
         this.items = items;
     }
@@ -83,8 +86,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
                               @NonNull final Class<? extends Fragment> fragmentClass,
                               @Nullable final Bundle arguments) {
         ensureNotNull(fragmentClass, "The fragment class may not be null");
-        items.add(new Triple<CharSequence, Class<? extends Fragment>, Bundle>(title, fragmentClass,
-                arguments));
+        items.add(new ViewPagerItem(title, fragmentClass, arguments));
         notifyDataSetChanged();
     }
 
@@ -109,9 +111,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public final Fragment getItem(final int index) {
-        Triple<CharSequence, Class<? extends Fragment>, Bundle> item = items.get(index);
-        Class<? extends Fragment> fragmentClass = item.second;
-        Bundle arguments = item.third;
+        ViewPagerItem item = items.get(index);
+        Class<? extends Fragment> fragmentClass = item.getFragmentClass();
+        Bundle arguments = item.getArguments();
         return Fragment.instantiate(context, fragmentClass.getName(), arguments);
     }
 
@@ -122,7 +124,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public final CharSequence getPageTitle(final int position) {
-        return items.get(position).first;
+        return items.get(position).getTitle();
     }
 
 }
