@@ -1,8 +1,14 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.6.2 (Aug. 19th 2016)
+
+A bugfix release, which fixes the following issues:
+
+- Potential crashes when using custom content views with `showDividersOnScroll` set to `true` are now prevented.
+
 ## Version 3.6.1 (Aug. 19th 2016)
 
-A bugfix release, which fixes the following issues;
+A bugfix release, which fixes the following issues:
 
 - The `WizardDialog` does not crash anymore on configuration changes with `setRetainInstance` set to `true`.
 
