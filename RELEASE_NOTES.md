@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.6.1 (Aug. 19th 2016)
+
+A bugfix release, which fixes the following issues;
+
+- The `WizardDialog` does not crash anymore on configuration changes with `setRetainInstance` set to `true`.
+
 ## Version 3.6.0 (Aug. 19th 2016)
 
 A feature release, which introduces the following changes:
