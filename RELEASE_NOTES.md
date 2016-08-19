@@ -1,5 +1,13 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.6.0 (Aug. 19th 2016)
+
+A feature release, which introduces the following changes:
+
+- The properties of dialogs are now stored in their `onSaveInstanceState`-method. This does not include unserializable properties, e.g. listeners.
+- The `WizardDialog` is not dismissed on configuration changes anymore. Instead, its state is automatically restored. This is in accordance with the default behavior of a `DialogFragment`.
+- The `showDividersOnScrollMethod` of a `MaterialDialog` does now also take effect for custom views, if an `AbsListView` is contained by the view hierarchy. 
+
 ## Version 3.5.3 (Jun. 16th 2016)
 
 A bugfix release, which fixes the following issues:
