@@ -38,11 +38,11 @@ import java.util.Locale;
 import java.util.Set;
 
 import de.mrapp.android.dialog.R;
+import de.mrapp.android.dialog.WizardDialog;
 import de.mrapp.android.dialog.WizardDialog.TabPosition;
 import de.mrapp.android.dialog.WizardDialog.WizardListener;
 import de.mrapp.android.dialog.adapter.ViewPagerAdapter;
 import de.mrapp.android.dialog.datastructure.ViewPagerItem;
-import de.mrapp.android.dialog.model.HeaderDialog;
 import de.mrapp.android.dialog.view.ViewPager;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
@@ -57,7 +57,7 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @author Michael Rapp
  * @since 3.2.0
  */
-public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<HeaderDialog>
+public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<WizardDialog>
         implements de.mrapp.android.dialog.model.WizardDialogDecorator, OnPageChangeListener {
 
     /**
@@ -642,7 +642,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
      *         The dialog, whose view hierarchy should be modified by the decorator, as an instance
      *         of the generic type DialogType. The dialog may not be null
      */
-    public WizardDialogDecorator(@NonNull final HeaderDialog dialog) {
+    public WizardDialogDecorator(@NonNull final WizardDialog dialog) {
         super(dialog);
         this.viewPagerItems = new ArrayList<>();
         this.listeners = new LinkedHashSet<>();
@@ -987,7 +987,8 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Heade
         outState.putCharSequence(BACK_BUTTON_TEXT_EXTRA, getBackButtonText());
         outState.putCharSequence(NEXT_BUTTON_TEXT_EXTRA, getNextButtonText());
         outState.putCharSequence(FINISH_BUTTON_TEXT_EXTRA, getFinishButtonText());
-        outState.putParcelableArrayList(VIEW_PAGER_ITEMS_EXTRA, viewPagerItems);
+        outState.putParcelableArrayList(VIEW_PAGER_ITEMS_EXTRA,
+                getDialog().getRetainInstance() ? null : viewPagerItems);
     }
 
     @Override
