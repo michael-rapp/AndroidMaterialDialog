@@ -50,7 +50,7 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
      *         The resource id of the theme, the visibility should be obtained from, as an {@link
      *         Integer} value
      */
-    private void obtainHeaderVisibility(@StyleRes final int themeResourceId) {
+    private void obtainShowHeader(@StyleRes final int themeResourceId) {
         TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                 new int[]{R.attr.materialDialogShowHeader});
         showHeader(typedArray.getBoolean(0, false));
@@ -300,6 +300,7 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
     @Override
     protected void obtainStyledAttributes(@StyleRes final int themeResourceId) {
         super.obtainStyledAttributes(themeResourceId);
+        obtainShowHeader(themeResourceId);
         obtainHeaderHeight(themeResourceId);
         obtainHeaderBackground(themeResourceId);
         obtainHeaderIcon(themeResourceId);
