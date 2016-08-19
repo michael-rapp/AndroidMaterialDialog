@@ -93,6 +93,46 @@ public class ScrollableDialogDecorator extends AbstractDialogDecorator<ListDialo
     }
 
     /**
+     * Returns, whether the last item of a scrollable view is fully visible, or not.
+     *
+     * @param scrollView
+     *         The scrollable view as an instance of the class {@link AbsListView}. The view may not
+     *         be null
+     * @return True, if the last item is fully visible, false otherwise
+     */
+    private boolean isLastItemFullyVisible(@NonNull final AbsListView scrollView) {
+        if (scrollView.getCount() > 0 && scrollView.getChildCount() > 0) {
+            if (scrollView.getLastVisiblePosition() == scrollView.getCount() - 1) {
+                View child = scrollView.getChildAt(scrollView.getChildCount() - 1);
+                return child != null && child.getBottom() <= scrollView.getHeight();
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns, whether the first item of a scrollable view is fully visible, or not.
+     *
+     * @param scrollView
+     *         The scrollable view as an instance of the class {@link AbsListView}. The view may not
+     *         be null
+     * @return True, if the first item is fully visible, false otherwise
+     */
+    private boolean isFirstItemFullyVisible(@NonNull final AbsListView scrollView) {
+        if (scrollView.getFirstVisiblePosition() == 0) {
+            if (scrollView.getChildCount() == 0) {
+                return true;
+            } else if (scrollView.getChildCount() > 0) {
+                View child = scrollView.getChildAt(0);
+                return child != null && child.getTop() == 0;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Creates a new decorator, which allows to modify the view hierarchy of a dialog, which is
      * designed according to Android 5's Material Design guidelines even on pre-Lollipop devices and
      * may contain a scrollable content.
@@ -130,12 +170,8 @@ public class ScrollableDialogDecorator extends AbstractDialogDecorator<ListDialo
     public final void onScroll(final AbsListView view, final int firstVisibleItem,
                                final int visibleItemCount, final int totalItemCount) {
         if (showDividersOnScroll) {
-            boolean lastItemFullyVisible = view.getLastVisiblePosition() == view.getCount() - 1 &&
-                    view.getChildAt(view.getChildCount() - 1).getBottom() <= view.getHeight();
-            boolean firstItemFullyVisible = view.getFirstVisiblePosition() == 0 &&
-                    (view.getChildCount() == 0 || view.getChildAt(0).getTop() == 0);
-            buttonBarDivider.setVisibility(lastItemFullyVisible ? View.GONE : View.VISIBLE);
-            contentDivider.setVisibility(firstItemFullyVisible ?
+            buttonBarDivider.setVisibility(isLastItemFullyVisible(view) ? View.GONE : View.VISIBLE);
+            contentDivider.setVisibility(isFirstItemFullyVisible(view) ?
                     (getDialog().isButtonBarDividerShown() ? View.VISIBLE : View.GONE) :
                     View.VISIBLE);
         }
