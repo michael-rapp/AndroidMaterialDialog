@@ -38,6 +38,8 @@ import de.mrapp.android.util.ThemeUtil;
  *         The type of the dialog, which is created by the builder
  * @param <BuilderType>
  *         The type of the builder
+ * @author Michael Rapp
+ * @since 3.3.0
  */
 public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, BuilderType extends AbstractListDialogBuilder<DialogType, ?>>
         extends AbstractButtonBarDialogBuilder<DialogType, BuilderType> {
@@ -55,20 +57,6 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
         int defaultColor = ThemeUtil
                 .getColor(getContext(), themeResourceId, android.R.attr.textColorSecondary);
         setItemColor(typedArray.getColor(0, defaultColor));
-    }
-
-    /**
-     * Obtains, whether the dividers, which are located above and below the dialog's list view,
-     * should be shown, when the list view is scrolled, or not, from a specific theme.
-     *
-     * @param themeResourceId
-     *         The resource id of the theme, the boolean value should be obtained from, as an {@link
-     *         Integer} value
-     */
-    private void obtainShowDividersOnScroll(@StyleRes final int themeResourceId) {
-        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
-                new int[]{R.attr.materialDialogShowDividersOnScroll});
-        showDividersOnScroll(typedArray.getBoolean(0, true));
     }
 
     /**
@@ -381,27 +369,11 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
         return self();
     }
 
-    /**
-     * Sets, whether dividers, which are located above and below the list view of the dialog, which
-     * is created by the builder, should be shown, when the list view is scrolled, or not.
-     *
-     * @param show
-     *         True, if the dividers, which are located above and below the dialog's list view,
-     *         should be shown, when the list view is scrolled, false otherwise
-     * @return The builder, the method has been called upon, as an instance of the generic type
-     * BuilderType
-     */
-    public final BuilderType showDividersOnScroll(boolean show) {
-        getDialog().showDividersOnScroll(show);
-        return self();
-    }
-
     @CallSuper
     @Override
     protected void obtainStyledAttributes(@StyleRes final int themeResourceId) {
         super.obtainStyledAttributes(themeResourceId);
         obtainItemColor(themeResourceId);
-        obtainShowDividersOnScroll(themeResourceId);
     }
 
 }

@@ -275,23 +275,4 @@ public interface ListDialogDecorator extends Dialog {
      */
     void setOnItemSelectedListener(@Nullable AdapterView.OnItemSelectedListener listener);
 
-    /**
-     * Returns, whether dividers, which are located above and below the dialog's list view, are
-     * shown, when the list view is scrolled, or not.
-     *
-     * @return True, if the dividers, which are located above and below the dialog's list view, are
-     * shown, when the list view is scrolled, false otherwise
-     */
-    boolean areDividersShownOnScroll();
-
-    /**
-     * Sets, whether dividers, which are located above and below the dialog's list view, should be
-     * shown, when the list view is scrolled, or not.
-     *
-     * @param show
-     *         True, if the dividers, which are located above and below the dialog's list view,
-     *         should be shown, when the list view is scrolled, false otherwise
-     */
-    void showDividersOnScroll(boolean show);
-
 }

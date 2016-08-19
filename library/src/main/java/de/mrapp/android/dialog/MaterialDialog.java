@@ -17,7 +17,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 
-import de.mrapp.android.dialog.builder.AbstractListDialogBuilder;
+import de.mrapp.android.dialog.builder.AbstractScrollableDialogBuilder;
 
 /**
  * A dialog, which is designed according to Android 5's Material Design guidelines even on
@@ -32,7 +32,7 @@ import de.mrapp.android.dialog.builder.AbstractListDialogBuilder;
  * @author Michael Rapp
  * @since 3.0.0
  */
-public class MaterialDialog extends AbstractListDialog {
+public class MaterialDialog extends AbstractScrollableDialog {
 
     /**
      * A builder, which allows to create and show dialogs, which are designed according to Android
@@ -41,7 +41,7 @@ public class MaterialDialog extends AbstractListDialog {
      * items. It is possible to customize the color of the dialog's title and button texts and the
      * title as well as the dialog's content can be replaced with a custom view.
      */
-    public static class Builder extends AbstractListDialogBuilder<MaterialDialog, Builder> {
+    public static class Builder extends AbstractScrollableDialogBuilder<MaterialDialog, Builder> {
 
         /**
          * Creates a new builder, which allows to create dialogs, which are designed according to

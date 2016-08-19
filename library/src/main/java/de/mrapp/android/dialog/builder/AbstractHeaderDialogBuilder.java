@@ -37,6 +37,8 @@ import de.mrapp.android.util.ThemeUtil;
  *         The type of the dialog, which is created by the builder
  * @param <BuilderType>
  *         The type of the builder
+ * @author Michael Rapp
+ * @since 3.3.0
  */
 public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialog, BuilderType extends AbstractHeaderDialogBuilder<DialogType, ?>>
         extends AbstractMaterialDialogBuilder<DialogType, BuilderType> {

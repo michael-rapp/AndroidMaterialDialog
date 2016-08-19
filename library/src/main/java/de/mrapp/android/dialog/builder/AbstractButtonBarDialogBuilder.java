@@ -37,6 +37,8 @@ import de.mrapp.android.util.ThemeUtil;
  *         The type of the dialog, which is created by the builder
  * @param <BuilderType>
  *         The type of the builder
+ * @author Michael Rapp
+ * @since 3.3.0
  */
 public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBarDialog, BuilderType extends AbstractButtonBarDialogBuilder<DialogType, ?>>
         extends AbstractValidateableDialogBuilder<DialogType, BuilderType> {

@@ -20,8 +20,6 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -44,7 +42,7 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @since 3.2.0
  */
 public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog>
-        implements de.mrapp.android.dialog.model.ListDialogDecorator, OnScrollListener {
+        implements de.mrapp.android.dialog.model.ListDialogDecorator {
 
     /**
      * The name of the extra, which is used to store the color of the list items of the dialog
@@ -52,14 +50,6 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
      */
     private static final String ITEM_COLOR_EXTRA =
             ListDialogDecorator.class.getSimpleName() + "::itemColor";
-
-    /**
-     * The name of the extra, which is used to store, whether the dividers, which are located above
-     * and below the dialog's list view, should be shown, when the list view is scrolled, or not,
-     * within a bundle.
-     */
-    private static final String SHOW_DIVIDERS_ON_SCROLL_EXTRA =
-            ListDialogDecorator.class.getSimpleName() + "::showDividersOnScroll";
 
     /**
      * The name of the extra, which is used to store the dialog's items within a bundle.
@@ -92,25 +82,9 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     private ListView listView;
 
     /**
-     * The divider, which is located above the dialog's custom view.
-     */
-    private View contentDivider;
-
-    /**
-     * The divider, which is located above the dialog's buttons.
-     */
-    private View buttonBarDivider;
-
-    /**
      * The color of the list items of the dialog.
      */
     private int itemColor;
-
-    /**
-     * True, if the dividers, which are located above and below the dialog's list view, are shown,
-     * when the list view is scrolled, false otherwise
-     */
-    private boolean showDividersOnScroll;
 
     /**
      * The adapter, which is used to manage the list items of the dialog.
@@ -177,7 +151,6 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
                     this.listView.setChoiceMode(choiceMode);
                     this.listView.setAdapter(adapter);
                     this.listView.setOnItemSelectedListener(listViewItemSelectedListener);
-                    this.listView.setOnScrollListener(this);
                     initializeSelectionListener();
                     initializeCheckedItems();
                 }
@@ -413,45 +386,8 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     }
 
     @Override
-    public final boolean areDividersShownOnScroll() {
-        return showDividersOnScroll;
-    }
-
-    @Override
-    public final void showDividersOnScroll(final boolean show) {
-        this.showDividersOnScroll = show;
-
-        if (!show && buttonBarDivider != null && contentDivider != null) {
-            buttonBarDivider.setVisibility(
-                    getDialog().isButtonBarDividerShown() ? View.VISIBLE : View.GONE);
-            contentDivider.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public final void onScrollStateChanged(final AbsListView view, final int scrollState) {
-
-    }
-
-    @Override
-    public final void onScroll(final AbsListView view, final int firstVisibleItem,
-                               final int visibleItemCount, final int totalItemCount) {
-        if (showDividersOnScroll) {
-            boolean lastItemFullyVisible = view.getLastVisiblePosition() == view.getCount() - 1 &&
-                    view.getChildAt(view.getChildCount() - 1).getBottom() <= view.getHeight();
-            boolean firstItemFullyVisible = view.getFirstVisiblePosition() == 0 &&
-                    (view.getChildCount() == 0 || view.getChildAt(0).getTop() == 0);
-            buttonBarDivider.setVisibility(lastItemFullyVisible ? View.GONE : View.VISIBLE);
-            contentDivider.setVisibility(firstItemFullyVisible ?
-                    (getDialog().isButtonBarDividerShown() ? View.VISIBLE : View.GONE) :
-                    View.VISIBLE);
-        }
-    }
-
-    @Override
     public final void onSaveInstanceState(@NonNull final Bundle outState) {
         outState.putInt(ITEM_COLOR_EXTRA, getItemColor());
-        outState.putBoolean(SHOW_DIVIDERS_ON_SCROLL_EXTRA, areDividersShownOnScroll());
 
         if (items != null) {
             outState.putCharSequenceArray(ITEMS_EXTRA, items);
@@ -467,7 +403,6 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     @Override
     public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         setItemColor(savedInstanceState.getInt(ITEM_COLOR_EXTRA));
-        showDividersOnScroll(savedInstanceState.getBoolean(SHOW_DIVIDERS_ON_SCROLL_EXTRA));
         CharSequence[] items = savedInstanceState.getCharSequenceArray(ITEMS_EXTRA);
 
         if (items != null) {
@@ -493,16 +428,12 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
 
     @Override
     protected final void onAttach(@NonNull final View view) {
-        contentDivider = view.findViewById(R.id.content_divider);
-        buttonBarDivider = view.findViewById(R.id.button_bar_divider);
         inflateListView();
         adaptItemColor();
     }
 
     @Override
     protected final void onDetach() {
-        contentDivider = null;
-        buttonBarDivider = null;
         listView = null;
     }
 

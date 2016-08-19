@@ -33,6 +33,8 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  *         The type of the dialog, which is created by the builder
  * @param <BuilderType>
  *         The type of the builder
+ * @author Michael Rapp
+ * @since 3.3.0
  */
 public abstract class AbstractValidateableDialogBuilder<DialogType extends ValidateableDialog, BuilderType extends AbstractValidateableDialogBuilder<DialogType, ?>>
         extends AbstractHeaderDialogBuilder<DialogType, BuilderType> {
