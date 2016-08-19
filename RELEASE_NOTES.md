@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.6.3 (Aug. 19th 2016)
+
+A bugfix release, which fixes the following issues:
+
+- When `showDividersOnScroll` is to `true`, the visibility of the dividers is now adapted correctly.
+
 ## Version 3.6.2 (Aug. 19th 2016)
 
 A bugfix release, which fixes the following issues:
