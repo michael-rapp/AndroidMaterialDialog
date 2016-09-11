@@ -1,5 +1,14 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.6.4 (Sep. 12th 2016)
+
+A minor release, which introduces the following changes:
+
+- Updated `targetSdkVersion` to API level 24 (Android 7.0).
+- Updated AppCompat v7 support library to version 24.2.0.
+- Updated dependency "AndroidUtil" to version 1.11.1.
+- Updated dependency "AndroidMaterialViews" to version 2.1.2.
+
 ## Version 3.6.3 (Aug. 19th 2016)
 
 A bugfix release, which fixes the following issues:
