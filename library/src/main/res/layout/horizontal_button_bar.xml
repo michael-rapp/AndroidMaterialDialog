@@ -60,10 +60,12 @@ License.
             android:orientation="horizontal">
 
             <Button
-                android:id="@android:id/button1"
+                android:id="@android:id/button2"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dialog_button_bar_spacing"
+                android:layout_marginStart="@dimen/dialog_button_bar_spacing"
                 android:minHeight="@dimen/dialog_button_min_height"
                 android:minWidth="@dimen/dialog_button_min_width"
                 android:paddingLeft="@dimen/dialog_button_horizontal_padding"
@@ -74,12 +76,10 @@ License.
                 android:visibility="gone"/>
 
             <Button
-                android:id="@android:id/button2"
+                android:id="@android:id/button1"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dialog_button_bar_spacing"
-                android:layout_marginStart="@dimen/dialog_button_bar_spacing"
                 android:minHeight="@dimen/dialog_button_min_height"
                 android:minWidth="@dimen/dialog_button_min_width"
                 android:paddingLeft="@dimen/dialog_button_horizontal_padding"

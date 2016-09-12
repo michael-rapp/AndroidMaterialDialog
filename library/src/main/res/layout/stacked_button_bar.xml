@@ -28,6 +28,20 @@ License.
         android:visibility="gone"/>
 
     <Button
+        android:id="@android:id/button1"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end|center_vertical"
+        android:minHeight="@dimen/dialog_button_min_height"
+        android:paddingLeft="@dimen/dialog_button_horizontal_padding"
+        android:paddingRight="@dimen/dialog_button_horizontal_padding"
+        android:textColor="?attr/colorAccent"
+        android:textSize="@dimen/dialog_button_text_size"
+        android:textStyle="bold"
+        android:visibility="gone"/>
+
+    <Button
         android:id="@android:id/button2"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
@@ -43,20 +57,6 @@ License.
 
     <Button
         android:id="@android:id/button3"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="end|center_vertical"
-        android:minHeight="@dimen/dialog_button_min_height"
-        android:paddingLeft="@dimen/dialog_button_horizontal_padding"
-        android:paddingRight="@dimen/dialog_button_horizontal_padding"
-        android:textColor="?attr/colorAccent"
-        android:textSize="@dimen/dialog_button_text_size"
-        android:textStyle="bold"
-        android:visibility="gone"/>
-
-    <Button
-        android:id="@android:id/button1"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
