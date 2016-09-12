@@ -15,11 +15,7 @@ License.
 -->
 <TextView
     android:id="@android:id/title"
+    style="@style/MaterialDialog.Title"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:ellipsize="end"
-    android:maxLines="2"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:textSize="@dimen/dialog_title_text_size"
-    android:textStyle="bold"/>
+    android:layout_height="wrap_content"/>

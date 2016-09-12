@@ -15,21 +15,12 @@ License.
 -->
 <resources>
 
-    <style name="MaterialDialog.Light" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="materialDialogButtonBarDividerColor">@color/button_bar_divider_color_light
-        </item>
-    </style>
-
-    <style name="MaterialDialog" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="materialDialogButtonBarDividerColor">@color/button_bar_divider_color_dark</item>
-    </style>
-
     <style name="MaterialDialog.Title">
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">2</item>
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:textSize">@dimen/dialog_title_text_size</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="MaterialDialog.Button" parent="Base.Widget.AppCompat.Button.Borderless">
@@ -37,7 +28,7 @@ License.
         <item name="android:minWidth">@dimen/dialog_button_min_width</item>
         <item name="android:textColor">?attr/colorAccent</item>
         <item name="android:textSize">@dimen/dialog_button_text_size</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
 </resources>

@@ -38,18 +38,13 @@ License.
 
         <Button
             android:id="@android:id/button3"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/MaterialDialog.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:minHeight="@dimen/dialog_button_min_height"
-            android:minWidth="@dimen/dialog_button_min_width"
             android:paddingLeft="@dimen/dialog_button_horizontal_padding"
             android:paddingRight="@dimen/dialog_button_horizontal_padding"
-            android:textColor="?attr/colorAccent"
-            android:textSize="@dimen/dialog_button_text_size"
-            android:textStyle="bold"
             android:visibility="gone"/>
 
         <LinearLayout
@@ -61,32 +56,23 @@ License.
 
             <Button
                 android:id="@android:id/button2"
-                style="?android:attr/buttonBarButtonStyle"
+                style="@style/MaterialDialog.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dialog_button_bar_spacing"
                 android:layout_marginStart="@dimen/dialog_button_bar_spacing"
-                android:minHeight="@dimen/dialog_button_min_height"
-                android:minWidth="@dimen/dialog_button_min_width"
                 android:paddingLeft="@dimen/dialog_button_horizontal_padding"
                 android:paddingRight="@dimen/dialog_button_horizontal_padding"
-                android:textColor="?attr/colorAccent"
-                android:textSize="@dimen/dialog_button_text_size"
-                android:textStyle="bold"
                 android:visibility="gone"/>
 
             <Button
                 android:id="@android:id/button1"
-                style="?android:attr/buttonBarButtonStyle"
+                style="@style/MaterialDialog.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minHeight="@dimen/dialog_button_min_height"
-                android:minWidth="@dimen/dialog_button_min_width"
+                android:enabled="false"
                 android:paddingLeft="@dimen/dialog_button_horizontal_padding"
                 android:paddingRight="@dimen/dialog_button_horizontal_padding"
-                android:textColor="?attr/colorAccent"
-                android:textSize="@dimen/dialog_button_text_size"
-                android:textStyle="bold"
                 android:visibility="gone"/>
 
         </LinearLayout>
