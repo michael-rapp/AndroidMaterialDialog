@@ -22,6 +22,7 @@ License.
 
     <style name="MaterialDialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="materialDialogButtonBarDividerColor">@color/button_bar_divider_color_dark</item>
+        <item name="android:background">#424242</item>
     </style>
 
     <style name="MaterialDialog.Title">
