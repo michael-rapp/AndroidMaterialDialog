@@ -18,11 +18,18 @@ License.
     <style name="MaterialDialog.Light" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="materialDialogButtonBarDividerColor">@color/button_bar_divider_color_light
         </item>
+        <item name="materialDialogDisabledButtonTextColor">
+            @color/dialog_button_disabled_text_color_light
+        </item>
+        <item name="android:background">@android:color/white</item>
     </style>
 
     <style name="MaterialDialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="materialDialogButtonBarDividerColor">@color/button_bar_divider_color_dark</item>
-        <item name="android:background">#424242</item>
+        <item name="materialDialogDisabledButtonTextColor">
+            @color/dialog_button_disabled_text_color_dark
+        </item>
+        <item name="materialDialogBackground">#424242</item>
     </style>
 
     <style name="MaterialDialog.Title">

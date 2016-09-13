@@ -47,14 +47,29 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
      * Obtains the button text color from a specific theme.
      *
      * @param themeResourceId
-     *         The resource id of the theme, the button text color should be obtained from, as an
-     *         {@link Integer} value
+     *         The resource id of the theme, the color should be obtained from, as an {@link
+     *         Integer} value
      */
     private void obtainButtonTextColor(@StyleRes final int themeResourceId) {
         TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                 new int[]{R.attr.materialDialogButtonTextColor});
         int defaultColor = ThemeUtil.getColor(getContext(), themeResourceId, R.attr.colorAccent);
         setButtonTextColor(typedArray.getColor(0, defaultColor));
+    }
+
+    /**
+     * Obtains the disabled button text color from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the color should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainDisabledButtonTextColor(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.materialDialogDisabledButtonTextColor});
+        int defaultColor = ContextCompat
+                .getColor(getContext(), R.color.dialog_button_disabled_text_color_light);
+        setDisabledButtonTextColor(typedArray.getColor(0, defaultColor));
     }
 
     /**
@@ -118,16 +133,29 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
     }
 
     /**
-     * Sets the color of the button texts of the dialog, which is created by the builder.
+     * Sets the text color of the buttons of the dialog, which is created by the builder.
      *
      * @param color
-     *         The color, which should be set, as an {@link Integer} value or -1, if no custom
-     *         button color should be set
+     *         The color, which should be set, as an {@link Integer} value
      * @return The builder, the method has been called upon, as an instance of the generic type
      * BuilderType
      */
     public final BuilderType setButtonTextColor(@ColorInt final int color) {
         getDialog().setButtonTextColor(color);
+        return self();
+    }
+
+    /**
+     * Sets the text color of the buttons of the dialog, which is created by the builder, when
+     * disabled.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setDisabledButtonTextColor(@ColorInt final int color) {
+        getDialog().setDisabledButtonTextColor(color);
         return self();
     }
 
@@ -324,6 +352,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
     protected void obtainStyledAttributes(@StyleRes final int themeResourceId) {
         super.obtainStyledAttributes(themeResourceId);
         obtainButtonTextColor(themeResourceId);
+        obtainDisabledButtonTextColor(themeResourceId);
         obtainShowButtonBarDivider(themeResourceId);
         obtainButtonBarDividerColor(themeResourceId);
     }

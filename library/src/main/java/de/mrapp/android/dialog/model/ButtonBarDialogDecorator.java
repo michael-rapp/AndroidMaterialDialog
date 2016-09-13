@@ -171,19 +171,34 @@ public interface ButtonBarDialogDecorator extends Dialog {
     void stackButtons(boolean stackButtons);
 
     /**
-     * Returns the color of the button texts of the dialog.
+     * Returns the text color of the dialog's buttons.
      *
-     * @return The color of the button texts of the dialog as an {@link Integer} value
+     * @return The text color of dialog's buttons as an {@link Integer} value
      */
     int getButtonTextColor();
 
     /**
-     * Sets the color of the button texts of the dialog.
+     * Sets the text color of the dialog's buttons.
      *
      * @param color
      *         The color, which should be set, as an {@link Integer} value
      */
     void setButtonTextColor(@ColorInt int color);
+
+    /**
+     * Returns the text color the dialog's buttons when disabled.
+     *
+     * @return The text color of the dialog's buttons when disabled as an {@link Integer} value
+     */
+    int getDisabledButtonTextColor();
+
+    /**
+     * Sets the text color of the dialog's buttons when disabled.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    void setDisabledButtonTextColor(@ColorInt int color);
 
     /**
      * Returns, whether the divider, which is located above the dialog's buttons, is shown, or not.

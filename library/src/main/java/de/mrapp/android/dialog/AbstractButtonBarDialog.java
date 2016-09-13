@@ -121,6 +121,16 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
     }
 
     @Override
+    public final int getDisabledButtonTextColor() {
+        return decorator.getDisabledButtonTextColor();
+    }
+
+    @Override
+    public final void setDisabledButtonTextColor(@ColorInt final int color) {
+        decorator.setDisabledButtonTextColor(color);
+    }
+
+    @Override
     public final boolean isButtonBarDividerShown() {
         return decorator.isButtonBarDividerShown();
     }

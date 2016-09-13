@@ -18,5 +18,7 @@ License.
     <color name="header_divider_color">#31000000</color>
     <color name="button_bar_divider_color_light">#ffcecece</color>
     <color name="button_bar_divider_color_dark">#ff757575</color>
+    <color name="dialog_button_disabled_text_color_light">#42000000</color>
+    <color name="dialog_button_disabled_text_color_dark">#4dffffff</color>
 
 </resources>

@@ -14,6 +14,7 @@
 package de.mrapp.android.dialog.decorator;
 
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -122,9 +123,14 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     private View contentDivider;
 
     /**
-     * The color of the button texts of the dialog.
+     * The text color of the dialog's buttons.
      */
     private int buttonTextColor;
+
+    /**
+     * The text color of the dialog's buttons when disabled.
+     */
+    private int disabledButtonTextColor;
 
     /**
      * True, if the buttons of the dialog are aligned vertically, false otherwise.
@@ -214,16 +220,20 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
      * Adapts the text color of the dialog's buttons.
      */
     private void adaptButtonTextColor() {
+        int[][] states = new int[][]{new int[]{-android.R.attr.state_enabled}, new int[]{}};
+        int[] colors = new int[]{disabledButtonTextColor, buttonTextColor};
+        ColorStateList colorStateList = new ColorStateList(states, colors);
+
         if (positiveButton != null) {
-            positiveButton.setTextColor(buttonTextColor);
+            positiveButton.setTextColor(colorStateList);
         }
 
         if (neutralButton != null) {
-            neutralButton.setTextColor(buttonTextColor);
+            neutralButton.setTextColor(colorStateList);
         }
 
         if (negativeButton != null) {
-            negativeButton.setTextColor(buttonTextColor);
+            negativeButton.setTextColor(colorStateList);
         }
     }
 
@@ -405,6 +415,17 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     @Override
     public final void setButtonTextColor(@ColorInt final int color) {
         buttonTextColor = color;
+        adaptButtonTextColor();
+    }
+
+    @Override
+    public final int getDisabledButtonTextColor() {
+        return disabledButtonTextColor;
+    }
+
+    @Override
+    public final void setDisabledButtonTextColor(@ColorInt final int color) {
+        disabledButtonTextColor = color;
         adaptButtonTextColor();
     }
 
