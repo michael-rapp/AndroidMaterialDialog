@@ -20,13 +20,6 @@ License.
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <View
-        android:id="@+id/button_bar_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/button_bar_divider_color_light"
-        android:visibility="gone"/>
-
     <Button
         android:id="@android:id/button1"
         style="@style/MaterialDialog.Button"

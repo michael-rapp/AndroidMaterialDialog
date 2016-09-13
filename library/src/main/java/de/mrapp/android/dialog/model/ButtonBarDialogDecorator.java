@@ -15,8 +15,10 @@ package de.mrapp.android.dialog.model;
 
 import android.content.DialogInterface;
 import android.support.annotation.ColorInt;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.view.View;
 import android.widget.Button;
 
 /**
@@ -233,5 +235,23 @@ public interface ButtonBarDialogDecorator extends Dialog {
      *         The color, which should be set, as an {@link Integer} value
      */
     void setButtonBarDividerColor(int color);
+
+    /**
+     * Sets the custom view, which should be used to show the buttons of the dialog.
+     *
+     * @param resourceId
+     *         The resource id of the view, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid layout resource
+     */
+    void setCustomButtonBar(@LayoutRes int resourceId);
+
+    /**
+     * Sets the custom view, which should be used to show the buttons of the dialog.
+     *
+     * @param view
+     *         The view, which should be set, as an instance of the class {@link View} or null, if
+     *         no custom view should be used to show the title
+     */
+    void setCustomButtonBar(@Nullable View view);
 
 }

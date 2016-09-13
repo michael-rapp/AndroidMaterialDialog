@@ -17,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -186,24 +187,52 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     private int buttonBarDividerColor;
 
     /**
+     * The resource id of the custom button bar of the dialog.
+     */
+    private int customButtonBarViewId = -1;
+
+    /**
+     * The custom button bar of the dialog.
+     */
+    private View customButtonBarView;
+
+    /**
      * Inflates the layout, which is used to show the dialog's buttons.
      */
     private void inflateButtonBar() {
         ViewGroup rootView = (ViewGroup) getView();
 
         if (rootView != null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            buttonBarContainer = (ViewGroup) layoutInflater
-                    .inflate(R.layout.button_bar_container, rootView, false);
-            rootView.addView(buttonBarContainer);
-            View view = layoutInflater.inflate(
-                    stackButtons ? R.layout.stacked_button_bar : R.layout.horizontal_button_bar,
-                    buttonBarContainer, false);
-            buttonBarContainer.addView(view);
-            positiveButton = (Button) view.findViewById(android.R.id.button1);
-            negativeButton = (Button) view.findViewById(android.R.id.button2);
-            neutralButton = (Button) view.findViewById(android.R.id.button3);
-            buttonBarDivider = view.findViewById(R.id.button_bar_divider);
+            if (buttonBarContainer == null) {
+                LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+                buttonBarContainer = (ViewGroup) layoutInflater
+                        .inflate(R.layout.button_bar_container, rootView, false);
+                buttonBarDivider = buttonBarContainer.findViewById(R.id.button_bar_divider);
+                rootView.addView(buttonBarContainer);
+            }
+
+            if (buttonBarContainer.getChildCount() > 1) {
+                buttonBarContainer.removeViewAt(1);
+            }
+
+            if (customButtonBarView != null) {
+                buttonBarContainer.addView(customButtonBarView);
+            } else if (customButtonBarViewId != -1) {
+                LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+                View view =
+                        layoutInflater.inflate(customButtonBarViewId, buttonBarContainer, false);
+                buttonBarContainer.addView(view);
+            } else {
+                LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+                View view = layoutInflater.inflate(
+                        stackButtons ? R.layout.stacked_button_bar : R.layout.horizontal_button_bar,
+                        buttonBarContainer, false);
+                buttonBarContainer.addView(view);
+            }
+
+            positiveButton = (Button) buttonBarContainer.findViewById(android.R.id.button1);
+            negativeButton = (Button) buttonBarContainer.findViewById(android.R.id.button2);
+            neutralButton = (Button) buttonBarContainer.findViewById(android.R.id.button3);
         }
     }
 
@@ -456,6 +485,20 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     public final void setButtonBarDividerColor(final int color) {
         this.buttonBarDividerColor = color;
         adaptButtonBarDividerColor();
+    }
+
+    @Override
+    public final void setCustomButtonBar(@LayoutRes final int resourceId) {
+        customButtonBarView = null;
+        customButtonBarViewId = resourceId;
+        adaptButtonBar();
+    }
+
+    @Override
+    public final void setCustomButtonBar(@Nullable final View view) {
+        customButtonBarView = view;
+        customButtonBarViewId = -1;
+        adaptButtonBar();
     }
 
     @Override
