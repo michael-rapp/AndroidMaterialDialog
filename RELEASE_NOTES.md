@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.6.7 (Sep. 14th 2016)
+
+A minor release, which introduces the following changes:
+
+- Added `setCustomButtonBar`-methods, which allow to replace the buttons of a dialog.
+
 ## Version 3.6.6 (Sep. 13th 2016)
 
 A bugfix release, which fixes the following issues:
