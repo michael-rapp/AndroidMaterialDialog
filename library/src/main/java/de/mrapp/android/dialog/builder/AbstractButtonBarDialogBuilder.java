@@ -18,11 +18,13 @@ import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.ButtonBarDialog;
@@ -344,6 +346,36 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
      */
     public final BuilderType setButtonBarDividerColor(final int color) {
         getDialog().setButtonBarDividerColor(color);
+        return self();
+    }
+
+    /**
+     * Sets the custom view, which should be used to show the buttons of the dialog, which is
+     * created by the builder.
+     *
+     * @param resourceId
+     *         The resource id of the view, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid layout resource
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setCustomButtonBar(@LayoutRes int resourceId) {
+        getDialog().setCustomButtonBar(resourceId);
+        return self();
+    }
+
+    /**
+     * Sets the custom view, which should be used to show the buttons of the dialog, which is
+     * created by the builder.
+     *
+     * @param view
+     *         The view, which should be set, as an instance of the class {@link View} or null, if
+     *         no custom view should be used to show the title
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setCustomButtonBar(@Nullable View view) {
+        getDialog().setCustomButtonBar(view);
         return self();
     }
 
