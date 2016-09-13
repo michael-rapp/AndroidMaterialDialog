@@ -230,9 +230,14 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
                 buttonBarContainer.addView(view);
             }
 
-            positiveButton = (Button) buttonBarContainer.findViewById(android.R.id.button1);
-            negativeButton = (Button) buttonBarContainer.findViewById(android.R.id.button2);
-            neutralButton = (Button) buttonBarContainer.findViewById(android.R.id.button3);
+            View positiveButtonView = buttonBarContainer.findViewById(android.R.id.button1);
+            View negativeButtonView = buttonBarContainer.findViewById(android.R.id.button2);
+            View neutralButtonView = buttonBarContainer.findViewById(android.R.id.button3);
+            positiveButton =
+                    positiveButtonView instanceof Button ? (Button) positiveButtonView : null;
+            negativeButton =
+                    negativeButtonView instanceof Button ? (Button) negativeButtonView : null;
+            neutralButton = neutralButtonView instanceof Button ? (Button) neutralButtonView : null;
         }
     }
 
