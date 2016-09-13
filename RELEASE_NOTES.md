@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.6.6 (Sep. 13th 2016)
+
+A bugfix release, which fixes the following issues:
+
+- The disabled text color of a dialog's buttons is now stored/restored in its `onSaveInstanceState`-/`onRestoreInstanceState`-method.
+
 ## Version 3.6.5 (Sep. 13th 2016)
 
 A bugfix release, which fixes the following issues:
