@@ -1,5 +1,14 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.6.5 (Sep. 13th 2016)
+
+A bugfix release, which fixes the following issues:
+
+- https://github.com/michael-rapp/AndroidMaterialDialog/issues/6
+- https://github.com/michael-rapp/AndroidMaterialDialog/issues/5
+- Fixed background color of dialogs when using the dark theme together with AppCompat v7 support library 24.2.0.
+- The buttons of dialogs are now grayed-out when disabled
+
 ## Version 3.6.4 (Sep. 12th 2016)
 
 A minor release, which introduces the following changes:
