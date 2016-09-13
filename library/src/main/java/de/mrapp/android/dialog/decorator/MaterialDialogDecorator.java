@@ -15,6 +15,7 @@ package de.mrapp.android.dialog.decorator;
 
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -33,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import de.mrapp.android.dialog.MaterialDialogConfig;
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.util.ViewUtil;
@@ -322,6 +324,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             inflateTitleView();
             adaptTitle();
             adaptTitleColor();
+            adaptTitleFont();
             adaptIcon();
         }
     }
@@ -343,6 +346,16 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     private void adaptTitleColor() {
         if (titleTextView != null) {
             titleTextView.setTextColor(titleColor);
+        }
+    }
+
+    /**
+     * Adapts the dialog's title font
+     */
+    private void adaptTitleFont() {
+        Typeface titleFont = MaterialDialogConfig.getTitleFont();
+        if (titleFont != null) {
+            titleTextView.setTypeface(titleFont);
         }
     }
 
@@ -672,6 +685,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         inflateContentView();
         adaptTitle();
         adaptTitleColor();
+        adaptTitleFont();
         adaptIcon();
         adaptMessage();
         adaptMessageColor();

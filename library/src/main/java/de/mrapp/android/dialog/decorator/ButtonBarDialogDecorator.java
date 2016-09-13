@@ -15,6 +15,7 @@ package de.mrapp.android.dialog.decorator;
 
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -28,6 +29,7 @@ import android.widget.Button;
 
 import java.util.Locale;
 
+import de.mrapp.android.dialog.MaterialDialogConfig;
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.listener.OnClickListenerWrapper;
 import de.mrapp.android.dialog.model.ValidateableDialog;
@@ -245,54 +247,60 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     }
 
     /**
+     * Adapt a specific button
+     *
+     * @param button
+     *         the button to adapt
+     * @param buttonText
+     *         text displayed on the button
+     * @param listener
+     *         listener of the button
+     * @param identifier
+     *         type of button e.g. {@link DialogInterface#BUTTON_POSITIVE},
+     *         {@link DialogInterface#BUTTON_NEGATIVE}, or {@link DialogInterface#BUTTON_NEUTRAL}.
+     */
+    private void adaptButton(Button button, CharSequence buttonText,
+                             DialogInterface.OnClickListener listener, final int identifier) {
+        if (button != null) {
+            Typeface buttonFont = MaterialDialogConfig.getButtonFont();
+            if (buttonFont != null) {
+                button.setTypeface(buttonFont);
+            }
+
+            button.setText(buttonText != null ?
+                    buttonText.toString().toUpperCase(Locale.getDefault()) : null);
+            OnClickListenerWrapper onClickListener =
+                    new OnClickListenerWrapper(listener, true, getDialog(),
+                            DialogInterface.BUTTON_POSITIVE);
+            button.setOnClickListener(onClickListener);
+            button.setVisibility(!TextUtils.isEmpty(buttonText) ? View.VISIBLE : View.GONE);
+
+            adaptButtonBarContainerVisibility();
+        }
+    }
+
+    /**
      * Adapts the dialog's positive button.
      */
     private void adaptPositiveButton() {
-        if (positiveButton != null) {
-            positiveButton.setText(positiveButtonText != null ?
-                    positiveButtonText.toString().toUpperCase(Locale.getDefault()) : null);
-            OnClickListenerWrapper onClickListener =
-                    new OnClickListenerWrapper(positiveButtonListener, true, getDialog(),
-                            DialogInterface.BUTTON_POSITIVE);
-            positiveButton.setOnClickListener(onClickListener);
-            positiveButton.setVisibility(
-                    !TextUtils.isEmpty(positiveButtonText) ? View.VISIBLE : View.GONE);
-            adaptButtonBarContainerVisibility();
-        }
+        adaptButton(positiveButton, positiveButtonText, positiveButtonListener,
+                DialogInterface.BUTTON_POSITIVE);
     }
 
     /**
      * Adapts the dialog's neutral button.
      */
     private void adaptNeutralButton() {
-        if (neutralButton != null) {
-            neutralButton.setText(neutralButtonText != null ?
-                    neutralButtonText.toString().toUpperCase(Locale.getDefault()) : null);
-            OnClickListenerWrapper onClickListener =
-                    new OnClickListenerWrapper(neutralButtonListener, false, getDialog(),
-                            DialogInterface.BUTTON_NEUTRAL);
-            neutralButton.setOnClickListener(onClickListener);
-            neutralButton.setVisibility(
-                    !TextUtils.isEmpty(neutralButtonText) ? View.VISIBLE : View.GONE);
-            adaptButtonBarContainerVisibility();
-        }
+        adaptButton(neutralButton, neutralButtonText, neutralButtonListener,
+                DialogInterface.BUTTON_NEUTRAL);
     }
 
     /**
      * Adapts the dialog's negative button.
      */
     private void adaptNegativeButton() {
-        if (negativeButton != null) {
-            negativeButton.setText(negativeButtonText != null ?
-                    negativeButtonText.toString().toUpperCase(Locale.getDefault()) : null);
-            OnClickListenerWrapper onClickListener =
-                    new OnClickListenerWrapper(negativeButtonListener, false, getDialog(),
-                            DialogInterface.BUTTON_NEGATIVE);
-            negativeButton.setOnClickListener(onClickListener);
-            negativeButton.setVisibility(
-                    !TextUtils.isEmpty(negativeButtonText) ? View.VISIBLE : View.GONE);
-            adaptButtonBarContainerVisibility();
-        }
+        adaptButton(negativeButton, negativeButtonText, negativeButtonListener,
+                DialogInterface.BUTTON_NEGATIVE);
     }
 
     /**
