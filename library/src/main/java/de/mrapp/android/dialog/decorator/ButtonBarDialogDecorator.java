@@ -58,6 +58,13 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
             ButtonBarDialogDecorator.class.getSimpleName() + "::buttonTextColor";
 
     /**
+     * The name of the extra, which is used to store the disabled text color of the dialog's buttons
+     * within a bundle.
+     */
+    private static final String DISABLED_BUTTON_TEXT_COLOR_EXTRA =
+            ButtonBarDialogDecorator.class.getSimpleName() + "::disabledButtonTextColor";
+
+    /**
      * The name of the extra, which is used to store, whether the divider, which is shown above the
      * dialog's buttons, should be shown, or not, within a bundle.
      */
@@ -455,6 +462,7 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     public final void onSaveInstanceState(@NonNull final Bundle outState) {
         outState.putBoolean(STACK_BUTTONS_EXTRA, areButtonsStacked());
         outState.putInt(BUTTON_TEXT_COLOR_EXTRA, getButtonTextColor());
+        outState.putInt(DISABLED_BUTTON_TEXT_COLOR_EXTRA, getDisabledButtonTextColor());
         outState.putBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA, isButtonBarDividerShown());
         outState.putInt(BUTTON_BAR_DIVIDER_COLOR_EXTRA, getButtonBarDividerColor());
         outState.putCharSequence(POSITIVE_BUTTON_TEXT_EXTRA, positiveButtonText);
@@ -466,6 +474,7 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         stackButtons(savedInstanceState.getBoolean(STACK_BUTTONS_EXTRA));
         setButtonTextColor(savedInstanceState.getInt(BUTTON_TEXT_COLOR_EXTRA));
+        setDisabledButtonTextColor(savedInstanceState.getInt(DISABLED_BUTTON_TEXT_COLOR_EXTRA));
         showButtonBarDivider(savedInstanceState.getBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA));
         setButtonBarDividerColor(savedInstanceState.getInt(BUTTON_BAR_DIVIDER_COLOR_EXTRA));
         setPositiveButton(savedInstanceState.getCharSequence(POSITIVE_BUTTON_TEXT_EXTRA), null);
