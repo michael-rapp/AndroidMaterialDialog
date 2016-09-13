@@ -91,6 +91,7 @@ License.
     <string name="multi_choice_listener_selected_text">Selected item at position %s</string>
     <string name="multi_choice_listener_unselected_text">Unselected item at position %s</string>
     <string name="single_choice_listener_text">Selected item at position %s</string>
+    <string name="custom_dialog_message_text">This is a custom message</string>
     <string name="custom_dialog_content_text">This is a custom view, which has been added to the dialog.</string>
     <string name="custom_dialog_title_text">This is a custom title</string>
     <string name="positive_button_toast">Clicked positive button</string>
