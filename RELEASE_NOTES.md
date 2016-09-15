@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.6.8 (Sep. 15th 2016)
+
+A minor release, which introduces the following changes:
+
+- Revised width of dialogs depending the device's screen size.
+
 ## Version 3.6.7 (Sep. 14th 2016)
 
 A minor release, which introduces the following changes:
