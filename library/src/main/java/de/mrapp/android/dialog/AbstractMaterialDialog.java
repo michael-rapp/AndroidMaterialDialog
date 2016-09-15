@@ -33,7 +33,8 @@ import android.view.WindowManager;
 
 import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
 import de.mrapp.android.dialog.model.MaterialDialog;
-import de.mrapp.android.util.DisplayUtil;
+import de.mrapp.android.util.DisplayUtil.DeviceType;
+import de.mrapp.android.util.DisplayUtil.Orientation;
 
 import static de.mrapp.android.util.DisplayUtil.getDeviceType;
 import static de.mrapp.android.util.DisplayUtil.getOrientation;
@@ -74,8 +75,8 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     private WindowManager.LayoutParams createLayoutParams(@NonNull final Window window) {
         WindowManager.LayoutParams layoutParams = window.getAttributes();
 
-        if (getDeviceType(getContext()) == DisplayUtil.DeviceType.PHONE &&
-                getOrientation(getContext()) == DisplayUtil.Orientation.PORTRAIT) {
+        if (getDeviceType(getContext()) == DeviceType.PHONE &&
+                getOrientation(getContext()) == Orientation.PORTRAIT) {
             layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         }
 
