@@ -33,11 +33,8 @@ import android.view.WindowManager;
 
 import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
 import de.mrapp.android.dialog.model.MaterialDialog;
-import de.mrapp.android.util.DisplayUtil.DeviceType;
-import de.mrapp.android.util.DisplayUtil.Orientation;
 
-import static de.mrapp.android.util.DisplayUtil.getDeviceType;
-import static de.mrapp.android.util.DisplayUtil.getOrientation;
+import static de.mrapp.android.util.DisplayUtil.getDisplayWidth;
 
 /**
  * An abstract base class for all dialogs, which are designed according to Android 5's Material
@@ -74,12 +71,10 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
      */
     private WindowManager.LayoutParams createLayoutParams(@NonNull final Window window) {
         WindowManager.LayoutParams layoutParams = window.getAttributes();
-
-        if (getDeviceType(getContext()) == DeviceType.PHONE &&
-                getOrientation(getContext()) == Orientation.PORTRAIT) {
-            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-        }
-
+        int horizontalMargin =
+                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_horizontal_margin);
+        int width = getContext().getResources().getDimensionPixelSize(R.dimen.dialog_width);
+        layoutParams.width = Math.min(width, getDisplayWidth(getContext()) - horizontalMargin * 2);
         return layoutParams;
     }
 
@@ -99,7 +94,6 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         super(context, themeResourceId);
         this.decorator = new MaterialDialogDecorator(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setAttributes(createLayoutParams(getWindow()));
     }
 
     /**
@@ -245,6 +239,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         super.onStart();
         View view = inflateLayout();
         setContentView(view);
+        getWindow().setAttributes(createLayoutParams(getWindow()));
         onAttachDecorators(view);
     }
 

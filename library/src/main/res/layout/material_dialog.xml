@@ -19,7 +19,6 @@ License.
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minWidth="@dimen/dialog_min_width"
     android:orientation="vertical">
 
     <LinearLayout
