@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.6.9 (Sep. 26th 2016)
+
+A bugfix release, which fixes the following issues:
+
+- The theme, which is passed to a builder's constructor is now actually used. 
+
 ## Version 3.6.8 (Sep. 15th 2016)
 
 A minor release, which introduces the following changes:
