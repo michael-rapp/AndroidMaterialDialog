@@ -88,9 +88,9 @@ License.
     <string name="theme_preference_key">theme_preference_key</string>
     <string name="theme_preference_title">Theme</string>
     <string name="theme_preference_summary">Allows to choose the theme, which should be used by the example app</string>
-    <string name="multi_choice_listener_selected_text">Selected item at position %s</string>
-    <string name="multi_choice_listener_unselected_text">Unselected item at position %s</string>
-    <string name="single_choice_listener_text">Selected item at position %s</string>
+    <string name="multi_choice_listener_selected_text" formatted="false">Selected item at position %d</string>
+    <string name="multi_choice_listener_unselected_text" formatted="false">Unselected item at position %d</string>
+    <string name="single_choice_listener_text" formatted="false">Selected item at position %d</string>
     <string name="custom_dialog_message_text">This is a custom message</string>
     <string name="custom_dialog_content_text">This is a custom view, which has been added to the dialog.</string>
     <string name="custom_dialog_title_text">This is a custom title</string>

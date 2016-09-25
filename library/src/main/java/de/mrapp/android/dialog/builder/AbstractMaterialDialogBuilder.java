@@ -65,13 +65,18 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      *         Context}. The context may not be null
      * @param themeResourceId
      *         The resource id of the theme, which should be used by the dialog, as an {@link
-     *         Integer} value, or -1, if the default theme should be used
+     *         Integer} value or 0, if the default theme should be used
      */
     private void initialize(@NonNull final Context context, @StyleRes final int themeResourceId) {
-        TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(R.attr.materialDialogTheme, typedValue, true);
-        int themeId = typedValue.resourceId;
-        themeId = themeId != 0 ? themeId : R.style.MaterialDialog_Light;
+        int themeId = themeResourceId;
+
+        if (themeId == 0) {
+            TypedValue typedValue = new TypedValue();
+            context.getTheme().resolveAttribute(R.attr.materialDialogTheme, typedValue, true);
+            themeId = typedValue.resourceId;
+            themeId = themeId != 0 ? themeId : R.style.MaterialDialog_Light;
+        }
+
         this.context = new ContextThemeWrapper(context, themeId);
         this.dialog = onCreateDialog(context, themeId);
         obtainStyledAttributes(themeId);
@@ -188,7 +193,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      *         Context}. The context may not be null
      */
     public AbstractMaterialDialogBuilder(@NonNull final Context context) {
-        this(context, -1);
+        this(context, 0);
     }
 
     /**
