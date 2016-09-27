@@ -161,6 +161,7 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
         decorator.setCustomButtonBar(view);
     }
 
+    @NonNull
     @CallSuper
     @Override
     public Bundle onSaveInstanceState() {
@@ -171,7 +172,7 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
 
     @CallSuper
     @Override
-    public void onRestoreInstanceState(final Bundle savedInstanceState) {
+    public void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         decorator.onRestoreInstanceState(savedInstanceState);
         super.onRestoreInstanceState(savedInstanceState);
     }

@@ -119,7 +119,7 @@ public class ProgressDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
     /**
      * Adapts the dialog's progress bar.
      */
-    public final void adaptProgressBar() {
+    private void adaptProgressBar() {
         getDialog().setCustomMessage(getCustomMessageId());
 
         if (getView() != null) {

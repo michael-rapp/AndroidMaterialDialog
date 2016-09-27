@@ -145,6 +145,7 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
         decorator.setOnItemSelectedListener(listener);
     }
 
+    @NonNull
     @CallSuper
     @Override
     public Bundle onSaveInstanceState() {

@@ -65,6 +65,7 @@ public abstract class AbstractScrollableDialog extends AbstractListDialog
         decorator.showDividersOnScroll(show);
     }
 
+    @NonNull
     @CallSuper
     @Override
     public Bundle onSaveInstanceState() {

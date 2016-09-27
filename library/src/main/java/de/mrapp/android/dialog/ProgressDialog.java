@@ -339,6 +339,7 @@ public class ProgressDialog extends AbstractButtonBarDialog implements ProgressD
         decorator.setProgressBarPosition(position);
     }
 
+    @NonNull
     @Override
     public final Bundle onSaveInstanceState() {
         Bundle outState = super.onSaveInstanceState();
@@ -347,7 +348,7 @@ public class ProgressDialog extends AbstractButtonBarDialog implements ProgressD
     }
 
     @Override
-    public final void onRestoreInstanceState(final Bundle savedInstanceState) {
+    public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         decorator.onRestoreInstanceState(savedInstanceState);
         super.onRestoreInstanceState(savedInstanceState);
     }

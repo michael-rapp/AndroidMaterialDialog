@@ -239,7 +239,12 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         super.onStart();
         View view = inflateLayout();
         setContentView(view);
-        getWindow().setAttributes(createLayoutParams(getWindow()));
+        Window window = getWindow();
+
+        if (window != null) {
+            window.setAttributes(createLayoutParams(window));
+        }
+
         onAttachDecorators(view);
     }
 
@@ -250,6 +255,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     }
 
     @CallSuper
+    @NonNull
     @Override
     public Bundle onSaveInstanceState() {
         Bundle outState = super.onSaveInstanceState();
@@ -259,7 +265,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
 
     @CallSuper
     @Override
-    public void onRestoreInstanceState(final Bundle savedInstanceState) {
+    public void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         decorator.onRestoreInstanceState(savedInstanceState);
         super.onRestoreInstanceState(savedInstanceState);
     }

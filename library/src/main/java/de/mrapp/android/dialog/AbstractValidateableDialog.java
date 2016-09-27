@@ -83,6 +83,7 @@ public abstract class AbstractValidateableDialog extends AbstractHeaderDialog
         decorator.removeAllValidators(validators);
     }
 
+    @NonNull
     @CallSuper
     @Override
     public Bundle onSaveInstanceState() {
@@ -93,7 +94,7 @@ public abstract class AbstractValidateableDialog extends AbstractHeaderDialog
 
     @CallSuper
     @Override
-    public void onRestoreInstanceState(final Bundle savedInstanceState) {
+    public void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         decorator.onRestoreInstanceState(savedInstanceState);
         super.onRestoreInstanceState(savedInstanceState);
     }

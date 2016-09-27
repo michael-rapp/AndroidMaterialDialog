@@ -189,8 +189,10 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
         notifyDataSetChanged();
     }
 
+    @NonNull
     @Override
-    public final View getView(final int position, final View convertView, final ViewGroup parent) {
+    public final View getView(final int position, final View convertView,
+                              @NonNull final ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
         int horizontalPadding = getContext().getResources()
                 .getDimensionPixelSize(R.dimen.dialog_horizontal_padding);
