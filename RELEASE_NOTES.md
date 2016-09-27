@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 3.6.10 (Sep. 27th 2016)
+
+A bugfix release, which fixes the following issues:
+
+- When a `DialogInterface.OnClickListener` is registered at a button of a dialog, the listener is now only invoked when the validation of the dialog succeeded. 
+
 ## Version 3.6.9 (Sep. 26th 2016)
 
 A bugfix release, which fixes the following issues:
