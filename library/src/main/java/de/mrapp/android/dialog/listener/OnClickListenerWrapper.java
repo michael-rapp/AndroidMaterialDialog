@@ -69,16 +69,16 @@ public class OnClickListenerWrapper extends AbstractListenerWrapper
 
     @Override
     public final void onClick(final View v) {
-        if (wrappedListener != null) {
-            wrappedListener.onClick(getDialog(), getButtonType());
-        }
-
         if (validate) {
             for (DialogValidator validator : getDialog().getValidators()) {
                 if (!validator.validate(getDialog())) {
                     return;
                 }
             }
+        }
+
+        if (wrappedListener != null) {
+            wrappedListener.onClick(getDialog(), getButtonType());
         }
 
         attemptCloseDialog();
