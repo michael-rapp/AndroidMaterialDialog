@@ -16,6 +16,8 @@ package de.mrapp.android.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.AttrRes;
@@ -27,9 +29,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
+import android.widget.RelativeLayout;
 
 import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
 import de.mrapp.android.dialog.model.MaterialDialog;
@@ -61,21 +65,44 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     }
 
     /**
-     * Creates and returns the layout params, which should be used by the dialog.
+     * Creates and returns the layout params, which should be used by the dialog's root view.
      *
-     * @param window
-     *         The dialog's window as an instance of the class {@link Window}. The window may not be
-     *         null
-     * @return The layout params, which should be used by the dialog, as an instance of the class
-     * {@link WindowManager.LayoutParams}
+     * @param rootView
+     *         The root view as an instance of the class {@link View}. The view may not be null
+     * @return The layout params, which have been created, as an instance of the class {@link
+     * RelativeLayout.LayoutParams}
      */
-    private WindowManager.LayoutParams createLayoutParams(@NonNull final Window window) {
-        WindowManager.LayoutParams layoutParams = window.getAttributes();
+    private RelativeLayout.LayoutParams createLayoutParams(@NonNull final View rootView) {
+        RelativeLayout.LayoutParams layoutParams =
+                (RelativeLayout.LayoutParams) rootView.getLayoutParams();
         int horizontalMargin =
                 getContext().getResources().getDimensionPixelSize(R.dimen.dialog_horizontal_margin);
         int width = getContext().getResources().getDimensionPixelSize(R.dimen.dialog_width);
         layoutParams.width = Math.min(width, getDisplayWidth(getContext()) - horizontalMargin * 2);
         return layoutParams;
+    }
+
+    /**
+     * Creates and returns a listener, which allows to cancel the dialog, when touched outside the
+     * window.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * View.OnTouchListener}
+     */
+    private View.OnTouchListener createCanceledOnTouchListener() {
+        return new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(final View v, final MotionEvent event) {
+                if (isCanceledOnTouchOutside()) {
+                    cancel();
+                    return true;
+                }
+
+                return false;
+            }
+
+        };
     }
 
     /**
@@ -94,6 +121,8 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         super(context, themeResourceId);
         this.decorator = new MaterialDialogDecorator(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setCanceledOnTouchOutside(true);
+        setCancelable(true);
     }
 
     /**
@@ -116,6 +145,28 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     @CallSuper
     protected void onDetachDecorators() {
         decorator.detach();
+    }
+
+    @Override
+    public final boolean isCanceledOnTouchOutside() {
+        return decorator.isCanceledOnTouchOutside();
+    }
+
+    @Override
+    public final void setCanceledOnTouchOutside(final boolean canceledOnTouchOutside) {
+        super.setCanceledOnTouchOutside(canceledOnTouchOutside);
+        decorator.setCanceledOnTouchOutside(canceledOnTouchOutside);
+    }
+
+    @Override
+    public final boolean isCancelable() {
+        return decorator.isCancelable();
+    }
+
+    @Override
+    public final void setCancelable(final boolean cancelable) {
+        super.setCancelable(cancelable);
+        decorator.setCancelable(cancelable);
     }
 
     @Override
@@ -238,14 +289,19 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     public final void onStart() {
         super.onStart();
         View view = inflateLayout();
+        view.setOnTouchListener(createCanceledOnTouchListener());
         setContentView(view);
         Window window = getWindow();
 
         if (window != null) {
-            window.setAttributes(createLayoutParams(window));
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
         }
 
-        onAttachDecorators(view);
+        View rootView = view.findViewById(R.id.root);
+        rootView.setLayoutParams(createLayoutParams(rootView));
+        onAttachDecorators(rootView);
     }
 
     @Override

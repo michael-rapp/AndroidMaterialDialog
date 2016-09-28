@@ -14,12 +14,12 @@
 package de.mrapp.android.dialog.model;
 
 /**
- * Defines the interface a dialog, which is designed according to Android 5's Material design
- * guidelines even on pre-Lollipop devices and may contain a header, must implement.
+ * Defines the interface, an animateable dialog, which is designed according to Android 5's Material
+ * Design guidelines even on pre-Lollipop devices, must implement.
  *
  * @author Michael Rapp
- * @since 3.2.0
+ * @since 3.7.0
  */
-public interface HeaderDialog extends AnimateableDialog, HeaderDialogDecorator {
+public interface AnimateableDialog extends MaterialDialog, AnimateableDialogDecorator {
 
 }

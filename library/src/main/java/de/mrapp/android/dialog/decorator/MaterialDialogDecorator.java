@@ -141,6 +141,16 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     private ViewGroup contentContainer;
 
     /**
+     * True, if the dialog is cancelable, false otherwise.
+     */
+    private boolean cancelable;
+
+    /**
+     * True, if the dialog is canceled, when touching the outside of the window, false otherwise.
+     */
+    private boolean canceledOnTouchOutside;
+
+    /**
      * The title of the dialog.
      */
     private CharSequence title;
@@ -451,6 +461,30 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     public MaterialDialogDecorator(@NonNull final Dialog dialog) {
         super(dialog);
+    }
+
+    @Override
+    public final boolean isCanceledOnTouchOutside() {
+        return canceledOnTouchOutside;
+    }
+
+    @Override
+    public final void setCanceledOnTouchOutside(final boolean canceledOnTouchOutside) {
+        this.canceledOnTouchOutside = canceledOnTouchOutside;
+
+        if (canceledOnTouchOutside) {
+            setCancelable(true);
+        }
+    }
+
+    @Override
+    public final boolean isCancelable() {
+        return cancelable;
+    }
+
+    @Override
+    public final void setCancelable(final boolean cancelable) {
+        this.cancelable = cancelable;
     }
 
     @Override

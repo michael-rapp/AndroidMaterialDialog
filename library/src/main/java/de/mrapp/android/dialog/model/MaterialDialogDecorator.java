@@ -21,6 +21,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.view.KeyEvent;
 import android.view.View;
 
 /**
@@ -32,6 +33,40 @@ import android.view.View;
  * @since 3.2.0
  */
 public interface MaterialDialogDecorator extends Dialog {
+
+    /**
+     * Returns, whether the dialog is canceled, when touched outside the window's bounds, or not.
+     *
+     * @return True, if the dialog is canceled, when touched outside the window, false otherwise
+     */
+    boolean isCanceledOnTouchOutside();
+
+    /**
+     * Sets, whether the dialog is canceled, when touched outside the window's bounds. If set to
+     * true, the dialog is set to be cancelable, if not already set.
+     *
+     * @param canceledOnTouchOutside
+     *         True, if the dialog should be canceled, when touched outside the window, false
+     *         otherwise
+     */
+    void setCanceledOnTouchOutside(boolean canceledOnTouchOutside);
+
+    /**
+     * Returns whether the dialog is cancelable with the {@link KeyEvent#KEYCODE_BACK BACK} key, or
+     * not.
+     *
+     * @return True, if the dialog is cancelable, false otherwise
+     */
+    boolean isCancelable();
+
+    /**
+     * Sets whether the dialog is cancelable with the {@link KeyEvent#KEYCODE_BACK BACK} key, or
+     * not.
+     *
+     * @param cancelable
+     *         True, if the dialog should be cancelable, false otherwise
+     */
+    void setCancelable(boolean cancelable);
 
     /**
      * Returns the icon of the dialog.

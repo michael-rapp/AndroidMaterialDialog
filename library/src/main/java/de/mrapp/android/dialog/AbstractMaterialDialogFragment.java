@@ -17,6 +17,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.AttrRes;
@@ -31,18 +33,17 @@ import android.support.annotation.StyleRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
+import android.widget.RelativeLayout;
 
 import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
 import de.mrapp.android.dialog.model.MaterialDialog;
-import de.mrapp.android.util.DisplayUtil;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
-import static de.mrapp.android.util.DisplayUtil.getDeviceType;
-import static de.mrapp.android.util.DisplayUtil.getOrientation;
+import static de.mrapp.android.util.DisplayUtil.getDisplayWidth;
 
 /**
  * An abstract base class for all dialogs, which are designed according to Android 5's Material
@@ -95,23 +96,44 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     }
 
     /**
-     * Creates and returns the layout params, which should be used by the dialog.
+     * Creates and returns the layout params, which should be used by the dialog's root view.
      *
-     * @param window
-     *         The dialog's window as an instance of the class {@link Window}. The window may not be
-     *         null
-     * @return The layout params, which should be used by the dialog, as an instance of the class
-     * {@link WindowManager.LayoutParams}
+     * @param rootView
+     *         The root view as an instance of the class {@link View}. The view may not be null
+     * @return The layout params, which have been created, as an instance of the class {@link
+     * RelativeLayout.LayoutParams}
      */
-    private WindowManager.LayoutParams createLayoutParams(@NonNull final Window window) {
-        WindowManager.LayoutParams layoutParams = window.getAttributes();
-
-        if (getDeviceType(getContext()) == DisplayUtil.DeviceType.PHONE &&
-                getOrientation(getContext()) == DisplayUtil.Orientation.PORTRAIT) {
-            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-        }
-
+    private RelativeLayout.LayoutParams createLayoutParams(@NonNull final View rootView) {
+        RelativeLayout.LayoutParams layoutParams =
+                (RelativeLayout.LayoutParams) rootView.getLayoutParams();
+        int horizontalMargin =
+                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_horizontal_margin);
+        int width = getContext().getResources().getDimensionPixelSize(R.dimen.dialog_width);
+        layoutParams.width = Math.min(width, getDisplayWidth(getContext()) - horizontalMargin * 2);
         return layoutParams;
+    }
+
+    /**
+     * Creates and returns a listener, which allows to cancel the dialog, when touched outside the
+     * window.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * View.OnTouchListener}
+     */
+    private View.OnTouchListener createCanceledOnTouchListener() {
+        return new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(final View v, final MotionEvent event) {
+                if (isCanceledOnTouchOutside()) {
+                    cancel();
+                    return true;
+                }
+
+                return false;
+            }
+
+        };
     }
 
     /**
@@ -143,6 +165,8 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      */
     public AbstractMaterialDialogFragment() {
         this.decorator = new MaterialDialogDecorator(this);
+        setCancelable(true);
+        setCanceledOnTouchOutside(true);
     }
 
     /**
@@ -198,6 +222,27 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     @Override
     public void setOnDismissListener(@Nullable final OnDismissListener listener) {
         dismissListener = listener;
+    }
+
+    @Override
+    public final boolean isCanceledOnTouchOutside() {
+        return decorator.isCanceledOnTouchOutside();
+    }
+
+    @Override
+    public final void setCanceledOnTouchOutside(final boolean canceledOnTouchOutside) {
+        decorator.setCanceledOnTouchOutside(canceledOnTouchOutside);
+    }
+
+    @Override
+    public final boolean isCancelable() {
+        return decorator.isCancelable();
+    }
+
+    @Override
+    public final void setCancelable(final boolean cancelable) {
+        super.setCancelable(cancelable);
+        decorator.setCancelable(cancelable);
     }
 
     @Override
@@ -344,27 +389,35 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     public final Dialog onCreateDialog(final Bundle savedInstanceState) {
         Dialog dialog = new Dialog(getContext(), themeResourceId);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setAttributes(createLayoutParams(dialog.getWindow()));
         return dialog;
     }
 
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
-
         View view = inflateLayout();
+        view.setOnTouchListener(createCanceledOnTouchListener());
 
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
         }
 
-        onAttachDecorators(view, getChildFragmentManager());
+        View rootView = view.findViewById(R.id.root);
+        rootView.setLayoutParams(createLayoutParams(rootView));
+        onAttachDecorators(rootView, getChildFragmentManager());
         return view;
     }
 
     @Override
     public final void onStart() {
         super.onStart();
+        Window window = getDialog().getWindow();
+
+        if (window != null) {
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
+        }
 
         if (showListener != null) {
             showListener.onShow(getDialog());
