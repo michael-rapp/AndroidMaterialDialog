@@ -41,7 +41,7 @@ import de.mrapp.android.util.ThemeUtil;
  * @since 3.3.0
  */
 public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialog, BuilderType extends AbstractHeaderDialogBuilder<DialogType, ?>>
-        extends AbstractMaterialDialogBuilder<DialogType, BuilderType> {
+        extends AbstractAnimateableDialogBuilder<DialogType, BuilderType> {
 
     /**
      * Obtains, whether the dialog's header should be shown, or not, from a specific theme.
