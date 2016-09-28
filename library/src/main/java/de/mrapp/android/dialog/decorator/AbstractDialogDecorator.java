@@ -89,7 +89,7 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
      * instance of the class {@link View} or null, if the decorator is not attached
      */
     @Nullable
-    protected final View getView() {
+    public final View getView() {
         return view;
     }
 
