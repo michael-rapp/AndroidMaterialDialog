@@ -39,7 +39,7 @@ public abstract class AbstractHeaderDialogFragment extends AbstractMaterialDialo
         implements HeaderDialog {
 
     /**
-     * The decorator, which is used by the decorator.
+     * The decorator, which is used by the dialog.
      */
     private final HeaderDialogDecorator decorator;
 
