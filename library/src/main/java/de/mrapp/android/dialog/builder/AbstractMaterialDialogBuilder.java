@@ -107,7 +107,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         TypedArray typedArray = getContext().getTheme()
                 .obtainStyledAttributes(themeResourceId, new int[]{R.attr.materialDialogWidth});
         int defaultValue = getContext().getResources().getDimensionPixelSize(R.dimen.dialog_width);
-        setWidth(typedArray.getInteger(0, defaultValue));
+        setWidth(typedArray.getDimensionPixelSize(0, defaultValue));
     }
 
     /**
@@ -120,7 +120,40 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     private void obtainHeight(@StyleRes final int themeResourceId) {
         TypedArray typedArray = getContext().getTheme()
                 .obtainStyledAttributes(themeResourceId, new int[]{R.attr.materialDialogHeight});
-        setHeight(typedArray.getInteger(0, Dialog.WRAP_CONTENT));
+        int defaultValue = Dialog.WRAP_CONTENT;
+        setHeight(typedArray.getDimensionPixelSize(0, defaultValue));
+    }
+
+    /**
+     * Obtains the maximum width from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the maximum width should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainMaxWidth(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme()
+                .obtainStyledAttributes(themeResourceId, new int[]{R.attr.materialDialogMaxWidth});
+        int defaultValue =
+                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_max_width);
+        int maxWidth = typedArray.getDimensionPixelSize(0, defaultValue);
+        setMaxWidth(maxWidth > 0 ? maxWidth : -1);
+    }
+
+    /**
+     * Obtains the maximum height from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the maximum height should be obtained from, as an
+     *         {@link Integer} value
+     */
+    private void obtainMaxHeight(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme()
+                .obtainStyledAttributes(themeResourceId, new int[]{R.attr.materialDialogMaxHeight});
+        int defaultValue =
+                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_max_height);
+        int maxHeight = typedArray.getDimensionPixelSize(0, defaultValue);
+        setMaxHeight(maxHeight > 0 ? maxHeight : -1);
     }
 
     /**
@@ -230,6 +263,8 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         obtainGravity(themeResourceId);
         obtainWidth(themeResourceId);
         obtainHeight(themeResourceId);
+        obtainMaxWidth(themeResourceId);
+        obtainMaxHeight(themeResourceId);
         obtainMargin(themeResourceId);
         obtainBackground(themeResourceId);
         obtainMessageColor(themeResourceId);
@@ -395,6 +430,34 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      */
     public final BuilderType setHeight(final int height) {
         getDialog().setHeight(height);
+        return self();
+    }
+
+    /**
+     * Sets the maximum width of the dialog, which is created by the builder.
+     *
+     * @param maxWidth
+     *         The maximum width, which should be set, in pixels as an {@link Integer} value. The
+     *         maximum width must be at least 1, or -1, if no maximum width should be set
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setMaxWidth(final int maxWidth) {
+        getDialog().setMaxWidth(maxWidth);
+        return self();
+    }
+
+    /**
+     * Sets the maximum height of the dialog, which is created by the builder.
+     *
+     * @param maxHeight
+     *         The maximum height, which should be set, in pixels as an {@link Integer} value. The
+     *         maximum height must be at least 1, or -1, if no maximum height should be set
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setMaxHeight(final int maxHeight) {
+        getDialog().setMaxHeight(maxHeight);
         return self();
     }
 

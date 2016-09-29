@@ -23,8 +23,7 @@ import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-import de.mrapp.android.dialog.R;
-import de.mrapp.android.util.DisplayUtil;
+import static de.mrapp.android.util.Condition.ensureAtLeast;
 
 /**
  * The root view of a dialog, which is designed according to Android 5's Material Design guidelines
@@ -35,6 +34,16 @@ import de.mrapp.android.util.DisplayUtil;
  * @since 3.4.3
  */
 public class DialogRootView extends LinearLayout {
+
+    /**
+     * The maximum width of the view.
+     */
+    private int maxWidth;
+
+    /**
+     * The maximum height of the view.
+     */
+    private int maxHeight;
 
     /**
      * Creates a new root view of a dialog, which is designed according to Android 5's Material
@@ -110,16 +119,66 @@ public class DialogRootView extends LinearLayout {
         super(context, attributeSet, defaultStyle, defaultStyleResource);
     }
 
+    /**
+     * Returns the maximum width of the view.
+     *
+     * @return The maximum width of the view in pixels as an {@link Integer} value or -1, if no
+     * maximum width is set
+     */
+    public final int getMaxWidth() {
+        return maxWidth;
+    }
+
+    /**
+     * Sets the maximum width of the view.
+     *
+     * @param maxWidth
+     *         The maximum width, which should be set, in pixels as an {@link Integer} value. The
+     *         maximum width must be at least 1 or -1, if no maximum width should be set
+     */
+    public final void setMaxWidth(final int maxWidth) {
+        if (maxWidth != -1) {
+            ensureAtLeast(maxWidth, 1, "The maximum width must be at least 1");
+        }
+
+        this.maxWidth = maxWidth;
+        requestLayout();
+    }
+
+    /**
+     * Returns the maximum height of the view.
+     *
+     * @return The maximum height of the view in pixels as an {@link Integer} value or -1, if no
+     * maximum height is set
+     */
+    public final int getMaxHeight() {
+        return maxHeight;
+    }
+
+    /**
+     * Sets the maximum height of the view.
+     *
+     * @param maxHeight
+     *         The maximum height, which should be set, in pixels as an {@link Integer} value. The
+     *         maximum height must be at least 1 or -1, if no maximum height should be set
+     */
+    public final void setMaxHeight(final int maxHeight) {
+        if (maxHeight != -1) {
+            ensureAtLeast(maxHeight, 1, "The maximum height must be at least 1");
+        }
+
+        this.maxHeight = maxHeight;
+        requestLayout();
+    }
+
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-        if (DisplayUtil.getDeviceType(getContext()) == DisplayUtil.DeviceType.TABLET &&
-                DisplayUtil.getOrientation(getContext()) == DisplayUtil.Orientation.PORTRAIT) {
-            int maxHeight = getResources().getDimensionPixelSize(R.dimen.dialog_max_height);
-            int maxHeightMeasureSpec = MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.AT_MOST);
-            super.onMeasure(widthMeasureSpec, maxHeightMeasureSpec);
-        } else {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        }
+        int maxWidthMeasureSpec = getMaxWidth() != -1 ?
+                MeasureSpec.makeMeasureSpec(getMaxWidth(), MeasureSpec.AT_MOST) : -1;
+        int maxHeightMeasureSpec = getMaxHeight() != -1 ?
+                MeasureSpec.makeMeasureSpec(getMaxHeight(), MeasureSpec.AT_MOST) : -1;
+        super.onMeasure(maxWidthMeasureSpec != -1 ? maxWidthMeasureSpec : widthMeasureSpec,
+                maxHeightMeasureSpec != -1 ? maxHeightMeasureSpec : heightMeasureSpec);
     }
 
 }

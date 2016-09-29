@@ -278,6 +278,26 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     }
 
     @Override
+    public final int getMaxWidth() {
+        return decorator.getMaxWidth();
+    }
+
+    @Override
+    public final void setMaxWidth(final int maxWidth) {
+        decorator.setMaxWidth(maxWidth);
+    }
+
+    @Override
+    public final int getMaxHeight() {
+        return decorator.getMaxHeight();
+    }
+
+    @Override
+    public final void setMaxHeight(final int maxHeight) {
+        decorator.setMaxHeight(maxHeight);
+    }
+
+    @Override
     public final int getLeftMargin() {
         return decorator.getLeftMargin();
     }

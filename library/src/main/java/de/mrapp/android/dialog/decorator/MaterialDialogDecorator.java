@@ -40,6 +40,7 @@ import android.widget.TextView;
 
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.Dialog;
+import de.mrapp.android.dialog.view.DialogRootView;
 import de.mrapp.android.util.ViewUtil;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
@@ -171,6 +172,16 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * The height of the dialog.
      */
     private int height = Dialog.WRAP_CONTENT;
+
+    /**
+     * The maximum width of the dialog.
+     */
+    private int maxWidth = -1;
+
+    /**
+     * The maximum height of the dialog.
+     */
+    private int maxHeight = -1;
 
     /**
      * The margin of the dialog.
@@ -432,8 +443,12 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * Adapts the layout params of the dialog.
      */
     private void adaptLayoutParams() {
-        if (getWindow() != null && getView() != null) {
-            getView().setLayoutParams(createLayoutParams());
+        DialogRootView rootView = (DialogRootView) getView();
+
+        if (getWindow() != null && rootView != null) {
+            rootView.setLayoutParams(createLayoutParams());
+            rootView.setMaxWidth(getMaxWidth());
+            rootView.setMaxHeight(getMaxHeight());
         }
     }
 
@@ -651,6 +666,36 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         }
 
         this.height = height;
+        adaptLayoutParams();
+    }
+
+    @Override
+    public final int getMaxWidth() {
+        return maxWidth;
+    }
+
+    @Override
+    public final void setMaxWidth(final int maxWidth) {
+        if (maxWidth != -1) {
+            ensureAtLeast(maxWidth, 1, "The maximum width must be at least 1");
+        }
+
+        this.maxWidth = maxWidth;
+        adaptLayoutParams();
+    }
+
+    @Override
+    public final int getMaxHeight() {
+        return maxHeight;
+    }
+
+    @Override
+    public final void setMaxHeight(final int maxHeight) {
+        if (maxHeight != -1) {
+            ensureAtLeast(maxWidth, 1, "The maximum height must be at least 1");
+        }
+
+        this.maxHeight = maxHeight;
         adaptLayoutParams();
     }
 

@@ -24,6 +24,8 @@ License.
         <enum name="match_parent" value="-1"/>
         <enum name="wrap_content" value="-2"/>
     </attr>
+    <attr name="materialDialogMaxWidth" format="dimension"/>
+    <attr name="materialDialogMaxHeight" format="dimension"/>
     <attr name="materialDialogMarginLeft" format="dimension"/>
     <attr name="materialDialogMarginTop" format="dimension"/>
     <attr name="materialDialogMarginRight" format="dimension"/>

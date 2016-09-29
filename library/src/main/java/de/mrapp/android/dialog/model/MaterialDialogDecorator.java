@@ -122,6 +122,40 @@ public interface MaterialDialogDecorator extends Dialog {
     void setHeight(int height);
 
     /**
+     * Returns the maximum width of the dialog.
+     *
+     * @return The maximum width of the dialog in pixels as an {@link Integer} value or -1, if no
+     * maximum width is set
+     */
+    int getMaxWidth();
+
+    /**
+     * Sets the maximum width of the dialog.
+     *
+     * @param maxWidth
+     *         The maximum width, which should be set, in pixels as an {@link Integer} value. The
+     *         maximum width must be at least 1, or -1, if no maximum width should be set
+     */
+    void setMaxWidth(int maxWidth);
+
+    /**
+     * Returns the maximum height of the dialog.
+     *
+     * @return The maximum height of the dialog in pixels as an {@link Integer} value or -1, if no
+     * maximum height is set
+     */
+    int getMaxHeight();
+
+    /**
+     * Sets the maximum height of the dialog.
+     *
+     * @param maxHeight
+     *         The maximum height, which should be set, in pixels as an {@link Integer} value. The
+     *         maximum height must be at least 1, or -1, if no maximum height should be set
+     */
+    void setMaxHeight(int maxHeight);
+
+    /**
      * Returns the left margin of the dialog.
      *
      * @return The left margin of the dialog in pixels as an {@link Integer} value
