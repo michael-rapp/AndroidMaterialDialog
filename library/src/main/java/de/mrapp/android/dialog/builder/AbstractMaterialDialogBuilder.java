@@ -31,6 +31,7 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 
 import de.mrapp.android.dialog.R;
+import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.dialog.model.MaterialDialog;
 import de.mrapp.android.util.ThemeUtil;
 
@@ -80,6 +81,68 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         this.context = new ContextThemeWrapper(context, themeId);
         this.dialog = onCreateDialog(context, themeId);
         obtainStyledAttributes(themeId);
+    }
+
+    /**
+     * Obtains the gravity from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the gravity should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainGravity(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme()
+                .obtainStyledAttributes(themeResourceId, new int[]{R.attr.materialDialogGravity});
+        setGravity(typedArray.getInteger(0, Dialog.Gravity.CENTER));
+    }
+
+    /**
+     * Obtains the width from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the width should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainWidth(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme()
+                .obtainStyledAttributes(themeResourceId, new int[]{R.attr.materialDialogWidth});
+        int defaultValue = getContext().getResources().getDimensionPixelSize(R.dimen.dialog_width);
+        setWidth(typedArray.getInteger(0, defaultValue));
+    }
+
+    /**
+     * Obtains the height from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the height should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainHeight(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme()
+                .obtainStyledAttributes(themeResourceId, new int[]{R.attr.materialDialogHeight});
+        setHeight(typedArray.getInteger(0, Dialog.WRAP_CONTENT));
+    }
+
+    /**
+     * Obtains the margin from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the margin should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainMargin(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.materialDialogMarginLeft, R.attr.materialDialogMarginTop,
+                        R.attr.materialDialogMarginRight, R.attr.materialDialogMarginBottom});
+        int defaultHorizontalMargin =
+                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_horizontal_margin);
+        int defaultVerticalMargin =
+                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_vertical_margin);
+        int left = typedArray.getDimensionPixelSize(0, defaultHorizontalMargin);
+        int top = typedArray.getDimensionPixelSize(1, defaultVerticalMargin);
+        int right = typedArray.getDimensionPixelSize(2, defaultHorizontalMargin);
+        int bottom = typedArray.getDimensionPixelSize(3, defaultVerticalMargin);
+        setMargin(left, top, right, bottom);
     }
 
     /**
@@ -164,6 +227,10 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      */
     @CallSuper
     protected void obtainStyledAttributes(@StyleRes final int themeResourceId) {
+        obtainGravity(themeResourceId);
+        obtainWidth(themeResourceId);
+        obtainHeight(themeResourceId);
+        obtainMargin(themeResourceId);
         obtainBackground(themeResourceId);
         obtainMessageColor(themeResourceId);
         obtainTitleColor(themeResourceId);
@@ -284,6 +351,74 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     public final BuilderType setOnDismissListener(
             @Nullable final DialogInterface.OnDismissListener listener) {
         getDialog().setOnDismissListener(listener);
+        return self();
+    }
+
+    /**
+     * Sets the gravity of the dialog, which is created by the builder.
+     *
+     * @param gravity
+     *         The gravity, which should be set, as an {@link Integer} value. The gravity must
+     *         consist of the flags given in {@link Dialog.Gravity}
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setGravity(final int gravity) {
+        getDialog().setGravity(gravity);
+        return self();
+    }
+
+    /**
+     * Sets the width of the dialog, which is created by the builder.
+     *
+     * @param width
+     *         The width, which should be set, in pixels as an {@link Integer} value. The width must
+     *         be at least 1 or {@link Dialog#MATCH_PARENT}, respectively {@link
+     *         Dialog#WRAP_CONTENT}
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setWidth(final int width) {
+        getDialog().setWidth(width);
+        return self();
+    }
+
+    /**
+     * Sets the height of the dialog, which is created by the builder.
+     *
+     * @param height
+     *         The height, which should be set, in pixels as an {@link Integer} value. The width
+     *         must be at least 1 or {@link Dialog#MATCH_PARENT}, respectively {@link
+     *         Dialog#WRAP_CONTENT}
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setHeight(final int height) {
+        getDialog().setHeight(height);
+        return self();
+    }
+
+    /**
+     * Sets the margin of the dialog, which is created by the builder.
+     *
+     * @param left
+     *         The left margin, which should be set, in pixels as an {@link Integer} value. The left
+     *         margin must be at least 0
+     * @param top
+     *         The top margin, which should be set, in pixels as an {@link Integer} value. The top
+     *         margin must be at least 0
+     * @param right
+     *         The right margin, which should be set, in pixels as an {@link Integer} value. The
+     *         right margin must be at least 0
+     * @param bottom
+     *         The bottom margin, which should be set, in pixels as an {@link Integer} value. The
+     *         bottom margin must be at least 0
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setMargin(final int left, final int top, final int right,
+                                       final int bottom) {
+        getDialog().setMargin(left, top, right, bottom);
         return self();
     }
 

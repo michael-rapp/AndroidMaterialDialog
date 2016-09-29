@@ -246,6 +246,61 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     }
 
     @Override
+    public final int getGravity() {
+        return decorator.getGravity();
+    }
+
+    @Override
+    public final void setGravity(final int gravity) {
+        decorator.setGravity(gravity);
+    }
+
+    @Override
+    public final int getWidth() {
+        return decorator.getWidth();
+    }
+
+    @Override
+    public final void setWidth(final int width) {
+        decorator.setWidth(width);
+    }
+
+    @Override
+    public final int getHeight() {
+        return decorator.getHeight();
+    }
+
+    @Override
+    public final void setHeight(final int height) {
+        decorator.setHeight(height);
+    }
+
+    @Override
+    public final int getLeftMargin() {
+        return decorator.getLeftMargin();
+    }
+
+    @Override
+    public final int getTopMargin() {
+        return decorator.getTopMargin();
+    }
+
+    @Override
+    public final int getRightMargin() {
+        return decorator.getRightMargin();
+    }
+
+    @Override
+    public final int getBottomMargin() {
+        return decorator.getBottomMargin();
+    }
+
+    @Override
+    public final void setMargin(final int left, final int top, final int right, final int bottom) {
+        decorator.setMargin(left, top, right, bottom);
+    }
+
+    @Override
     public final Drawable getIcon() {
         return decorator.getIcon();
     }

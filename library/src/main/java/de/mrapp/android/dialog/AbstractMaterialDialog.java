@@ -33,12 +33,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.RelativeLayout;
 
 import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
 import de.mrapp.android.dialog.model.MaterialDialog;
-
-import static de.mrapp.android.util.DisplayUtil.getDisplayWidth;
 
 /**
  * An abstract base class for all dialogs, which are designed according to Android 5's Material
@@ -62,24 +59,6 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
      */
     private View inflateLayout() {
         return View.inflate(getContext(), R.layout.material_dialog, null);
-    }
-
-    /**
-     * Creates and returns the layout params, which should be used by the dialog's root view.
-     *
-     * @param rootView
-     *         The root view as an instance of the class {@link View}. The view may not be null
-     * @return The layout params, which have been created, as an instance of the class {@link
-     * RelativeLayout.LayoutParams}
-     */
-    private RelativeLayout.LayoutParams createLayoutParams(@NonNull final View rootView) {
-        RelativeLayout.LayoutParams layoutParams =
-                (RelativeLayout.LayoutParams) rootView.getLayoutParams();
-        int horizontalMargin =
-                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_horizontal_margin);
-        int width = getContext().getResources().getDimensionPixelSize(R.dimen.dialog_width);
-        layoutParams.width = Math.min(width, getDisplayWidth(getContext()) - horizontalMargin * 2);
-        return layoutParams;
     }
 
     /**
@@ -167,6 +146,61 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     public final void setCancelable(final boolean cancelable) {
         super.setCancelable(cancelable);
         decorator.setCancelable(cancelable);
+    }
+
+    @Override
+    public final int getGravity() {
+        return decorator.getGravity();
+    }
+
+    @Override
+    public final void setGravity(final int gravity) {
+        decorator.setGravity(gravity);
+    }
+
+    @Override
+    public final int getWidth() {
+        return decorator.getWidth();
+    }
+
+    @Override
+    public final void setWidth(final int width) {
+        decorator.setWidth(width);
+    }
+
+    @Override
+    public final int getHeight() {
+        return decorator.getHeight();
+    }
+
+    @Override
+    public final void setHeight(final int height) {
+        decorator.setHeight(height);
+    }
+
+    @Override
+    public final int getLeftMargin() {
+        return decorator.getLeftMargin();
+    }
+
+    @Override
+    public final int getTopMargin() {
+        return decorator.getTopMargin();
+    }
+
+    @Override
+    public final int getRightMargin() {
+        return decorator.getRightMargin();
+    }
+
+    @Override
+    public final int getBottomMargin() {
+        return decorator.getBottomMargin();
+    }
+
+    @Override
+    public final void setMargin(final int left, final int top, final int right, final int bottom) {
+        decorator.setMargin(left, top, right, bottom);
     }
 
     @Override
@@ -300,7 +334,6 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         }
 
         View rootView = view.findViewById(R.id.root);
-        rootView.setLayoutParams(createLayoutParams(rootView));
         onAttachDecorators(rootView);
     }
 

@@ -69,6 +69,105 @@ public interface MaterialDialogDecorator extends Dialog {
     void setCancelable(boolean cancelable);
 
     /**
+     * Returns the gravity of the dialog.
+     *
+     * @return The gravity of the dialog as an {@link Integer} values. The gravity consists of the
+     * flags given in {@link Dialog.Gravity}
+     */
+    int getGravity();
+
+    /**
+     * Sets the gravity of the dialog.
+     *
+     * @param gravity
+     *         The gravity, which should be set, as an {@link Integer} value. The gravity must
+     *         consist of the flags given in {@link Dialog.Gravity}
+     */
+    void setGravity(int gravity);
+
+    /**
+     * Returns the width of the dialog.
+     *
+     * @return The width of the dialog in pixels as an {@link Integer} value or {@link
+     * Dialog#MATCH_PARENT}, respectively {@link Dialog#WRAP_CONTENT}
+     */
+    int getWidth();
+
+    /**
+     * Sets the width of the dialog.
+     *
+     * @param width
+     *         The width, which should be set, in pixels as an {@link Integer} value. The width must
+     *         be at least 1 or {@link Dialog#MATCH_PARENT}, respectively {@link
+     *         Dialog#WRAP_CONTENT}
+     */
+    void setWidth(int width);
+
+    /**
+     * Returns the height of the dialog.
+     *
+     * @return The height of the dialog in pixels as an {@link Integer} value or {@link
+     * Dialog#MATCH_PARENT}, respectively {@link Dialog#WRAP_CONTENT}
+     */
+    int getHeight();
+
+    /**
+     * Sets the height of the dialog.
+     *
+     * @param height
+     *         The height, which should be set, in pixels as an {@link Integer} value. The width
+     *         must be at least 1 or {@link Dialog#MATCH_PARENT}, respectively {@link
+     *         Dialog#WRAP_CONTENT}
+     */
+    void setHeight(int height);
+
+    /**
+     * Returns the left margin of the dialog.
+     *
+     * @return The left margin of the dialog in pixels as an {@link Integer} value
+     */
+    int getLeftMargin();
+
+    /**
+     * Returns the top margin of the dialog.
+     *
+     * @return The top margin of the dialog in pixels as an {@link Integer} value
+     */
+    int getTopMargin();
+
+    /**
+     * Returns the right margin of the dialog.
+     *
+     * @return The right margin of the dialog in pixels as an {@link Integer} value
+     */
+    int getRightMargin();
+
+    /**
+     * Returns the bottom margin of the dialog.
+     *
+     * @return The bottom margin of the dialog in pixels as an {@link Integer} value
+     */
+    int getBottomMargin();
+
+    /**
+     * Sets the margin of the dialog.
+     *
+     * @param left
+     *         The left margin, which should be set, in pixels as an {@link Integer} value. The left
+     *         margin must be at least 0
+     * @param top
+     *         The top margin, which should be set, in pixels as an {@link Integer} value. The top
+     *         margin must be at least 0
+     * @param right
+     *         The right margin, which should be set, in pixels as an {@link Integer} value. The
+     *         right margin must be at least 0
+     * @param bottom
+     *         The bottom margin, which should be set, in pixels as an {@link Integer} value. The
+     *         bottom margin must be at least 0
+     */
+    void setMargin(int left, int top, int right, int bottom);
+
+    /**
      * Returns the icon of the dialog.
      *
      * @return The icon of the dialog, as an instance of the class {@link Drawable} or null, if no

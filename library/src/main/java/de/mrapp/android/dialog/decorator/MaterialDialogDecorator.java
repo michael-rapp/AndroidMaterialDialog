@@ -13,11 +13,13 @@
  */
 package de.mrapp.android.dialog.decorator;
 
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
@@ -31,11 +33,16 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.util.ViewUtil;
+
+import static de.mrapp.android.util.Condition.ensureAtLeast;
+import static de.mrapp.android.util.DisplayUtil.getDisplayHeight;
+import static de.mrapp.android.util.DisplayUtil.getDisplayWidth;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -151,6 +158,26 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     private boolean canceledOnTouchOutside;
 
     /**
+     * The gravity of the dialog.
+     */
+    private int gravity = Gravity.CENTER;
+
+    /**
+     * The width of the dialog.
+     */
+    private int width = Dialog.WRAP_CONTENT;
+
+    /**
+     * The height of the dialog.
+     */
+    private int height = Dialog.WRAP_CONTENT;
+
+    /**
+     * The margin of the dialog.
+     */
+    private int[] margin = new int[]{0, 0, 0, 0};
+
+    /**
      * The title of the dialog.
      */
     private CharSequence title;
@@ -241,6 +268,88 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     private int customMessageViewId = -1;
 
     /**
+     * Creates and returns the layout params, which should be used by the dialog's root view.
+     *
+     * @return The layout params, which have been created, as an instance of the class {@link
+     * RelativeLayout.LayoutParams}
+     */
+    private RelativeLayout.LayoutParams createLayoutParams() {
+        boolean rtl = isRtl();
+        int width = getLayoutDimension(getWidth(), getLeftMargin() + getRightMargin(),
+                getDisplayWidth(getContext()));
+        int height = getLayoutDimension(getHeight(), getTopMargin() + getBottomMargin(),
+                getDisplayHeight(getContext()));
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(width, height);
+        layoutParams.leftMargin = rtl ? getRightMargin() : getLeftMargin();
+        layoutParams.topMargin = getTopMargin();
+        layoutParams.rightMargin = rtl ? getLeftMargin() : getRightMargin();
+        layoutParams.bottomMargin = getBottomMargin();
+
+        if ((getGravity() & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL) {
+            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        }
+
+        if ((getGravity() & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL) {
+            layoutParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+        }
+
+        if ((getGravity() & Gravity.LEFT) == Gravity.LEFT) {
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+        }
+
+        if ((getGravity() & Gravity.TOP) == Gravity.TOP) {
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+        }
+
+        if ((getGravity() & Gravity.RIGHT) == Gravity.RIGHT) {
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+        }
+
+        if ((getGravity() & Gravity.BOTTOM) == Gravity.BOTTOM) {
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        }
+
+        return layoutParams;
+    }
+
+    /**
+     * Returns, whether a right-to-left layout should be used, or not.
+     *
+     * @return True, if a right-to-left layout should be used, false otherwise;
+     */
+    private boolean isRtl() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            Configuration configuration = getContext().getResources().getConfiguration();
+            return configuration.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns a dimension (width or height) of the dialog, depending of the margin of the
+     * corresponding orientation and the display space, which is available in total.
+     *
+     * @param dimension
+     *         The dimension, which should be used, in pixels as an {@link Integer value}
+     * @param margin
+     *         The margin in pixels as an {@link Integer} value
+     * @param total
+     *         The display space, which is available in total, in pixels as an {@link Integer}
+     *         value
+     * @return The dimension of the dialog as an {@link Integer} value
+     */
+    private int getLayoutDimension(final int dimension, final int margin, final int total) {
+        if (dimension == Dialog.MATCH_PARENT) {
+            return RelativeLayout.LayoutParams.MATCH_PARENT;
+        } else if (dimension == Dialog.WRAP_CONTENT) {
+            return RelativeLayout.LayoutParams.WRAP_CONTENT;
+        } else {
+            return Math.min(dimension, total - margin);
+        }
+    }
+
+    /**
      * Inflates the view, which is used to show the dialog's title. The view may either be the
      * default one or a custom view, if one has been set before.
      */
@@ -312,6 +421,15 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             }
 
             adaptContentContainerVisibility();
+        }
+    }
+
+    /**
+     * Adapts the layout params of the dialog.
+     */
+    private void adaptLayoutParams() {
+        if (getView() != null) {
+            getView().setLayoutParams(createLayoutParams());
         }
     }
 
@@ -485,6 +603,77 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     @Override
     public final void setCancelable(final boolean cancelable) {
         this.cancelable = cancelable;
+    }
+
+    @Override
+    public final int getGravity() {
+        return gravity;
+    }
+
+    @Override
+    public final void setGravity(final int gravity) {
+        this.gravity = gravity;
+        adaptLayoutParams();
+    }
+
+    @Override
+    public final int getWidth() {
+        return width;
+    }
+
+    @Override
+    public final void setWidth(final int width) {
+        if (width != Dialog.MATCH_PARENT && width != Dialog.WRAP_CONTENT) {
+            ensureAtLeast(width, 1, "The width must be at least 1");
+        }
+
+        this.width = width;
+        adaptLayoutParams();
+    }
+
+    @Override
+    public final int getHeight() {
+        return height;
+    }
+
+    @Override
+    public final void setHeight(final int height) {
+        if (height != Dialog.MATCH_PARENT && height != Dialog.WRAP_CONTENT) {
+            ensureAtLeast(height, 1, "The height must be at least 1");
+        }
+
+        this.height = height;
+        adaptLayoutParams();
+    }
+
+    @Override
+    public final int getLeftMargin() {
+        return margin[0];
+    }
+
+    @Override
+    public final int getTopMargin() {
+        return margin[1];
+    }
+
+    @Override
+    public final int getRightMargin() {
+        return margin[2];
+    }
+
+    @Override
+    public final int getBottomMargin() {
+        return margin[3];
+    }
+
+    @Override
+    public final void setMargin(final int left, final int top, final int right, final int bottom) {
+        ensureAtLeast(left, 0, "The left margin must be at least 0");
+        ensureAtLeast(top, 0, "The top margin must be at least 0");
+        ensureAtLeast(right, 0, "The right margin must be at least 0");
+        ensureAtLeast(bottom, 0, "The bottom margin must be at least 0");
+        this.margin = new int[]{left, top, right, bottom};
+        adaptLayoutParams();
     }
 
     @Override
@@ -704,6 +893,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         inflateTitleView();
         inflateMessageView();
         inflateContentView();
+        adaptLayoutParams();
         adaptTitle();
         adaptTitleColor();
         adaptIcon();

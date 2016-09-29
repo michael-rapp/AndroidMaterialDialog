@@ -16,6 +16,27 @@ License.
 <resources>
 
     <attr name="materialDialogTheme" format="reference"/>
+    <attr name="materialDialogWidth" format="dimension">
+        <enum name="match_parent" value="-1"/>
+        <enum name="wrap_content" value="-2"/>
+    </attr>
+    <attr name="materialDialogHeight" format="dimension">
+        <enum name="match_parent" value="-1"/>
+        <enum name="wrap_content" value="-2"/>
+    </attr>
+    <attr name="materialDialogMarginLeft" format="dimension"/>
+    <attr name="materialDialogMarginTop" format="dimension"/>
+    <attr name="materialDialogMarginRight" format="dimension"/>
+    <attr name="materialDialogMarginBottom" format="dimension"/>
+    <attr name="materialDialogGravity" format="integer">
+        <enum name="center_horizontal" value="0x000001"/>
+        <enum name="center_vertical" value="0x000010"/>
+        <enum name="top" value="0x000100"/>
+        <enum name="bottom" value="0x001000"/>
+        <enum name="left" value="0x010000"/>
+        <enum name="right" value="0x100000"/>
+        <enum name="center" value="0x000011"/>
+    </attr>
     <attr name="materialDialogBackground" format="color|reference"/>
     <attr name="materialDialogButtonTextColor" format="color"/>
     <attr name="materialDialogDisabledButtonTextColor" format="color"/>
