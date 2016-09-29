@@ -108,7 +108,12 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         TypedArray typedArray = getContext().getTheme()
                 .obtainStyledAttributes(themeResourceId, new int[]{R.attr.materialDialogWidth});
         int defaultValue = getContext().getResources().getDimensionPixelSize(R.dimen.dialog_width);
-        setWidth(typedArray.getDimensionPixelSize(0, defaultValue));
+
+        try {
+            setWidth(typedArray.getDimensionPixelSize(0, defaultValue));
+        } catch (Resources.NotFoundException e) {
+            setWidth(typedArray.getInteger(0, defaultValue));
+        }
     }
 
     /**
@@ -122,7 +127,12 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         TypedArray typedArray = getContext().getTheme()
                 .obtainStyledAttributes(themeResourceId, new int[]{R.attr.materialDialogHeight});
         int defaultValue = Dialog.WRAP_CONTENT;
-        setHeight(typedArray.getDimensionPixelSize(0, defaultValue));
+
+        try {
+            setHeight(typedArray.getDimensionPixelSize(0, defaultValue));
+        } catch (Resources.NotFoundException e) {
+            setHeight(typedArray.getInteger(0, defaultValue));
+        }
     }
 
     /**
