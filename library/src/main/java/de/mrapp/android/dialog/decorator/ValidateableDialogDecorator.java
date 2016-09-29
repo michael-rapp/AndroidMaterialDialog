@@ -16,6 +16,7 @@ package de.mrapp.android.dialog.decorator;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.Window;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -95,7 +96,7 @@ public class ValidateableDialogDecorator extends AbstractDialogDecorator<HeaderD
     }
 
     @Override
-    protected final void onAttach(@NonNull final View view) {
+    protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
 
     }
 

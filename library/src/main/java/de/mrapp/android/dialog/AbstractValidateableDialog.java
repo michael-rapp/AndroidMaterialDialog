@@ -19,6 +19,7 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 import android.view.View;
+import android.view.Window;
 
 import java.util.Collection;
 import java.util.Set;
@@ -101,9 +102,9 @@ public abstract class AbstractValidateableDialog extends AbstractHeaderDialog
 
     @CallSuper
     @Override
-    protected void onAttachDecorators(@NonNull final View view) {
-        super.onAttachDecorators(view);
-        decorator.attach(view);
+    protected void onAttachDecorators(@NonNull final Window window, @NonNull final View view) {
+        super.onAttachDecorators(window, view);
+        decorator.attach(window, view);
 
     }
 

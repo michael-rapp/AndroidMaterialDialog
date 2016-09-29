@@ -26,11 +26,11 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.AnimateableDialog;
-import de.mrapp.android.dialog.model.MaterialDialog;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
 
@@ -413,7 +413,7 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<AnimateableDi
     }
 
     @Override
-    protected final void onAttach(@NonNull final View view) {
+    protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
         inflateHeader();
         adaptHeaderVisibility();
         adaptHeaderBackground();

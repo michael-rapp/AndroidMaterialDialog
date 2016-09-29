@@ -7,6 +7,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 import android.view.View;
+import android.view.Window;
 
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.model.ProgressDialogDecorator;
@@ -354,9 +355,10 @@ public class ProgressDialog extends AbstractButtonBarDialog implements ProgressD
     }
 
     @Override
-    protected final void onAttachDecorators(@NonNull final View view) {
-        super.onAttachDecorators(view);
-        decorator.attach(view);
+    protected final void onAttachDecorators(@NonNull final Window window,
+                                            @NonNull final View view) {
+        super.onAttachDecorators(window, view);
+        decorator.attach(window, view);
     }
 
     @Override

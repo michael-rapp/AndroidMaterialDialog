@@ -19,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
+import android.view.Window;
 
 import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.decorator.AnimateableDialogDecorator;
@@ -93,10 +94,10 @@ public abstract class AbstractAnimateableDialogFragment extends AbstractMaterial
 
     @CallSuper
     @Override
-    protected void onAttachDecorators(@NonNull final View view,
+    protected void onAttachDecorators(@NonNull final Window window, @NonNull final View view,
                                       @NonNull final FragmentManager fragmentManager) {
-        super.onAttachDecorators(view, fragmentManager);
-        decorator.attach(view);
+        super.onAttachDecorators(window, view, fragmentManager);
+        decorator.attach(window, view);
     }
 
     @CallSuper

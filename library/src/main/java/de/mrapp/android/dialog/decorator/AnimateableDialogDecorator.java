@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.Window;
 
 import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.model.MaterialDialog;
@@ -101,7 +102,7 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<Material
     }
 
     @Override
-    protected final void onAttach(@NonNull final View view) {
+    protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
 
     }
 

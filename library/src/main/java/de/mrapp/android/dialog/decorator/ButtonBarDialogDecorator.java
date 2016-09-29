@@ -25,6 +25,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 
 import java.util.Locale;
@@ -531,7 +532,7 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     }
 
     @Override
-    protected final void onAttach(@NonNull final View view) {
+    protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
         contentDivider = view.findViewById(R.id.content_divider);
         inflateButtonBar();
         adaptButtonTextColor();

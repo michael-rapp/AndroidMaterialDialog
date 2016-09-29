@@ -173,6 +173,9 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      * The method, which is invoked when the dialog's decorators should be attached. This method may
      * be overridden by subclasses in order to attach additional decorators.
      *
+     * @param window
+     *         The window of the dialog, whose view hierarchy should be modified by the decorators,
+     *         as an instance of the class {@link Window}. The window may not be null
      * @param view
      *         The root view of the view hierarchy, which should be modified by the decorators, as
      *         an instance of the class {@link View}. The view may not be null
@@ -181,9 +184,9 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      *         instance of the class FragmentManager. The fragment manager may not be null
      */
     @CallSuper
-    protected void onAttachDecorators(@NonNull final View view,
+    protected void onAttachDecorators(@NonNull final Window window, @NonNull final View view,
                                       @NonNull final FragmentManager fragmentManager) {
-        decorator.attach(view);
+        decorator.attach(window, view);
     }
 
     /**
@@ -459,7 +462,9 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
 
         View rootView = view.findViewById(R.id.root);
         rootView.setLayoutParams(createLayoutParams(rootView));
-        onAttachDecorators(rootView, getChildFragmentManager());
+        Window window = getActivity().getWindow();
+        assert window != null;
+        onAttachDecorators(window, rootView, getChildFragmentManager());
         return view;
     }
 

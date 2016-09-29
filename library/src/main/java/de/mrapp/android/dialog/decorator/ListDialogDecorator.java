@@ -20,6 +20,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -427,7 +428,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     }
 
     @Override
-    protected final void onAttach(@NonNull final View view) {
+    protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
         inflateListView();
         adaptItemColor();
     }

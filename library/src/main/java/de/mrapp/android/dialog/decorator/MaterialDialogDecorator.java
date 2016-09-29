@@ -16,6 +16,7 @@ package de.mrapp.android.dialog.decorator;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -33,6 +34,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -41,8 +43,6 @@ import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.util.ViewUtil;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.DisplayUtil.getDisplayHeight;
-import static de.mrapp.android.util.DisplayUtil.getDisplayWidth;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -274,11 +274,13 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * RelativeLayout.LayoutParams}
      */
     private RelativeLayout.LayoutParams createLayoutParams() {
+        Rect windowDimensions = new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(windowDimensions);
         boolean rtl = isRtl();
         int width = getLayoutDimension(getWidth(), getLeftMargin() + getRightMargin(),
-                getDisplayWidth(getContext()));
+                windowDimensions.right);
         int height = getLayoutDimension(getHeight(), getTopMargin() + getBottomMargin(),
-                getDisplayHeight(getContext()));
+                windowDimensions.bottom);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(width, height);
         layoutParams.leftMargin = rtl ? getRightMargin() : getLeftMargin();
         layoutParams.topMargin = getTopMargin();
@@ -428,7 +430,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * Adapts the layout params of the dialog.
      */
     private void adaptLayoutParams() {
-        if (getView() != null) {
+        if (getWindow() != null && getView() != null) {
             getView().setLayoutParams(createLayoutParams());
         }
     }
@@ -889,7 +891,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     @Override
-    protected final void onAttach(@NonNull final View view) {
+    protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
         inflateTitleView();
         inflateMessageView();
         inflateContentView();

@@ -23,6 +23,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
+import android.view.Window;
 
 import de.mrapp.android.dialog.decorator.HeaderDialogDecorator;
 import de.mrapp.android.dialog.model.HeaderDialog;
@@ -142,10 +143,10 @@ public abstract class AbstractHeaderDialogFragment extends AbstractAnimateableDi
 
     @CallSuper
     @Override
-    protected void onAttachDecorators(@NonNull final View view,
+    protected void onAttachDecorators(@NonNull final Window window, @NonNull final View view,
                                       @NonNull final FragmentManager fragmentManager) {
-        super.onAttachDecorators(view, fragmentManager);
-        decorator.attach(view);
+        super.onAttachDecorators(window, view, fragmentManager);
+        decorator.attach(window, view);
     }
 
     @CallSuper

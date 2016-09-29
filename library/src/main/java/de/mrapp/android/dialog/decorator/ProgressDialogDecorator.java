@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import de.mrapp.android.dialog.ProgressDialog.ProgressBarPosition;
@@ -264,7 +265,7 @@ public class ProgressDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
     }
 
     @Override
-    protected final void onAttach(@NonNull final View view) {
+    protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
         adaptProgressBar();
     }
 

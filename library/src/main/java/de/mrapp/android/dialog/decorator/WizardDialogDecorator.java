@@ -23,11 +23,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -1033,7 +1033,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     }
 
     @Override
-    protected final void onAttach(@NonNull final View view,
+    protected final void onAttach(@NonNull final Window window, @NonNull final View view,
                                   @NonNull final FragmentManager fragmentManager) {
         View viewPagerView = view.findViewById(R.id.view_pager);
 

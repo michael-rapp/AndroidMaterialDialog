@@ -108,13 +108,16 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
      * The method, which is invoked when the dialog's decorators should be attached. This method may
      * be overridden by subclasses in order to attach additional decorators.
      *
+     * @param window
+     *         The window, whose view hierarchy should be modified by the decorators, as an instance
+     *         of the class {@link Window}. The window may not be null
      * @param view
      *         The root view of the view hierarchy, which should be modified by the decorators, as
      *         an instance of the class {@link View}. The view may not be null
      */
     @CallSuper
-    protected void onAttachDecorators(@NonNull final View view) {
-        decorator.attach(view);
+    protected void onAttachDecorators(@NonNull final Window window, @NonNull final View view) {
+        decorator.attach(window, view);
     }
 
     /**
@@ -326,15 +329,11 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         view.setOnTouchListener(createCanceledOnTouchListener());
         setContentView(view);
         Window window = getWindow();
-
-        if (window != null) {
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT);
-        }
-
+        assert window != null;
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         View rootView = view.findViewById(R.id.root);
-        onAttachDecorators(rootView);
+        onAttachDecorators(window, rootView);
     }
 
     @Override

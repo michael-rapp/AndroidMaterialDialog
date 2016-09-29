@@ -29,6 +29,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
@@ -1158,10 +1159,10 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
     }
 
     @Override
-    protected final void onAttachDecorators(@NonNull final View view,
+    protected final void onAttachDecorators(@NonNull final Window window, @NonNull final View view,
                                             @NonNull final FragmentManager fragmentManager) {
-        super.onAttachDecorators(view, fragmentManager);
-        decorator.attach(view, fragmentManager);
+        super.onAttachDecorators(window, view, fragmentManager);
+        decorator.attach(window, view, fragmentManager);
     }
 
     @Override

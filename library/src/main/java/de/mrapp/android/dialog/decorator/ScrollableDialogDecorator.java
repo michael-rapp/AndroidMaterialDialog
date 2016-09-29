@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 
@@ -189,7 +190,7 @@ public class ScrollableDialogDecorator extends AbstractDialogDecorator<ListDialo
     }
 
     @Override
-    protected final void onAttach(@NonNull final View view) {
+    protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
         contentDivider = view.findViewById(R.id.content_divider);
         buttonBarDivider = view.findViewById(R.id.button_bar_divider);
         View contentContainer = view.findViewById(R.id.content_container);
