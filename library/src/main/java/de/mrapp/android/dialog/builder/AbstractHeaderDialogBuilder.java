@@ -81,19 +81,13 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
     private void obtainHeaderBackground(@StyleRes final int themeResourceId) {
         TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                 new int[]{R.attr.materialDialogHeaderBackground});
-        int color = typedArray.getColor(0, -1);
+        int resourceId = typedArray.getResourceId(0, 0);
 
-        if (color != -1) {
-            setHeaderBackgroundColor(color);
+        if (resourceId != 0) {
+            setHeaderBackground(resourceId);
         } else {
-            int resourceId = typedArray.getResourceId(0, 0);
-
-            if (resourceId != 0) {
-                setHeaderBackground(resourceId);
-            } else {
-                setHeaderBackgroundColor(
-                        ThemeUtil.getColor(getContext(), themeResourceId, R.attr.colorPrimary));
-            }
+            setHeaderBackgroundColor(
+                    ThemeUtil.getColor(getContext(), themeResourceId, R.attr.colorPrimary));
         }
     }
 

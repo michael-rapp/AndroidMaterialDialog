@@ -27,6 +27,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
+import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.View;
@@ -219,16 +220,13 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     private void obtainBackground(@StyleRes final int themeResourceId) {
         TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                 new int[]{R.attr.materialDialogBackground});
-        int color = typedArray.getColor(0, -1);
+        int resourceId = typedArray.getResourceId(0, 0);
 
-        if (color != -1) {
-            setBackgroundColor(color);
+        if (resourceId != 0) {
+            setBackground(resourceId);
         } else {
-            int resourceId = typedArray.getResourceId(0, 0);
-
-            if (resourceId != 0) {
-                setBackground(resourceId);
-            }
+            setBackgroundColor(
+                    ContextCompat.getColor(getContext(), R.color.dialog_background_light));
         }
     }
 
