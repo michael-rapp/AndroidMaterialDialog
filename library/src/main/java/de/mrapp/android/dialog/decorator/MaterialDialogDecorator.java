@@ -275,7 +275,9 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private RelativeLayout.LayoutParams createLayoutParams() {
         Rect windowDimensions = new Rect();
-        getWindow().getDecorView().getWindowVisibleDisplayFrame(windowDimensions);
+        Window window = getWindow();
+        assert window != null;
+        window.getDecorView().getWindowVisibleDisplayFrame(windowDimensions);
         boolean rtl = isRtl();
         int width = getLayoutDimension(getWidth(), getLeftMargin() + getRightMargin(),
                 windowDimensions.right);
