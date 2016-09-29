@@ -607,6 +607,10 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     @Override
     public final void setCancelable(final boolean cancelable) {
         this.cancelable = cancelable;
+
+        if (!cancelable) {
+            setCanceledOnTouchOutside(false);
+        }
     }
 
     @Override

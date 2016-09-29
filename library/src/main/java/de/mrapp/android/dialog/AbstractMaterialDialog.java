@@ -101,7 +101,6 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         this.decorator = new MaterialDialogDecorator(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setCanceledOnTouchOutside(true);
-        setCancelable(true);
     }
 
     /**

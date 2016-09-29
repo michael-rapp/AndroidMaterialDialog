@@ -165,7 +165,6 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      */
     public AbstractMaterialDialogFragment() {
         this.decorator = new MaterialDialogDecorator(this);
-        setCancelable(true);
         setCanceledOnTouchOutside(true);
     }
 
