@@ -15,6 +15,7 @@ package de.mrapp.android.dialog.builder;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.support.annotation.AttrRes;
@@ -134,10 +135,20 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     private void obtainMaxWidth(@StyleRes final int themeResourceId) {
         TypedArray typedArray = getContext().getTheme()
                 .obtainStyledAttributes(themeResourceId, new int[]{R.attr.materialDialogMaxWidth});
-        int defaultValue =
-                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_max_width);
-        int maxWidth = typedArray.getDimensionPixelSize(0, defaultValue);
-        setMaxWidth(maxWidth > 0 ? maxWidth : -1);
+        int defaultValue;
+
+        try {
+            defaultValue =
+                    getContext().getResources().getDimensionPixelSize(R.dimen.dialog_max_width);
+        } catch (Resources.NotFoundException e) {
+            defaultValue = -1;
+        }
+
+        try {
+            setMaxWidth(typedArray.getDimensionPixelSize(0, defaultValue));
+        } catch (Resources.NotFoundException e) {
+            setMaxWidth(-1);
+        }
     }
 
     /**
@@ -150,10 +161,20 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     private void obtainMaxHeight(@StyleRes final int themeResourceId) {
         TypedArray typedArray = getContext().getTheme()
                 .obtainStyledAttributes(themeResourceId, new int[]{R.attr.materialDialogMaxHeight});
-        int defaultValue =
-                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_max_height);
-        int maxHeight = typedArray.getDimensionPixelSize(0, defaultValue);
-        setMaxHeight(maxHeight > 0 ? maxHeight : -1);
+        int defaultValue;
+
+        try {
+            defaultValue =
+                    getContext().getResources().getDimensionPixelSize(R.dimen.dialog_max_height);
+        } catch (Resources.NotFoundException e) {
+            defaultValue = -1;
+        }
+
+        try {
+            setMaxHeight(typedArray.getDimensionPixelSize(0, defaultValue));
+        } catch (Resources.NotFoundException e) {
+            setMaxHeight(-1);
+        }
     }
 
     /**

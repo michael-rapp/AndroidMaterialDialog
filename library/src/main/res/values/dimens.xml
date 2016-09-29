@@ -18,8 +18,8 @@ License.
     <item name="dialog_width" type="dimen">386dp</item>
     <item name="dialog_horizontal_margin" type="dimen">10dp</item>
     <item name="dialog_vertical_margin" type="dimen">10dp</item>
-    <item name="dialog_max_width" type="dimen">-1dp</item>
-    <item name="dialog_max_height" type="dimen">-1dp</item>
+    <item name="dialog_max_width" type="dimen">-1</item>
+    <item name="dialog_max_height" type="dimen">-1</item>
     <item name="dialog_horizontal_padding" type="dimen">24dp</item>
     <item name="dialog_top_padding" type="dimen">24dp</item>
     <item name="dialog_button_bar_horizontal_padding" type="dimen">12dp</item>
