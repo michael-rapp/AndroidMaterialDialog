@@ -320,11 +320,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
                             getTabPosition() == TabPosition.PREFER_HEADER)) {
                 tabLayout = (TabLayout) layoutInflater
                         .inflate(R.layout.wizard_dialog_tab_layout, headerContainer, false);
-                FrameLayout.LayoutParams layoutParams =
-                        new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-                                FrameLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.gravity = Gravity.BOTTOM;
-                headerContainer.addView(tabLayout, layoutParams);
+                headerContainer.addView(tabLayout);
             } else {
                 tabLayout = (TabLayout) layoutInflater
                         .inflate(R.layout.wizard_dialog_tab_layout, contentContainer, false);
