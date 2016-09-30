@@ -46,8 +46,6 @@ License.
             style="@style/MaterialDialog.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dialog_button_bar_spacing"
-            android:layout_marginStart="@dimen/dialog_button_bar_spacing"
             android:paddingLeft="@dimen/dialog_button_horizontal_padding"
             android:paddingRight="@dimen/dialog_button_horizontal_padding"
             android:visibility="gone"/>
@@ -57,6 +55,8 @@ License.
             style="@style/MaterialDialog.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dialog_button_bar_spacing"
+            android:layout_marginStart="@dimen/dialog_button_bar_spacing"
             android:paddingLeft="@dimen/dialog_button_horizontal_padding"
             android:paddingRight="@dimen/dialog_button_horizontal_padding"
             android:visibility="gone"/>
