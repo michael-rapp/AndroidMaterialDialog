@@ -31,6 +31,8 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+import de.mrapp.android.dialog.R;
+
 import static de.mrapp.android.util.Condition.ensureAtLeast;
 
 /**
@@ -214,10 +216,11 @@ public class DialogRootView extends LinearLayout {
 
     @Override
     protected final void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-        int maxWidthMeasureSpec = getMaxWidth() != -1 ?
-                MeasureSpec.makeMeasureSpec(getMaxWidth(), MeasureSpec.AT_MOST) : -1;
-        int maxHeightMeasureSpec = getMaxHeight() != -1 ?
-                MeasureSpec.makeMeasureSpec(getMaxHeight(), MeasureSpec.AT_MOST) : -1;
+        int shadowWidth = getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
+        int maxWidthMeasureSpec = getMaxWidth() != -1 ? MeasureSpec
+                .makeMeasureSpec(getMaxWidth() + (shadowWidth * 2), MeasureSpec.AT_MOST) : -1;
+        int maxHeightMeasureSpec = getMaxHeight() != -1 ? MeasureSpec
+                .makeMeasureSpec(getMaxHeight() + (shadowWidth * 2), MeasureSpec.AT_MOST) : -1;
         super.onMeasure(maxWidthMeasureSpec != -1 ? maxWidthMeasureSpec : widthMeasureSpec,
                 maxHeightMeasureSpec != -1 ? maxHeightMeasureSpec : heightMeasureSpec);
     }

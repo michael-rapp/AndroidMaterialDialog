@@ -290,15 +290,21 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         assert window != null;
         window.getDecorView().getWindowVisibleDisplayFrame(windowDimensions);
         boolean rtl = isRtl();
-        int width = getLayoutDimension(getWidth(), getLeftMargin() + getRightMargin(),
-                windowDimensions.right);
-        int height = getLayoutDimension(getHeight(), getTopMargin() + getBottomMargin(),
-                windowDimensions.bottom);
+        int shadowWidth =
+                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
+        int leftMargin = Math.max(getLeftMargin() - shadowWidth, 0);
+        int topMargin = Math.max(getTopMargin() - shadowWidth, 0);
+        int rightMargin = Math.max(getRightMargin() - shadowWidth, 0);
+        int bottomMargin = Math.max(getBottomMargin() - shadowWidth, 0);
+        int width =
+                getLayoutDimension(getWidth(), leftMargin + rightMargin, windowDimensions.right);
+        int height =
+                getLayoutDimension(getHeight(), topMargin + bottomMargin, windowDimensions.bottom);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(width, height);
-        layoutParams.leftMargin = rtl ? getRightMargin() : getLeftMargin();
-        layoutParams.topMargin = getTopMargin();
-        layoutParams.rightMargin = rtl ? getLeftMargin() : getRightMargin();
-        layoutParams.bottomMargin = getBottomMargin();
+        layoutParams.leftMargin = rtl ? rightMargin : leftMargin;
+        layoutParams.topMargin = topMargin;
+        layoutParams.rightMargin = rtl ? leftMargin : rightMargin;
+        layoutParams.bottomMargin = bottomMargin;
 
         if ((getGravity() & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL) {
             layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
