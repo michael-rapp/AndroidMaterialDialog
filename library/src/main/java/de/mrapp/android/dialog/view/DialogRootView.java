@@ -18,6 +18,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -243,6 +244,7 @@ public class DialogRootView extends LinearLayout {
         int width = canvas.getWidth();
         int height = canvas.getHeight();
         background.setBounds(0, 0, width, height);
+        backingBitmap.eraseColor(Color.TRANSPARENT);
         background.draw(backingCanvas);
         canvas.drawBitmap(backingBitmap, 0, 0, paint);
     }
