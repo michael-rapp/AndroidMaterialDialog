@@ -13,6 +13,7 @@
  */
 package de.mrapp.android.dialog.view;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -61,6 +62,16 @@ public class DialogRootView extends LinearLayout {
      * The paint, which is used to draw the view's background.
      */
     private Paint paint;
+
+    /**
+     * The bitmap, which is used to draw the view's background.
+     */
+    private Bitmap backingBitmap;
+
+    /**
+     * The canvas, whic his used to draw the view's background.
+     */
+    private Canvas backingCanvas;
 
     /**
      * Initializes the view.
@@ -202,7 +213,7 @@ public class DialogRootView extends LinearLayout {
     }
 
     @Override
-    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
+    protected final void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
         int maxWidthMeasureSpec = getMaxWidth() != -1 ?
                 MeasureSpec.makeMeasureSpec(getMaxWidth(), MeasureSpec.AT_MOST) : -1;
         int maxHeightMeasureSpec = getMaxHeight() != -1 ?
@@ -211,16 +222,26 @@ public class DialogRootView extends LinearLayout {
                 maxHeightMeasureSpec != -1 ? maxHeightMeasureSpec : heightMeasureSpec);
     }
 
+    @SuppressLint("DrawAllocation")
+    @Override
+    protected final void onLayout(final boolean changed, final int l, final int t, final int r,
+                                  final int b) {
+        super.onLayout(changed, l, t, r, b);
+
+        if (changed) {
+            backingBitmap = Bitmap.createBitmap(r - l, b - t, Bitmap.Config.ARGB_8888);
+            backingCanvas = new Canvas(backingBitmap);
+        }
+    }
+
     @Override
     public final void draw(final Canvas canvas) {
+        super.draw(canvas);
         int width = canvas.getWidth();
         int height = canvas.getHeight();
         background.setBounds(0, 0, width, height);
-        background.draw(canvas);
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas bitmapCanvas = new Canvas(bitmap);
-        super.draw(bitmapCanvas);
-        canvas.drawBitmap(bitmap, 0, 0, paint);
+        background.draw(backingCanvas);
+        canvas.drawBitmap(backingBitmap, 0, 0, paint);
     }
 
 }
