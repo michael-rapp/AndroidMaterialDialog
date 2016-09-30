@@ -15,11 +15,18 @@ package de.mrapp.android.dialog.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
@@ -46,6 +53,26 @@ public class DialogRootView extends LinearLayout {
     private int maxHeight;
 
     /**
+     * The drawable, which is shown as the view's background.
+     */
+    private Drawable background;
+
+    /**
+     * The paint, which is used to draw the view's background.
+     */
+    private Paint paint;
+
+    /**
+     * Initializes the view.
+     */
+    private void initialize() {
+        background =
+                ContextCompat.getDrawable(getContext(), android.R.drawable.dialog_holo_light_frame);
+        paint = new Paint();
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY));
+    }
+
+    /**
      * Creates a new root view of a dialog, which is designed according to Android 5's Material
      * Design guidelines even on pre-Lollipop devices.
      *
@@ -54,7 +81,7 @@ public class DialogRootView extends LinearLayout {
      *         Context}. The context may not be null
      */
     public DialogRootView(@NonNull final Context context) {
-        super(context);
+        this(context, null);
     }
 
     /**
@@ -71,6 +98,7 @@ public class DialogRootView extends LinearLayout {
     public DialogRootView(@NonNull final Context context,
                           @Nullable final AttributeSet attributeSet) {
         super(context, attributeSet);
+        initialize();
     }
 
     /**
@@ -91,6 +119,7 @@ public class DialogRootView extends LinearLayout {
     public DialogRootView(@NonNull final Context context, @Nullable final AttributeSet attributeSet,
                           @AttrRes final int defaultStyle) {
         super(context, attributeSet, defaultStyle);
+        initialize();
     }
 
     /**
@@ -117,6 +146,7 @@ public class DialogRootView extends LinearLayout {
                           @AttrRes final int defaultStyle,
                           @StyleRes final int defaultStyleResource) {
         super(context, attributeSet, defaultStyle, defaultStyleResource);
+        initialize();
     }
 
     /**
@@ -179,6 +209,18 @@ public class DialogRootView extends LinearLayout {
                 MeasureSpec.makeMeasureSpec(getMaxHeight(), MeasureSpec.AT_MOST) : -1;
         super.onMeasure(maxWidthMeasureSpec != -1 ? maxWidthMeasureSpec : widthMeasureSpec,
                 maxHeightMeasureSpec != -1 ? maxHeightMeasureSpec : heightMeasureSpec);
+    }
+
+    @Override
+    public final void draw(final Canvas canvas) {
+        int width = canvas.getWidth();
+        int height = canvas.getHeight();
+        background.setBounds(0, 0, width, height);
+        background.draw(canvas);
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas bitmapCanvas = new Canvas(bitmap);
+        super.draw(bitmapCanvas);
+        canvas.drawBitmap(bitmap, 0, 0, paint);
     }
 
 }
