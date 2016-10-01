@@ -15,6 +15,16 @@ License.
 -->
 <resources>
 
+    <style name="MaterialDialog.Light.Fullscreen.CenterInside.Translucent" parent="MaterialDialog.Light.Fullscreen.CenterInside">
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="MaterialDialog.Fullscreen.CenterInside.Translucent" parent="MaterialDialog.Fullscreen.CenterInside">
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
     <style name="MaterialDialog.Title">
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">2</item>

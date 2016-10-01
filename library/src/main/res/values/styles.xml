@@ -28,6 +28,8 @@ License.
         <item name="materialDialogFullscreen">true</item>
     </style>
 
+    <style name="MaterialDialog.Light.Fullscreen.CenterInside.Translucent" parent="MaterialDialog.Light.Fullscreen.CenterInside"/>
+
     <style name="MaterialDialog.Light.Fullscreen" parent="MaterialDialog.Light.Fullscreen.CenterInside">
         <item name="materialDialogWidth">match_parent</item>
         <item name="materialDialogHeight">match_parent</item>
@@ -50,6 +52,8 @@ License.
     <style name="MaterialDialog.Fullscreen.CenterInside" parent="MaterialDialog">
         <item name="materialDialogFullscreen">true</item>
     </style>
+
+    <style name="MaterialDialog.Fullscreen.CenterInside.Translucent" parent="MaterialDialog.Fullscreen.CenterInside"/>
 
     <style name="MaterialDialog.Fullscreen" parent="MaterialDialog.Fullscreen.CenterInside">
         <item name="materialDialogWidth">match_parent</item>
