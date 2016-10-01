@@ -187,17 +187,13 @@ public interface MaterialDialogDecorator extends Dialog {
      * Sets the margin of the dialog.
      *
      * @param left
-     *         The left margin, which should be set, in pixels as an {@link Integer} value. The left
-     *         margin must be at least 0
+     *         The left margin, which should be set, in pixels as an {@link Integer} value
      * @param top
-     *         The top margin, which should be set, in pixels as an {@link Integer} value. The top
-     *         margin must be at least 0
+     *         The top margin, which should be set, in pixels as an {@link Integer} value
      * @param right
-     *         The right margin, which should be set, in pixels as an {@link Integer} value. The
-     *         right margin must be at least 0
+     *         The right margin, which should be set, in pixels as an {@link Integer} value
      * @param bottom
-     *         The bottom margin, which should be set, in pixels as an {@link Integer} value. The
-     *         bottom margin must be at least 0
+     *         The bottom margin, which should be set, in pixels as an {@link Integer} value
      */
     void setMargin(int left, int top, int right, int bottom);
 

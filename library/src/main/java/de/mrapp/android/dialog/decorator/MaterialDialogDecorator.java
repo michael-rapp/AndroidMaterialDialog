@@ -292,10 +292,10 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         boolean rtl = isRtl();
         int shadowWidth =
                 getContext().getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
-        int leftMargin = Math.max(getLeftMargin() - shadowWidth, 0);
-        int topMargin = Math.max(getTopMargin() - shadowWidth, 0);
-        int rightMargin = Math.max(getRightMargin() - shadowWidth, 0);
-        int bottomMargin = Math.max(getBottomMargin() - shadowWidth, 0);
+        int leftMargin = getLeftMargin() - shadowWidth;
+        int topMargin = getTopMargin() - shadowWidth;
+        int rightMargin = getRightMargin() - shadowWidth;
+        int bottomMargin = getBottomMargin() - shadowWidth;
         int width =
                 getLayoutDimension(getWidth(), leftMargin + rightMargin, windowDimensions.right);
         int height =
@@ -727,10 +727,6 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void setMargin(final int left, final int top, final int right, final int bottom) {
-        ensureAtLeast(left, 0, "The left margin must be at least 0");
-        ensureAtLeast(top, 0, "The top margin must be at least 0");
-        ensureAtLeast(right, 0, "The right margin must be at least 0");
-        ensureAtLeast(bottom, 0, "The bottom margin must be at least 0");
         this.margin = new int[]{left, top, right, bottom};
         adaptLayoutParams();
     }
