@@ -24,12 +24,42 @@ License.
         </item>
     </style>
 
+    <style name="MaterialDialog.Light.Fullscreen.CenterInside" parent="MaterialDialog.Light">
+        <item name="materialDialogFullscreen">true</item>
+    </style>
+
+    <style name="MaterialDialog.Light.Fullscreen" parent="MaterialDialog.Light.Fullscreen.CenterInside">
+        <item name="materialDialogWidth">match_parent</item>
+        <item name="materialDialogHeight">match_parent</item>
+        <item name="materialDialogMarginLeft">0dp</item>
+        <item name="materialDialogMarginTop">0dp</item>
+        <item name="materialDialogMarginRight">0dp</item>
+        <item name="materialDialogMarginBottom">0dp</item>
+        <item name="materialDialogMaxWidth">none</item>
+        <item name="materialDialogMaxHeight">none</item>
+    </style>
+
     <style name="MaterialDialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="materialDialogBackground">@color/dialog_background_dark</item>
         <item name="materialDialogButtonBarDividerColor">@color/button_bar_divider_color_dark</item>
         <item name="materialDialogDisabledButtonTextColor">
             @color/dialog_button_disabled_text_color_dark
         </item>
+    </style>
+
+    <style name="MaterialDialog.Fullscreen.CenterInside" parent="MaterialDialog">
+        <item name="materialDialogFullscreen">true</item>
+    </style>
+
+    <style name="MaterialDialog.Fullscreen" parent="MaterialDialog.Fullscreen.CenterInside">
+        <item name="materialDialogWidth">match_parent</item>
+        <item name="materialDialogHeight">match_parent</item>
+        <item name="materialDialogMarginLeft">0dp</item>
+        <item name="materialDialogMarginTop">0dp</item>
+        <item name="materialDialogMarginRight">0dp</item>
+        <item name="materialDialogMarginBottom">0dp</item>
+        <item name="materialDialogMaxWidth">none</item>
+        <item name="materialDialogMaxHeight">none</item>
     </style>
 
     <style name="MaterialDialog.Title">

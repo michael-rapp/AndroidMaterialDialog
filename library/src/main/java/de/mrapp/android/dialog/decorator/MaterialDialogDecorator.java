@@ -16,6 +16,7 @@ package de.mrapp.android.dialog.decorator;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -295,7 +296,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         assert window != null;
         window.getDecorView().getWindowVisibleDisplayFrame(windowDimensions);
         boolean rtl = isRtl();
-        int shadowWidth =
+        int shadowWidth = isFullscreen() ? 0 :
                 getContext().getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
         int leftMargin = getLeftMargin() - shadowWidth;
         int topMargin = getTopMargin() - shadowWidth;
@@ -457,7 +458,13 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         DialogRootView rootView = (DialogRootView) getView();
 
         if (getWindow() != null && rootView != null) {
+            getWindow().setBackgroundDrawable(
+                    isFullscreen() ? background : new ColorDrawable(Color.TRANSPARENT));
             rootView.setLayoutParams(createLayoutParams());
+            int padding = isFullscreen() ? 0 :
+                    getContext().getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
+            rootView.setPadding(padding, padding, padding, padding);
+            rootView.showShadow(!isFullscreen());
             rootView.setMaxWidth(getMaxWidth());
             rootView.setMaxHeight(getMaxHeight());
         }
@@ -583,7 +590,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private void adaptBackground() {
         if (getView() != null) {
-            ViewUtil.setBackground(getView(), background);
+            ViewUtil.setBackground(getView(), isFullscreen() ? null : background);
         }
     }
 
@@ -648,6 +655,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     public final void setFullscreen(final boolean fullscreen) {
         this.fullscreen = fullscreen;
         adaptLayoutParams();
+        adaptBackground();
     }
 
     @Override

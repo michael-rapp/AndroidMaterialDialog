@@ -16,8 +16,6 @@ package de.mrapp.android.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.AttrRes;
@@ -359,7 +357,6 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         setContentView(view);
         Window window = getWindow();
         assert window != null;
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         View rootView = view.findViewById(R.id.root);
         onAttachDecorators(window, rootView);

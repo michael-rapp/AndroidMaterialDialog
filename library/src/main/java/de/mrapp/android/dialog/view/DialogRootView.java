@@ -47,14 +47,19 @@ import static de.mrapp.android.util.Condition.ensureAtLeast;
 public class DialogRootView extends LinearLayout {
 
     /**
+     * True, if the view's shadow is shown, false otherwise.
+     */
+    private boolean showShadow = true;
+
+    /**
      * The maximum width of the view.
      */
-    private int maxWidth;
+    private int maxWidth = -1;
 
     /**
      * The maximum height of the view.
      */
-    private int maxHeight;
+    private int maxHeight = -1;
 
     /**
      * The drawable, which is shown as the view's background.
@@ -164,6 +169,26 @@ public class DialogRootView extends LinearLayout {
     }
 
     /**
+     * Returns, whether the view's shadow is shown, or not.
+     *
+     * @return True, if the view's shadow is shown, false otherwise
+     */
+    public final boolean isShadowShown() {
+        return showShadow;
+    }
+
+    /**
+     * Sets, whether the view's shadow should be shown, or not.
+     *
+     * @param showShadow
+     *         True, if the shadow should be shown, false otherwise
+     */
+    public final void showShadow(final boolean showShadow) {
+        this.showShadow = showShadow;
+        invalidate();
+    }
+
+    /**
      * Returns the maximum width of the view.
      *
      * @return The maximum width of the view in pixels as an {@link Integer} value or -1, if no
@@ -217,7 +242,8 @@ public class DialogRootView extends LinearLayout {
 
     @Override
     protected final void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-        int shadowWidth = getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
+        int shadowWidth = isShadowShown() ?
+                getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width) : 0;
         int maxWidthMeasureSpec = getMaxWidth() != -1 ? MeasureSpec
                 .makeMeasureSpec(getMaxWidth() + (shadowWidth * 2), MeasureSpec.AT_MOST) : -1;
         int maxHeightMeasureSpec = getMaxHeight() != -1 ? MeasureSpec
@@ -241,12 +267,15 @@ public class DialogRootView extends LinearLayout {
     @Override
     public final void draw(final Canvas canvas) {
         super.draw(canvas);
-        int width = canvas.getWidth();
-        int height = canvas.getHeight();
-        background.setBounds(0, 0, width, height);
-        backingBitmap.eraseColor(Color.TRANSPARENT);
-        background.draw(backingCanvas);
-        canvas.drawBitmap(backingBitmap, 0, 0, paint);
+
+        if (isShadowShown()) {
+            int width = canvas.getWidth();
+            int height = canvas.getHeight();
+            background.setBounds(0, 0, width, height);
+            backingBitmap.eraseColor(Color.TRANSPARENT);
+            background.draw(backingCanvas);
+            canvas.drawBitmap(backingBitmap, 0, 0, paint);
+        }
     }
 
 }
