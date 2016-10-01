@@ -139,6 +139,11 @@ License.
             android:key="@string/fullscreen_preference_key"
             android:summary="@string/fullscreen_preference_summary"
             android:title="@string/fullscreen_preference_title"/>
+        <CheckBoxPreference
+            android:defaultValue="@bool/animation_preference_default_value"
+            android:key="@string/animation_preference_key"
+            android:summary="@string/animation_preference_summary"
+            android:title="@string/animation_preference_title"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

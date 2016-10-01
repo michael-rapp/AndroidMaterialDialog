@@ -26,5 +26,6 @@ License.
     <bool name="show_positive_button_preference_default_value">true</bool>
     <bool name="stack_buttons_preference_default_value">false</bool>
     <bool name="fullscreen_preference_default_value">false</bool>
+    <bool name="animation_preference_default_value">false</bool>
 
 </resources>

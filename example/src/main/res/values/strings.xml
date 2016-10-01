@@ -91,6 +91,9 @@ License.
     <string name="fullscreen_preference_key">fullscreen_preference_key</string>
     <string name="fullscreen_preference_title">Fullscreen</string>
     <string name="fullscreen_preference_summary">Allows to set, whether the example dialogs should be shown fullscreen, or not</string>
+    <string name="animation_preference_key">animation_preference_key</string>
+    <string name="animation_preference_title">Animations</string>
+    <string name="animation_preference_summary">Allows to set, whether animations should be used to show and hide dialogs, or not</string>
     <string name="multi_choice_listener_selected_text" formatted="false">Selected item at position %d</string>
     <string name="multi_choice_listener_unselected_text" formatted="false">Unselected item at position %d</string>
     <string name="single_choice_listener_text" formatted="false">Selected item at position %d</string>

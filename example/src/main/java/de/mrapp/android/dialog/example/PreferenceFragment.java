@@ -30,6 +30,8 @@ import android.widget.Toast;
 import de.mrapp.android.dialog.MaterialDialog;
 import de.mrapp.android.dialog.ProgressDialog;
 import de.mrapp.android.dialog.WizardDialog;
+import de.mrapp.android.dialog.animation.DialogAnimation;
+import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
 
@@ -341,6 +343,17 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     }
 
     /**
+     * Creates and returns the animation, which should be used to show or hide dialogs.
+     *
+     * @return The animation, which has been created, as an instance of the type {@link
+     * DialogAnimation}
+     */
+    private DialogAnimation createDialogAnimation() {
+        return new RectangleRevealAnimation.Builder(getActivity()).setWidth(0).setHeight(0).setX(0)
+                .setY(0).create();
+    }
+
+    /**
      * Creates and returns a listener, which allows to show a toast, which indicates when a single
      * choice list item of a dialog has been selected or unselected.
      *
@@ -472,6 +485,12 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             builder.showHeader(true);
             builder.setHeaderBackground(R.drawable.dialog_header_background);
             builder.setHeaderIcon(R.drawable.dialog_header_icon);
+        }
+
+        if (shouldUseAnimations()) {
+            builder.setShowAnimation(createDialogAnimation());
+            builder.setDismissAnimation(createDialogAnimation());
+            builder.setCancelAnimation(createDialogAnimation());
         }
     }
 
@@ -747,6 +766,19 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         String key = getString(R.string.show_dialog_header_preference_key);
         boolean defaultValue =
                 getResources().getBoolean(R.bool.show_dialog_header_preference_default_value);
+        return sharedPreferences.getBoolean(key, defaultValue);
+    }
+
+    /**
+     * Returns, whether animations should be used to show or hide dialogs, or not.
+     *
+     * @return True, if animations should be used, false otherwise
+     */
+    private boolean shouldUseAnimations() {
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String key = getString(R.string.animation_preference_key);
+        boolean defaultValue = getResources().getBoolean(R.bool.animation_preference_default_value);
         return sharedPreferences.getBoolean(key, defaultValue);
     }
 
