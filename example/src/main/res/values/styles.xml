@@ -19,25 +19,46 @@ License.
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
-        <item name="materialDialogTheme">@style/MaterialDialog.Light</item>
+        <item name="materialDialogTheme">@style/LightDialogTheme</item>
     </style>
 
     <style name="LightFullscreenTheme" parent="LightTheme">
-        <item name="materialDialogTheme">
-            @style/MaterialDialog.Light.Fullscreen.CenterInside.Translucent
-        </item>
+        <item name="materialDialogTheme">@style/LightFullscreenDialogTheme</item>
     </style>
 
     <style name="DarkTheme" parent="@style/Theme.AppCompat">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
-        <item name="materialDialogTheme">@style/MaterialDialog</item>
+        <item name="materialDialogTheme">@style/DarkDialogTheme</item>
     </style>
 
     <style name="DarkFullscreenTheme" parent="@style/DarkTheme">
-        <item name="materialDialogTheme">@style/MaterialDialog.Fullscreen.CenterInside.Translucent
-        </item>
+        <item name="materialDialogTheme">@style/DarkFullscreenDialogTheme</item>
+    </style>
+
+    <style name="LightDialogTheme" parent="@style/MaterialDialog.Light">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+    </style>
+
+    <style name="DarkDialogTheme" parent="@style/MaterialDialog">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+    </style>
+
+    <style name="LightFullscreenDialogTheme" parent="@style/MaterialDialog.Light.Fullscreen.CenterInside.Translucent">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+    </style>
+
+    <style name="DarkFullscreenDialogTheme" parent="@style/MaterialDialog.Fullscreen.CenterInside.Translucent">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
     </style>
 
 </resources>
