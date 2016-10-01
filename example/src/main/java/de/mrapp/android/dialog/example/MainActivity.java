@@ -35,14 +35,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public final void setTheme(final int resid) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String key = getString(R.string.theme_preference_key);
-        String defaultValue = getString(R.string.theme_preference_default_value);
-        int theme = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
+        String themeKey = getString(R.string.theme_preference_key);
+        String themeDefaultValue = getString(R.string.theme_preference_default_value);
+        int theme = Integer.valueOf(sharedPreferences.getString(themeKey, themeDefaultValue));
+        String fullscreenKey = getString(R.string.fullscreen_preference_key);
+        boolean fullscreenDefaultValue =
+                getResources().getBoolean(R.bool.fullscreen_preference_default_value);
+        boolean fullscreen = sharedPreferences.getBoolean(fullscreenKey, fullscreenDefaultValue);
 
         if (theme != 0) {
-            super.setTheme(R.style.DarkTheme);
+            super.setTheme(fullscreen ? R.style.DarkFullscreenTheme : R.style.DarkTheme);
         } else {
-            super.setTheme(R.style.LightTheme);
+            super.setTheme(fullscreen ? R.style.LightFullscreenTheme : R.style.LightTheme);
         }
     }
 

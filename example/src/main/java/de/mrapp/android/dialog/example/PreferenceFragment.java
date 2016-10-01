@@ -205,6 +205,16 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     }
 
     /**
+     * Initializes the preference, which allows to specfify, whether dialogs should be shown
+     * fullscreen, or not.
+     */
+    private void initializeFullscreenPreference() {
+        Preference fullscreenPreference =
+                findPreference(getString(R.string.fullscreen_preference_key));
+        fullscreenPreference.setOnPreferenceChangeListener(createThemeChangeListener());
+    }
+
+    /**
      * Creates and returns a listener, which allows to adapt the app's theme, when the value of the
      * corresponding preference has been changed.
      *
@@ -746,6 +756,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         initializeDialogs();
         addPreferencesFromResource(R.xml.preferences);
         initializeThemePreference();
+        initializeFullscreenPreference();
         initializeShowAlertDialogPreference();
         initializeShowListDialogPreference();
         initializeShowSingleChoiceListDialogPreference();

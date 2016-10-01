@@ -134,6 +134,11 @@ License.
             android:key="@string/theme_preference_key"
             android:summary="@string/theme_preference_summary"
             android:title="@string/theme_preference_title"/>
+        <CheckBoxPreference
+            android:defaultValue="@bool/fullscreen_preference_default_value"
+            android:key="@string/fullscreen_preference_key"
+            android:summary="@string/fullscreen_preference_summary"
+            android:title="@string/fullscreen_preference_title"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
