@@ -112,7 +112,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
 
         try {
             setWidth(typedArray.getDimensionPixelSize(0, defaultValue));
-        } catch (Resources.NotFoundException e) {
+        } catch (Resources.NotFoundException | UnsupportedOperationException e) {
             setWidth(typedArray.getInteger(0, defaultValue));
         }
     }
@@ -131,7 +131,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
 
         try {
             setHeight(typedArray.getDimensionPixelSize(0, defaultValue));
-        } catch (Resources.NotFoundException e) {
+        } catch (Resources.NotFoundException | UnsupportedOperationException e) {
             setHeight(typedArray.getInteger(0, defaultValue));
         }
     }
@@ -151,13 +151,13 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         try {
             defaultValue =
                     getContext().getResources().getDimensionPixelSize(R.dimen.dialog_max_width);
-        } catch (Resources.NotFoundException e) {
+        } catch (Resources.NotFoundException | UnsupportedOperationException e) {
             defaultValue = -1;
         }
 
         try {
             setMaxWidth(typedArray.getDimensionPixelSize(0, defaultValue));
-        } catch (Resources.NotFoundException e) {
+        } catch (Resources.NotFoundException | UnsupportedOperationException e) {
             setMaxWidth(-1);
         }
     }
@@ -177,13 +177,13 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         try {
             defaultValue =
                     getContext().getResources().getDimensionPixelSize(R.dimen.dialog_max_height);
-        } catch (Resources.NotFoundException e) {
+        } catch (Resources.NotFoundException | UnsupportedOperationException e) {
             defaultValue = -1;
         }
 
         try {
             setMaxHeight(typedArray.getDimensionPixelSize(0, defaultValue));
-        } catch (Resources.NotFoundException e) {
+        } catch (Resources.NotFoundException | UnsupportedOperationException e) {
             setMaxHeight(-1);
         }
     }
