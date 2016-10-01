@@ -13,13 +13,16 @@
  */
 package de.mrapp.android.dialog.decorator;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewPropertyAnimator;
 import android.view.Window;
 
 import de.mrapp.android.dialog.animation.DialogAnimation;
+import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
 import de.mrapp.android.dialog.model.MaterialDialog;
 
 /**
@@ -31,7 +34,8 @@ import de.mrapp.android.dialog.model.MaterialDialog;
  * @since 3.7.0
  */
 public class AnimateableDialogDecorator extends AbstractDialogDecorator<MaterialDialog>
-        implements de.mrapp.android.dialog.model.AnimateableDialogDecorator {
+        implements de.mrapp.android.dialog.model.AnimateableDialogDecorator,
+        DialogInterface.OnShowListener {
 
     /**
      * The animation, which is used to show the dialog.
@@ -47,6 +51,48 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<Material
      * The animation, which is used to cancel the dialog.
      */
     private DialogAnimation cancelAnimation;
+
+    /**
+     * Shows the dialog is an animated manner using a rectangular reveal animation.
+     *
+     * @param view
+     *         The view, which should be animated, as an instance of the class {@link View}. The
+     *         view may not be null
+     * @param animation
+     *         The rectangular reveal animation, which should be used, as an instance of the class
+     *         {@link RectangleRevealAnimation}. The animation may not be null
+     */
+    private void animateShow(@NonNull final View view,
+                             @NonNull final RectangleRevealAnimation animation) {
+        if (animation.getX() != null || animation.getY() != null || animation.getWidth() != null ||
+                animation.getHeight() != null) {
+            ViewPropertyAnimator animator =
+                    view.animate().setInterpolator(animation.getInterpolator())
+                            .setDuration(animation.getDuration());
+
+            if (animation.getX() != null) {
+                view.setTranslationX(animation.getX() - view.getX());
+                animator.translationX(0);
+            }
+
+            if (animation.getY() != null) {
+                view.setTranslationY(animation.getY() - view.getY());
+                animator.translationY(0);
+            }
+
+            if (animation.getWidth() != null) {
+                view.setScaleX((float) animation.getWidth() / (float) view.getWidth());
+                animator.scaleX(1);
+            }
+
+            if (animation.getHeight() != null) {
+                view.setScaleY((float) animation.getHeight() / (float) view.getHeight());
+                animator.scaleY(1);
+            }
+
+            animator.start();
+        }
+    }
 
     /**
      * Creates a new decorator, which allows to modify the view hierarchy of an animateable dialog,
@@ -92,6 +138,18 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<Material
     }
 
     @Override
+    public void onShow(final DialogInterface dialog) {
+        if (getView() != null && showAnimation != null) {
+            if (showAnimation instanceof RectangleRevealAnimation) {
+                animateShow(getView(), (RectangleRevealAnimation) showAnimation);
+            } else {
+                throw new RuntimeException(
+                        "Unknown typed of animation: " + showAnimation.getClass().getSimpleName());
+            }
+        }
+    }
+
+    @Override
     public final void onSaveInstanceState(@NonNull final Bundle outState) {
 
     }
@@ -110,5 +168,4 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<Material
     protected final void onDetach() {
 
     }
-
 }

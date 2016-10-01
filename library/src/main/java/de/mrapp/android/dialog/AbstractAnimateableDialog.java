@@ -14,6 +14,7 @@
 package de.mrapp.android.dialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
@@ -42,6 +43,32 @@ public abstract class AbstractAnimateableDialog extends AbstractMaterialDialog
     private final AnimateableDialogDecorator decorator;
 
     /**
+     * The listener, which should be notified, when the dialog has been shown.
+     */
+    private OnShowListener onShowListener;
+
+    /**
+     * Creates and returns a listener, which allows to observe, when the dialog has been shown.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnShowListener}
+     */
+    private OnShowListener createOnShowListener() {
+        return new OnShowListener() {
+
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                decorator.onShow(dialog);
+
+                if (onShowListener != null) {
+                    onShowListener.onShow(dialog);
+                }
+            }
+
+        };
+    }
+
+    /**
      * Creates an animateable dialog, which is designed according to Android 5's Material Design
      * guidelines even on pre-Lollipop devices.
      *
@@ -56,6 +83,7 @@ public abstract class AbstractAnimateableDialog extends AbstractMaterialDialog
                                         @StyleRes final int themeResourceId) {
         super(context, themeResourceId);
         this.decorator = new AnimateableDialogDecorator(this);
+        super.setOnShowListener(createOnShowListener());
     }
 
     @Override
@@ -86,6 +114,11 @@ public abstract class AbstractAnimateableDialog extends AbstractMaterialDialog
     @Override
     public final void setCancelAnimation(@Nullable final DialogAnimation animation) {
         decorator.setCancelAnimation(animation);
+    }
+
+    @Override
+    public final void setOnShowListener(@Nullable final OnShowListener listener) {
+        this.onShowListener = listener;
     }
 
     @NonNull
