@@ -86,6 +86,20 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     }
 
     /**
+     * Obtains the boolean value, which specified whether the dialog should be shown fullscreen, or
+     * not, from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the boolean value should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainFullscreen(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.materialDialogFullscreen});
+        setFullscreen(typedArray.getBoolean(0, false));
+    }
+
+    /**
      * Obtains the gravity from a specific theme.
      *
      * @param themeResourceId
@@ -289,6 +303,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      */
     @CallSuper
     protected void obtainStyledAttributes(@StyleRes final int themeResourceId) {
+        obtainFullscreen(themeResourceId);
         obtainGravity(themeResourceId);
         obtainWidth(themeResourceId);
         obtainHeight(themeResourceId);
@@ -415,6 +430,20 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     public final BuilderType setOnDismissListener(
             @Nullable final DialogInterface.OnDismissListener listener) {
         getDialog().setOnDismissListener(listener);
+        return self();
+    }
+
+    /**
+     * Sets, whether the dialog, which is created by the builder, should be shown fullscreen, or
+     * not.
+     *
+     * @param fullscreen
+     *         True, if the dialog should be shown fullscreen, false otherwise
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setFullscreen(final boolean fullscreen) {
+        getDialog().setFullscreen(fullscreen);
         return self();
     }
 

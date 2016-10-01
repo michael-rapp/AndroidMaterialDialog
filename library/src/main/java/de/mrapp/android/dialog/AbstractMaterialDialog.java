@@ -151,6 +151,16 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     }
 
     @Override
+    public final boolean isFullscreen() {
+        return decorator.isFullscreen();
+    }
+
+    @Override
+    public final void setFullscreen(final boolean fullscreen) {
+        decorator.setFullscreen(fullscreen);
+    }
+
+    @Override
     public final int getGravity() {
         return decorator.getGravity();
     }

@@ -248,6 +248,16 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     }
 
     @Override
+    public final boolean isFullscreen() {
+        return decorator.isFullscreen();
+    }
+
+    @Override
+    public final void setFullscreen(final boolean fullscreen) {
+        decorator.setFullscreen(fullscreen);
+    }
+
+    @Override
     public final int getGravity() {
         return decorator.getGravity();
     }

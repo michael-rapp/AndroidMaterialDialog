@@ -16,6 +16,7 @@ License.
 <resources>
 
     <attr name="materialDialogTheme" format="reference"/>
+    <attr name="materialDialogFullscreen" format="boolean"/>
     <attr name="materialDialogWidth" format="dimension">
         <enum name="match_parent" value="-1"/>
         <enum name="wrap_content" value="-2"/>

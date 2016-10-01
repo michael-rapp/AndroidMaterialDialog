@@ -69,6 +69,21 @@ public interface MaterialDialogDecorator extends Dialog {
     void setCancelable(boolean cancelable);
 
     /**
+     * Returns, whether the dialog is shown fullscreen, or not.
+     *
+     * @return True, if the dialog is shown fullscreen, false otherwise
+     */
+    boolean isFullscreen();
+
+    /**
+     * Sets, whether the dialog should be shown fullscreen, or not.
+     *
+     * @param fullscreen
+     *         True, if the dialog should be shown fullscreen, false otherwise
+     */
+    void setFullscreen(boolean fullscreen);
+
+    /**
      * Returns the gravity of the dialog.
      *
      * @return The gravity of the dialog as an {@link Integer} values. The gravity consists of the

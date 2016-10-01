@@ -159,6 +159,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     private boolean canceledOnTouchOutside;
 
     /**
+     * True, if the dialog is shown fullscreen, false otherwise.
+     */
+    private boolean fullscreen;
+
+    /**
      * The gravity of the dialog.
      */
     private int gravity = Gravity.CENTER;
@@ -632,6 +637,17 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         if (!cancelable) {
             setCanceledOnTouchOutside(false);
         }
+    }
+
+    @Override
+    public final boolean isFullscreen() {
+        return fullscreen;
+    }
+
+    @Override
+    public final void setFullscreen(final boolean fullscreen) {
+        this.fullscreen = fullscreen;
+        adaptLayoutParams();
     }
 
     @Override
