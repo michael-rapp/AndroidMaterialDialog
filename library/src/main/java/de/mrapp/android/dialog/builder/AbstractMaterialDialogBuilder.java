@@ -383,6 +383,22 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     }
 
     /**
+     * Sets, whether the dialog, which is created by the builder, should be canceled, when touched
+     * outside the window's bounds. If set to true, the dialog is set to be cancelable, if not
+     * already set.
+     *
+     * @param canceledOnTouchOutside
+     *         True, if the dialog should be canceled, when touched outside the window, false
+     *         otherwise
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setCanceledOnTouchOutside(final boolean canceledOnTouchOutside) {
+        getDialog().setCanceledOnTouchOutside(canceledOnTouchOutside);
+        return self();
+    }
+
+    /**
      * Sets the listener, which should be notified, when the dialog has been shown.
      *
      * @param listener
