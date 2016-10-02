@@ -111,6 +111,20 @@ public abstract class DialogAnimation {
         }
 
         /**
+         * Sets the delay until the animation, which is created by the builder, is started.
+         *
+         * @param startDelay
+         *         The delay, which should be set, as a {@link Long} value. The delay must be at
+         *         least 0
+         * @return The builder, this method has been called upon, as an instance of the generic type
+         * BuilderType
+         */
+        public BuilderType setStartDelay(final long startDelay) {
+            animation.setStartDelay(startDelay);
+            return self();
+        }
+
+        /**
          * Creates the animation, which has been configured by the builder.
          *
          * @return The animation, which has been configured by the builder, as an instance of the
@@ -132,6 +146,11 @@ public abstract class DialogAnimation {
      * The duration of the animation in milliseconds.
      */
     private long duration;
+
+    /**
+     * The delay unti the animation is started.
+     */
+    private long startDelay;
 
     /**
      * Sets the interpolator, which should be used by the animation.
@@ -158,6 +177,18 @@ public abstract class DialogAnimation {
     }
 
     /**
+     * Sets the delay unti the animation is started.
+     *
+     * @param startDelay
+     *         The delay, which should be set, in milliseconds as a {@link Long} value. The delay
+     *         must be at least 0
+     */
+    protected final void setStartDelay(final long startDelay) {
+        ensureAtLeast(startDelay, 0, "The start delay must be at least 0");
+        this.startDelay = startDelay;
+    }
+
+    /**
      * Creates a new animation, which can be used to show or hide a dialog.
      *
      * @param context
@@ -168,6 +199,7 @@ public abstract class DialogAnimation {
         ensureNotNull(context, "The context may not be null");
         interpolator = new AccelerateDecelerateInterpolator();
         duration = context.getResources().getInteger(android.R.integer.config_shortAnimTime);
+        startDelay = 0;
     }
 
     /**
@@ -188,6 +220,15 @@ public abstract class DialogAnimation {
      */
     public final long getDuration() {
         return duration;
+    }
+
+    /**
+     * Returns the delay until the animation is started.
+     *
+     * @return The delay until the animation is started in milliseconds as a {@link Long} value
+     */
+    public final long getStartDelay() {
+        return startDelay;
     }
 
 }
