@@ -489,7 +489,7 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
 
         View rootView = view.findViewById(R.id.root);
         rootView.setLayoutParams(createLayoutParams(rootView));
-        Window window = getActivity().getWindow();
+        Window window = getDialog().getWindow();
         assert window != null;
         onAttachDecorators(window, rootView, getChildFragmentManager());
         return view;
