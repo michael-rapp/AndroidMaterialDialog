@@ -68,7 +68,8 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<Material
                     animation.getHeight() != null) {
                 ViewPropertyAnimator animator =
                         view.animate().setInterpolator(animation.getInterpolator())
-                                .setDuration(5000).setStartDelay(animation.getStartDelay());
+                                .setDuration(animation.getDuration())
+                                .setStartDelay(animation.getStartDelay());
                 float translationX = 0;
                 float translationY = 0;
 
