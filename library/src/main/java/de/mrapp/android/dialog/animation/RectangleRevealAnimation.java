@@ -17,6 +17,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import static de.mrapp.android.util.Condition.ensureAtLeast;
+
 /**
  * An animation, which can be used to show or hide a dialog by animating its position and size.
  *
@@ -81,6 +83,7 @@ public class RectangleRevealAnimation extends DialogAnimation {
          * Builder}
          */
         public final Builder setWidth(final int width) {
+            ensureAtLeast(width, 0, "The width must be at least 0");
             create().setWidth(width);
             return self();
         }
@@ -94,6 +97,7 @@ public class RectangleRevealAnimation extends DialogAnimation {
          * Builder}
          */
         public final Builder setHeight(final int height) {
+            ensureAtLeast(height, 0, "The height must be at least 0");
             create().setHeight(height);
             return self();
         }
