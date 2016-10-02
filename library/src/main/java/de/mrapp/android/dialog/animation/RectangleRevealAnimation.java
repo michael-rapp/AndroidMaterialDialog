@@ -51,7 +51,8 @@ public class RectangleRevealAnimation extends DialogAnimation {
          * the builder.
          *
          * @param x
-         *         The horizontal position, which should be set, as an {@link Integer} value
+         *         The horizontal position, which should be set, in pixels as an {@link Integer}
+         *         value
          * @return The builder, this method has been called upon, as an instance of the class {@link
          * Builder}
          */
@@ -65,7 +66,8 @@ public class RectangleRevealAnimation extends DialogAnimation {
          * the builder.
          *
          * @param y
-         *         The vertical position, which should be set, as an {@link Integer} value
+         *         The vertical position, which should be set, in pixels as an {@link Integer}
+         *         value
          * @return The builder, this method has been called upon, as an instance of the class {@link
          * Builder}
          */
@@ -78,7 +80,8 @@ public class RectangleRevealAnimation extends DialogAnimation {
          * Sets the width, which should be used by the animation, which is created by the builder.
          *
          * @param width
-         *         The width, which should be set, as an {@link Integer} value
+         *         The width, which should be set, in pixels as an {@link Integer} value. The width
+         *         must be at least 0
          * @return The builder, this method has been called upon, as an instance of the class {@link
          * Builder}
          */
@@ -92,7 +95,8 @@ public class RectangleRevealAnimation extends DialogAnimation {
          * Sets the height, which should be used by the animation, which is created by the builder.
          *
          * @param height
-         *         The height, which should be set, as an {@link Integer} value
+         *         The height, which should be set, in pixels as an {@link Integer} value. The
+         *         height must be at least 0
          * @return The builder, this method has been called upon, as an instance of the class {@link
          * Builder}
          */
@@ -134,8 +138,8 @@ public class RectangleRevealAnimation extends DialogAnimation {
      * Sets the horizontal position, which should be used by the animation.
      *
      * @param x
-     *         The horizontal position, which should be set, as an {@link Integer} value or null, if
-     *         no horizontal position should be used
+     *         The horizontal position, which should be set, in pixels as an {@link Integer} value
+     *         or null, if no horizontal position should be used
      */
     protected final void setX(@Nullable final Integer x) {
         this.x = x;
@@ -145,8 +149,8 @@ public class RectangleRevealAnimation extends DialogAnimation {
      * Sets the vertical position, which should be used by the animation.
      *
      * @param y
-     *         The vertical position, which should be set, as an {@link Integer} value or null, if
-     *         no vertical position should be used
+     *         The vertical position, which should be set, in pixels as an {@link Integer} value or
+     *         null, if no vertical position should be used
      */
     protected final void setY(@Nullable final Integer y) {
         this.y = y;
@@ -156,8 +160,8 @@ public class RectangleRevealAnimation extends DialogAnimation {
      * Sets the width, which should be used by the animation.
      *
      * @param width
-     *         The width, which should be set, as an {@link Integer} value or null, if no width
-     *         should be used
+     *         The width, which should be set, in pixels as an {@link Integer} value or null, if no
+     *         width should be used
      */
     protected final void setWidth(@Nullable final Integer width) {
         this.width = width;
@@ -167,8 +171,8 @@ public class RectangleRevealAnimation extends DialogAnimation {
      * Sets the height, which is used by the animation.
      *
      * @param height
-     *         The height, which should be set, as an {@link Integer} value or null, if no height
-     *         should be used
+     *         The height, which should be set, in pixels as an {@link Integer} value or null, if no
+     *         height should be used
      */
     protected final void setHeight(@Nullable final Integer height) {
         this.height = height;
