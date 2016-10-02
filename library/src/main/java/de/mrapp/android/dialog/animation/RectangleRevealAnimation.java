@@ -86,7 +86,6 @@ public class RectangleRevealAnimation extends DialogAnimation {
          * Builder}
          */
         public final Builder setWidth(final int width) {
-            ensureAtLeast(width, 0, "The width must be at least 0");
             create().setWidth(width);
             return self();
         }
@@ -101,7 +100,6 @@ public class RectangleRevealAnimation extends DialogAnimation {
          * Builder}
          */
         public final Builder setHeight(final int height) {
-            ensureAtLeast(height, 0, "The height must be at least 0");
             create().setHeight(height);
             return self();
         }
@@ -139,9 +137,8 @@ public class RectangleRevealAnimation extends DialogAnimation {
      *
      * @param x
      *         The horizontal position, which should be set, in pixels as an {@link Integer} value
-     *         or null, if no horizontal position should be used
      */
-    protected final void setX(@Nullable final Integer x) {
+    protected final void setX(final int x) {
         this.x = x;
     }
 
@@ -149,10 +146,9 @@ public class RectangleRevealAnimation extends DialogAnimation {
      * Sets the vertical position, which should be used by the animation.
      *
      * @param y
-     *         The vertical position, which should be set, in pixels as an {@link Integer} value or
-     *         null, if no vertical position should be used
+     *         The vertical position, which should be set, in pixels as an {@link Integer} value
      */
-    protected final void setY(@Nullable final Integer y) {
+    protected final void setY(final int y) {
         this.y = y;
     }
 
@@ -160,10 +156,11 @@ public class RectangleRevealAnimation extends DialogAnimation {
      * Sets the width, which should be used by the animation.
      *
      * @param width
-     *         The width, which should be set, in pixels as an {@link Integer} value or null, if no
-     *         width should be used
+     *         The width, which should be set, in pixels as an {@link Integer} value. The width must
+     *         be at least 0
      */
-    protected final void setWidth(@Nullable final Integer width) {
+    protected final void setWidth(final int width) {
+        ensureAtLeast(width, 0, "The width must be at least 0");
         this.width = width;
     }
 
@@ -171,10 +168,11 @@ public class RectangleRevealAnimation extends DialogAnimation {
      * Sets the height, which is used by the animation.
      *
      * @param height
-     *         The height, which should be set, in pixels as an {@link Integer} value or null, if no
-     *         height should be used
+     *         The height, which should be set, in pixels as an {@link Integer} value. The height
+     *         must be at least 0
      */
-    protected final void setHeight(@Nullable final Integer height) {
+    protected final void setHeight(final int height) {
+        ensureAtLeast(height, 0, "The height must be at least 0");
         this.height = height;
     }
 

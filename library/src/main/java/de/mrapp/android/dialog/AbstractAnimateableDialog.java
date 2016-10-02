@@ -13,6 +13,9 @@
  */
 package de.mrapp.android.dialog;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -58,11 +61,49 @@ public abstract class AbstractAnimateableDialog extends AbstractMaterialDialog
 
             @Override
             public void onShow(final DialogInterface dialog) {
-                decorator.showAnimated();
+                decorator.showAnimated(getShowAnimation(), null);
 
                 if (onShowListener != null) {
                     onShowListener.onShow(dialog);
                 }
+            }
+
+        };
+    }
+
+    /**
+     * Creates and returns an animation listener, which allows to dismiss the dialog, once the
+     * animation, which is used to hide it, has finished.
+     *
+     * @return The animation listener, which has been created, as an instance of the type {@link
+     * AnimatorListener}
+     */
+    private AnimatorListener createDismissAnimationListener() {
+        return new AnimatorListenerAdapter() {
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                AbstractAnimateableDialog.super.dismiss();
+            }
+
+        };
+    }
+
+    /**
+     * Creates and returns an animation listener, which allows to cancel the dialog, once the
+     * animation, which is used to hide it, has finished.
+     *
+     * @return The animation listener, which has been created, as an instance of the type {@link
+     * AnimatorListener}
+     */
+    private AnimatorListener createCancelAnimationListener() {
+        return new AnimatorListenerAdapter() {
+
+            @Override
+            public void onAnimationEnd(final Animator animation) {
+                super.onAnimationEnd(animation);
+                AbstractAnimateableDialog.super.cancel();
             }
 
         };
@@ -119,6 +160,20 @@ public abstract class AbstractAnimateableDialog extends AbstractMaterialDialog
     @Override
     public final void setOnShowListener(@Nullable final OnShowListener listener) {
         this.onShowListener = listener;
+    }
+
+    @Override
+    public final void dismiss() {
+        if (!decorator.hideAnimated(getDismissAnimation(), createDismissAnimationListener())) {
+            super.dismiss();
+        }
+    }
+
+    @Override
+    public final void cancel() {
+        if (!decorator.hideAnimated(getCancelAnimation(), createCancelAnimationListener())) {
+            super.cancel();
+        }
     }
 
     @NonNull

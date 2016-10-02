@@ -13,6 +13,7 @@
  */
 package de.mrapp.android.dialog.decorator;
 
+import android.animation.Animator.AnimatorListener;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -56,18 +57,23 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<Material
      * @param animation
      *         The rectangular reveal animation, which should be used, as an instance of the class
      *         {@link RectangleRevealAnimation}. The animation may not be null
+     * @param listener
+     *         The animation listener, which should be used, as an instance of the type {@link
+     *         AnimatorListener} or null, if no animation listener should be used
+     * @return True, if the dialog has been shown in an animated manner, false otherwise
      */
-    private void showAnimated(@NonNull final RectangleRevealAnimation animation) {
+    private boolean showAnimated(@NonNull final RectangleRevealAnimation animation,
+                                 @Nullable final AnimatorListener listener) {
         if (getView() != null && getWindow() != null) {
             View view = getDialog().isFullscreen() ? getWindow().getDecorView() : getView();
 
             if (animation.getX() != null || animation.getY() != null ||
-                    animation.getWidth() != null ||
-                    animation.getHeight() != null) {
+                    animation.getWidth() != null || animation.getHeight() != null ||
+                    animation.getAlpha() != null) {
                 ViewPropertyAnimator animator =
                         view.animate().setInterpolator(animation.getInterpolator())
                                 .setDuration(animation.getDuration())
-                                .setStartDelay(animation.getStartDelay());
+                                .setStartDelay(animation.getStartDelay()).setListener(listener);
                 float translationX = 0;
                 float translationY = 0;
 
@@ -91,8 +97,10 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<Material
                     animator.scaleY(1);
                 }
 
-                view.setAlpha(animation.getAlpha());
-                animator.alpha(1);
+                if (animation.getAlpha() != null) {
+                    view.setAlpha(animation.getAlpha());
+                    animator.alpha(1);
+                }
 
                 if (translationX != 0) {
                     view.setTranslationX(translationX);
@@ -105,8 +113,75 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<Material
                 }
 
                 animator.start();
+                return true;
             }
         }
+
+        return false;
+    }
+
+    /**
+     * Hides the dialog is an animated manner using a rectangular reveal animation.
+     *
+     * @param animation
+     *         The rectangular reveal animation, which should be used, as an instance of the class
+     *         {@link RectangleRevealAnimation}. The animation may not be null
+     * @param listener
+     *         The animation listener, which should be used, as an instance of the type {@link
+     *         AnimatorListener} or null, if no animation listener should be used
+     * @return True, if the dialog has been hidden in an animated manner, false otherwise
+     */
+    private boolean hideAnimated(final RectangleRevealAnimation animation,
+                                 @Nullable AnimatorListener listener) {
+        if (getView() != null && getWindow() != null) {
+            View view = getDialog().isFullscreen() ? getWindow().getDecorView() : getView();
+
+            if (animation.getX() != null || animation.getY() != null ||
+                    animation.getWidth() != null || animation.getHeight() != null ||
+                    animation.getAlpha() != null) {
+                ViewPropertyAnimator animator =
+                        view.animate().setInterpolator(animation.getInterpolator())
+                                .setDuration(animation.getDuration())
+                                .setStartDelay(animation.getStartDelay()).setListener(listener);
+                float translationX = 0;
+                float translationY = 0;
+
+                if (animation.getX() != null) {
+                    translationX = animation.getX() - view.getLeft() - getDialog().getLeftMargin();
+                }
+
+                if (animation.getY() != null) {
+                    translationY = animation.getY() - view.getTop() - getDialog().getTopMargin();
+                }
+
+                if (animation.getWidth() != null) {
+                    translationX -= (view.getWidth() / 2f) - getDialog().getLeftMargin();
+                    animator.scaleX((float) animation.getWidth() / (float) view.getWidth());
+                }
+
+                if (animation.getHeight() != null) {
+                    translationY -= (view.getHeight() / 2f) - getDialog().getTopMargin();
+                    animator.scaleY((float) animation.getHeight() / (float) view.getHeight());
+                }
+
+                if (animation.getAlpha() != null) {
+                    animator.alpha(1);
+                }
+
+                if (translationX != 0) {
+                    animator.translationX(translationX);
+                }
+
+                if (translationY != 0) {
+                    animator.translationY(translationY);
+                }
+
+                animator.start();
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -123,17 +198,53 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<Material
     }
 
     /**
-     * Shows the dialog in an animated manner, if an animation is currently set.
+     * Shows the dialog in an animated manner, according to a specific animation.
+     *
+     * @param animation
+     *         The animation, which should be used, as an instance of the class {@link
+     *         DialogAnimation} or null, if no animation should be used
+     * @param listener
+     *         The animation listener, which should be used, as an instance of the type {@link
+     *         AnimatorListener} or null, if no animation listener should be used
+     * @return True, if the dialog has been shown in an animated manner, false otherwise
      */
-    public final void showAnimated() {
+    public final boolean showAnimated(@Nullable final DialogAnimation animation,
+                                      @Nullable final AnimatorListener listener) {
         if (showAnimation != null) {
             if (showAnimation instanceof RectangleRevealAnimation) {
-                showAnimated((RectangleRevealAnimation) showAnimation);
+                return showAnimated((RectangleRevealAnimation) showAnimation, listener);
             } else {
                 throw new RuntimeException(
-                        "Unknown typed of animation: " + showAnimation.getClass().getSimpleName());
+                        "Unknown type of animation: " + showAnimation.getClass().getSimpleName());
             }
         }
+
+        return false;
+    }
+
+    /**
+     * Hides the dialog in an animated manner, according to a specific animation.
+     *
+     * @param animation
+     *         The animation, which should be used, as an instance of the class {@link
+     *         DialogAnimation} or null, if no animation should be used
+     * @param listener
+     *         The animation listener, which should be used, as an instance of the type {@link
+     *         AnimatorListener} or null, if no animation listener should be used
+     * @return True, if the dialog has been hidden in an animated manner, false otherwise
+     */
+    public final boolean hideAnimated(@Nullable final DialogAnimation animation,
+                                      @Nullable final AnimatorListener listener) {
+        if (animation != null) {
+            if (animation instanceof RectangleRevealAnimation) {
+                return hideAnimated((RectangleRevealAnimation) animation, listener);
+            } else {
+                throw new RuntimeException(
+                        "Unknown type of animation: " + animation.getClass().getSimpleName());
+            }
+        }
+
+        return false;
     }
 
     @Override

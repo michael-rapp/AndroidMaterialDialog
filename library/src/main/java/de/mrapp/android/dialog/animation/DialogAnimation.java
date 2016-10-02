@@ -170,7 +170,7 @@ public abstract class DialogAnimation {
     /**
      * The alpha, which is used by the animation.
      */
-    private float alpha;
+    private Float alpha;
 
     /**
      * Sets the interpolator, which should be used by the animation.
@@ -230,10 +230,10 @@ public abstract class DialogAnimation {
      */
     protected DialogAnimation(@NonNull final Context context) {
         ensureNotNull(context, "The context may not be null");
-        interpolator = new AccelerateDecelerateInterpolator();
-        duration = context.getResources().getInteger(android.R.integer.config_shortAnimTime);
-        startDelay = 0;
-        alpha = 1;
+        this.interpolator = new AccelerateDecelerateInterpolator();
+        this.duration = context.getResources().getInteger(android.R.integer.config_shortAnimTime);
+        this.startDelay = 0;
+        this.alpha = null;
     }
 
     /**
@@ -268,9 +268,10 @@ public abstract class DialogAnimation {
     /**
      * Returns the alpha, which is used by the animation.
      *
-     * @return The alpha, which is used by the animation as a {@link Float} value
+     * @return The alpha, which is used by the animation as a {@link Float} value, or null, if no
+     * alpha is used
      */
-    public final float getAlpha() {
+    public final Float getAlpha() {
         return alpha;
     }
 
