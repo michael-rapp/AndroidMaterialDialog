@@ -38,23 +38,23 @@ License.
     <attr name="materialDialogGravity" format="integer">
         <enum name="center" value="0x000011"/>
         <enum name="center_horizontal" value="0x000001"/>
-        <enum name="center_horizontal|top" value="0x000101"/>
-        <enum name="center_horizontal|bottom" value="0x001001"/>
+        <enum name="center_horizontal_top" value="0x000101"/>
+        <enum name="center_horizontal_bottom" value="0x001001"/>
         <enum name="center_vertical" value="0x000010"/>
-        <enum name="center_vertical|top" value="0x000110"/>
-        <enum name="center_vertical|bottom" value="0x001010"/>
+        <enum name="center_vertical_top" value="0x000110"/>
+        <enum name="center_vertical_bottom" value="0x001010"/>
         <enum name="top" value="0x000100"/>
-        <enum name="top|left" value="0x010100"/>
-        <enum name="top|right" value="0x100100"/>
+        <enum name="top_left" value="0x010100"/>
+        <enum name="top_right" value="0x100100"/>
         <enum name="bottom" value="0x001000"/>
-        <enum name="bottom|left" value="0x011000"/>
-        <enum name="bottom|right" value="0x101000"/>
+        <enum name="bottom_left" value="0x011000"/>
+        <enum name="bottom_right" value="0x101000"/>
         <enum name="left" value="0x010000"/>
-        <enum name="left|top" value="0x010100"/>
-        <enum name="left|bottom" value="0x011000"/>
+        <enum name="left_top" value="0x010100"/>
+        <enum name="left_bottom" value="0x011000"/>
         <enum name="right" value="0x100000"/>
-        <enum name="right|top" value="0x100100"/>
-        <enum name="right|bottom" value="0x101000"/>
+        <enum name="right_top" value="0x100100"/>
+        <enum name="right_bottom" value="0x101000"/>
     </attr>
     <attr name="materialDialogBackground" format="color|reference"/>
     <attr name="materialDialogButtonTextColor" format="color"/>
