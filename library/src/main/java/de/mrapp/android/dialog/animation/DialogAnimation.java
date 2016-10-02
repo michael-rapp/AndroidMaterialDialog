@@ -19,6 +19,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
+import static de.mrapp.android.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
@@ -125,6 +126,20 @@ public abstract class DialogAnimation {
         }
 
         /**
+         * Sets the alpha, which should be used by the animation, which is created by the builder.
+         *
+         * @param alpha
+         *         The alpha, which should be set, as a {@link Float} value. The alpha must be at
+         *         least 0 and at maximum 1
+         * @return The builder, this method has been called upon, as an instance of the generic type
+         * BuilderType
+         */
+        public BuilderType setAlpha(final float alpha) {
+            animation.setAlpha(alpha);
+            return self();
+        }
+
+        /**
          * Creates the animation, which has been configured by the builder.
          *
          * @return The animation, which has been configured by the builder, as an instance of the
@@ -148,9 +163,14 @@ public abstract class DialogAnimation {
     private long duration;
 
     /**
-     * The delay unti the animation is started.
+     * The delay until the animation is started.
      */
     private long startDelay;
+
+    /**
+     * The alpha, which is used by the animation.
+     */
+    private float alpha;
 
     /**
      * Sets the interpolator, which should be used by the animation.
@@ -177,7 +197,7 @@ public abstract class DialogAnimation {
     }
 
     /**
-     * Sets the delay unti the animation is started.
+     * Sets the delay until the animation is started.
      *
      * @param startDelay
      *         The delay, which should be set, in milliseconds as a {@link Long} value. The delay
@@ -186,6 +206,19 @@ public abstract class DialogAnimation {
     protected final void setStartDelay(final long startDelay) {
         ensureAtLeast(startDelay, 0, "The start delay must be at least 0");
         this.startDelay = startDelay;
+    }
+
+    /**
+     * Sets the alpha, which should be used by the animation.
+     *
+     * @param alpha
+     *         The alpha, which should be set, as a {@link Float} value. The alpha must be at least
+     *         0 and at maximum 1
+     */
+    protected final void setAlpha(final float alpha) {
+        ensureAtLeast(alpha, 0, "The alpha must be at least 0");
+        ensureAtMaximum(alpha, 1, "The alpha must be at maximum 1");
+        this.alpha = alpha;
     }
 
     /**
@@ -200,6 +233,7 @@ public abstract class DialogAnimation {
         interpolator = new AccelerateDecelerateInterpolator();
         duration = context.getResources().getInteger(android.R.integer.config_shortAnimTime);
         startDelay = 0;
+        alpha = 1;
     }
 
     /**
@@ -229,6 +263,15 @@ public abstract class DialogAnimation {
      */
     public final long getStartDelay() {
         return startDelay;
+    }
+
+    /**
+     * Returns the alpha, which is used by the animation.
+     *
+     * @return The alpha, which is used by the animation as a {@link Float} value
+     */
+    public final float getAlpha() {
+        return alpha;
     }
 
 }
