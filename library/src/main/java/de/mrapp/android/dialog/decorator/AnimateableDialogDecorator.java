@@ -13,7 +13,6 @@
  */
 package de.mrapp.android.dialog.decorator;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,8 +33,7 @@ import de.mrapp.android.dialog.model.MaterialDialog;
  * @since 3.7.0
  */
 public class AnimateableDialogDecorator extends AbstractDialogDecorator<MaterialDialog>
-        implements de.mrapp.android.dialog.model.AnimateableDialogDecorator,
-        DialogInterface.OnShowListener {
+        implements de.mrapp.android.dialog.model.AnimateableDialogDecorator {
 
     /**
      * The animation, which is used to show the dialog.
@@ -59,7 +57,7 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<Material
      *         The rectangular reveal animation, which should be used, as an instance of the class
      *         {@link RectangleRevealAnimation}. The animation may not be null
      */
-    private void animateShow(@NonNull final RectangleRevealAnimation animation) {
+    private void showAnimated(@NonNull final RectangleRevealAnimation animation) {
         if (getView() != null && getWindow() != null) {
             View view = getDialog().isFullscreen() ? getWindow().getDecorView() : getView();
 
@@ -124,6 +122,20 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<Material
         super(dialog);
     }
 
+    /**
+     * Shows the dialog in an animated manner, if an animation is currently set.
+     */
+    public final void showAnimated() {
+        if (showAnimation != null) {
+            if (showAnimation instanceof RectangleRevealAnimation) {
+                showAnimated((RectangleRevealAnimation) showAnimation);
+            } else {
+                throw new RuntimeException(
+                        "Unknown typed of animation: " + showAnimation.getClass().getSimpleName());
+            }
+        }
+    }
+
     @Override
     public final DialogAnimation getShowAnimation() {
         return showAnimation;
@@ -152,18 +164,6 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<Material
     @Override
     public final void setCancelAnimation(@Nullable final DialogAnimation animation) {
         this.cancelAnimation = animation;
-    }
-
-    @Override
-    public void onShow(final DialogInterface dialog) {
-        if (showAnimation != null) {
-            if (showAnimation instanceof RectangleRevealAnimation) {
-                animateShow((RectangleRevealAnimation) showAnimation);
-            } else {
-                throw new RuntimeException(
-                        "Unknown typed of animation: " + showAnimation.getClass().getSimpleName());
-            }
-        }
     }
 
     @Override

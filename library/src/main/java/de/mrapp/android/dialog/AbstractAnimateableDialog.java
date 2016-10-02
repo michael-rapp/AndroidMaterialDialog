@@ -58,7 +58,7 @@ public abstract class AbstractAnimateableDialog extends AbstractMaterialDialog
 
             @Override
             public void onShow(final DialogInterface dialog) {
-                decorator.onShow(dialog);
+                decorator.showAnimated();
 
                 if (onShowListener != null) {
                     onShowListener.onShow(dialog);
