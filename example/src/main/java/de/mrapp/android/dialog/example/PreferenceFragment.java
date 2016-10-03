@@ -25,6 +25,8 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import de.mrapp.android.dialog.MaterialDialog;
@@ -32,7 +34,6 @@ import de.mrapp.android.dialog.ProgressDialog;
 import de.mrapp.android.dialog.WizardDialog;
 import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
-import de.mrapp.android.dialog.builder.AbstractAnimateableDialogBuilder;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
 
@@ -137,7 +138,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     private void initializeAlertDialog() {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
-        configureAnimateableDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
         alertDialog = builder.create();
     }
@@ -148,7 +148,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     private void initializeListDialog() {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
-        configureAnimateableDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
         builder.setItems(R.array.list_items, createSingleChoiceListener());
         listDialog = builder.create();
@@ -160,7 +159,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     private void initializeSingleChoiceListDialog() {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
-        configureAnimateableDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
         builder.setSingleChoiceItems(R.array.list_items, 0, createSingleChoiceListener());
         singleChoiceListDialog = builder.create();
@@ -172,7 +170,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     private void initializeMultipleChoiceListDialog() {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
-        configureAnimateableDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
         builder.setMultiChoiceItems(R.array.list_items, new boolean[]{true, false, false},
                 createMultiChoiceListener());
@@ -185,7 +182,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     private void initializeCustomDialog() {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
-        configureAnimateableDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
         builder.setView(R.layout.custom_dialog_content);
         builder.setCustomTitle(R.layout.custom_dialog_title);
@@ -200,7 +196,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     private void initializeProgressDialog() {
         ProgressDialog.Builder builder = new ProgressDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
-        configureAnimateableDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
         progressDialog = builder.create();
     }
@@ -253,6 +248,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 initializeAlertDialog();
+                alertDialog.setShowAnimation(createDialogAnimation(preference));
+                alertDialog.setDismissAnimation(createDialogAnimation(preference));
+                alertDialog.setCancelAnimation(createDialogAnimation(preference));
                 alertDialog.show();
                 return true;
             }
@@ -270,6 +268,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 initializeListDialog();
+                listDialog.setShowAnimation(createDialogAnimation(preference));
+                listDialog.setDismissAnimation(createDialogAnimation(preference));
+                listDialog.setCancelAnimation(createDialogAnimation(preference));
                 listDialog.show();
                 return true;
             }
@@ -288,6 +289,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 initializeSingleChoiceListDialog();
+                singleChoiceListDialog.setShowAnimation(createDialogAnimation(preference));
+                singleChoiceListDialog.setDismissAnimation(createDialogAnimation(preference));
+                singleChoiceListDialog.setCancelAnimation(createDialogAnimation(preference));
                 singleChoiceListDialog.show();
                 return true;
             }
@@ -306,6 +310,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 initializeMultipleChoiceListDialog();
+                multipleChoiceListDialog.setShowAnimation(createDialogAnimation(preference));
+                multipleChoiceListDialog.setDismissAnimation(createDialogAnimation(preference));
+                multipleChoiceListDialog.setCancelAnimation(createDialogAnimation(preference));
                 multipleChoiceListDialog.show();
                 return true;
             }
@@ -324,6 +331,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 initializeCustomDialog();
+                customDialog.setShowAnimation(createDialogAnimation(preference));
+                customDialog.setDismissAnimation(createDialogAnimation(preference));
+                customDialog.setCancelAnimation(createDialogAnimation(preference));
                 customDialog.show();
                 return true;
             }
@@ -342,6 +352,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 initializeProgressDialog();
+                progressDialog.setShowAnimation(createDialogAnimation(preference));
+                progressDialog.setDismissAnimation(createDialogAnimation(preference));
+                progressDialog.setCancelAnimation(createDialogAnimation(preference));
                 progressDialog.show();
                 return true;
             }
@@ -355,9 +368,17 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
      * @return The animation, which has been created, as an instance of the type {@link
      * DialogAnimation}
      */
-    private DialogAnimation createDialogAnimation() {
-        return new RectangleRevealAnimation.Builder(getActivity()).setWidth(0).setHeight(0).setX(0)
-                .setY(0).create();
+    private DialogAnimation createDialogAnimation(@NonNull final Preference preference) {
+        if (shouldUseAnimations()) {
+            ListView listView = (ListView) getActivity().findViewById(android.R.id.list);
+            View view = listView.getChildAt(preference.getOrder() + 1);
+            int[] location = new int[2];
+            view.getLocationInWindow(location);
+            return new RectangleRevealAnimation.Builder(getActivity()).setWidth(view.getWidth())
+                    .setHeight(view.getHeight()).setX(location[0]).setY(location[1]).create();
+        }
+
+        return null;
     }
 
     /**
@@ -492,23 +513,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             builder.showHeader(true);
             builder.setHeaderBackground(R.drawable.dialog_header_background);
             builder.setHeaderIcon(R.drawable.dialog_header_icon);
-        }
-    }
-
-    /**
-     * Configures a builder, which allows to create animateable dialogs, depending on the app's
-     * settings.
-     *
-     * @param builder
-     *         The builder, which should be configured, as an instance of the class {@link
-     *         AbstractAnimateableDialogBuilder}
-     */
-    private void configureAnimateableDialogBuilder(
-            @NonNull final AbstractAnimateableDialogBuilder builder) {
-        if (shouldUseAnimations()) {
-            builder.setShowAnimation(createDialogAnimation());
-            builder.setDismissAnimation(createDialogAnimation());
-            builder.setCancelAnimation(createDialogAnimation());
         }
     }
 
