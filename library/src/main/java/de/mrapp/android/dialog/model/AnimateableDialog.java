@@ -20,6 +20,6 @@ package de.mrapp.android.dialog.model;
  * @author Michael Rapp
  * @since 3.7.0
  */
-public interface AnimateableDialog extends MaterialDialog, AnimateableDialogDecorator {
+public interface AnimateableDialog extends HeaderDialog, AnimateableDialogDecorator {
 
 }

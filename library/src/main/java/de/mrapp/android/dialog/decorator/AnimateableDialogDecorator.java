@@ -23,7 +23,7 @@ import android.view.Window;
 
 import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
-import de.mrapp.android.dialog.model.MaterialDialog;
+import de.mrapp.android.dialog.model.HeaderDialog;
 
 /**
  * A decorator, which allows to modify the view hierarchy of an animateable dialog, which is
@@ -33,7 +33,7 @@ import de.mrapp.android.dialog.model.MaterialDialog;
  * @author Michael Rapp
  * @since 3.7.0
  */
-public class AnimateableDialogDecorator extends AbstractDialogDecorator<MaterialDialog>
+public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDialog>
         implements de.mrapp.android.dialog.model.AnimateableDialogDecorator {
 
     /**
@@ -191,9 +191,9 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<Material
      *
      * @param dialog
      *         The dialog, whose view hierarchy should be modified by the decorator, as an instance
-     *         of the type {@link MaterialDialog}. The dialog may not be null
+     *         of the type {@link HeaderDialog}. The dialog may not be null
      */
-    public AnimateableDialogDecorator(@NonNull final MaterialDialog dialog) {
+    public AnimateableDialogDecorator(@NonNull final HeaderDialog dialog) {
         super(dialog);
     }
 

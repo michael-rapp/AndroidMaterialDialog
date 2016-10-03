@@ -32,6 +32,7 @@ import de.mrapp.android.dialog.ProgressDialog;
 import de.mrapp.android.dialog.WizardDialog;
 import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
+import de.mrapp.android.dialog.builder.AbstractAnimateableDialogBuilder;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
 
@@ -136,6 +137,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     private void initializeAlertDialog() {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
+        configureAnimateableDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
         alertDialog = builder.create();
     }
@@ -146,6 +148,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     private void initializeListDialog() {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
+        configureAnimateableDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
         builder.setItems(R.array.list_items, createSingleChoiceListener());
         listDialog = builder.create();
@@ -157,6 +160,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     private void initializeSingleChoiceListDialog() {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
+        configureAnimateableDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
         builder.setSingleChoiceItems(R.array.list_items, 0, createSingleChoiceListener());
         singleChoiceListDialog = builder.create();
@@ -168,6 +172,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     private void initializeMultipleChoiceListDialog() {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
+        configureAnimateableDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
         builder.setMultiChoiceItems(R.array.list_items, new boolean[]{true, false, false},
                 createMultiChoiceListener());
@@ -180,6 +185,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     private void initializeCustomDialog() {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
+        configureAnimateableDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
         builder.setView(R.layout.custom_dialog_content);
         builder.setCustomTitle(R.layout.custom_dialog_title);
@@ -194,6 +200,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     private void initializeProgressDialog() {
         ProgressDialog.Builder builder = new ProgressDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
+        configureAnimateableDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
         progressDialog = builder.create();
     }
@@ -486,7 +493,18 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             builder.setHeaderBackground(R.drawable.dialog_header_background);
             builder.setHeaderIcon(R.drawable.dialog_header_icon);
         }
+    }
 
+    /**
+     * Configures a builder, which allows to create animateable dialogs, depending on the app's
+     * settings.
+     *
+     * @param builder
+     *         The builder, which should be configured, as an instance of the class {@link
+     *         AbstractAnimateableDialogBuilder}
+     */
+    private void configureAnimateableDialogBuilder(
+            @NonNull final AbstractAnimateableDialogBuilder builder) {
         if (shouldUseAnimations()) {
             builder.setShowAnimation(createDialogAnimation());
             builder.setDismissAnimation(createDialogAnimation());

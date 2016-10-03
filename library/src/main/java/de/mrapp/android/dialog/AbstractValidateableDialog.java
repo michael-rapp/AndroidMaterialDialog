@@ -34,7 +34,7 @@ import de.mrapp.android.dialog.model.ValidateableDialog;
  * @author Michael Rapp
  * @since 3.2.0
  */
-public abstract class AbstractValidateableDialog extends AbstractHeaderDialog
+public abstract class AbstractValidateableDialog extends AbstractAnimateableDialog
         implements ValidateableDialog {
 
     /**

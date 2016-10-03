@@ -37,7 +37,7 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @since 3.3.0
  */
 public abstract class AbstractValidateableDialogBuilder<DialogType extends ValidateableDialog, BuilderType extends AbstractValidateableDialogBuilder<DialogType, ?>>
-        extends AbstractHeaderDialogBuilder<DialogType, BuilderType> {
+        extends AbstractAnimateableDialogBuilder<DialogType, BuilderType> {
 
     /**
      * Creates a new builder, which allows to create dialogs, which allow to create and show

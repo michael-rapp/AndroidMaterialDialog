@@ -23,7 +23,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import de.mrapp.android.dialog.DialogValidator;
-import de.mrapp.android.dialog.model.HeaderDialog;
+import de.mrapp.android.dialog.model.AnimateableDialog;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -34,7 +34,7 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @author Michael Rapp
  * @since 3.2.0
  */
-public class ValidateableDialogDecorator extends AbstractDialogDecorator<HeaderDialog>
+public class ValidateableDialogDecorator extends AbstractDialogDecorator<AnimateableDialog>
         implements de.mrapp.android.dialog.model.ValidateableDialogDecorator {
 
     /**
@@ -49,9 +49,9 @@ public class ValidateableDialogDecorator extends AbstractDialogDecorator<HeaderD
      *
      * @param dialog
      *         The dialog, whose view hierarchy should be modified by the decorator, as an instance
-     *         of the type {@link HeaderDialog}. The dialog may not be null
+     *         of the type {@link AnimateableDialog}. The dialog may not be null
      */
-    public ValidateableDialogDecorator(@NonNull final HeaderDialog dialog) {
+    public ValidateableDialogDecorator(@NonNull final AnimateableDialog dialog) {
         super(dialog);
         this.validators = new LinkedHashSet<>();
     }

@@ -36,7 +36,7 @@ import de.mrapp.android.dialog.model.HeaderDialog;
  * @author Michael Rapp
  * @since 3.2.0
  */
-public abstract class AbstractHeaderDialogFragment extends AbstractAnimateableDialogFragment
+public abstract class AbstractHeaderDialogFragment extends AbstractMaterialDialogFragment
         implements HeaderDialog {
 
     /**

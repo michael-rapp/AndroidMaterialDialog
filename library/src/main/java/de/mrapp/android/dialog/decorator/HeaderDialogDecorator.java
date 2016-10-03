@@ -30,7 +30,7 @@ import android.view.Window;
 import android.widget.ImageView;
 
 import de.mrapp.android.dialog.R;
-import de.mrapp.android.dialog.model.AnimateableDialog;
+import de.mrapp.android.dialog.model.MaterialDialog;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
 
@@ -41,7 +41,7 @@ import static de.mrapp.android.util.Condition.ensureAtLeast;
  * @author Michael Rapp
  * @since 3.2.0
  */
-public class HeaderDialogDecorator extends AbstractDialogDecorator<AnimateableDialog>
+public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialog>
         implements de.mrapp.android.dialog.model.HeaderDialogDecorator {
 
     /**
@@ -263,9 +263,9 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<AnimateableDi
      *
      * @param dialog
      *         The dialog, whose view hierarchy should be modified by the decorator, as an instance
-     *         of the type {@link AnimateableDialog}. The dialog may not be null
+     *         of the type {@link MaterialDialog}. The dialog may not be null
      */
-    public HeaderDialogDecorator(@NonNull final AnimateableDialog dialog) {
+    public HeaderDialogDecorator(@NonNull final MaterialDialog dialog) {
         super(dialog);
     }
 

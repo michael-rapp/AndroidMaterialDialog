@@ -34,7 +34,7 @@ import de.mrapp.android.dialog.model.AnimateableDialog;
  * @since 3.7.0
  */
 public abstract class AbstractAnimateableDialogBuilder<DialogType extends AnimateableDialog, BuilderType extends AbstractAnimateableDialogBuilder<DialogType, ?>>
-        extends AbstractMaterialDialogBuilder<DialogType, BuilderType> {
+        extends AbstractHeaderDialogBuilder<DialogType, BuilderType> {
 
     /**
      * Creates a new builder, which allows to create animateable dialogs, which are designed
