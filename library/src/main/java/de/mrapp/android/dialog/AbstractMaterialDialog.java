@@ -71,12 +71,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
 
             @Override
             public boolean onTouch(final View v, final MotionEvent event) {
-                if (isCanceledOnTouchOutside()) {
-                    cancel();
-                    return true;
-                }
-
-                return false;
+                return isCanceledOnTouchOutside() && onCanceledOnTouchOutside();
             }
 
         };
@@ -124,6 +119,17 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     @CallSuper
     protected void onDetachDecorators() {
         decorator.detach();
+    }
+
+    /**
+     * The method, which is invoked when the dialog is about to be canceled,because it is touched
+     * outside the window.
+     *
+     * @return True, if the dialog has been cancelled, false otherwise
+     */
+    protected boolean onCanceledOnTouchOutside() {
+        cancel();
+        return true;
     }
 
     @Override

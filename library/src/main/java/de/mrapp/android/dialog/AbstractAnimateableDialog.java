@@ -192,6 +192,16 @@ public abstract class AbstractAnimateableDialog extends AbstractHeaderDialog
         super.onRestoreInstanceState(savedInstanceState);
     }
 
+    @Override
+    protected final boolean onCanceledOnTouchOutside() {
+        if (!decorator.hideAnimated(getCancelAnimation(), createCancelAnimationListener())) {
+            super.cancel();
+            return true;
+        }
+
+        return false;
+    }
+
     @CallSuper
     @Override
     protected void onAttachDecorators(@NonNull final Window window, @NonNull final View view) {
