@@ -13,6 +13,7 @@
  */
 package de.mrapp.android.dialog.decorator;
 
+import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -176,7 +177,8 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
                 ViewPropertyAnimator animator =
                         view.animate().setInterpolator(animation.getInterpolator())
                                 .setDuration(Math.round(animation.getDuration() * durationScale))
-                                .setStartDelay(animation.getStartDelay()).setListener(listener);
+                                .setStartDelay(animation.getStartDelay())
+                                .setListener(createHideAnimationListener(view, listener));
                 float translationX = 0;
                 float translationY = 0;
 
@@ -224,6 +226,55 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
         }
 
         return false;
+    }
+
+    /**
+     * Creates and returns an animation listener, which allows to hide the animated view once the
+     * animation is finished.
+     *
+     * @param view
+     *         The animated view as an instance of the class {@link View}. The view may not be null
+     * @param listener
+     *         The listener, which should be notified, as an instance of the type {@link
+     *         AnimatorListener} or null, if no listener should be notified
+     * @return The animation listener, which has been created, as an instance of the type {@link
+     * AnimatorListener}
+     */
+    private AnimatorListener createHideAnimationListener(@NonNull final View view,
+                                                         @Nullable final AnimatorListener listener) {
+        return new AnimatorListener() {
+
+            @Override
+            public void onAnimationStart(final Animator animation) {
+                if (listener != null) {
+                    listener.onAnimationStart(animation);
+                }
+            }
+
+            @Override
+            public void onAnimationEnd(final Animator animation) {
+                view.setVisibility(View.GONE);
+
+                if (listener != null) {
+                    listener.onAnimationEnd(animation);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(final Animator animation) {
+                if (listener != null) {
+                    listener.onAnimationCancel(animation);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(final Animator animation) {
+                if (listener != null) {
+                    listener.onAnimationRepeat(animation);
+                }
+            }
+
+        };
     }
 
     /**
