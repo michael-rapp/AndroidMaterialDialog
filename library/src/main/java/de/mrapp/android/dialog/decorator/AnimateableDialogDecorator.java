@@ -207,7 +207,7 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
                 }
 
                 if (animation.getAlpha() != null) {
-                    animator.alpha(1);
+                    animator.alpha(animation.getAlpha());
                 }
 
                 if (translationX != 0) {
