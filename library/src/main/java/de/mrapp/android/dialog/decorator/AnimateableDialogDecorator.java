@@ -26,6 +26,9 @@ import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
 import de.mrapp.android.dialog.model.HeaderDialog;
 
+import static de.mrapp.android.util.DisplayUtil.getDisplayHeight;
+import static de.mrapp.android.util.DisplayUtil.getStatusBarHeight;
+
 /**
  * A decorator, which allows to modify the view hierarchy of an animateable dialog, which is
  * designed according to Android 5's Material Design guidelines even on pre-Lollipop devices and may
@@ -94,7 +97,13 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
                 }
 
                 if (animation.getY() != null) {
-                    translationY = animation.getY() - view.getTop() - shadowWidth;
+                    int y = animation.getY();
+
+                    if (view.getHeight() >= getDisplayHeight(getContext())) {
+                        y += getStatusBarHeight(getContext());
+                    }
+
+                    translationY = y - view.getTop() - shadowWidth;
                 }
 
                 if (animation.getWidth() != null) {
@@ -176,7 +185,13 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
                 }
 
                 if (animation.getY() != null) {
-                    translationY = animation.getY() - view.getTop() - shadowWidth;
+                    int y = animation.getY();
+
+                    if (view.getHeight() >= getDisplayHeight(getContext())) {
+                        y += getStatusBarHeight(getContext());
+                    }
+
+                    translationY = y - view.getTop() - shadowWidth;
                 }
 
                 if (animation.getWidth() != null) {
@@ -237,12 +252,12 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
      */
     public final boolean showAnimated(@Nullable final DialogAnimation animation,
                                       @Nullable final AnimatorListener listener) {
-        if (showAnimation != null) {
-            if (showAnimation instanceof RectangleRevealAnimation) {
-                return showAnimated((RectangleRevealAnimation) showAnimation, listener);
+        if (animation != null) {
+            if (animation instanceof RectangleRevealAnimation) {
+                return showAnimated((RectangleRevealAnimation) animation, listener);
             } else {
                 throw new RuntimeException(
-                        "Unknown type of animation: " + showAnimation.getClass().getSimpleName());
+                        "Unknown type of animation: " + animation.getClass().getSimpleName());
             }
         }
 
