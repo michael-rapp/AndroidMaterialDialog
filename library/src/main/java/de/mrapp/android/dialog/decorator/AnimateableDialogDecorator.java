@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.Window;
 
+import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
 import de.mrapp.android.dialog.model.HeaderDialog;
@@ -70,6 +71,8 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
             if (animation.getX() != null || animation.getY() != null ||
                     animation.getWidth() != null || animation.getHeight() != null ||
                     animation.getAlpha() != null) {
+                int shadowWidth = getDialog().isFullscreen() ? 0 : getContext().getResources()
+                        .getDimensionPixelSize(R.dimen.dialog_shadow_width);
                 ViewPropertyAnimator animator =
                         view.animate().setInterpolator(animation.getInterpolator())
                                 .setDuration(animation.getDuration())
@@ -78,22 +81,24 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
                 float translationY = 0;
 
                 if (animation.getX() != null) {
-                    translationX = animation.getX() - view.getLeft() - getDialog().getLeftMargin();
+                    translationX = animation.getX() - view.getLeft() - shadowWidth;
                 }
 
                 if (animation.getY() != null) {
-                    translationY = animation.getY() - view.getTop() - getDialog().getTopMargin();
+                    translationY = animation.getY() - view.getTop() - shadowWidth;
                 }
 
                 if (animation.getWidth() != null) {
-                    translationX -= (view.getWidth() / 2f) - getDialog().getLeftMargin();
-                    view.setScaleX((float) animation.getWidth() / (float) view.getWidth());
+                    int viewWidth = view.getWidth() - 2 * shadowWidth;
+                    translationX -= (float) (viewWidth - animation.getWidth()) / 2f;
+                    view.setScaleX((float) animation.getWidth() / (float) viewWidth);
                     animator.scaleX(1);
                 }
 
                 if (animation.getHeight() != null) {
-                    translationY -= (view.getHeight() / 2f) - getDialog().getTopMargin();
-                    view.setScaleY((float) animation.getHeight() / (float) view.getHeight());
+                    int viewHeight = view.getHeight() - 2 * shadowWidth;
+                    translationY -= (float) (viewHeight - animation.getHeight()) / 2f;
+                    view.setScaleY((float) animation.getHeight() / (float) viewHeight);
                     animator.scaleY(1);
                 }
 
@@ -139,6 +144,8 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
             if (animation.getX() != null || animation.getY() != null ||
                     animation.getWidth() != null || animation.getHeight() != null ||
                     animation.getAlpha() != null) {
+                int shadowWidth = getDialog().isFullscreen() ? 0 : getContext().getResources()
+                        .getDimensionPixelSize(R.dimen.dialog_shadow_width);
                 ViewPropertyAnimator animator =
                         view.animate().setInterpolator(animation.getInterpolator())
                                 .setDuration(animation.getDuration())
@@ -147,21 +154,23 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
                 float translationY = 0;
 
                 if (animation.getX() != null) {
-                    translationX = animation.getX() - view.getLeft() - getDialog().getLeftMargin();
+                    translationX = animation.getX() - view.getLeft() - shadowWidth;
                 }
 
                 if (animation.getY() != null) {
-                    translationY = animation.getY() - view.getTop() - getDialog().getTopMargin();
+                    translationY = animation.getY() - view.getTop() - shadowWidth;
                 }
 
                 if (animation.getWidth() != null) {
-                    translationX -= (view.getWidth() / 2f) - getDialog().getLeftMargin();
-                    animator.scaleX((float) animation.getWidth() / (float) view.getWidth());
+                    int viewWidth = view.getWidth() - 2 * shadowWidth;
+                    translationX -= (float) (viewWidth - animation.getWidth()) / 2f;
+                    animator.scaleX((float) animation.getWidth() / (float) viewWidth);
                 }
 
                 if (animation.getHeight() != null) {
-                    translationY -= (view.getHeight() / 2f) - getDialog().getTopMargin();
-                    animator.scaleY((float) animation.getHeight() / (float) view.getHeight());
+                    int viewHeight = view.getHeight() - 2 * shadowWidth;
+                    translationY -= (float) (viewHeight - animation.getHeight()) / 2f;
+                    animator.scaleY((float) animation.getHeight() / (float) viewHeight);
                 }
 
                 if (animation.getAlpha() != null) {
