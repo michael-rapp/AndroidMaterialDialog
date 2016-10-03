@@ -375,7 +375,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             int[] location = new int[2];
             view.getLocationInWindow(location);
             return new RectangleRevealAnimation.Builder(getActivity()).setWidth(view.getWidth())
-                    .setHeight(view.getHeight()).setX(location[0]).setY(location[1]).create();
+                    .setHeight(view.getHeight()).setX(location[0])
+                    .setY(location[1] - (view.getHeight() / 2)).create();
         }
 
         return null;
