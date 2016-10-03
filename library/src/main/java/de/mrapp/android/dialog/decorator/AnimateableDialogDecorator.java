@@ -71,11 +71,20 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
             if (animation.getX() != null || animation.getY() != null ||
                     animation.getWidth() != null || animation.getHeight() != null ||
                     animation.getAlpha() != null) {
+                double durationScale = 1;
+
+                if (view.getAnimation() != null) {
+                    durationScale = (double) (System.currentTimeMillis() -
+                            view.getAnimation().getStartTime()) /
+                            (double) view.getAnimation().getDuration();
+                    view.getAnimation().cancel();
+                }
+
                 int shadowWidth = getDialog().isFullscreen() ? 0 : getContext().getResources()
                         .getDimensionPixelSize(R.dimen.dialog_shadow_width);
                 ViewPropertyAnimator animator =
                         view.animate().setInterpolator(animation.getInterpolator())
-                                .setDuration(animation.getDuration())
+                                .setDuration(Math.round(animation.getDuration() * durationScale))
                                 .setStartDelay(animation.getStartDelay()).setListener(listener);
                 float translationX = 0;
                 float translationY = 0;
@@ -144,11 +153,20 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
             if (animation.getX() != null || animation.getY() != null ||
                     animation.getWidth() != null || animation.getHeight() != null ||
                     animation.getAlpha() != null) {
+                double durationScale = 1;
+
+                if (view.getAnimation() != null) {
+                    durationScale = (double) (System.currentTimeMillis() -
+                            view.getAnimation().getStartTime()) /
+                            (double) view.getAnimation().getDuration();
+                    view.getAnimation().cancel();
+                }
+
                 int shadowWidth = getDialog().isFullscreen() ? 0 : getContext().getResources()
                         .getDimensionPixelSize(R.dimen.dialog_shadow_width);
                 ViewPropertyAnimator animator =
                         view.animate().setInterpolator(animation.getInterpolator())
-                                .setDuration(animation.getDuration())
+                                .setDuration(Math.round(animation.getDuration() * durationScale))
                                 .setStartDelay(animation.getStartDelay()).setListener(listener);
                 float translationX = 0;
                 float translationY = 0;
