@@ -36,6 +36,7 @@ import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
+import de.mrapp.android.util.DisplayUtil;
 
 import static de.mrapp.android.util.DisplayUtil.getStatusBarHeight;
 
@@ -378,7 +379,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             view.getLocationOnScreen(location);
             return new RectangleRevealAnimation.Builder(getActivity()).setWidth(view.getWidth())
                     .setHeight(view.getHeight()).setX(location[0])
-                    .setY(location[1] + getStatusBarHeight(getActivity())).create();
+                    .setY(location[1] - getStatusBarHeight(getActivity())).create();
         }
 
         return null;
