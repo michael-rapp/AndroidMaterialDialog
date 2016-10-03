@@ -154,8 +154,8 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
      *         AnimatorListener} or null, if no animation listener should be used
      * @return True, if the dialog has been hidden in an animated manner, false otherwise
      */
-    private boolean hideAnimated(final RectangleRevealAnimation animation,
-                                 @Nullable AnimatorListener listener) {
+    private boolean hideAnimated(@NonNull final RectangleRevealAnimation animation,
+                                 @Nullable final AnimatorListener listener) {
         if (getView() != null && getWindow() != null) {
             View view = getDialog().isFullscreen() ? getWindow().getDecorView() : getView();
 
