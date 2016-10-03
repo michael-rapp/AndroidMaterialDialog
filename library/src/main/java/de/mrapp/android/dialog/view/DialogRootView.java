@@ -269,8 +269,8 @@ public class DialogRootView extends LinearLayout {
         super.draw(canvas);
 
         if (isShadowShown()) {
-            int width = canvas.getWidth();
-            int height = canvas.getHeight();
+            int width = getWidth();
+            int height = getHeight();
             background.setBounds(0, 0, width, height);
             backingBitmap.eraseColor(Color.TRANSPARENT);
             background.draw(backingCanvas);
