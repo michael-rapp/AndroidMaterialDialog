@@ -123,7 +123,7 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
 
             @Override
             public boolean onTouch(final View v, final MotionEvent event) {
-                return isCanceledOnTouchOutside() && onCanceledOnTouchOutside();
+                return isCanceledOnTouchOutside() && !isFullscreen() && onCanceledOnTouchOutside();
             }
 
         };

@@ -71,7 +71,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
 
             @Override
             public boolean onTouch(final View v, final MotionEvent event) {
-                return isCanceledOnTouchOutside() && onCanceledOnTouchOutside();
+                return isCanceledOnTouchOutside() && !isFullscreen() && onCanceledOnTouchOutside();
             }
 
         };
