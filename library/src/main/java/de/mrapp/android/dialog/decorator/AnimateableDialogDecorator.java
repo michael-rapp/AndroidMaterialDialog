@@ -65,21 +65,21 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
     private boolean hidden;
 
     @Nullable
-    private ViewPropertyAnimator createAnimator(@NonNull final View view,
+    private ViewPropertyAnimator createAnimator(@NonNull final View animatedView,
                                                 @NonNull final RectangleRevealAnimation animation,
                                                 @Nullable final AnimatorListener listener) {
         if (animation.getX() != null || animation.getY() != null ||
                 animation.getWidth() != null || animation.getHeight() != null ||
                 animation.getAlpha() != null) {
-            return view.animate().setInterpolator(animation.getInterpolator())
-                    .setDuration(getDuration(view, animation))
+            return animatedView.animate().setInterpolator(animation.getInterpolator())
+                    .setDuration(getDuration(animatedView, animation))
                     .setStartDelay(animation.getStartDelay()).setListener(listener);
         }
 
         return null;
     }
 
-    private void configureShowAnimator(@NonNull final View view,
+    private void configureShowAnimator(@NonNull final View animatedView,
                                        @NonNull final RectangleRevealAnimation animation,
                                        @NonNull final ViewPropertyAnimator animator) {
         int shadowWidth = getDialog().isFullscreen() ? 0 :
@@ -88,50 +88,50 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
         float translationY = 0;
 
         if (animation.getX() != null) {
-            translationX = animation.getX() - view.getLeft() - shadowWidth;
+            translationX = animation.getX() - animatedView.getLeft() - shadowWidth;
         }
 
         if (animation.getY() != null) {
             int y = animation.getY();
 
-            if (view.getHeight() >= getDisplayHeight(getContext())) {
+            if (animatedView.getHeight() >= getDisplayHeight(getContext())) {
                 y += getStatusBarHeight(getContext());
             }
 
-            translationY = y - view.getTop() - shadowWidth;
+            translationY = y - animatedView.getTop() - shadowWidth;
         }
 
         if (animation.getWidth() != null) {
-            int viewWidth = view.getWidth() - 2 * shadowWidth;
+            int viewWidth = animatedView.getWidth() - 2 * shadowWidth;
             translationX -= (float) (viewWidth - animation.getWidth()) / 2f;
-            view.setScaleX((float) animation.getWidth() / (float) viewWidth);
+            animatedView.setScaleX((float) animation.getWidth() / (float) viewWidth);
             animator.scaleX(1);
         }
 
         if (animation.getHeight() != null) {
-            int viewHeight = view.getHeight() - 2 * shadowWidth;
+            int viewHeight = animatedView.getHeight() - 2 * shadowWidth;
             translationY -= (float) (viewHeight - animation.getHeight()) / 2f;
-            view.setScaleY((float) animation.getHeight() / (float) viewHeight);
+            animatedView.setScaleY((float) animation.getHeight() / (float) viewHeight);
             animator.scaleY(1);
         }
 
         if (animation.getAlpha() != null) {
-            view.setAlpha(animation.getAlpha());
+            animatedView.setAlpha(animation.getAlpha());
             animator.alpha(1);
         }
 
         if (translationX != 0) {
-            view.setTranslationX(translationX);
+            animatedView.setTranslationX(translationX);
             animator.translationX(0);
         }
 
         if (translationY != 0) {
-            view.setTranslationY(translationY);
+            animatedView.setTranslationY(translationY);
             animator.translationY(0);
         }
     }
 
-    private void configureHideAnimator(@NonNull final View view,
+    private void configureHideAnimator(@NonNull final View animatedView,
                                        @NonNull final RectangleRevealAnimation animation,
                                        @NonNull final ViewPropertyAnimator animator) {
         int shadowWidth = getDialog().isFullscreen() ? 0 :
@@ -140,27 +140,27 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
         float translationY = 0;
 
         if (animation.getX() != null) {
-            translationX = animation.getX() - view.getLeft() - shadowWidth;
+            translationX = animation.getX() - animatedView.getLeft() - shadowWidth;
         }
 
         if (animation.getY() != null) {
             int y = animation.getY();
 
-            if (view.getHeight() >= getDisplayHeight(getContext())) {
+            if (animatedView.getHeight() >= getDisplayHeight(getContext())) {
                 y += getStatusBarHeight(getContext());
             }
 
-            translationY = y - view.getTop() - shadowWidth;
+            translationY = y - animatedView.getTop() - shadowWidth;
         }
 
         if (animation.getWidth() != null) {
-            int viewWidth = view.getWidth() - 2 * shadowWidth;
+            int viewWidth = animatedView.getWidth() - 2 * shadowWidth;
             translationX -= (float) (viewWidth - animation.getWidth()) / 2f;
             animator.scaleX((float) animation.getWidth() / (float) viewWidth);
         }
 
         if (animation.getHeight() != null) {
-            int viewHeight = view.getHeight() - 2 * shadowWidth;
+            int viewHeight = animatedView.getHeight() - 2 * shadowWidth;
             translationY -= (float) (viewHeight - animation.getHeight()) / 2f;
             animator.scaleY((float) animation.getHeight() / (float) viewHeight);
         }
@@ -179,18 +179,23 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
     }
 
     @Nullable
-    private Animator createAnimator(@NonNull final View view,
+    private Animator createAnimator(@NonNull final View animatedView, @NonNull final View rootView,
                                     @NonNull final CircleRevealAnimation animation,
                                     @Nullable final AnimatorListener listener, final boolean show) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            float maxRadius = Math.max(view.getWidth(), view.getHeight()) / 2f;
+            int horizontalDistance = Math.max(Math.abs(rootView.getLeft() - animation.getX()),
+                    Math.abs(rootView.getRight() - animation.getX()));
+            int verticalDistance = Math.max(Math.abs(rootView.getTop() - animation.getY()),
+                    Math.abs(rootView.getBottom() - animation.getY()));
+            float maxRadius = (float) Math
+                    .sqrt(Math.pow(horizontalDistance, 2) + Math.pow(verticalDistance, 2));
             Animator animator = ViewAnimationUtils
-                    .createCircularReveal(view, animation.getX(), animation.getY(),
+                    .createCircularReveal(animatedView, animation.getX(), animation.getY(),
                             show ? animation.getRadius() : maxRadius,
                             show ? maxRadius : animation.getRadius());
             animator.setInterpolator(animation.getInterpolator());
             animator.setStartDelay(animation.getStartDelay());
-            animator.setDuration(getDuration(view, animation));
+            animator.setDuration(getDuration(animatedView, animation));
 
             if (listener != null) {
                 animator.addListener(listener);
@@ -204,13 +209,15 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
         return null;
     }
 
-    private long getDuration(@NonNull final View view, @NonNull final DialogAnimation animation) {
+    private long getDuration(@NonNull final View animatedView,
+                             @NonNull final DialogAnimation animation) {
         double scale = 1;
 
-        if (view.getAnimation() != null) {
-            scale = (double) (System.currentTimeMillis() - view.getAnimation().getStartTime()) /
-                    (double) view.getAnimation().getDuration();
-            view.getAnimation().cancel();
+        if (animatedView.getAnimation() != null) {
+            scale = (double) (System.currentTimeMillis() -
+                    animatedView.getAnimation().getStartTime()) /
+                    (double) animatedView.getAnimation().getDuration();
+            animatedView.getAnimation().cancel();
         }
 
         return Math.round(animation.getDuration() * scale);
@@ -220,7 +227,7 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
      * Creates and returns an animation listener, which allows to hide the animated view once the
      * animation is finished.
      *
-     * @param view
+     * @param animatedView
      *         The animated view as an instance of the class {@link View}. The view may not be null
      * @param listener
      *         The listener, which should be notified, as an instance of the type {@link
@@ -228,7 +235,7 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
      * @return The animation listener, which has been created, as an instance of the type {@link
      * AnimatorListener}
      */
-    private AnimatorListener createHideAnimationListener(@NonNull final View view,
+    private AnimatorListener createHideAnimationListener(@NonNull final View animatedView,
                                                          @Nullable final AnimatorListener listener) {
         return new AnimatorListener() {
 
@@ -241,7 +248,7 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
 
             @Override
             public void onAnimationEnd(final Animator animation) {
-                view.setVisibility(View.GONE);
+                animatedView.setVisibility(View.GONE);
 
                 if (listener != null) {
                     listener.onAnimationEnd(animation);
@@ -298,8 +305,9 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
             View view = getView();
 
             if (view != null && window != null) {
+                View animatedView = getDialog().isFullscreen() ? window.getDecorView() : view;
+
                 if (animation instanceof RectangleRevealAnimation) {
-                    View animatedView = getDialog().isFullscreen() ? window.getDecorView() : view;
                     RectangleRevealAnimation rectangleRevealAnimation =
                             (RectangleRevealAnimation) animation;
                     ViewPropertyAnimator animator =
@@ -311,10 +319,9 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
                         return true;
                     }
                 } else if (animation instanceof CircleRevealAnimation) {
-                    View animatedView = window.getDecorView();
                     CircleRevealAnimation circleRevealAnimation = (CircleRevealAnimation) animation;
-                    Animator animator =
-                            createAnimator(animatedView, circleRevealAnimation, listener, true);
+                    Animator animator = createAnimator(window.getDecorView(), animatedView,
+                            circleRevealAnimation, listener, true);
 
                     if (animator != null) {
                         animator.start();
@@ -351,9 +358,9 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
                 Window window = getWindow();
 
                 if (view != null && window != null) {
+                    View animatedView = getDialog().isFullscreen() ? window.getDecorView() : view;
+
                     if (animation instanceof RectangleRevealAnimation) {
-                        View animatedView =
-                                getDialog().isFullscreen() ? window.getDecorView() : view;
                         RectangleRevealAnimation rectangleRevealAnimation =
                                 (RectangleRevealAnimation) animation;
                         ViewPropertyAnimator animator =
@@ -366,12 +373,10 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
                             return true;
                         }
                     } else if (animation instanceof CircleRevealAnimation) {
-                        View animatedView = window.getDecorView();
                         CircleRevealAnimation circleRevealAnimation =
                                 (CircleRevealAnimation) animation;
-                        Animator animator =
-                                createAnimator(animatedView, circleRevealAnimation, listener,
-                                        false);
+                        Animator animator = createAnimator(window.getDecorView(), animatedView,
+                                circleRevealAnimation, listener, false);
 
                         if (animator != null) {
                             animator.start();
