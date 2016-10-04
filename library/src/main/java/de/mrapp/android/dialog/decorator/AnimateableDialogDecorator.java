@@ -64,6 +64,20 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
      */
     private boolean hidden;
 
+    /**
+     * Creates an animator, which should be used for a rectangular reveal animation.
+     *
+     * @param animatedView
+     *         The animated view as an instance of the class {@link View}. The view may not be null
+     * @param animation
+     *         The animation as an instance of the class {@link RectangleRevealAnimation}. The
+     *         animation may not be null
+     * @param listener
+     *         The listener, which should be notified about the animation's events, as an instance
+     *         of the type {@link AnimatorListener} or null, if no listener should be notified
+     * @return The animator, which has been created, as an instance of the class {@link
+     * ViewPropertyAnimator} or null, if no animation should be used
+     */
     @Nullable
     private ViewPropertyAnimator createAnimator(@NonNull final View animatedView,
                                                 @NonNull final RectangleRevealAnimation animation,
@@ -79,6 +93,19 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
         return null;
     }
 
+    /**
+     * Configures an animator, which should be used to show the dialog using a rectangular reveal
+     * animation.
+     *
+     * @param animatedView
+     *         The animated view as an instance of the class {@link View}. The view may not be null
+     * @param animation
+     *         The animation as an instance of the class {@link RectangleRevealAnimation}. The
+     *         animation may not be null
+     * @param animator
+     *         The animator, which should be configured, as an instance of the class {@link
+     *         ViewPropertyAnimator}. The animator may not be null
+     */
     private void configureShowAnimator(@NonNull final View animatedView,
                                        @NonNull final RectangleRevealAnimation animation,
                                        @NonNull final ViewPropertyAnimator animator) {
@@ -131,6 +158,19 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
         }
     }
 
+    /**
+     * Configures an animator, which should be used to hide the dialog using a rectangular reveal
+     * animation.
+     *
+     * @param animatedView
+     *         The animated view as an instance of the class {@link View}. The view may not be null
+     * @param animation
+     *         The animation as an instance of the class {@link RectangleRevealAnimation}. The
+     *         animation may not be null
+     * @param animator
+     *         The animator, which should be configured, as an instance of the class {@link
+     *         ViewPropertyAnimator}. The animator may not be null
+     */
     private void configureHideAnimator(@NonNull final View animatedView,
                                        @NonNull final RectangleRevealAnimation animation,
                                        @NonNull final ViewPropertyAnimator animator) {
@@ -178,6 +218,25 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
         }
     }
 
+    /**
+     * Creates an animator, which should be used for a circle reveal animation.
+     *
+     * @param animatedView
+     *         The animated view as an instance of the class {@link View}. The view may not be null
+     * @param rootView
+     *         The root view of the dialog as an instance of the class {@link View}. The view may
+     *         not be null
+     * @param animation
+     *         The animation as an instance of the class {@link CircleRevealAnimation}. The
+     *         animation may not be null
+     * @param listener
+     *         The listener, which should be notified about the animation's events, as an instance
+     *         of type {@link AnimatorListener} or null, if no listener should be notified
+     * @param show
+     *         True, if the animation should be used for showing the dialog, false otherwise
+     * @return The animator, which has been created, as an instance of the class {@link Animator} or
+     * null, if no animation should be used
+     */
     @Nullable
     private Animator createAnimator(@NonNull final View animatedView, @NonNull final View rootView,
                                     @NonNull final CircleRevealAnimation animation,
@@ -209,6 +268,18 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
         return null;
     }
 
+    /**
+     * Returns the duration, which should be used for an animation, depending on whether a previous
+     * animation is still running, or not.
+     *
+     * @param animatedView
+     *         The animated view as an instance of the class {@link View}. The view may not be null
+     * @param animation
+     *         The animation as an instance of the class {@link DialogAnimation}. The animation may
+     *         not be null
+     * @return The duration, which used for the given animation, in milliseconds as a {@link Long}
+     * value
+     */
     private long getDuration(@NonNull final View animatedView,
                              @NonNull final DialogAnimation animation) {
         double scale = 1;
