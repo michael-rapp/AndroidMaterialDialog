@@ -16,9 +16,13 @@ package de.mrapp.android.dialog.example;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 /**
  * The main activity of the example app.
@@ -31,6 +35,47 @@ public class MainActivity extends AppCompatActivity {
      * The tag, which is used to show the activity's fragment.
      */
     private static final String FRAGMENT_TAG = MainActivity.class.getSimpleName() + "::fragmentTag";
+
+    /**
+     * The activity's fragment.
+     */
+    private PreferenceFragment fragment;
+
+    /**
+     * Initializes the floating action button, which allows to show an alert dialog using a circle
+     * reveal animation.
+     */
+    private void initializeFloatingActionButton() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            FloatingActionButton floatingActionButton =
+                    (FloatingActionButton) findViewById(R.id.floating_action_button);
+            floatingActionButton.setVisibility(View.VISIBLE);
+            floatingActionButton.setOnClickListener(createFloatingActionButtonListener());
+        }
+    }
+
+    /**
+     * Creates and returns a listener, which allows to show an alert dialog using a circle reveal
+     * animation, when the corresponding floating action button is clicked.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnClickListener}
+     */
+    private OnClickListener createFloatingActionButtonListener() {
+        return new OnClickListener() {
+
+            @Override
+            public void onClick(final View v) {
+                if (fragment == null) {
+                    fragment = (PreferenceFragment) getFragmentManager()
+                            .findFragmentByTag(FRAGMENT_TAG);
+                }
+
+                fragment.showAlertDialog(v);
+            }
+
+        };
+    }
 
     @Override
     public final void setTheme(final int resid) {
@@ -56,11 +101,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (getFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
-            Fragment fragment = Fragment.instantiate(this, PreferenceFragment.class.getName());
+            fragment = (PreferenceFragment) Fragment
+                    .instantiate(this, PreferenceFragment.class.getName());
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment, fragment, FRAGMENT_TAG);
             transaction.commit();
         }
+
+        initializeFloatingActionButton();
     }
 
 }

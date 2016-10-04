@@ -32,11 +32,11 @@ import android.widget.Toast;
 import de.mrapp.android.dialog.MaterialDialog;
 import de.mrapp.android.dialog.ProgressDialog;
 import de.mrapp.android.dialog.WizardDialog;
+import de.mrapp.android.dialog.animation.CircleRevealAnimation;
 import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
-import de.mrapp.android.util.DisplayUtil;
 
 import static de.mrapp.android.util.DisplayUtil.getStatusBarHeight;
 
@@ -251,9 +251,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 initializeAlertDialog();
-                alertDialog.setShowAnimation(createDialogAnimation(preference));
-                alertDialog.setDismissAnimation(createDialogAnimation(preference));
-                alertDialog.setCancelAnimation(createDialogAnimation(preference));
+                alertDialog.setShowAnimation(createRectangularRevealAnimation(preference));
+                alertDialog.setDismissAnimation(createRectangularRevealAnimation(preference));
+                alertDialog.setCancelAnimation(createRectangularRevealAnimation(preference));
                 alertDialog.show();
                 return true;
             }
@@ -271,9 +271,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 initializeListDialog();
-                listDialog.setShowAnimation(createDialogAnimation(preference));
-                listDialog.setDismissAnimation(createDialogAnimation(preference));
-                listDialog.setCancelAnimation(createDialogAnimation(preference));
+                listDialog.setShowAnimation(createRectangularRevealAnimation(preference));
+                listDialog.setDismissAnimation(createRectangularRevealAnimation(preference));
+                listDialog.setCancelAnimation(createRectangularRevealAnimation(preference));
                 listDialog.show();
                 return true;
             }
@@ -292,9 +292,12 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 initializeSingleChoiceListDialog();
-                singleChoiceListDialog.setShowAnimation(createDialogAnimation(preference));
-                singleChoiceListDialog.setDismissAnimation(createDialogAnimation(preference));
-                singleChoiceListDialog.setCancelAnimation(createDialogAnimation(preference));
+                singleChoiceListDialog
+                        .setShowAnimation(createRectangularRevealAnimation(preference));
+                singleChoiceListDialog
+                        .setDismissAnimation(createRectangularRevealAnimation(preference));
+                singleChoiceListDialog
+                        .setCancelAnimation(createRectangularRevealAnimation(preference));
                 singleChoiceListDialog.show();
                 return true;
             }
@@ -313,9 +316,12 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 initializeMultipleChoiceListDialog();
-                multipleChoiceListDialog.setShowAnimation(createDialogAnimation(preference));
-                multipleChoiceListDialog.setDismissAnimation(createDialogAnimation(preference));
-                multipleChoiceListDialog.setCancelAnimation(createDialogAnimation(preference));
+                multipleChoiceListDialog
+                        .setShowAnimation(createRectangularRevealAnimation(preference));
+                multipleChoiceListDialog
+                        .setDismissAnimation(createRectangularRevealAnimation(preference));
+                multipleChoiceListDialog
+                        .setCancelAnimation(createRectangularRevealAnimation(preference));
                 multipleChoiceListDialog.show();
                 return true;
             }
@@ -334,9 +340,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 initializeCustomDialog();
-                customDialog.setShowAnimation(createDialogAnimation(preference));
-                customDialog.setDismissAnimation(createDialogAnimation(preference));
-                customDialog.setCancelAnimation(createDialogAnimation(preference));
+                customDialog.setShowAnimation(createRectangularRevealAnimation(preference));
+                customDialog.setDismissAnimation(createRectangularRevealAnimation(preference));
+                customDialog.setCancelAnimation(createRectangularRevealAnimation(preference));
                 customDialog.show();
                 return true;
             }
@@ -355,9 +361,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 initializeProgressDialog();
-                progressDialog.setShowAnimation(createDialogAnimation(preference));
-                progressDialog.setDismissAnimation(createDialogAnimation(preference));
-                progressDialog.setCancelAnimation(createDialogAnimation(preference));
+                progressDialog.setShowAnimation(createRectangularRevealAnimation(preference));
+                progressDialog.setDismissAnimation(createRectangularRevealAnimation(preference));
+                progressDialog.setCancelAnimation(createRectangularRevealAnimation(preference));
                 progressDialog.show();
                 return true;
             }
@@ -366,12 +372,16 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     }
 
     /**
-     * Creates and returns the animation, which should be used to show or hide dialogs.
+     * Creates and returns the rectangular reveal animation, which should be used to show or hide
+     * dialogs.
      *
+     * @param preference
+     *         The preference, which is used to show the dialog, as an instance of the class {@link
+     *         Preference}
      * @return The animation, which has been created, as an instance of the type {@link
      * DialogAnimation}
      */
-    private DialogAnimation createDialogAnimation(@NonNull final Preference preference) {
+    private DialogAnimation createRectangularRevealAnimation(@NonNull final Preference preference) {
         if (shouldUseAnimations()) {
             ListView listView = (ListView) getActivity().findViewById(android.R.id.list);
             View view = listView.getChildAt(preference.getOrder() + 1);
@@ -383,6 +393,28 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         }
 
         return null;
+    }
+
+    /**
+     * Creates and returns the circle reveal animation, which should be used to show or hide
+     * dialogs.
+     *
+     * @param view
+     *         The view, which is used to show the dialog, as an instance of the class {@link View}
+     * @return The animation, which has been created, as an instance of the type {@link
+     * DialogAnimation}
+     */
+    private DialogAnimation createCircleRevealAnimation(@NonNull final View view) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int margin = getResources().getDimensionPixelSize(R.dimen.floating_action_button_margin);
+        int width = view.getWidth();
+        int height = view.getHeight();
+        float radius = width - margin * 2;
+        int x = location[0] + width / 2;
+        int y = location[1] + height / 2;
+        return new CircleRevealAnimation.Builder(getActivity()).setX(x).setY(y).setRadius(radius)
+                .create();
     }
 
     /**
@@ -806,6 +838,20 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         String key = getString(R.string.animation_preference_key);
         boolean defaultValue = getResources().getBoolean(R.bool.animation_preference_default_value);
         return sharedPreferences.getBoolean(key, defaultValue);
+    }
+
+    /**
+     * Shows an alert dialog using a circle reveal animation.
+     *
+     * @param view
+     *         The view, which is used to show the dialog, as an instance of the class {@link View}
+     */
+    public final void showAlertDialog(@NonNull final View view) {
+        initializeAlertDialog();
+        alertDialog.setShowAnimation(createCircleRevealAnimation(view));
+        alertDialog.setDismissAnimation(createCircleRevealAnimation(view));
+        alertDialog.setCancelAnimation(createCircleRevealAnimation(view));
+        alertDialog.show();
     }
 
     @Override

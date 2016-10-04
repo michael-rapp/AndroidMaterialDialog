@@ -104,6 +104,7 @@ License.
     <string name="neutral_button_toast">Clicked neutral button</string>
     <string name="negative_button_toast">Clicked negative button</string>
     <string name="dialog_fragment_text">Fragment</string>
+    <string name="floating_action_button_content_description">Show alert dialog</string>
 
     <string-array name="list_items">
         <item>Item 1</item>
