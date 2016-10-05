@@ -15,6 +15,8 @@ package de.mrapp.android.dialog.decorator;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -242,6 +244,7 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
                                     @NonNull final CircleRevealAnimation animation,
                                     @Nullable final AnimatorListener listener, final boolean show) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            long duration = getDuration(animatedView, animation);
             int horizontalDistance = Math.max(Math.abs(rootView.getLeft() - animation.getX()),
                     Math.abs(rootView.getRight() - animation.getX()));
             int verticalDistance = Math.max(Math.abs(rootView.getTop() - animation.getY()),
@@ -254,13 +257,23 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
                             show ? maxRadius : animation.getRadius());
             animator.setInterpolator(animation.getInterpolator());
             animator.setStartDelay(animation.getStartDelay());
-            animator.setDuration(getDuration(animatedView, animation));
+            animator.setDuration(duration);
 
             if (listener != null) {
                 animator.addListener(listener);
             }
 
-            // TODO: Animate alpha if necessary
+            if (animation.getAlpha() != null) {
+                ObjectAnimator alphaAnimator = ObjectAnimator
+                        .ofFloat(animatedView, "alpha", show ? animation.getAlpha() : 1,
+                                show ? 1 : animation.getAlpha());
+                alphaAnimator.setInterpolator(animation.getInterpolator());
+                alphaAnimator.setStartDelay(animation.getStartDelay());
+                alphaAnimator.setDuration(duration);
+                AnimatorSet animatorSet = new AnimatorSet();
+                animatorSet.playTogether(animator, alphaAnimator);
+                return animatorSet;
+            }
 
             return animator;
         }
