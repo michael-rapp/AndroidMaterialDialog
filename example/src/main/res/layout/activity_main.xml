@@ -30,6 +30,7 @@ License.
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/floating_action_button_margin"
         android:contentDescription="@string/floating_action_button_content_description"
+        android:src="@drawable/floating_action_button_icon"
         android:visibility="gone"/>
 
 </FrameLayout>
