@@ -24,6 +24,8 @@ import android.support.annotation.StringRes;
 import android.view.KeyEvent;
 import android.view.View;
 
+import de.mrapp.android.dialog.animation.DrawableAnimation;
+
 /**
  * Defines the interface a decorator, which allows to modify the view hierarchy of a dialog, which
  * is designed according to Android 5's Material Design guidelines even on pre-Lollipop devices,
@@ -304,11 +306,11 @@ public interface MaterialDialogDecorator extends Dialog {
      * @param background
      *         The background, which should be set, as an instance of the class {@link Bitmap} or
      *         null, if no background should be set
-     * @param animate
-     *         True, if the background should be changed using a cross-fade animation, false
-     *         otherwise
+     * @param animation
+     *         The animation, which should be used to change the background, as an instance of the
+     *         class {@link DrawableAnimation} or null, if no animation should be used
      */
-    void setBackground(@Nullable Bitmap background, boolean animate);
+    void setBackground(@Nullable Bitmap background, @Nullable DrawableAnimation animation);
 
     /**
      * Sets the background of the dialog.
@@ -325,11 +327,11 @@ public interface MaterialDialogDecorator extends Dialog {
      * @param resourceId
      *         The resource id of the background, which should be set, as an {@link Integer} value.
      *         The resource id must correspond to a valid drawable resource
-     * @param animate
-     *         True, if the background should be changed using a cross-fade animation, false
-     *         otherwise
+     * @param animation
+     *         The animation, which should be used to change the background, as an instance of the
+     *         class {@link DrawableAnimation} or null, if no animation should be used
      */
-    void setBackground(@DrawableRes int resourceId, boolean animate);
+    void setBackground(@DrawableRes int resourceId, @Nullable DrawableAnimation animation);
 
     /**
      * Sets the background color of the dialog.
@@ -344,11 +346,11 @@ public interface MaterialDialogDecorator extends Dialog {
      *
      * @param color
      *         The background color, which should be set, as an {@link Integer} value
-     * @param animate
-     *         True, if the background should be changed using a cross-fade animation, false
-     *         otherwise
+     * @param animation
+     *         The animation, which should be used to change the background, as an instance of the
+     *         class {@link DrawableAnimation} or null, if no animation should be used
      */
-    void setBackgroundColor(@ColorInt int color, boolean animate);
+    void setBackgroundColor(@ColorInt int color, @Nullable final DrawableAnimation animation);
 
     /**
      * Sets the custom view, which should be used to show the title of the dialog.

@@ -36,7 +36,9 @@ import de.mrapp.android.dialog.MaterialDialog;
 import de.mrapp.android.dialog.ProgressDialog;
 import de.mrapp.android.dialog.WizardDialog;
 import de.mrapp.android.dialog.animation.CircleRevealAnimation;
+import de.mrapp.android.dialog.animation.CrossFadeAnimation;
 import de.mrapp.android.dialog.animation.DialogAnimation;
+import de.mrapp.android.dialog.animation.DrawableAnimation;
 import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
@@ -550,7 +552,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public void onPageSelected(final int position) {
                 int[] colors = getResources().getIntArray(R.array.wizard_dialog_background_colors);
-                wizardDialog.setBackgroundColor(colors[position], true);
+                DrawableAnimation animation =
+                        new CrossFadeAnimation.Builder(getActivity()).create();
+                wizardDialog.setBackgroundColor(colors[position], animation);
             }
 
             @Override
