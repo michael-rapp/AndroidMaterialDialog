@@ -19,4 +19,10 @@ License.
     <color name="color_primary_dark">#ffbb4030</color>
     <color name="color_accent">#ffd64937</color>
 
+    <array name="wizard_dialog_background_colors">
+        <item>#ff2196f3</item>
+        <item>#ff00bcd4</item>
+        <item>#ff009688</item>
+    </array>
+
 </resources>

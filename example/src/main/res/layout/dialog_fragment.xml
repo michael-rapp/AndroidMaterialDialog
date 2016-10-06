@@ -21,4 +21,5 @@ License.
     android:gravity="center"
     android:paddingLeft="@dimen/dialog_horizontal_padding"
     android:paddingRight="@dimen/dialog_horizontal_padding"
-    android:textAppearance="?android:attr/textAppearanceMedium"/>
+    android:textAppearance="?android:attr/textAppearanceMedium"
+    android:textColor="@android:color/white"/>

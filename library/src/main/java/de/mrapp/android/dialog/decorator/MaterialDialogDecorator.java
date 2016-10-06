@@ -16,11 +16,11 @@ package de.mrapp.android.dialog.decorator;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.AttrRes;
@@ -458,8 +458,6 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         DialogRootView rootView = (DialogRootView) getView();
 
         if (getWindow() != null && rootView != null) {
-            getWindow().setBackgroundDrawable(
-                    isFullscreen() ? background : new ColorDrawable(Color.TRANSPARENT));
             rootView.setLayoutParams(createLayoutParams());
             int padding = isFullscreen() ? 0 :
                     getContext().getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
@@ -587,10 +585,30 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     /**
      * Adapts the dialog's background.
+     *
+     * @param animate
+     *         True, if the background should be changed using a cross-fade animation, false
+     *         otherwise
      */
-    private void adaptBackground() {
-        if (getView() != null) {
-            ViewUtil.setBackground(getView(), isFullscreen() ? null : background);
+    private void adaptBackground(final boolean animate) {
+        if (getView() != null && getWindow() != null) {
+            Drawable newBackground = background;
+
+            if (animate) {
+                View animatedView = isFullscreen() ? getWindow().getDecorView() : getView();
+                Drawable previousBackground = animatedView.getBackground();
+
+                if (previousBackground != null) {
+                    TransitionDrawable transition = new TransitionDrawable(
+                            new Drawable[]{previousBackground, newBackground});
+                    transition.startTransition(2000);
+                    newBackground = transition;
+                }
+            }
+
+            ViewUtil.setBackground(getView(), isFullscreen() ? null : newBackground);
+            ViewUtil.setBackground(getWindow().getDecorView(),
+                    isFullscreen() ? newBackground : null);
         }
     }
 
@@ -655,7 +673,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     public final void setFullscreen(final boolean fullscreen) {
         this.fullscreen = fullscreen;
         adaptLayoutParams();
-        adaptBackground();
+        adaptBackground(false);
     }
 
     @Override
@@ -822,31 +840,46 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void setBackground(@Nullable final Bitmap background) {
+        setBackground(background, false);
+    }
+
+    @Override
+    public final void setBackground(@Nullable final Bitmap background, final boolean animate) {
         this.backgroundBitmap = background;
         this.backgroundId = -1;
         this.backgroundColor = -1;
         this.background =
                 background != null ? new BitmapDrawable(getContext().getResources(), background) :
                         null;
-        adaptBackground();
+        adaptBackground(animate);
     }
 
     @Override
     public final void setBackground(@DrawableRes final int resourceId) {
+        setBackground(resourceId, false);
+    }
+
+    @Override
+    public final void setBackground(@DrawableRes final int resourceId, final boolean animate) {
         this.backgroundBitmap = null;
         this.backgroundId = resourceId;
         this.backgroundColor = -1;
         this.background = ContextCompat.getDrawable(getContext(), resourceId);
-        adaptBackground();
+        adaptBackground(animate);
     }
 
     @Override
     public final void setBackgroundColor(@ColorInt final int color) {
+        setBackgroundColor(color, false);
+    }
+
+    @Override
+    public final void setBackgroundColor(@ColorInt final int color, final boolean animate) {
         this.backgroundBitmap = null;
         this.backgroundId = -1;
         this.backgroundColor = color;
         this.background = new ColorDrawable(color);
-        adaptBackground();
+        adaptBackground(animate);
     }
 
     @Override
@@ -982,7 +1015,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         adaptIcon();
         adaptMessage();
         adaptMessageColor();
-        adaptBackground();
+        adaptBackground(false);
     }
 
     @Override

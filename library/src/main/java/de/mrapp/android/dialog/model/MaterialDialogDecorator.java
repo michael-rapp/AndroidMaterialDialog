@@ -301,11 +301,35 @@ public interface MaterialDialogDecorator extends Dialog {
     /**
      * Sets the background of the dialog.
      *
+     * @param background
+     *         The background, which should be set, as an instance of the class {@link Bitmap} or
+     *         null, if no background should be set
+     * @param animate
+     *         True, if the background should be changed using a cross-fade animation, false
+     *         otherwise
+     */
+    void setBackground(@Nullable Bitmap background, boolean animate);
+
+    /**
+     * Sets the background of the dialog.
+     *
      * @param resourceId
      *         The resource id of the background, which should be set, as an {@link Integer} value.
      *         The resource id must correspond to a valid drawable resource
      */
     void setBackground(@DrawableRes int resourceId);
+
+    /**
+     * Sets the background of the dialog.
+     *
+     * @param resourceId
+     *         The resource id of the background, which should be set, as an {@link Integer} value.
+     *         The resource id must correspond to a valid drawable resource
+     * @param animate
+     *         True, if the background should be changed using a cross-fade animation, false
+     *         otherwise
+     */
+    void setBackground(@DrawableRes int resourceId, boolean animate);
 
     /**
      * Sets the background color of the dialog.
@@ -314,6 +338,17 @@ public interface MaterialDialogDecorator extends Dialog {
      *         The background color, which should be set, as an {@link Integer} value
      */
     void setBackgroundColor(@ColorInt int color);
+
+    /**
+     * Sets the background color of the dialog.
+     *
+     * @param color
+     *         The background color, which should be set, as an {@link Integer} value
+     * @param animate
+     *         True, if the background should be changed using a cross-fade animation, false
+     *         otherwise
+     */
+    void setBackgroundColor(@ColorInt int color, boolean animate);
 
     /**
      * Sets the custom view, which should be used to show the title of the dialog.

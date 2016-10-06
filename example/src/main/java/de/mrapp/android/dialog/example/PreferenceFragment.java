@@ -16,6 +16,7 @@ package de.mrapp.android.dialog.example;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
+import android.content.DialogInterface.OnShowListener;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -24,6 +25,8 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
@@ -475,7 +478,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                WizardDialog.Builder builder = new WizardDialog.Builder(getActivity());
+                WizardDialog.Builder builder = new WizardDialog.Builder(getActivity(),
+                        shouldUseFullscreen() ? R.style.DarkFullscreenDialogTheme :
+                                R.style.DarkDialogTheme);
                 configureHeaderDialogBuilder(builder);
                 builder.enableTabLayout(false);
 
@@ -486,11 +491,74 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
                 addFragment(builder, 1);
                 addFragment(builder, 2);
                 addFragment(builder, 3);
-                builder.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(), null);
+                builder.setBackgroundColor(
+                        getResources().getIntArray(R.array.wizard_dialog_background_colors)[0]);
+                WizardDialog wizardDialog = builder.create();
+                wizardDialog.setOnShowListener(createWizardDialogShowListener(wizardDialog));
+                wizardDialog.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(),
+                        null);
                 return true;
             }
 
         });
+    }
+
+    /**
+     * Creates and returns a listener, which allows to access the wizard dialog's view pager, as
+     * soon as the dialog is shown.
+     *
+     * @param wizardDialog
+     *         The wizard dialog as an instance of the class {@link WizardDialog}. The wizard dialog
+     *         may not be null
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnShowListener}
+     */
+    private OnShowListener createWizardDialogShowListener(
+            @NonNull final WizardDialog wizardDialog) {
+        return new OnShowListener() {
+
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                ViewPager viewPager = wizardDialog.getViewPager();
+                viewPager.addOnPageChangeListener(
+                        createWizardDialogPageChangeListener(wizardDialog));
+            }
+
+        };
+    }
+
+    /**
+     * Creates and returns a listener, which allows to change the background color of the wizard
+     * dialog, when its view pager is scrolled.
+     *
+     * @param wizardDialog
+     *         The wizard dialog as an instance of the class {@link WizardDialog}. The wizard dialog
+     *         may not be null
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnPageChangeListener}
+     */
+    private OnPageChangeListener createWizardDialogPageChangeListener(
+            @NonNull final WizardDialog wizardDialog) {
+        return new OnPageChangeListener() {
+
+            @Override
+            public void onPageScrolled(final int position, final float positionOffset,
+                                       final int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(final int position) {
+                int[] colors = getResources().getIntArray(R.array.wizard_dialog_background_colors);
+                wizardDialog.setBackgroundColor(colors[position], true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(final int state) {
+
+            }
+
+        };
     }
 
     /**
@@ -837,6 +905,20 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
                 PreferenceManager.getDefaultSharedPreferences(getActivity());
         String key = getString(R.string.animation_preference_key);
         boolean defaultValue = getResources().getBoolean(R.bool.animation_preference_default_value);
+        return sharedPreferences.getBoolean(key, defaultValue);
+    }
+
+    /**
+     * Returns, whether dialogs should be shown fullscreen, or not.
+     *
+     * @return True, if dialogs should be shown fullscreen, false otherwise
+     */
+    private boolean shouldUseFullscreen() {
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String key = getString(R.string.fullscreen_preference_key);
+        boolean defaultValue =
+                getResources().getBoolean(R.bool.fullscreen_preference_default_value);
         return sharedPreferences.getBoolean(key, defaultValue);
     }
 

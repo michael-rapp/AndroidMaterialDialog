@@ -387,13 +387,28 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     }
 
     @Override
+    public final void setBackground(@Nullable final Bitmap background, final boolean animate) {
+        decorator.setBackground(background, animate);
+    }
+
+    @Override
     public final void setBackground(@DrawableRes final int resourceId) {
         decorator.setBackground(resourceId);
     }
 
     @Override
+    public final void setBackground(@DrawableRes final int resourceId, final boolean animate) {
+        decorator.setBackground(resourceId, animate);
+    }
+
+    @Override
     public final void setBackgroundColor(@ColorInt final int color) {
         decorator.setBackgroundColor(color);
+    }
+
+    @Override
+    public final void setBackgroundColor(@ColorInt final int color, final boolean animate) {
+        decorator.setBackgroundColor(color, animate);
     }
 
     @Override
