@@ -83,6 +83,7 @@ public class MaterialDialog extends AbstractScrollableDialog {
             return dialog;
         }
 
+        @NonNull
         @Override
         protected final MaterialDialog onCreateProduct() {
             return new MaterialDialog(getContext(), getThemeResourceId());

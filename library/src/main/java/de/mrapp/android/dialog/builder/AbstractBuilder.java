@@ -57,6 +57,10 @@ public abstract class AbstractBuilder<Type, BuilderType extends AbstractBuilder<
      * Type
      */
     protected final Type getProduct() {
+        if (product == null) {
+            product = onCreateProduct();
+        }
+
         return product;
     }
 
@@ -91,7 +95,6 @@ public abstract class AbstractBuilder<Type, BuilderType extends AbstractBuilder<
      */
     public AbstractBuilder(@NonNull final Context context) {
         setContext(context);
-        this.product = onCreateProduct();
     }
 
     /**
