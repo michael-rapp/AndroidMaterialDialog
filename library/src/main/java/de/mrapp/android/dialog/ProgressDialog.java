@@ -201,7 +201,7 @@ public class ProgressDialog extends AbstractButtonBarDialog implements ProgressD
          * Builder}
          */
         public final Builder setProgressBarColor(@ColorInt final int color) {
-            getDialog().setProgressBarColor(color);
+            getProduct().setProgressBarColor(color);
             return self();
         }
 
@@ -215,7 +215,7 @@ public class ProgressDialog extends AbstractButtonBarDialog implements ProgressD
          * Builder}
          */
         public final Builder setProgressBarSize(final int size) {
-            getDialog().setProgressBarSize(size);
+            getProduct().setProgressBarSize(size);
             return self();
         }
 
@@ -229,7 +229,7 @@ public class ProgressDialog extends AbstractButtonBarDialog implements ProgressD
          * Builder}
          */
         public final Builder setProgressBarThickness(final int thickness) {
-            getDialog().setProgressBarThickness(thickness);
+            getProduct().setProgressBarThickness(thickness);
             return self();
         }
 
@@ -244,7 +244,7 @@ public class ProgressDialog extends AbstractButtonBarDialog implements ProgressD
          * Builder}
          */
         public final Builder setProgressBarPosition(@NonNull final ProgressBarPosition position) {
-            getDialog().setProgressBarPosition(position);
+            getProduct().setProgressBarPosition(position);
             return self();
         }
 
@@ -261,10 +261,10 @@ public class ProgressDialog extends AbstractButtonBarDialog implements ProgressD
             return dialog;
         }
 
+        @NonNull
         @Override
-        protected final ProgressDialog onCreateDialog(@NonNull final Context context,
-                                                      @StyleRes final int themeResourceId) {
-            return new ProgressDialog(context, themeResourceId);
+        protected final ProgressDialog onCreateProduct() {
+            return new ProgressDialog(getContext(), getThemeResourceId());
         }
 
         @Override

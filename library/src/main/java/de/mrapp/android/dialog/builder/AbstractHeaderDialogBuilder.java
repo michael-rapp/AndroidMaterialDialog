@@ -176,7 +176,7 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
      * BuilderType
      */
     public final BuilderType showHeader(final boolean show) {
-        getDialog().showHeader(show);
+        getProduct().showHeader(show);
         return self();
     }
 
@@ -190,7 +190,7 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
      * BuilderType
      */
     public final BuilderType setHeaderHeight(final int height) {
-        getDialog().setHeaderHeight(height);
+        getProduct().setHeaderHeight(height);
         return self();
     }
 
@@ -203,7 +203,7 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
      * BuilderType
      */
     public final BuilderType setHeaderBackgroundColor(@ColorInt final int color) {
-        getDialog().setHeaderBackgroundColor(color);
+        getProduct().setHeaderBackgroundColor(color);
         return self();
     }
 
@@ -217,7 +217,7 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
      * BuilderType
      */
     public final BuilderType setHeaderBackground(@DrawableRes final int resourceId) {
-        getDialog().setHeaderBackground(resourceId);
+        getProduct().setHeaderBackground(resourceId);
         return self();
     }
 
@@ -231,7 +231,7 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
      * BuilderType
      */
     public final BuilderType setHeaderBackground(@NonNull final Bitmap background) {
-        getDialog().setHeaderBackground(background);
+        getProduct().setHeaderBackground(background);
         return self();
     }
 
@@ -245,7 +245,7 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
      * BuilderType
      */
     public final BuilderType setHeaderIcon(@DrawableRes final int resourceId) {
-        getDialog().setHeaderIcon(resourceId);
+        getProduct().setHeaderIcon(resourceId);
         return self();
     }
 
@@ -259,7 +259,7 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
      * BuilderType
      */
     public final BuilderType setHeaderIcon(@Nullable final Bitmap icon) {
-        getDialog().setHeaderIcon(icon);
+        getProduct().setHeaderIcon(icon);
         return self();
     }
 
@@ -272,7 +272,7 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
      * BuilderType
      */
     public final BuilderType setHeaderDividerColor(@ColorInt final int color) {
-        getDialog().setHeaderDividerColor(color);
+        getProduct().setHeaderDividerColor(color);
         return self();
     }
 
@@ -286,7 +286,7 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
      * BuilderType
      */
     public final BuilderType showHeaderDivider(final boolean show) {
-        getDialog().showHeaderDivider(show);
+        getProduct().showHeaderDivider(show);
         return self();
     }
 

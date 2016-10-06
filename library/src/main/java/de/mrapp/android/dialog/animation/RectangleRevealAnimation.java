@@ -32,7 +32,7 @@ public class RectangleRevealAnimation extends DialogAnimation {
      * animating its position and size.
      */
     public static class Builder
-            extends AbstractAnimationBuilder<RectangleRevealAnimation, Builder> {
+            extends AbstractDialogAnimationBuilder<RectangleRevealAnimation, Builder> {
 
         /**
          * Creates a new builder, which allows to create animations, which can be used to show or
@@ -106,8 +106,8 @@ public class RectangleRevealAnimation extends DialogAnimation {
 
         @NonNull
         @Override
-        protected RectangleRevealAnimation createAnimation(@NonNull final Context context) {
-            return new RectangleRevealAnimation(context);
+        protected final RectangleRevealAnimation onCreateProduct() {
+            return new RectangleRevealAnimation(getContext());
         }
 
     }

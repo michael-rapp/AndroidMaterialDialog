@@ -75,7 +75,7 @@ public abstract class AbstractAnimateableDialogBuilder<DialogType extends Animat
      * BuilderType
      */
     public final BuilderType setShowAnimation(@Nullable final DialogAnimation animation) {
-        getDialog().setShowAnimation(animation);
+        getProduct().setShowAnimation(animation);
         return self();
     }
 
@@ -90,7 +90,7 @@ public abstract class AbstractAnimateableDialogBuilder<DialogType extends Animat
      * BuilderType
      */
     public final BuilderType setDismissAnimation(@Nullable final DialogAnimation animation) {
-        getDialog().setDismissAnimation(animation);
+        getProduct().setDismissAnimation(animation);
         return self();
     }
 
@@ -105,7 +105,7 @@ public abstract class AbstractAnimateableDialogBuilder<DialogType extends Animat
      * BuilderType
      */
     public final BuilderType setCancelAnimation(@Nullable final DialogAnimation animation) {
-        getDialog().setCancelAnimation(animation);
+        getProduct().setCancelAnimation(animation);
         return self();
     }
 

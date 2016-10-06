@@ -84,9 +84,8 @@ public class MaterialDialog extends AbstractScrollableDialog {
         }
 
         @Override
-        protected final MaterialDialog onCreateDialog(@NonNull final Context context,
-                                                      @StyleRes final int themeResourceId) {
-            return new MaterialDialog(context, themeResourceId);
+        protected final MaterialDialog onCreateProduct() {
+            return new MaterialDialog(getContext(), getThemeResourceId());
         }
 
     }

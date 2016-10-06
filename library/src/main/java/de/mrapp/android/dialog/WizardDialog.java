@@ -427,7 +427,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder addFragment(@NonNull final Class<? extends Fragment> fragmentClass) {
-            getDialog().addFragment(fragmentClass);
+            getProduct().addFragment(fragmentClass);
             return self();
         }
 
@@ -446,7 +446,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          */
         public final Builder addFragment(@NonNull final Class<? extends Fragment> fragmentClass,
                                          @Nullable final Bundle arguments) {
-            getDialog().addFragment(fragmentClass, arguments);
+            getProduct().addFragment(fragmentClass, arguments);
             return self();
         }
 
@@ -464,7 +464,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          */
         public final Builder addFragment(@StringRes final int resourceId,
                                          @NonNull final Class<? extends Fragment> fragmentClass) {
-            getDialog().addFragment(resourceId, fragmentClass);
+            getProduct().addFragment(resourceId, fragmentClass);
             return self();
         }
 
@@ -487,7 +487,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
         public final Builder addFragment(@StringRes final int resourceId,
                                          @NonNull final Class<? extends Fragment> fragmentClass,
                                          @Nullable final Bundle arguments) {
-            getDialog().addFragment(resourceId, fragmentClass, arguments);
+            getProduct().addFragment(resourceId, fragmentClass, arguments);
             return self();
         }
 
@@ -505,7 +505,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          */
         public final Builder addFragment(@Nullable final CharSequence title,
                                          @NonNull final Class<? extends Fragment> fragmentClass) {
-            getDialog().addFragment(title, fragmentClass);
+            getProduct().addFragment(title, fragmentClass);
             return self();
         }
 
@@ -528,7 +528,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
         public final Builder addFragment(@Nullable final CharSequence title,
                                          @NonNull final Class<? extends Fragment> fragmentClass,
                                          @Nullable final Bundle arguments) {
-            getDialog().addFragment(title, fragmentClass, arguments);
+            getProduct().addFragment(title, fragmentClass, arguments);
             return self();
         }
 
@@ -543,7 +543,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder setTabPosition(@NonNull final TabPosition tabPosition) {
-            getDialog().setTabPosition(tabPosition);
+            getProduct().setTabPosition(tabPosition);
             return self();
         }
 
@@ -557,7 +557,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder enableTabLayout(final boolean enable) {
-            getDialog().enableTabLayout(enable);
+            getProduct().enableTabLayout(enable);
             return self();
         }
 
@@ -572,7 +572,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder showTabLayout(final boolean show) {
-            getDialog().showTabLayout(show);
+            getProduct().showTabLayout(show);
             return self();
         }
 
@@ -586,7 +586,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder setTabIndicatorHeight(final int height) {
-            getDialog().setTabIndicatorHeight(height);
+            getProduct().setTabIndicatorHeight(height);
             return self();
         }
 
@@ -599,7 +599,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder setTabIndicatorColor(@ColorInt final int color) {
-            getDialog().setTabIndicatorColor(color);
+            getProduct().setTabIndicatorColor(color);
             return self();
         }
 
@@ -612,7 +612,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder setTabTextColor(@ColorInt final int textColor) {
-            getDialog().setTabTextColor(textColor);
+            getProduct().setTabTextColor(textColor);
             return self();
         }
 
@@ -625,7 +625,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder setTabSelectedTextColor(@ColorInt final int selectedTextColor) {
-            getDialog().setTabSelectedTextColor(selectedTextColor);
+            getProduct().setTabSelectedTextColor(selectedTextColor);
             return self();
         }
 
@@ -639,7 +639,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder enableSwipe(final boolean enable) {
-            getDialog().enableSwipe(enable);
+            getProduct().enableSwipe(enable);
             return self();
         }
 
@@ -652,7 +652,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder showButtonBar(final boolean show) {
-            getDialog().showButtonBar(show);
+            getProduct().showButtonBar(show);
             return self();
         }
 
@@ -665,7 +665,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder setButtonTextColor(@ColorInt final int color) {
-            getDialog().setButtonTextColor(color);
+            getProduct().setButtonTextColor(color);
             return self();
         }
 
@@ -680,7 +680,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder showButtonBarDivider(final boolean show) {
-            getDialog().showButtonBarDivider(show);
+            getProduct().showButtonBarDivider(show);
             return self();
         }
 
@@ -693,7 +693,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder setButtonBarDividerColor(final int color) {
-            getDialog().setButtonBarDividerColor(color);
+            getProduct().setButtonBarDividerColor(color);
             return self();
         }
 
@@ -707,7 +707,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder setBackButtonText(@StringRes final int resourceId) {
-            getDialog().setBackButtonText(resourceId);
+            getProduct().setBackButtonText(resourceId);
             return self();
         }
 
@@ -721,7 +721,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder setBackButtonText(@NonNull final CharSequence text) {
-            getDialog().setBackButtonText(text);
+            getProduct().setBackButtonText(text);
             return self();
         }
 
@@ -735,7 +735,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder setNextButtonText(@StringRes final int resourceId) {
-            getDialog().setNextButtonText(resourceId);
+            getProduct().setNextButtonText(resourceId);
             return self();
         }
 
@@ -749,7 +749,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder setNextButtonText(@NonNull final CharSequence text) {
-            getDialog().setNextButtonText(text);
+            getProduct().setNextButtonText(text);
             return self();
         }
 
@@ -763,7 +763,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder setFinishButtonText(@StringRes final int resourceId) {
-            getDialog().setFinishButtonText(resourceId);
+            getProduct().setFinishButtonText(resourceId);
             return self();
         }
 
@@ -777,7 +777,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder setFinishButtonText(@NonNull final CharSequence text) {
-            getDialog().setFinishButtonText(text);
+            getProduct().setFinishButtonText(text);
             return self();
         }
 
@@ -797,7 +797,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * Builder}
          */
         public final Builder addWizardListener(@NonNull final WizardListener listener) {
-            getDialog().addWizardListener(listener);
+            getProduct().addWizardListener(listener);
             return self();
         }
 
@@ -843,12 +843,12 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
             return dialog;
         }
 
+        @NonNull
         @Override
-        protected final WizardDialog onCreateDialog(@NonNull final Context context,
-                                                    @StyleRes final int themeResourceId) {
+        protected final WizardDialog onCreateProduct() {
             WizardDialog dialog = new WizardDialog();
-            dialog.setThemeResourceId(themeResourceId);
-            dialog.setContext(context);
+            dialog.setThemeResourceId(getThemeResourceId());
+            dialog.setContext(getContext());
             return dialog;
         }
 

@@ -34,7 +34,8 @@ public class CircleRevealAnimation extends DialogAnimation {
      * A builder, which allows to create animations, which can be used to show or hide a dialog by
      * animating its position and size as a clipping circle.
      */
-    public static class Builder extends AbstractAnimationBuilder<CircleRevealAnimation, Builder> {
+    public static class Builder
+            extends AbstractDialogAnimationBuilder<CircleRevealAnimation, Builder> {
 
         /**
          * Creates a new builder, which allows to create animations, which can be used to show or
@@ -94,8 +95,8 @@ public class CircleRevealAnimation extends DialogAnimation {
 
         @NonNull
         @Override
-        protected CircleRevealAnimation createAnimation(@NonNull final Context context) {
-            return new CircleRevealAnimation(context);
+        protected final CircleRevealAnimation onCreateProduct() {
+            return new CircleRevealAnimation(getContext());
         }
 
     }

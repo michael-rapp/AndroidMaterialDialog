@@ -92,7 +92,7 @@ public abstract class AbstractScrollableDialogBuilder<DialogType extends Scrolla
      * BuilderType
      */
     public final BuilderType showDividersOnScroll(boolean show) {
-        getDialog().showDividersOnScroll(show);
+        getProduct().showDividersOnScroll(show);
         return self();
     }
 

@@ -48,40 +48,33 @@ import de.mrapp.android.util.ThemeUtil;
  * @author Michael Rapp
  * @since 3.3.0
  */
-public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialDialog, BuilderType extends AbstractMaterialDialogBuilder<DialogType, ?>> {
+public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialDialog, BuilderType extends AbstractMaterialDialogBuilder<DialogType, ?>>
+        extends AbstractBuilder<DialogType, BuilderType> {
 
     /**
-     * The context, which is used by the builder.
+     * The resource if of the theme, which is used by the dialog.
      */
-    private Context context;
-
-    /**
-     * The dialog, which is configured by the builder.
-     */
-    private DialogType dialog;
+    private int themeResourceId;
 
     /**
      * Initializes the builder.
      *
-     * @param context
-     *         The context, which should be used by the builder, as an instance of the class {@link
-     *         Context}. The context may not be null
      * @param themeResourceId
      *         The resource id of the theme, which should be used by the dialog, as an {@link
      *         Integer} value or 0, if the default theme should be used
      */
-    private void initialize(@NonNull final Context context, @StyleRes final int themeResourceId) {
+    private void initialize(@StyleRes final int themeResourceId) {
         int themeId = themeResourceId;
 
         if (themeId == 0) {
             TypedValue typedValue = new TypedValue();
-            context.getTheme().resolveAttribute(R.attr.materialDialogTheme, typedValue, true);
+            getContext().getTheme().resolveAttribute(R.attr.materialDialogTheme, typedValue, true);
             themeId = typedValue.resourceId;
             themeId = themeId != 0 ? themeId : R.style.MaterialDialog_Light;
         }
 
-        this.context = new ContextThemeWrapper(context, themeId);
-        this.dialog = onCreateDialog(context, themeId);
+        setContext(new ContextThemeWrapper(getContext(), themeId));
+        this.themeResourceId = themeId;
         obtainStyledAttributes(themeId);
     }
 
@@ -275,26 +268,6 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     }
 
     /**
-     * Returns the builder itself, casted to the generic type BuilderType.
-     *
-     * @return The builder itself as an instance of the generic type BuilderType
-     */
-    @SuppressWarnings("unchecked")
-    protected final BuilderType self() {
-        return (BuilderType) this;
-    }
-
-    /**
-     * Returns the dialog, which is configured by the builder.
-     *
-     * @return The dialog, which is configured by the builder, as an instance of the generic type
-     * BuilderType
-     */
-    protected final DialogType getDialog() {
-        return dialog;
-    }
-
-    /**
      * Obtains all relevant attributes from the current theme.
      *
      * @param themeResourceId
@@ -316,19 +289,15 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     }
 
     /**
-     * The method, which is invoked on subclasses in order to create the dialog, which is configured
-     * by the builder.
+     * Returns the resource id of the theme, which is used by the dialog.
      *
-     * @param context
-     *         The context, which should be used by the dialog, as an instance of the class {@link
-     *         Context}. The context may not be null
-     * @param themeResourceId
-     *         The resource id of the theme, which should be used by the dialog, as an {@link
-     *         Integer} value
-     * @return The dialog, which has been created, as an instance of the generic type DialogType
+     * @return The resource id of the theme, which is used by the dialog, as an {@link Integer}
+     * value
      */
-    protected abstract DialogType onCreateDialog(@NonNull final Context context,
-                                                 @StyleRes final int themeResourceId);
+    @StyleRes
+    protected final int getThemeResourceId() {
+        return themeResourceId;
+    }
 
     /**
      * Creates a new builder, which allows to create and show dialogs, which are designed according
@@ -339,7 +308,8 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      *         Context}. The context may not be null
      */
     public AbstractMaterialDialogBuilder(@NonNull final Context context) {
-        this(context, 0);
+        super(context);
+        initialize(0);
     }
 
     /**
@@ -355,17 +325,8 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      */
     public AbstractMaterialDialogBuilder(@NonNull final Context context,
                                          @StyleRes final int themeResourceId) {
-        initialize(context, themeResourceId);
-    }
-
-    /**
-     * Returns the context, which is used by the builder.
-     *
-     * @return The context, which is used by the builder, as an instance of the class {@link
-     * Context}
-     */
-    public final Context getContext() {
-        return context;
+        super(context);
+        initialize(themeResourceId);
     }
 
     /**
@@ -378,7 +339,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setCancelable(final boolean cancelable) {
-        getDialog().setCancelable(cancelable);
+        getProduct().setCancelable(cancelable);
         return self();
     }
 
@@ -394,7 +355,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setCanceledOnTouchOutside(final boolean canceledOnTouchOutside) {
-        getDialog().setCanceledOnTouchOutside(canceledOnTouchOutside);
+        getProduct().setCanceledOnTouchOutside(canceledOnTouchOutside);
         return self();
     }
 
@@ -406,7 +367,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      *         DialogInterface.OnShowListener}, or null, if no listener should be set
      */
     public BuilderType setOnShowListener(@Nullable final DialogInterface.OnShowListener listener) {
-        getDialog().setOnShowListener(listener);
+        getProduct().setOnShowListener(listener);
         return self();
     }
 
@@ -429,7 +390,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      */
     public BuilderType setOnCancelListener(
             @Nullable final DialogInterface.OnCancelListener listener) {
-        getDialog().setOnCancelListener(listener);
+        getProduct().setOnCancelListener(listener);
         return self();
     }
 
@@ -445,7 +406,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      */
     public final BuilderType setOnDismissListener(
             @Nullable final DialogInterface.OnDismissListener listener) {
-        getDialog().setOnDismissListener(listener);
+        getProduct().setOnDismissListener(listener);
         return self();
     }
 
@@ -459,7 +420,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setFullscreen(final boolean fullscreen) {
-        getDialog().setFullscreen(fullscreen);
+        getProduct().setFullscreen(fullscreen);
         return self();
     }
 
@@ -473,7 +434,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setGravity(final int gravity) {
-        getDialog().setGravity(gravity);
+        getProduct().setGravity(gravity);
         return self();
     }
 
@@ -488,7 +449,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setWidth(final int width) {
-        getDialog().setWidth(width);
+        getProduct().setWidth(width);
         return self();
     }
 
@@ -503,7 +464,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setHeight(final int height) {
-        getDialog().setHeight(height);
+        getProduct().setHeight(height);
         return self();
     }
 
@@ -517,7 +478,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setMaxWidth(final int maxWidth) {
-        getDialog().setMaxWidth(maxWidth);
+        getProduct().setMaxWidth(maxWidth);
         return self();
     }
 
@@ -531,7 +492,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setMaxHeight(final int maxHeight) {
-        getDialog().setMaxHeight(maxHeight);
+        getProduct().setMaxHeight(maxHeight);
         return self();
     }
 
@@ -555,7 +516,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      */
     public final BuilderType setMargin(final int left, final int top, final int right,
                                        final int bottom) {
-        getDialog().setMargin(left, top, right, bottom);
+        getProduct().setMargin(left, top, right, bottom);
         return self();
     }
 
@@ -569,7 +530,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setTitleColor(@ColorInt final int color) {
-        getDialog().setTitleColor(color);
+        getProduct().setTitleColor(color);
         return self();
     }
 
@@ -583,7 +544,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setMessageColor(@ColorInt final int color) {
-        getDialog().setMessageColor(color);
+        getProduct().setMessageColor(color);
         return self();
     }
 
@@ -597,7 +558,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setBackground(@Nullable final Bitmap background) {
-        getDialog().setBackground(background);
+        getProduct().setBackground(background);
         return self();
     }
 
@@ -611,7 +572,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setBackground(@DrawableRes final int resourceId) {
-        getDialog().setBackground(resourceId);
+        getProduct().setBackground(resourceId);
         return self();
     }
 
@@ -625,7 +586,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setBackgroundColor(@ColorInt final int color) {
-        getDialog().setBackgroundColor(color);
+        getProduct().setBackgroundColor(color);
         return self();
     }
 
@@ -639,7 +600,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setTitle(@Nullable final CharSequence title) {
-        getDialog().setTitle(title);
+        getProduct().setTitle(title);
         return self();
     }
 
@@ -653,7 +614,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setTitle(@StringRes final int resourceId) {
-        getDialog().setTitle(resourceId);
+        getProduct().setTitle(resourceId);
         return self();
     }
 
@@ -667,7 +628,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setMessage(@Nullable final CharSequence message) {
-        getDialog().setMessage(message);
+        getProduct().setMessage(message);
         return self();
     }
 
@@ -681,7 +642,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setMessage(@StringRes final int resourceId) {
-        getDialog().setMessage(resourceId);
+        getProduct().setMessage(resourceId);
         return self();
     }
 
@@ -695,7 +656,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setIcon(@Nullable final Bitmap icon) {
-        getDialog().setIcon(icon);
+        getProduct().setIcon(icon);
         return self();
     }
 
@@ -709,7 +670,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setIcon(@DrawableRes final int resourceId) {
-        getDialog().setIcon(resourceId);
+        getProduct().setIcon(resourceId);
         return self();
     }
 
@@ -723,7 +684,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setIconAttribute(@AttrRes final int attributeId) {
-        getDialog().setIconAttribute(attributeId);
+        getProduct().setIconAttribute(attributeId);
         return self();
     }
 
@@ -737,7 +698,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setView(@Nullable final View view) {
-        getDialog().setView(view);
+        getProduct().setView(view);
         return self();
     }
 
@@ -751,7 +712,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setView(@LayoutRes final int resourceId) {
-        getDialog().setView(resourceId);
+        getProduct().setView(resourceId);
         return self();
     }
 
@@ -766,7 +727,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setCustomTitle(@Nullable final View view) {
-        getDialog().setCustomTitle(view);
+        getProduct().setCustomTitle(view);
         return self();
     }
 
@@ -781,7 +742,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setCustomTitle(@LayoutRes final int resourceId) {
-        getDialog().setCustomTitle(resourceId);
+        getProduct().setCustomTitle(resourceId);
         return self();
     }
 
@@ -796,7 +757,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setCustomMessage(@Nullable final View view) {
-        getDialog().setCustomMessage(view);
+        getProduct().setCustomMessage(view);
         return self();
     }
 
@@ -811,18 +772,8 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * BuilderType
      */
     public final BuilderType setCustomMessage(@LayoutRes final int resourceId) {
-        getDialog().setCustomMessage(resourceId);
+        getProduct().setCustomMessage(resourceId);
         return self();
-    }
-
-    /**
-     * Creates a dialog with the arguments, which have been supplied to the builder. Calling this
-     * method does not display the dialog.
-     *
-     * @return The dialog, which has been created as an instance of the generic type DialogType
-     */
-    public final DialogType create() {
-        return getDialog();
     }
 
 }

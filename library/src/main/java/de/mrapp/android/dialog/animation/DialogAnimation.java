@@ -18,6 +18,8 @@ import android.support.annotation.NonNull;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import de.mrapp.android.dialog.builder.AbstractBuilder;
+
 import static de.mrapp.android.util.Condition.ensureAtLeast;
 import static de.mrapp.android.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.util.Condition.ensureNotNull;
@@ -39,35 +41,8 @@ public abstract class DialogAnimation {
      * @param <BuilderType>
      *         The type of the builder
      */
-    protected static abstract class AbstractAnimationBuilder<AnimationType extends DialogAnimation, BuilderType extends AbstractAnimationBuilder> {
-
-        /**
-         * Animation, which is configured by the builder.
-         */
-        private AnimationType animation;
-
-        /**
-         * Returns the builder itself, casted to the generic type BuilderType.
-         *
-         * @return The builder itself as an instance of the generic type BuilderType
-         */
-        @SuppressWarnings("unchecked")
-        protected BuilderType self() {
-            return (BuilderType) this;
-        }
-
-        /**
-         * The method, which is invoked on subclasses in order to create the animation, which is
-         * configured by the builder.
-         *
-         * @param context
-         *         The context, which should be used by the animation, as an instance of the class
-         *         {@link Context}. The context may not be null
-         * @return The animation, which has been created, as an instance of the generic type
-         * AnimationType. The animation may not be null
-         */
-        @NonNull
-        protected abstract AnimationType createAnimation(@NonNull final Context context);
+    protected static abstract class AbstractDialogAnimationBuilder<AnimationType extends DialogAnimation, BuilderType extends AbstractDialogAnimationBuilder<AnimationType, ?>>
+            extends AbstractBuilder<AnimationType, BuilderType> {
 
         /**
          * Creates a new builder, which allows to create animations, which can be used to show or
@@ -77,9 +52,8 @@ public abstract class DialogAnimation {
          *         The context, which should be used by the builder, as an instance of the class
          *         {@link Context}. The context may not be null
          */
-        protected AbstractAnimationBuilder(@NonNull final Context context) {
-            ensureNotNull(context, "The context may not be null");
-            animation = createAnimation(context);
+        protected AbstractDialogAnimationBuilder(@NonNull final Context context) {
+            super(context);
         }
 
         /**
@@ -93,7 +67,7 @@ public abstract class DialogAnimation {
          * BuilderType
          */
         public BuilderType setInterpolator(@NonNull final Interpolator interpolator) {
-            animation.setInterpolator(interpolator);
+            getProduct().setInterpolator(interpolator);
             return self();
         }
 
@@ -107,7 +81,7 @@ public abstract class DialogAnimation {
          * BuilderType
          */
         public BuilderType setDuration(final long duration) {
-            animation.setDuration(duration);
+            getProduct().setDuration(duration);
             return self();
         }
 
@@ -121,7 +95,7 @@ public abstract class DialogAnimation {
          * BuilderType
          */
         public BuilderType setStartDelay(final long startDelay) {
-            animation.setStartDelay(startDelay);
+            getProduct().setStartDelay(startDelay);
             return self();
         }
 
@@ -135,19 +109,8 @@ public abstract class DialogAnimation {
          * BuilderType
          */
         public BuilderType setAlpha(final float alpha) {
-            animation.setAlpha(alpha);
+            getProduct().setAlpha(alpha);
             return self();
-        }
-
-        /**
-         * Creates the animation, which has been configured by the builder.
-         *
-         * @return The animation, which has been configured by the builder, as an instance of the
-         * generic type AnimationType. The animation may not be null
-         */
-        @NonNull
-        public final AnimationType create() {
-            return animation;
         }
 
     }

@@ -143,7 +143,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
      * BuilderType
      */
     public final BuilderType setButtonTextColor(@ColorInt final int color) {
-        getDialog().setButtonTextColor(color);
+        getProduct().setButtonTextColor(color);
         return self();
     }
 
@@ -157,7 +157,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
      * BuilderType
      */
     public final BuilderType setDisabledButtonTextColor(@ColorInt final int color) {
-        getDialog().setDisabledButtonTextColor(color);
+        getProduct().setDisabledButtonTextColor(color);
         return self();
     }
 
@@ -172,7 +172,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
      * BuilderType
      */
     public final BuilderType stackButtons(final boolean stackButtons) {
-        getDialog().stackButtons(stackButtons);
+        getProduct().stackButtons(stackButtons);
         return self();
     }
 
@@ -196,7 +196,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
      */
     public final BuilderType setNegativeButton(@Nullable final CharSequence text,
                                                @Nullable final DialogInterface.OnClickListener listener) {
-        getDialog().setNegativeButton(text, listener);
+        getProduct().setNegativeButton(text, listener);
         return self();
     }
 
@@ -220,7 +220,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
      */
     public final BuilderType setNegativeButton(@StringRes final int resourceId,
                                                @Nullable final DialogInterface.OnClickListener listener) {
-        getDialog().setNegativeButton(resourceId, listener);
+        getProduct().setNegativeButton(resourceId, listener);
         return self();
     }
 
@@ -244,7 +244,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
      */
     public final BuilderType setPositiveButton(@Nullable final CharSequence text,
                                                @Nullable final DialogInterface.OnClickListener listener) {
-        getDialog().setPositiveButton(text, listener);
+        getProduct().setPositiveButton(text, listener);
         return self();
     }
 
@@ -268,7 +268,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
      */
     public final BuilderType setPositiveButton(@StringRes final int resourceId,
                                                @Nullable final DialogInterface.OnClickListener listener) {
-        getDialog().setPositiveButton(resourceId, listener);
+        getProduct().setPositiveButton(resourceId, listener);
         return self();
     }
 
@@ -292,7 +292,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
      */
     public final BuilderType setNeutralButton(@Nullable final CharSequence text,
                                               @Nullable final DialogInterface.OnClickListener listener) {
-        getDialog().setNeutralButton(text, listener);
+        getProduct().setNeutralButton(text, listener);
         return self();
     }
 
@@ -316,7 +316,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
      */
     public final BuilderType setNeutralButton(@StringRes final int resourceId,
                                               @Nullable final DialogInterface.OnClickListener listener) {
-        getDialog().setNeutralButton(resourceId, listener);
+        getProduct().setNeutralButton(resourceId, listener);
         return self();
     }
 
@@ -331,7 +331,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
      * BuilderType
      */
     public final BuilderType showButtonBarDivider(final boolean show) {
-        getDialog().showButtonBarDivider(show);
+        getProduct().showButtonBarDivider(show);
         return self();
     }
 
@@ -345,7 +345,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
      * BuilderType
      */
     public final BuilderType setButtonBarDividerColor(final int color) {
-        getDialog().setButtonBarDividerColor(color);
+        getProduct().setButtonBarDividerColor(color);
         return self();
     }
 
@@ -360,7 +360,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
      * BuilderType
      */
     public final BuilderType setCustomButtonBar(@LayoutRes int resourceId) {
-        getDialog().setCustomButtonBar(resourceId);
+        getProduct().setCustomButtonBar(resourceId);
         return self();
     }
 
@@ -375,7 +375,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
      * BuilderType
      */
     public final BuilderType setCustomButtonBar(@Nullable View view) {
-        getDialog().setCustomButtonBar(view);
+        getProduct().setCustomButtonBar(view);
         return self();
     }
 

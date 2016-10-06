@@ -99,7 +99,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      * BuilderType
      */
     public final BuilderType setItemColor(@ColorInt final int color) {
-        getDialog().setItemColor(color);
+        getProduct().setItemColor(color);
         return self();
     }
 
@@ -123,7 +123,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      */
     public final BuilderType setItems(@NonNull final CharSequence[] items,
                                       @Nullable final DialogInterface.OnClickListener listener) {
-        getDialog().setItems(items, listener);
+        getProduct().setItems(items, listener);
         return self();
     }
 
@@ -147,7 +147,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      */
     public final BuilderType setItems(@ArrayRes final int resourceId,
                                       @Nullable final DialogInterface.OnClickListener listener) {
-        getDialog().setItems(resourceId, listener);
+        getProduct().setItems(resourceId, listener);
         return self();
     }
 
@@ -172,7 +172,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      */
     public final BuilderType setAdapter(@NonNull final ListAdapter adapter,
                                         @Nullable final DialogInterface.OnClickListener listener) {
-        getDialog().setAdapter(adapter, listener);
+        getProduct().setAdapter(adapter, listener);
         return self();
     }
 
@@ -201,7 +201,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     public final BuilderType setSingleChoiceItems(@NonNull final CharSequence[] items,
                                                   final int checkedItem,
                                                   @Nullable final DialogInterface.OnClickListener listener) {
-        getDialog().setSingleChoiceItems(items, checkedItem, listener);
+        getProduct().setSingleChoiceItems(items, checkedItem, listener);
         return self();
     }
 
@@ -230,7 +230,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     public final BuilderType setSingleChoiceItems(@ArrayRes final int resourceId,
                                                   final int checkedItem,
                                                   @Nullable final DialogInterface.OnClickListener listener) {
-        getDialog().setSingleChoiceItems(resourceId, checkedItem, listener);
+        getProduct().setSingleChoiceItems(resourceId, checkedItem, listener);
         return self();
     }
 
@@ -259,7 +259,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     public final BuilderType setSingleChoiceItems(@NonNull final ListAdapter adapter,
                                                   final int checkedItem,
                                                   @Nullable final DialogInterface.OnClickListener listener) {
-        getDialog().setSingleChoiceItems(adapter, checkedItem, listener);
+        getProduct().setSingleChoiceItems(adapter, checkedItem, listener);
         return self();
     }
 
@@ -289,7 +289,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     public final BuilderType setMultiChoiceItems(@NonNull final CharSequence[] items,
                                                  @Nullable final boolean[] checkedItems,
                                                  @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
-        getDialog().setMultiChoiceItems(items, checkedItems, listener);
+        getProduct().setMultiChoiceItems(items, checkedItems, listener);
         return self();
     }
 
@@ -319,7 +319,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     public final BuilderType setMultiChoiceItems(@ArrayRes final int resourceId,
                                                  @Nullable final boolean[] checkedItems,
                                                  @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
-        getDialog().setMultiChoiceItems(resourceId, checkedItems, listener);
+        getProduct().setMultiChoiceItems(resourceId, checkedItems, listener);
         return self();
     }
 
@@ -349,7 +349,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     public final BuilderType setMultiChoiceItems(@NonNull final ListAdapter adapter,
                                                  @Nullable final boolean[] checkedItems,
                                                  @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
-        getDialog().setMultiChoiceItems(adapter, checkedItems, listener);
+        getProduct().setMultiChoiceItems(adapter, checkedItems, listener);
         return self();
     }
 
@@ -365,7 +365,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      */
     public final BuilderType setOnItemSelectedListener(
             @Nullable final AdapterView.OnItemSelectedListener listener) {
-        getDialog().setOnItemSelectedListener(listener);
+        getProduct().setOnItemSelectedListener(listener);
         return self();
     }
 
