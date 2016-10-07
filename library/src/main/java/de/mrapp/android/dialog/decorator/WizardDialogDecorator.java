@@ -29,7 +29,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -180,7 +179,13 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     /**
      * The listeners, which should be notified, when the user navigates within the dialog.
      */
-    private final Set<WizardListener> listeners;
+    private final Set<WizardListener> wizardListeners;
+
+    /**
+     * The listeners, which should be notified, when the page of the dialog's view pager has been
+     * changed.
+     */
+    private final Set<OnPageChangeListener> onPageChangeListeners;
 
     /**
      * The adapter, which is used to manage the dialog's fragments.
@@ -587,7 +592,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     private boolean notifyOnNext(final int index) {
         boolean result = true;
 
-        for (WizardListener listener : listeners) {
+        for (WizardListener listener : wizardListeners) {
             result &= listener.onNext(index, viewPagerAdapter.getItem(index));
         }
 
@@ -604,7 +609,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     private boolean notifyOnPrevious(final int index) {
         boolean result = true;
 
-        for (WizardListener listener : listeners) {
+        for (WizardListener listener : wizardListeners) {
             result &= listener.onPrevious(index, viewPagerAdapter.getItem(index));
         }
 
@@ -622,7 +627,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     private boolean notifyOnFinish(final int index) {
         boolean result = true;
 
-        for (WizardListener listener : listeners) {
+        for (WizardListener listener : wizardListeners) {
             result &= listener.onFinish(index, viewPagerAdapter.getItem(index));
         }
 
@@ -641,7 +646,8 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     public WizardDialogDecorator(@NonNull final WizardDialog dialog) {
         super(dialog);
         this.viewPagerItems = new ArrayList<>();
-        this.listeners = new LinkedHashSet<>();
+        this.wizardListeners = new LinkedHashSet<>();
+        this.onPageChangeListeners = new LinkedHashSet<>();
     }
 
     @Override
@@ -941,13 +947,33 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     @Override
     public final void addWizardListener(@NonNull final WizardListener listener) {
         ensureNotNull(listener, "The listener may not be null");
-        listeners.add(listener);
+        wizardListeners.add(listener);
     }
 
     @Override
     public final void removeWizardListener(@NonNull final WizardListener listener) {
         ensureNotNull(listener, "The listener may not be null");
-        listeners.remove(listener);
+        wizardListeners.remove(listener);
+    }
+
+    @Override
+    public final void addOnPageChangeListener(@NonNull final OnPageChangeListener listener) {
+        ensureNotNull(listener, "The listener may not be null");
+        onPageChangeListeners.add(listener);
+
+        if (viewPager != null) {
+            viewPager.addOnPageChangeListener(listener);
+        }
+    }
+
+    @Override
+    public final void removeOnPageChangeListener(@NonNull final OnPageChangeListener listener) {
+        ensureNotNull(listener, "The listener may not be null");
+        onPageChangeListeners.remove(listener);
+
+        if (viewPager != null) {
+            viewPager.removeOnPageChangeListener(listener);
+        }
     }
 
     @Override
@@ -1037,6 +1063,11 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
             viewPagerAdapter = new ViewPagerAdapter(getContext(), fragmentManager, viewPagerItems);
             viewPager = (ViewPager) viewPagerView;
             viewPager.addOnPageChangeListener(this);
+
+            for (OnPageChangeListener listener : onPageChangeListeners) {
+                viewPager.addOnPageChangeListener(listener);
+            }
+
             viewPager.setAdapter(viewPagerAdapter);
             inflateTabLayout();
             adaptTabLayout();

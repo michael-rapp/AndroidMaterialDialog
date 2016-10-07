@@ -21,6 +21,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.widget.Button;
 
 import de.mrapp.android.dialog.WizardDialog.TabPosition;
@@ -486,5 +487,25 @@ public interface WizardDialogDecorator {
      *         WizardListener}. The listener may not be null
      */
     void removeWizardListener(@NonNull WizardListener listener);
+
+    /**
+     * Adds a listener, which should be notified, when the page of the dialog's view pager has been
+     * changed.
+     *
+     * @param listener
+     *         The listener, which should be added, as an instance of the type {@link
+     *         OnPageChangeListener}. The listener may not be null
+     */
+    void addOnPageChangeListener(@NonNull OnPageChangeListener listener);
+
+    /**
+     * Removes a listener, which should not be notified, when the page of the dialog's view pager
+     * has been changed, anymore.
+     *
+     * @param listener
+     *         The listener, which should be removed, as an instance of the type {@link
+     *         OnPageChangeListener}. The listener may not be null
+     */
+    void removeOnPageChangeListener(@NonNull OnPageChangeListener listener);
 
 }

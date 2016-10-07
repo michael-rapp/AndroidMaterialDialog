@@ -16,7 +16,6 @@ package de.mrapp.android.dialog.example;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
-import android.content.DialogInterface.OnShowListener;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -25,7 +24,6 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -496,37 +494,13 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
                 builder.setBackgroundColor(
                         getResources().getIntArray(R.array.wizard_dialog_background_colors)[0]);
                 WizardDialog wizardDialog = builder.create();
-                wizardDialog.setOnShowListener(createWizardDialogShowListener(wizardDialog));
+                builder.addOnPageChangeListener(createWizardDialogPageChangeListener(wizardDialog));
                 wizardDialog.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(),
                         null);
                 return true;
             }
 
         });
-    }
-
-    /**
-     * Creates and returns a listener, which allows to access the wizard dialog's view pager, as
-     * soon as the dialog is shown.
-     *
-     * @param wizardDialog
-     *         The wizard dialog as an instance of the class {@link WizardDialog}. The wizard dialog
-     *         may not be null
-     * @return The listener, which has been created, as an instance of the type {@link
-     * OnShowListener}
-     */
-    private OnShowListener createWizardDialogShowListener(
-            @NonNull final WizardDialog wizardDialog) {
-        return new OnShowListener() {
-
-            @Override
-            public void onShow(final DialogInterface dialog) {
-                ViewPager viewPager = wizardDialog.getViewPager();
-                viewPager.addOnPageChangeListener(
-                        createWizardDialogPageChangeListener(wizardDialog));
-            }
-
-        };
     }
 
     /**

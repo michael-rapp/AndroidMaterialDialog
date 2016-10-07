@@ -27,6 +27,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -802,6 +803,21 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
         }
 
         /**
+         * Adds a listener, which should be notified, when the page of the view page of the dialog,
+         * which is created by the builder, has been changed.
+         *
+         * @param listener
+         *         The listener, which should be added, as an instance of the type {@link
+         *         OnPageChangeListener}. The listener may not be null
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder addOnPageChangeListener(@NonNull final OnPageChangeListener listener) {
+            getProduct().addOnPageChangeListener(listener);
+            return self();
+        }
+
+        /**
          * Creates a dialog with the arguments, which have been supplied to the builder and
          * immediately displays it.
          *
@@ -1144,6 +1160,16 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
     @Override
     public final void removeWizardListener(@NonNull final WizardListener listener) {
         decorator.addWizardListener(listener);
+    }
+
+    @Override
+    public final void addOnPageChangeListener(@NonNull final OnPageChangeListener listener) {
+        decorator.addOnPageChangeListener(listener);
+    }
+
+    @Override
+    public final void removeOnPageChangeListener(@NonNull final OnPageChangeListener listener) {
+        decorator.removeOnPageChangeListener(listener);
     }
 
     @Override
