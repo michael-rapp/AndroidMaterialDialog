@@ -514,9 +514,6 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
 
         View rootView = view.findViewById(R.id.root);
         rootView.setLayoutParams(createLayoutParams(rootView));
-        Window window = getDialog().getWindow();
-        assert window != null;
-        onAttachDecorators(window, rootView, getChildFragmentManager());
         return view;
     }
 
@@ -525,7 +522,10 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
         super.onStart();
         Window window = getDialog().getWindow();
         assert window != null;
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        View view = getView();
+        assert view != null;
+        View rootView = view.findViewById(R.id.root);
+        onAttachDecorators(window, rootView, getChildFragmentManager());
 
         if (showListener != null) {
             showListener.onShow(getDialog());
