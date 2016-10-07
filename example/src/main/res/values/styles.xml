@@ -49,13 +49,13 @@ License.
         <item name="colorAccent">@color/color_accent</item>
     </style>
 
-    <style name="LightFullscreenDialogTheme" parent="@style/MaterialDialog.Light.Fullscreen.CenterInside.Translucent">
+    <style name="LightFullscreenDialogTheme" parent="@style/MaterialDialog.Light.Fullscreen.Translucent">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
     </style>
 
-    <style name="DarkFullscreenDialogTheme" parent="@style/MaterialDialog.Fullscreen.CenterInside.Translucent">
+    <style name="DarkFullscreenDialogTheme" parent="@style/MaterialDialog.Fullscreen.Translucent">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
