@@ -482,7 +482,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
                         shouldUseFullscreen() ? R.style.DarkFullscreenDialogTheme :
                                 R.style.DarkDialogTheme);
                 configureHeaderDialogBuilder(builder);
-                builder.enableTabLayout(false);
+                builder.enableTabLayout(!shouldHeaderBeShown());
 
                 if (shouldButtonBarDividerBeShown()) {
                     builder.showButtonBarDivider(true);
@@ -551,7 +551,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     private void addFragment(@NonNull final WizardDialog.Builder builder, final int index) {
         Bundle arguments = new Bundle();
         arguments.putInt(DialogFragment.INDEX_EXTRA, index);
-        builder.addFragment(DialogFragment.class, arguments);
+        CharSequence title = shouldHeaderBeShown() ? null :
+                String.format(getString(R.string.dialog_tab_text), index);
+        builder.addFragment(title, DialogFragment.class, arguments);
     }
 
     /**
