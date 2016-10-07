@@ -39,7 +39,10 @@ License.
         <item name="materialDialogMarginBottom">0dp</item>
         <item name="materialDialogMaxWidth">none</item>
         <item name="materialDialogMaxHeight">none</item>
+        <item name="materialDialogGravity">top</item>
     </style>
+
+    <style name="MaterialDialog.Light.Fullscreen.Translucent" parent="MaterialDialog.Light.Fullscreen"/>
 
     <style name="MaterialDialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="materialDialogBackground">@color/dialog_background_dark</item>
@@ -64,7 +67,10 @@ License.
         <item name="materialDialogMarginBottom">0dp</item>
         <item name="materialDialogMaxWidth">none</item>
         <item name="materialDialogMaxHeight">none</item>
+        <item name="materialDialogGravity">top</item>
     </style>
+
+    <style name="MaterialDialog.Fullscreen.Translucent" parent="MaterialDialog.Fullscreen"/>
 
     <style name="MaterialDialog.Title">
         <item name="android:ellipsize">end</item>

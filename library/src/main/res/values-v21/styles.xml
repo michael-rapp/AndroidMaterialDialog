@@ -20,9 +20,21 @@ License.
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
+    <style name="MaterialDialog.Light.Fullscreen.Translucent" parent="MaterialDialog.Light.Fullscreen">
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="materialDialogMarginBottom">48dp</item>
+    </style>
+
     <style name="MaterialDialog.Fullscreen.CenterInside.Translucent" parent="MaterialDialog.Fullscreen.CenterInside">
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="MaterialDialog.Fullscreen.Translucent" parent="MaterialDialog.Fullscreen">
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="materialDialogMarginBottom">48dp</item>
     </style>
 
     <style name="MaterialDialog.Title">
