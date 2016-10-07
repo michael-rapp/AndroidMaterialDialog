@@ -23,6 +23,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.ListView;
 
 /**
  * The main activity of the example app.
@@ -42,13 +45,17 @@ public class MainActivity extends AppCompatActivity {
     private PreferenceFragment fragment;
 
     /**
+     * The activity's floating action button.
+     */
+    private FloatingActionButton floatingActionButton;
+
+    /**
      * Initializes the floating action button, which allows to show an alert dialog using a circle
      * reveal animation.
      */
     private void initializeFloatingActionButton() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            FloatingActionButton floatingActionButton =
-                    (FloatingActionButton) findViewById(R.id.floating_action_button);
+            floatingActionButton = (FloatingActionButton) findViewById(R.id.floating_action_button);
             floatingActionButton.setVisibility(View.VISIBLE);
             floatingActionButton.setOnClickListener(createFloatingActionButtonListener());
         }
@@ -66,12 +73,49 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(final View v) {
-                if (fragment == null) {
-                    fragment = (PreferenceFragment) getFragmentManager()
-                            .findFragmentByTag(FRAGMENT_TAG);
+                fragment.showAlertDialog(v);
+            }
+
+        };
+    }
+
+    /**
+     * Creates and returns a listener, which allows to hide or show the activity's floating action
+     * button, when the preferences, which are shown by the activity's fragment, are scrolled.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnScrollListener}
+     */
+    private OnScrollListener createScrollListener() {
+        return new OnScrollListener() {
+
+            /**
+             * The index of the first visible item.
+             */
+            private int firstVisibleItem = 0;
+
+            /**
+             * True, if the view is currently scrolling up, false otherwise.
+             */
+            private boolean scrollingUp;
+
+            @Override
+            public void onScrollStateChanged(final AbsListView view, final int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(final AbsListView view, final int firstVisibleItem,
+                                 final int visibleItemCount, final int totalItemCount) {
+                if (firstVisibleItem < this.firstVisibleItem && !scrollingUp) {
+                    scrollingUp = true;
+                    floatingActionButton.show();
+                } else if (firstVisibleItem > this.firstVisibleItem && scrollingUp) {
+                    floatingActionButton.hide();
+                    scrollingUp = false;
                 }
 
-                fragment.showAlertDialog(v);
+                this.firstVisibleItem = firstVisibleItem;
             }
 
         };
@@ -109,6 +153,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         initializeFloatingActionButton();
+    }
+
+    @Override
+    protected final void onResume() {
+        super.onResume();
+        fragment = (PreferenceFragment) getFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ListView listView = (ListView) findViewById(android.R.id.list);
+            listView.setOnScrollListener(createScrollListener());
+        }
     }
 
 }
