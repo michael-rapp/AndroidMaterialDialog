@@ -460,6 +460,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         DialogRootView rootView = (DialogRootView) getView();
 
         if (getWindow() != null && rootView != null) {
+            getWindow().setBackgroundDrawable(null);
             rootView.setLayoutParams(createLayoutParams());
             int padding = isFullscreen() ? 0 :
                     getContext().getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
