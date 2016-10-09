@@ -25,7 +25,8 @@ import android.support.annotation.NonNull;
 public class CrossFadeAnimation extends BackgroundAnimation {
 
     /**
-     * A builder, which allows to create animations, which can be used to change backgrounds.
+     * A builder, which allows to create animations, which can be used to change backgrounds via
+     * cross-fading.
      */
     public static class Builder
             extends AbstractBackgroundAnimationBuilder<CrossFadeAnimation, Builder> {
