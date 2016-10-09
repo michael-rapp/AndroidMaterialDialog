@@ -16,18 +16,13 @@ package de.mrapp.android.dialog.animation;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import de.mrapp.android.dialog.builder.AbstractBuilder;
-
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureNotNull;
-
 /**
  * An abstract base class for all animations, which can be used to change backgrounds.
  *
  * @author Michael Rapp
  * @since 3.7.0
  */
-public abstract class BackgroundAnimation {
+public abstract class BackgroundAnimation extends DrawableAnimation {
 
     /**
      * An abstract base class for all builders, which allow to create animations, which can be used
@@ -39,7 +34,7 @@ public abstract class BackgroundAnimation {
      *         The type of the builder
      */
     protected static abstract class AbstractBackgroundAnimationBuilder<AnimationType extends BackgroundAnimation, BuilderType extends AbstractBackgroundAnimationBuilder<AnimationType, ?>>
-            extends AbstractBuilder<AnimationType, BuilderType> {
+            extends AbstractDrawableAnimationBuilder<AnimationType, BuilderType> {
 
         /**
          * Creates a new builder, which allows to create animations, which can be used to change
@@ -53,58 +48,17 @@ public abstract class BackgroundAnimation {
             super(context);
         }
 
-        /**
-         * Sets the duration of the animation, which is created by the builder.
-         *
-         * @param duration
-         *         The duration, which should be set, in milliseconds as an {@link Integer} value.
-         *         The duration must be at least 1
-         * @return The builder, this method has been called upon, as an instance of the generic type
-         * BuilderType
-         */
-        public BuilderType setDuration(final int duration) {
-            getProduct().setDuration(duration);
-            return self();
-        }
-
     }
 
     /**
-     * The duration of the animation in milliseconds.
-     */
-    private int duration;
-
-    /**
-     * Sets the duration of the animation.
-     *
-     * @param duration
-     *         The duration, which should be set, in milliseconds as an {@link Integer} value. The
-     *         duration must be at least 1
-     */
-    protected final void setDuration(final int duration) {
-        ensureAtLeast(duration, 1, "The duration must be at least 1");
-        this.duration = duration;
-    }
-
-    /**
-     * Creates a new animation, which can be used to change backgrounds.
+     * Creates a new animation, which can be used to change drawables.
      *
      * @param context
      *         The context, which should be used by the animation, as an instance of the class
      *         {@link Context}. The context may not be null
      */
     protected BackgroundAnimation(@NonNull final Context context) {
-        ensureNotNull(context, "The context may not be null");
-        this.duration = context.getResources().getInteger(android.R.integer.config_longAnimTime);
-    }
-
-    /**
-     * Returns the duration of the animation.
-     *
-     * @return The duration of the animation in milliseconds as an {@link Integer} value
-     */
-    public final int getDuration() {
-        return duration;
+        super(context);
     }
 
 }
