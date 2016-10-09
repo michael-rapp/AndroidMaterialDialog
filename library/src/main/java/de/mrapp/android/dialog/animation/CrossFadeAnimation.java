@@ -17,7 +17,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 /**
- * An animation, which can be used to change drawables via cross-fading.
+ * An animation, which can be used to change backgrounds via cross-fading.
  *
  * @author Michael Rapp
  * @since 3.7.0
@@ -25,14 +25,14 @@ import android.support.annotation.NonNull;
 public class CrossFadeAnimation extends BackgroundAnimation {
 
     /**
-     * A builder, which allows to create animations, which can be used to change drawables.
+     * A builder, which allows to create animations, which can be used to change backgrounds.
      */
     public static class Builder
             extends AbstractBackgroundAnimationBuilder<CrossFadeAnimation, Builder> {
 
         /**
          * Creates a new builder, which allows to create animations, which can be used to change
-         * drawables.
+         * backgrounds.
          *
          * @param context
          *         The context, which should be used by the builder, as an instance of the class
@@ -51,7 +51,7 @@ public class CrossFadeAnimation extends BackgroundAnimation {
     }
 
     /**
-     * Creates a new animation, which can be used to change drawables via cross-fading.
+     * Creates a new animation, which can be used to change backgrounds via cross-fading.
      *
      * @param context
      *         The context, which should be used by the animation, as an instance of the class
