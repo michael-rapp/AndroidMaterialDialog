@@ -33,7 +33,7 @@ public class CrossFadeAnimation extends BackgroundAnimation {
 
         /**
          * Creates a new builder, which allows to create animations, which can be used to change
-         * backgrounds.
+         * backgrounds via cross-fading.
          *
          * @param context
          *         The context, which should be used by the builder, as an instance of the class
