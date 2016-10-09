@@ -20,6 +20,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,8 +41,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import de.mrapp.android.dialog.R;
-import de.mrapp.android.dialog.animation.CrossFadeAnimation;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
+import de.mrapp.android.dialog.animation.CircleTransitionAnimation;
+import de.mrapp.android.dialog.animation.CrossFadeAnimation;
+import de.mrapp.android.dialog.drawable.CircleTransitionDrawable;
 import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.dialog.view.DialogRootView;
 import de.mrapp.android.util.ViewUtil;
@@ -597,9 +600,19 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             Drawable newBackground = background;
 
             if (animation != null) {
-                if (animation instanceof CrossFadeAnimation) {
-                    View animatedView = isFullscreen() ? getWindow().getDecorView() : getView();
-                    Drawable previousBackground = animatedView.getBackground();
+                View animatedView = isFullscreen() ? getWindow().getDecorView() : getView();
+                Drawable previousBackground = animatedView.getBackground();
+
+                if (previousBackground instanceof LayerDrawable) {
+                    previousBackground = ((LayerDrawable) previousBackground).getDrawable(1);
+                }
+
+                if (animation instanceof CircleTransitionAnimation) {
+                    CircleTransitionDrawable transition = new CircleTransitionDrawable(
+                            new Drawable[]{previousBackground, newBackground});
+                    transition.startTransition(animation.getDuration());
+                    newBackground = transition;
+                } else if (animation instanceof CrossFadeAnimation) {
 
                     if (previousBackground != null) {
                         TransitionDrawable transition = new TransitionDrawable(
