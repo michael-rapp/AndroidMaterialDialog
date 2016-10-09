@@ -24,7 +24,7 @@ import android.support.annotation.StringRes;
 import android.view.KeyEvent;
 import android.view.View;
 
-import de.mrapp.android.dialog.animation.DrawableAnimation;
+import de.mrapp.android.dialog.animation.BackgroundAnimation;
 
 /**
  * Defines the interface a decorator, which allows to modify the view hierarchy of a dialog, which
@@ -308,9 +308,9 @@ public interface MaterialDialogDecorator extends Dialog {
      *         null, if no background should be set
      * @param animation
      *         The animation, which should be used to change the background, as an instance of the
-     *         class {@link DrawableAnimation} or null, if no animation should be used
+     *         class {@link BackgroundAnimation} or null, if no animation should be used
      */
-    void setBackground(@Nullable Bitmap background, @Nullable DrawableAnimation animation);
+    void setBackground(@Nullable Bitmap background, @Nullable BackgroundAnimation animation);
 
     /**
      * Sets the background of the dialog.
@@ -329,9 +329,9 @@ public interface MaterialDialogDecorator extends Dialog {
      *         The resource id must correspond to a valid drawable resource
      * @param animation
      *         The animation, which should be used to change the background, as an instance of the
-     *         class {@link DrawableAnimation} or null, if no animation should be used
+     *         class {@link BackgroundAnimation} or null, if no animation should be used
      */
-    void setBackground(@DrawableRes int resourceId, @Nullable DrawableAnimation animation);
+    void setBackground(@DrawableRes int resourceId, @Nullable BackgroundAnimation animation);
 
     /**
      * Sets the background color of the dialog.
@@ -348,9 +348,9 @@ public interface MaterialDialogDecorator extends Dialog {
      *         The background color, which should be set, as an {@link Integer} value
      * @param animation
      *         The animation, which should be used to change the background, as an instance of the
-     *         class {@link DrawableAnimation} or null, if no animation should be used
+     *         class {@link BackgroundAnimation} or null, if no animation should be used
      */
-    void setBackgroundColor(@ColorInt int color, @Nullable final DrawableAnimation animation);
+    void setBackgroundColor(@ColorInt int color, @Nullable final BackgroundAnimation animation);
 
     /**
      * Sets the custom view, which should be used to show the title of the dialog.

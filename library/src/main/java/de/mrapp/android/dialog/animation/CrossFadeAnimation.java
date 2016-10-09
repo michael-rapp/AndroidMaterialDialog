@@ -22,13 +22,13 @@ import android.support.annotation.NonNull;
  * @author Michael Rapp
  * @since 3.7.0
  */
-public class CrossFadeAnimation extends DrawableAnimation {
+public class CrossFadeAnimation extends BackgroundAnimation {
 
     /**
      * A builder, which allows to create animations, which can be used to change drawables.
      */
     public static class Builder
-            extends AbstractDrawableAnimationBuilder<CrossFadeAnimation, Builder> {
+            extends AbstractBackgroundAnimationBuilder<CrossFadeAnimation, Builder> {
 
         /**
          * Creates a new builder, which allows to create animations, which can be used to change

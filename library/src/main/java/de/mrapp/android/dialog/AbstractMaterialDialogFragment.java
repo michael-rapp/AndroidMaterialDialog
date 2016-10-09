@@ -37,7 +37,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
-import de.mrapp.android.dialog.animation.DrawableAnimation;
+import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
 import de.mrapp.android.dialog.model.MaterialDialog;
 
@@ -389,7 +389,7 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
 
     @Override
     public final void setBackground(@Nullable final Bitmap background,
-                                    @Nullable final DrawableAnimation animation) {
+                                    @Nullable final BackgroundAnimation animation) {
         decorator.setBackground(background, animation);
     }
 
@@ -400,7 +400,7 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
 
     @Override
     public final void setBackground(@DrawableRes final int resourceId,
-                                    @Nullable final DrawableAnimation animation) {
+                                    @Nullable final BackgroundAnimation animation) {
         decorator.setBackground(resourceId, animation);
     }
 
@@ -411,7 +411,7 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
 
     @Override
     public final void setBackgroundColor(@ColorInt final int color,
-                                         @Nullable final DrawableAnimation animation) {
+                                         @Nullable final BackgroundAnimation animation) {
         decorator.setBackgroundColor(color, animation);
     }
 

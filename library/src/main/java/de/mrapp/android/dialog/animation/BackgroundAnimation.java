@@ -22,34 +22,34 @@ import static de.mrapp.android.util.Condition.ensureAtLeast;
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
- * An abstract base class for all animations, which can be used to change drawables.
+ * An abstract base class for all animations, which can be used to change backgrounds.
  *
  * @author Michael Rapp
  * @since 3.7.0
  */
-public abstract class DrawableAnimation {
+public abstract class BackgroundAnimation {
 
     /**
      * An abstract base class for all builders, which allow to create animations, which can be used
-     * to change drawables.
+     * to change backgrounds.
      *
      * @param <AnimationType>
      *         The type of the animations, which are created by the builder
      * @param <BuilderType>
      *         The type of the builder
      */
-    protected static abstract class AbstractDrawableAnimationBuilder<AnimationType extends DrawableAnimation, BuilderType extends AbstractDrawableAnimationBuilder<AnimationType, ?>>
+    protected static abstract class AbstractBackgroundAnimationBuilder<AnimationType extends BackgroundAnimation, BuilderType extends AbstractBackgroundAnimationBuilder<AnimationType, ?>>
             extends AbstractBuilder<AnimationType, BuilderType> {
 
         /**
          * Creates a new builder, which allows to create animations, which can be used to change
-         * drawables.
+         * backgrounds.
          *
          * @param context
          *         The context, which should be used by the builder, as an instance of the class
          *         {@link Context}. The context may not be null
          */
-        protected AbstractDrawableAnimationBuilder(@NonNull final Context context) {
+        protected AbstractBackgroundAnimationBuilder(@NonNull final Context context) {
             super(context);
         }
 
@@ -87,13 +87,13 @@ public abstract class DrawableAnimation {
     }
 
     /**
-     * Creates a new animation, which can be used to change drawables.
+     * Creates a new animation, which can be used to change backgrounds.
      *
      * @param context
      *         The context, which should be used by the animation, as an instance of the class
      *         {@link Context}. The context may not be null
      */
-    protected DrawableAnimation(@NonNull final Context context) {
+    protected BackgroundAnimation(@NonNull final Context context) {
         ensureNotNull(context, "The context may not be null");
         this.duration = context.getResources().getInteger(android.R.integer.config_longAnimTime);
     }

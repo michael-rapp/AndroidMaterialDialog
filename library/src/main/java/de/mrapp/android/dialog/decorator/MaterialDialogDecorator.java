@@ -41,7 +41,7 @@ import android.widget.TextView;
 
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.animation.CrossFadeAnimation;
-import de.mrapp.android.dialog.animation.DrawableAnimation;
+import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.dialog.view.DialogRootView;
 import de.mrapp.android.util.ViewUtil;
@@ -590,9 +590,9 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      *
      * @param animation
      *         The animation, which should be used to change the background, as an instance of the
-     *         class {@link DrawableAnimation} or null, if no animation should be used
+     *         class {@link BackgroundAnimation} or null, if no animation should be used
      */
-    private void adaptBackground(@Nullable final DrawableAnimation animation) {
+    private void adaptBackground(@Nullable final BackgroundAnimation animation) {
         if (getView() != null && getWindow() != null) {
             Drawable newBackground = background;
 
@@ -852,7 +852,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void setBackground(@Nullable final Bitmap background,
-                                    @Nullable final DrawableAnimation animation) {
+                                    @Nullable final BackgroundAnimation animation) {
         this.backgroundBitmap = background;
         this.backgroundId = -1;
         this.backgroundColor = -1;
@@ -869,7 +869,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void setBackground(@DrawableRes final int resourceId,
-                                    @Nullable final DrawableAnimation animation) {
+                                    @Nullable final BackgroundAnimation animation) {
         this.backgroundBitmap = null;
         this.backgroundId = resourceId;
         this.backgroundColor = -1;
@@ -884,7 +884,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void setBackgroundColor(@ColorInt final int color,
-                                         @Nullable final DrawableAnimation animation) {
+                                         @Nullable final BackgroundAnimation animation) {
         this.backgroundBitmap = null;
         this.backgroundId = -1;
         this.backgroundColor = color;
