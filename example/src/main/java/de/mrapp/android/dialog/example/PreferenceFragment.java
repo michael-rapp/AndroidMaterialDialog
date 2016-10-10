@@ -37,8 +37,9 @@ import de.mrapp.android.dialog.WizardDialog;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.CircleRevealAnimation;
 import de.mrapp.android.dialog.animation.CircleTransitionAnimation;
-import de.mrapp.android.dialog.animation.CrossFadeAnimation;
+import de.mrapp.android.dialog.animation.CrossFadeTransitionAnimation;
 import de.mrapp.android.dialog.animation.DialogAnimation;
+import de.mrapp.android.dialog.animation.DrawableAnimation.AnimationListener;
 import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
@@ -498,7 +499,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
                 if (shouldUseAnimations()) {
                     builder.setBackgroundColor(
                             getResources().getIntArray(R.array.wizard_dialog_background_colors)[0]);
-                    builder.setHeaderBackground(R.drawable.dialog_header_background_blue);
                     builder.addOnPageChangeListener(
                             createWizardDialogPageChangeListener(wizardDialog));
                 }
@@ -535,12 +535,13 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             public void onPageSelected(final int position) {
                 int[] colors = getResources().getIntArray(R.array.wizard_dialog_background_colors);
                 BackgroundAnimation backgroundAnimation =
-                        new CrossFadeAnimation.Builder(getActivity()).create();
+                        new CrossFadeTransitionAnimation.Builder(getActivity()).create();
                 wizardDialog.setBackgroundColor(colors[position], backgroundAnimation);
                 TypedArray backgroundIds =
                         getResources().obtainTypedArray(R.array.wizard_dialog_header_backgrounds);
                 BackgroundAnimation headerBackgroundAnimation =
-                        new CircleTransitionAnimation.Builder(getActivity()).create();
+                        new CircleTransitionAnimation.Builder(getActivity())
+                                .setListener(createHeaderAnimationListener(wizardDialog)).create();
                 wizardDialog.setHeaderBackground(backgroundIds.getResourceId(position, 0),
                         headerBackgroundAnimation);
                 backgroundIds.recycle();
@@ -549,6 +550,36 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public void onPageScrollStateChanged(final int state) {
 
+            }
+
+        };
+    }
+
+    /**
+     * Creates and returns a listener, which allows to reset a wizard dialog's header background to
+     * default, when its animation is finished.
+     *
+     * @param wizardDialog
+     *         The wizard dialog as an instance of the class {@link WizardDialog}
+     * @return The listener, which has been created, as an instance of the type {@link
+     * AnimationListener}
+     */
+    private AnimationListener createHeaderAnimationListener(
+            @NonNull final WizardDialog wizardDialog) {
+        return new AnimationListener() {
+
+            @Override
+            public void onAnimationStart() {
+
+            }
+
+            @Override
+            public void onAnimationEnd() {
+                int duration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+                BackgroundAnimation animation =
+                        new CrossFadeTransitionAnimation.Builder(getActivity()).setDuration(duration)
+                                .create();
+                wizardDialog.setHeaderBackground(R.drawable.dialog_header_background, animation);
             }
 
         };

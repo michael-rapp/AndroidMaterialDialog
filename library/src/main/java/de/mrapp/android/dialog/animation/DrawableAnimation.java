@@ -15,6 +15,7 @@ package de.mrapp.android.dialog.animation;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import de.mrapp.android.dialog.builder.AbstractBuilder;
 
@@ -28,6 +29,24 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @since 3.7.0
  */
 public abstract class DrawableAnimation {
+
+    /**
+     * Defines the interface, a class, which should be notified about a drawable animation's
+     * progress, must implement.
+     */
+    public interface AnimationListener {
+
+        /**
+         * The method, which is invoked, when the animation is started.
+         */
+        void onAnimationStart();
+
+        /**
+         * The method, which is invoked, when the animation is finished.
+         */
+        void onAnimationEnd();
+
+    }
 
     /**
      * An abstract base class for all builders, which allow to create animations, which can be used
@@ -67,12 +86,32 @@ public abstract class DrawableAnimation {
             return self();
         }
 
+        /**
+         * Sets the listener, which should be notified about the progress of the animation, which is
+         * created by the builder.
+         *
+         * @param listener
+         *         The listener, which should be set, as an instance of the type {@link
+         *         AnimationListener} or null, if no listener should be notified
+         * @return The builder, this method has been called upon, as an instance of the generic type
+         * BuilderType
+         */
+        public BuilderType setListener(@Nullable final AnimationListener listener) {
+            getProduct().setListener(listener);
+            return self();
+        }
+
     }
 
     /**
      * The duration of the animation in milliseconds.
      */
     private int duration;
+
+    /**
+     * The listener, which is notified about the animation's progress.
+     */
+    private AnimationListener listener;
 
     /**
      * Sets the duration of the animation.
@@ -87,6 +126,17 @@ public abstract class DrawableAnimation {
     }
 
     /**
+     * Sets the listener, which should be notified about the animation's progress.
+     *
+     * @param listener
+     *         The listener, which should be set, as an instance of the type {@link
+     *         AnimationListener} or null, if no listener should be notified
+     */
+    protected final void setListener(@Nullable final AnimationListener listener) {
+        this.listener = listener;
+    }
+
+    /**
      * Creates a new animation, which can be used to change drawables.
      *
      * @param context
@@ -96,6 +146,7 @@ public abstract class DrawableAnimation {
     protected DrawableAnimation(@NonNull final Context context) {
         ensureNotNull(context, "The context may not be null");
         this.duration = context.getResources().getInteger(android.R.integer.config_longAnimTime);
+        this.listener = null;
     }
 
     /**
@@ -105,6 +156,17 @@ public abstract class DrawableAnimation {
      */
     public final int getDuration() {
         return duration;
+    }
+
+    /**
+     * Returns the listener, which is notified about the animation's progress.
+     *
+     * @return The listener, which is notified about the animation's progress, as an instance of the
+     * type {@link AnimationListener} or null, if no listener is notified
+     */
+    @Nullable
+    public final AnimationListener getListener() {
+        return listener;
     }
 
 }

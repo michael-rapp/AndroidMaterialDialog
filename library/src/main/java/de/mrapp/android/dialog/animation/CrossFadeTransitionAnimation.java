@@ -22,14 +22,14 @@ import android.support.annotation.NonNull;
  * @author Michael Rapp
  * @since 3.7.0
  */
-public class CrossFadeAnimation extends BackgroundAnimation {
+public class CrossFadeTransitionAnimation extends BackgroundAnimation {
 
     /**
      * A builder, which allows to create animations, which can be used to change backgrounds via
      * cross-fading.
      */
     public static class Builder
-            extends AbstractBackgroundAnimationBuilder<CrossFadeAnimation, Builder> {
+            extends AbstractBackgroundAnimationBuilder<CrossFadeTransitionAnimation, Builder> {
 
         /**
          * Creates a new builder, which allows to create animations, which can be used to change
@@ -45,8 +45,8 @@ public class CrossFadeAnimation extends BackgroundAnimation {
 
         @NonNull
         @Override
-        protected final CrossFadeAnimation onCreateProduct() {
-            return new CrossFadeAnimation(getContext());
+        protected final CrossFadeTransitionAnimation onCreateProduct() {
+            return new CrossFadeTransitionAnimation(getContext());
         }
 
     }
@@ -58,7 +58,7 @@ public class CrossFadeAnimation extends BackgroundAnimation {
      *         The context, which should be used by the animation, as an instance of the class
      *         {@link Context}. The context may not be null
      */
-    protected CrossFadeAnimation(@NonNull final Context context) {
+    protected CrossFadeTransitionAnimation(@NonNull final Context context) {
         super(context);
     }
 

@@ -1,3 +1,16 @@
+/*
+ * Copyright 2014 - 2016 Michael Rapp
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package de.mrapp.android.dialog.drawable;
 
 import android.graphics.Bitmap;
@@ -7,8 +20,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
@@ -18,23 +29,9 @@ import static de.mrapp.android.util.Condition.ensureAtLeast;
  * second layer as a circle, which grows from a specific position.
  *
  * @author Michael Rapp
+ * @since 3.7.0
  */
-public class CircleTransitionDrawable extends LayerDrawable {
-
-    /**
-     * The state when a transition is about to start.
-     */
-    private static final int TRANSITION_STARTING = 0;
-
-    /**
-     * The state when a transition is in progress.
-     */
-    private static final int TRANSITION_RUNNING = 1;
-
-    /**
-     * The state when no transition is running.
-     */
-    private static final int TRANSITION_NONE = 2;
+public class CircleTransitionDrawable extends AbstractTransitionDrawable {
 
     /**
      * The horizontal position, which is used by the transition.
@@ -52,16 +49,6 @@ public class CircleTransitionDrawable extends LayerDrawable {
     private int radius;
 
     /**
-     * The duration, which has been used by the last transition.
-     */
-    private int duration;
-
-    /**
-     * The time, the last transition has been started.
-     */
-    private long startTime;
-
-    /**
      * The horizontal position, which has been used to start the currently running transition.
      */
     private float fromX;
@@ -75,16 +62,6 @@ public class CircleTransitionDrawable extends LayerDrawable {
      * The radius, which has been used to start the currently running transition.
      */
     private int fromRadius;
-
-    /**
-     * The current radius of the second layer.
-     */
-    private double currentRadius;
-
-    /**
-     * The current state of the drawable.
-     */
-    private int state;
 
     /**
      * The bitmap, which is used to draw the drawable.
@@ -107,20 +84,6 @@ public class CircleTransitionDrawable extends LayerDrawable {
     private final Paint porterDuffPaint;
 
     /**
-     * Initializes the drawable.
-     */
-    private void initialize() {
-        this.x = null;
-        this.y = null;
-        this.radius = 0;
-        this.fromX = -1;
-        this.fromY = -1;
-        this.fromRadius = -1;
-        this.currentRadius = -1;
-        this.state = TRANSITION_NONE;
-    }
-
-    /**
      * Creates a new layer drawable with the list of specified layers.
      *
      * @param layers
@@ -128,12 +91,17 @@ public class CircleTransitionDrawable extends LayerDrawable {
      */
     public CircleTransitionDrawable(@NonNull final Drawable[] layers) {
         super(layers);
-        initialize();
-        paint = new Paint();
-        paint.setAntiAlias(true);
-        porterDuffPaint = new Paint();
-        porterDuffPaint.setAntiAlias(true);
-        porterDuffPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        this.x = null;
+        this.y = null;
+        this.radius = 0;
+        this.fromX = -1;
+        this.fromY = -1;
+        this.fromRadius = -1;
+        this.paint = new Paint();
+        this.paint.setAntiAlias(true);
+        this.porterDuffPaint = new Paint();
+        this.porterDuffPaint.setAntiAlias(true);
+        this.porterDuffPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
     }
 
     /**
@@ -198,29 +166,6 @@ public class CircleTransitionDrawable extends LayerDrawable {
         this.radius = radius;
     }
 
-    /**
-     * Starts the transition, which shows the second layer in front of the first layer.
-     *
-     * @param duration
-     *         The duration of the transition in milliseconds as an {@link Integer} value
-     */
-    public final void startTransition(final int duration) {
-        this.duration = duration;
-        this.fromX = getX() != null ? getX() : -1;
-        this.fromY = getY() != null ? getY() : -1;
-        this.fromRadius = getRadius();
-        this.state = TRANSITION_STARTING;
-        invalidateSelf();
-    }
-
-    /**
-     * Shows only the first layer.
-     */
-    public final void resetTransition() {
-        initialize();
-        invalidateSelf();
-    }
-
     @Override
     public final void setBounds(final int left, final int top, final int right, final int bottom) {
         super.setBounds(left, top, right, bottom);
@@ -229,54 +174,33 @@ public class CircleTransitionDrawable extends LayerDrawable {
     }
 
     @Override
-    public final void draw(final Canvas canvas) {
-        boolean done = true;
+    protected final void onStartTransition() {
+        this.fromX = getX() != null ? getX() : -1;
+        this.fromY = getY() != null ? getY() : -1;
+        this.fromRadius = getRadius();
+    }
 
-        if (state == TRANSITION_STARTING) {
-            startTime = SystemClock.uptimeMillis();
-            done = false;
-            state = TRANSITION_RUNNING;
-        } else if (state == TRANSITION_RUNNING) {
-            if (startTime >= 0) {
-                float normalized = (float) (SystemClock.uptimeMillis() - startTime) / duration;
-                done = normalized >= 1f;
-                normalized = Math.min(normalized, 1f);
-                float x = fromX != -1 ? fromX : getBounds().width() / 2f;
-                float y = fromY != -1 ? fromY : getBounds().height() / 2f;
-                float width = Math.max(x, getBounds().width() - x);
-                float height = Math.max(y, getBounds().height() - y);
-                currentRadius = fromRadius +
-                        (Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) - fromRadius) *
-                                normalized;
-            }
-        }
-
-        Drawable first = getDrawable(0);
-        Drawable second = getDrawable(1);
-
-        if (done) {
-            if (fromRadius != -1 && currentRadius != fromRadius) {
-                second.draw(canvas);
-            } else {
-                first.draw(canvas);
-            }
-
-            return;
-        }
+    @Override
+    protected final void onDraw(final float interpolatedTime, @NonNull final Canvas canvas) {
+        float x = fromX != -1 ? fromX : getBounds().width() / 2f;
+        float y = fromY != -1 ? fromY : getBounds().height() / 2f;
+        float width = Math.max(x, getBounds().width() - x);
+        float height = Math.max(y, getBounds().height() - y);
+        double currentRadius = fromRadius +
+                (Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) - fromRadius) *
+                        interpolatedTime;
 
         if (currentRadius > 0) {
-            second.draw(canvas);
+            getDrawable(1).draw(canvas);
             backingBitmap.eraseColor(Color.TRANSPARENT);
-            first.draw(backingCanvas);
+            getDrawable(0).draw(backingCanvas);
             backingCanvas.drawCircle(fromX != -1 ? fromX : getBounds().width() / 2f,
                     fromY != -1 ? fromY : getBounds().height() / 2f, (float) currentRadius,
                     porterDuffPaint);
             canvas.drawBitmap(backingBitmap, 0, 0, paint);
         } else {
-            first.draw(canvas);
+            getDrawable(0).draw(canvas);
         }
-
-        invalidateSelf();
     }
 
 }

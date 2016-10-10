@@ -43,8 +43,9 @@ import android.widget.TextView;
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.CircleTransitionAnimation;
-import de.mrapp.android.dialog.animation.CrossFadeAnimation;
+import de.mrapp.android.dialog.animation.CrossFadeTransitionAnimation;
 import de.mrapp.android.dialog.drawable.CircleTransitionDrawable;
+import de.mrapp.android.dialog.drawable.CrossFadeTransitionDrawable;
 import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.dialog.view.DialogRootView;
 import de.mrapp.android.util.ViewUtil;
@@ -615,6 +616,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
                         CircleTransitionDrawable transition = new CircleTransitionDrawable(
                                 new Drawable[]{previousBackground, newBackground});
                         transition.setRadius(circleTransitionAnimation.getRadius());
+                        transition.setListener(circleTransitionAnimation.getListener());
 
                         if (circleTransitionAnimation.getX() != null) {
                             transition.setX(circleTransitionAnimation.getX());
@@ -626,9 +628,10 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
                         transition.startTransition(circleTransitionAnimation.getDuration());
                         newBackground = transition;
-                    } else if (animation instanceof CrossFadeAnimation) {
-                        TransitionDrawable transition = new TransitionDrawable(
+                    } else if (animation instanceof CrossFadeTransitionAnimation) {
+                        CrossFadeTransitionDrawable transition = new CrossFadeTransitionDrawable(
                                 new Drawable[]{previousBackground, newBackground});
+                        transition.setListener(animation.getListener());
                         transition.startTransition(animation.getDuration());
                         newBackground = transition;
                     } else {
