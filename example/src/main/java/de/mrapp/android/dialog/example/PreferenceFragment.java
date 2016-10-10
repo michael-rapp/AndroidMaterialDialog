@@ -17,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -36,6 +37,7 @@ import de.mrapp.android.dialog.WizardDialog;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.CircleRevealAnimation;
 import de.mrapp.android.dialog.animation.CircleTransitionAnimation;
+import de.mrapp.android.dialog.animation.CrossFadeAnimation;
 import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
@@ -491,10 +493,16 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
                 addFragment(builder, 1);
                 addFragment(builder, 2);
                 addFragment(builder, 3);
-                builder.setBackgroundColor(
-                        getResources().getIntArray(R.array.wizard_dialog_background_colors)[0]);
                 WizardDialog wizardDialog = builder.create();
-                builder.addOnPageChangeListener(createWizardDialogPageChangeListener(wizardDialog));
+
+                if (shouldUseAnimations()) {
+                    builder.setBackgroundColor(
+                            getResources().getIntArray(R.array.wizard_dialog_background_colors)[0]);
+                    builder.setHeaderBackground(R.drawable.dialog_header_background_blue);
+                    builder.addOnPageChangeListener(
+                            createWizardDialogPageChangeListener(wizardDialog));
+                }
+
                 wizardDialog.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(),
                         null);
                 return true;
@@ -526,9 +534,16 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public void onPageSelected(final int position) {
                 int[] colors = getResources().getIntArray(R.array.wizard_dialog_background_colors);
-                BackgroundAnimation animation =
+                BackgroundAnimation backgroundAnimation =
+                        new CrossFadeAnimation.Builder(getActivity()).create();
+                wizardDialog.setBackgroundColor(colors[position], backgroundAnimation);
+                TypedArray backgroundIds =
+                        getResources().obtainTypedArray(R.array.wizard_dialog_header_backgrounds);
+                BackgroundAnimation headerBackgroundAnimation =
                         new CircleTransitionAnimation.Builder(getActivity()).create();
-                wizardDialog.setHeaderBackgroundColor(colors[position], animation);
+                wizardDialog.setHeaderBackground(backgroundIds.getResourceId(position, 0),
+                        headerBackgroundAnimation);
+                backgroundIds.recycle();
             }
 
             @Override

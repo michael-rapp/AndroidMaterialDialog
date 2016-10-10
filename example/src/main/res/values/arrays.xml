@@ -15,8 +15,16 @@ License.
 -->
 <resources>
 
-    <color name="color_primary">#ffd64937</color>
-    <color name="color_primary_dark">#ffbb4030</color>
-    <color name="color_accent">#ffd64937</color>
+    <array name="wizard_dialog_background_colors">
+        <item>#ff2196f3</item>
+        <item>#ff00bcd4</item>
+        <item>#ff009688</item>
+    </array>
+
+    <array name="wizard_dialog_header_backgrounds">
+        <item>@drawable/dialog_header_background_blue</item>
+        <item>@drawable/dialog_header_background_cyan</item>
+        <item>@drawable/dialog_header_background_green</item>
+    </array>
 
 </resources>
