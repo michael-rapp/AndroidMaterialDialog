@@ -247,9 +247,21 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
                     }
 
                     if (animation instanceof CircleTransitionAnimation) {
+                        CircleTransitionAnimation circleTransitionAnimation =
+                                (CircleTransitionAnimation) animation;
                         CircleTransitionDrawable transition = new CircleTransitionDrawable(
                                 new Drawable[]{previousBackground, newBackground});
-                        transition.startTransition(animation.getDuration());
+                        transition.setRadius(circleTransitionAnimation.getRadius());
+
+                        if (circleTransitionAnimation.getX() != null) {
+                            transition.setX(circleTransitionAnimation.getX());
+                        }
+
+                        if (circleTransitionAnimation.getY() != null) {
+                            transition.setY(circleTransitionAnimation.getY());
+                        }
+
+                        transition.startTransition(circleTransitionAnimation.getDuration());
                         newBackground = transition;
                     } else if (animation instanceof CrossFadeAnimation) {
                         TransitionDrawable transition = new TransitionDrawable(
