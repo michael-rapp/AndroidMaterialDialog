@@ -603,7 +603,8 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
                 View animatedView = isFullscreen() ? getWindow().getDecorView() : getView();
                 Drawable previousBackground = animatedView.getBackground();
 
-                if (previousBackground instanceof LayerDrawable) {
+                if (previousBackground instanceof TransitionDrawable ||
+                        previousBackground instanceof CircleTransitionDrawable) {
                     previousBackground = ((LayerDrawable) previousBackground).getDrawable(1);
                 }
 
