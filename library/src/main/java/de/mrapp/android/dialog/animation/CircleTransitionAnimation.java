@@ -57,7 +57,7 @@ public class CircleTransitionAnimation extends BackgroundAnimation {
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}
          */
-        protected final Builder setX(final int x) {
+        public final Builder setX(final int x) {
             getProduct().setX(x);
             return self();
         }
@@ -71,7 +71,7 @@ public class CircleTransitionAnimation extends BackgroundAnimation {
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}
          */
-        protected final Builder setY(final int y) {
+        public final Builder setY(final int y) {
             getProduct().setY(y);
             return self();
         }
@@ -85,7 +85,7 @@ public class CircleTransitionAnimation extends BackgroundAnimation {
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}
          */
-        protected final Builder setRadius(final int radius) {
+        public final Builder setRadius(final int radius) {
             getProduct().setRadius(radius);
             return self();
         }
