@@ -17,6 +17,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -30,6 +32,10 @@ import android.view.Window;
 import android.widget.ImageView;
 
 import de.mrapp.android.dialog.R;
+import de.mrapp.android.dialog.animation.BackgroundAnimation;
+import de.mrapp.android.dialog.animation.CircleTransitionAnimation;
+import de.mrapp.android.dialog.animation.CrossFadeAnimation;
+import de.mrapp.android.dialog.drawable.CircleTransitionDrawable;
 import de.mrapp.android.dialog.model.MaterialDialog;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
@@ -222,10 +228,42 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
 
     /**
      * Adapts the background of the dialog's header.
+     *
+     * @param animation
+     *         The animation, which should be used to change the background, as an instance of the
+     *         class {@link BackgroundAnimation} or null, if no animation should be used
      */
-    private void adaptHeaderBackground() {
+    private void adaptHeaderBackground(@Nullable final BackgroundAnimation animation) {
         if (headerBackgroundImageView != null) {
-            headerBackgroundImageView.setImageDrawable(headerBackground);
+            Drawable newBackground = headerBackground;
+
+            if (animation != null && newBackground != null) {
+                Drawable previousBackground = headerBackgroundImageView.getDrawable();
+
+                if (previousBackground != null) {
+                    if (previousBackground instanceof TransitionDrawable ||
+                            previousBackground instanceof CircleTransitionDrawable) {
+                        previousBackground = ((LayerDrawable) previousBackground).getDrawable(1);
+                    }
+
+                    if (animation instanceof CircleTransitionAnimation) {
+                        CircleTransitionDrawable transition = new CircleTransitionDrawable(
+                                new Drawable[]{previousBackground, newBackground});
+                        transition.startTransition(animation.getDuration());
+                        newBackground = transition;
+                    } else if (animation instanceof CrossFadeAnimation) {
+                        TransitionDrawable transition = new TransitionDrawable(
+                                new Drawable[]{previousBackground, newBackground});
+                        transition.startTransition(animation.getDuration());
+                        newBackground = transition;
+                    } else {
+                        throw new RuntimeException("Unknown type of animation: " +
+                                animation.getClass().getSimpleName());
+                    }
+                }
+            }
+
+            headerBackgroundImageView.setImageDrawable(newBackground);
         }
     }
 
@@ -299,29 +337,47 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
 
     @Override
     public final void setHeaderBackground(@Nullable final Bitmap background) {
+        setHeaderBackground(background, null);
+    }
+
+    @Override
+    public final void setHeaderBackground(@Nullable final Bitmap background,
+                                          @Nullable final BackgroundAnimation animation) {
         this.headerBackgroundBitmap = background;
         this.headerBackgroundId = -1;
         this.headerBackgroundColor = -1;
         this.headerBackground = new BitmapDrawable(getContext().getResources(), background);
-        adaptHeaderBackground();
+        adaptHeaderBackground(animation);
     }
 
     @Override
     public final void setHeaderBackground(@DrawableRes final int resourceId) {
+        setHeaderBackground(resourceId, null);
+    }
+
+    @Override
+    public final void setHeaderBackground(@DrawableRes final int resourceId,
+                                          @Nullable final BackgroundAnimation animation) {
         this.headerBackgroundBitmap = null;
         this.headerBackgroundId = resourceId;
         this.headerBackgroundColor = -1;
         this.headerBackground = ContextCompat.getDrawable(getContext(), resourceId);
-        adaptHeaderBackground();
+        adaptHeaderBackground(animation);
     }
 
     @Override
     public final void setHeaderBackgroundColor(@ColorInt final int color) {
+        setHeaderBackgroundColor(color, null);
+    }
+
+    @Override
+    public void setHeaderBackgroundColor(@ColorInt final int color,
+                                         @Nullable final BackgroundAnimation animation) {
         this.headerBackgroundBitmap = null;
         this.headerBackgroundId = -1;
         this.headerBackgroundColor = color;
         this.headerBackground = new ColorDrawable(color);
-        adaptHeaderBackground();
+        adaptHeaderBackground(animation);
     }
 
     @Override
@@ -416,7 +472,7 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
     protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
         inflateHeader();
         adaptHeaderVisibility();
-        adaptHeaderBackground();
+        adaptHeaderBackground(null);
         adaptHeaderDividerColor();
         adaptHeaderDividerVisibility();
         adaptHeaderIcon();

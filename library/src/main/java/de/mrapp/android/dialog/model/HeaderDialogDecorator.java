@@ -19,6 +19,8 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 
+import de.mrapp.android.dialog.animation.BackgroundAnimation;
+
 /**
  * Defines the interface of a decorator, which allows to modify the view hierarchy of a dialog,
  * which is designed according to Android 5's Material Design guidelines even on pre-Lollipop
@@ -79,11 +81,35 @@ public interface HeaderDialogDecorator extends Dialog {
     /**
      * Sets the background of the dialog's header.
      *
+     * @param background
+     *         The background, which should be set, as an instance of the class {@link Bitmap} or
+     *         null, if no background should be shown
+     * @param animation
+     *         The animation, which should be used to change the background, as an instance of the
+     *         class {@link BackgroundAnimation} or null, if no animation should be used
+     */
+    void setHeaderBackground(@Nullable Bitmap background, @Nullable BackgroundAnimation animation);
+
+    /**
+     * Sets the background of the dialog's header.
+     *
      * @param resourceId
      *         The resource id of the background, which should be set, as an {@link Integer} value.
      *         The resource id must correspond to a valid drawable resource
      */
     void setHeaderBackground(@DrawableRes int resourceId);
+
+    /**
+     * Sets the background of the dialog's header.
+     *
+     * @param resourceId
+     *         The resource id of the background, which should be set, as an {@link Integer} value.
+     *         The resource id must correspond to a valid drawable resource
+     * @param animation
+     *         The animation, which should be used to change the background, as an instance of the
+     *         class {@link BackgroundAnimation} or null, if no animation should be used
+     */
+    void setHeaderBackground(@DrawableRes int resourceId, @Nullable BackgroundAnimation animation);
 
     /**
      * Sets the background color of the dialog's header.
@@ -92,6 +118,17 @@ public interface HeaderDialogDecorator extends Dialog {
      *         The background color, which should be set, as an {@link Integer} value
      */
     void setHeaderBackgroundColor(@ColorInt int color);
+
+    /**
+     * Sets the background color of the dialog's header.
+     *
+     * @param color
+     *         The background color, which should be set, as an {@link Integer} value
+     * @param animation
+     *         The animation, which should be used to change the background, as an instance of the
+     *         class {@link BackgroundAnimation} or null, if no animation should be used
+     */
+    void setHeaderBackgroundColor(@ColorInt int color, @Nullable BackgroundAnimation animation);
 
     /**
      * Returns the icon of the dialog's header.

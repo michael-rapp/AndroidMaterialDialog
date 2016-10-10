@@ -528,7 +528,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
                 int[] colors = getResources().getIntArray(R.array.wizard_dialog_background_colors);
                 BackgroundAnimation animation =
                         new CircleTransitionAnimation.Builder(getActivity()).create();
-                wizardDialog.setBackgroundColor(colors[position], animation);
+                wizardDialog.setHeaderBackgroundColor(colors[position], animation);
             }
 
             @Override

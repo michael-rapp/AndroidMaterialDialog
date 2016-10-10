@@ -26,6 +26,7 @@ import android.support.annotation.StyleRes;
 import android.view.View;
 import android.view.Window;
 
+import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.decorator.HeaderDialogDecorator;
 import de.mrapp.android.dialog.model.HeaderDialog;
 
@@ -91,13 +92,31 @@ public abstract class AbstractHeaderDialog extends AbstractMaterialDialog implem
     }
 
     @Override
+    public final void setHeaderBackgroundColor(@ColorInt final int color,
+                                               @Nullable final BackgroundAnimation animation) {
+        decorator.setHeaderBackgroundColor(color, animation);
+    }
+
+    @Override
     public final void setHeaderBackground(@DrawableRes final int resourceId) {
         decorator.setHeaderBackground(resourceId);
     }
 
     @Override
+    public final void setHeaderBackground(@DrawableRes final int resourceId,
+                                          @Nullable final BackgroundAnimation animation) {
+        decorator.setHeaderBackground(resourceId, animation);
+    }
+
+    @Override
     public final void setHeaderBackground(@Nullable final Bitmap background) {
         decorator.setHeaderBackground(background);
+    }
+
+    @Override
+    public final void setHeaderBackground(@Nullable final Bitmap background,
+                                          @Nullable final BackgroundAnimation animation) {
+        decorator.setHeaderBackground(background, animation);
     }
 
     @Override
