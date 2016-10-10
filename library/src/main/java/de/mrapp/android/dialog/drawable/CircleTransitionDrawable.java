@@ -209,7 +209,6 @@ public class CircleTransitionDrawable extends LayerDrawable {
         this.fromX = getX() != null ? getX() : -1;
         this.fromY = getY() != null ? getY() : -1;
         this.fromRadius = getRadius();
-        this.currentRadius = fromRadius;
         this.state = TRANSITION_STARTING;
         invalidateSelf();
     }
@@ -246,7 +245,9 @@ public class CircleTransitionDrawable extends LayerDrawable {
                 float y = fromY != -1 ? fromY : getBounds().height() / 2f;
                 float width = Math.max(x, getBounds().width() - x);
                 float height = Math.max(y, getBounds().height() - y);
-                currentRadius = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) * normalized;
+                currentRadius = fromRadius +
+                        (Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) - fromRadius) *
+                                normalized;
             }
         }
 
