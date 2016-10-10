@@ -599,7 +599,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         if (getView() != null && getWindow() != null) {
             Drawable newBackground = background;
 
-            if (animation != null) {
+            if (animation != null && newBackground != null) {
                 View animatedView = isFullscreen() ? getWindow().getDecorView() : getView();
                 Drawable previousBackground = animatedView.getBackground();
 
