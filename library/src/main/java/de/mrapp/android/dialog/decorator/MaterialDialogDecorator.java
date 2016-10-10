@@ -603,27 +603,26 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
                 View animatedView = isFullscreen() ? getWindow().getDecorView() : getView();
                 Drawable previousBackground = animatedView.getBackground();
 
-                if (previousBackground instanceof TransitionDrawable ||
-                        previousBackground instanceof CircleTransitionDrawable) {
-                    previousBackground = ((LayerDrawable) previousBackground).getDrawable(1);
-                }
+                if (previousBackground != null) {
+                    if (previousBackground instanceof TransitionDrawable ||
+                            previousBackground instanceof CircleTransitionDrawable) {
+                        previousBackground = ((LayerDrawable) previousBackground).getDrawable(1);
+                    }
 
-                if (animation instanceof CircleTransitionAnimation) {
-                    CircleTransitionDrawable transition = new CircleTransitionDrawable(
-                            new Drawable[]{previousBackground, newBackground});
-                    transition.startTransition(animation.getDuration());
-                    newBackground = transition;
-                } else if (animation instanceof CrossFadeAnimation) {
-
-                    if (previousBackground != null) {
+                    if (animation instanceof CircleTransitionAnimation) {
+                        CircleTransitionDrawable transition = new CircleTransitionDrawable(
+                                new Drawable[]{previousBackground, newBackground});
+                        transition.startTransition(animation.getDuration());
+                        newBackground = transition;
+                    } else if (animation instanceof CrossFadeAnimation) {
                         TransitionDrawable transition = new TransitionDrawable(
                                 new Drawable[]{previousBackground, newBackground});
                         transition.startTransition(animation.getDuration());
                         newBackground = transition;
+                    } else {
+                        throw new RuntimeException("Unknown type of animation: " +
+                                animation.getClass().getSimpleName());
                     }
-                } else {
-                    throw new RuntimeException(
-                            "Unknown type of animation: " + animation.getClass().getSimpleName());
                 }
             }
 
