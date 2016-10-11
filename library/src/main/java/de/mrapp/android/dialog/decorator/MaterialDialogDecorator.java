@@ -20,8 +20,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.AttrRes;
@@ -44,6 +42,7 @@ import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.CircleTransitionAnimation;
 import de.mrapp.android.dialog.animation.CrossFadeTransitionAnimation;
+import de.mrapp.android.dialog.drawable.AbstractTransitionDrawable;
 import de.mrapp.android.dialog.drawable.CircleTransitionDrawable;
 import de.mrapp.android.dialog.drawable.CrossFadeTransitionDrawable;
 import de.mrapp.android.dialog.model.Dialog;
@@ -605,9 +604,9 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
                 Drawable previousBackground = animatedView.getBackground();
 
                 if (previousBackground != null) {
-                    if (previousBackground instanceof TransitionDrawable ||
-                            previousBackground instanceof CircleTransitionDrawable) {
-                        previousBackground = ((LayerDrawable) previousBackground).getDrawable(1);
+                    if (previousBackground instanceof AbstractTransitionDrawable) {
+                        previousBackground =
+                                ((AbstractTransitionDrawable) previousBackground).getDrawable(1);
                     }
 
                     if (animation instanceof CircleTransitionAnimation) {

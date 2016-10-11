@@ -17,8 +17,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -36,8 +34,11 @@ import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.CircleTransitionAnimation;
 import de.mrapp.android.dialog.animation.CrossFadeTransitionAnimation;
 import de.mrapp.android.dialog.animation.DrawableAnimation;
+import de.mrapp.android.dialog.animation.ScaleTransitionAnimation;
+import de.mrapp.android.dialog.drawable.AbstractTransitionDrawable;
 import de.mrapp.android.dialog.drawable.CircleTransitionDrawable;
 import de.mrapp.android.dialog.drawable.CrossFadeTransitionDrawable;
+import de.mrapp.android.dialog.drawable.ScaleTransitionDrawable;
 import de.mrapp.android.dialog.model.MaterialDialog;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
@@ -243,9 +244,9 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
                 Drawable previousBackground = headerBackgroundImageView.getDrawable();
 
                 if (previousBackground != null) {
-                    if (previousBackground instanceof TransitionDrawable ||
-                            previousBackground instanceof CircleTransitionDrawable) {
-                        previousBackground = ((LayerDrawable) previousBackground).getDrawable(1);
+                    if (previousBackground instanceof AbstractTransitionDrawable) {
+                        previousBackground =
+                                ((AbstractTransitionDrawable) previousBackground).getDrawable(1);
                     }
 
                     if (animation instanceof CircleTransitionAnimation) {
@@ -298,12 +299,17 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
                 Drawable previousIcon = headerIconImageView.getDrawable();
 
                 if (previousIcon != null) {
-                    if (previousIcon instanceof TransitionDrawable ||
-                            previousIcon instanceof CircleTransitionDrawable) {
-                        previousIcon = ((LayerDrawable) previousIcon).getDrawable(1);
+                    if (previousIcon instanceof AbstractTransitionDrawable) {
+                        previousIcon = ((AbstractTransitionDrawable) previousIcon).getDrawable(1);
                     }
 
-                    if (animation instanceof CircleTransitionAnimation) {
+                    if (animation instanceof ScaleTransitionAnimation) {
+                        ScaleTransitionDrawable transition =
+                                new ScaleTransitionDrawable(new Drawable[]{previousIcon, newIcon});
+                        transition.setListener(animation.getListener());
+                        transition.startTransition(animation.getDuration());
+                        newIcon = transition;
+                    } else if (animation instanceof CircleTransitionAnimation) {
                         CircleTransitionAnimation circleTransitionAnimation =
                                 (CircleTransitionAnimation) animation;
                         CircleTransitionDrawable transition =

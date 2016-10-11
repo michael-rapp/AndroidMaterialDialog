@@ -42,6 +42,7 @@ import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.animation.DrawableAnimation;
 import de.mrapp.android.dialog.animation.DrawableAnimation.AnimationListener;
 import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
+import de.mrapp.android.dialog.animation.ScaleTransitionAnimation;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
 
@@ -549,7 +550,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
                 TypedArray iconIds =
                         getResources().obtainTypedArray(R.array.wizard_dialog_header_icons);
                 DrawableAnimation headerIconAnimation =
-                        new CrossFadeTransitionAnimation.Builder(getActivity()).create();
+                        new ScaleTransitionAnimation.Builder(getActivity()).create();
                 wizardDialog.setHeaderIcon(iconIds.getResourceId(position, 0), headerIconAnimation);
                 iconIds.recycle();
             }
