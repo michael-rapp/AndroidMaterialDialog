@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.Window;
 
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
+import de.mrapp.android.dialog.animation.DrawableAnimation;
 import de.mrapp.android.dialog.decorator.HeaderDialogDecorator;
 import de.mrapp.android.dialog.model.HeaderDialog;
 
@@ -122,8 +123,20 @@ public abstract class AbstractHeaderDialogFragment extends AbstractMaterialDialo
     }
 
     @Override
+    public final void setHeaderIcon(@DrawableRes final int resourceId,
+                                    @Nullable final DrawableAnimation animation) {
+        decorator.setHeaderIcon(resourceId, animation);
+    }
+
+    @Override
     public final void setHeaderIcon(@Nullable final Bitmap icon) {
         decorator.setHeaderIcon(icon);
+    }
+
+    @Override
+    public final void setHeaderIcon(@Nullable final Bitmap icon,
+                                    @Nullable final DrawableAnimation animation) {
+        decorator.setHeaderIcon(icon, animation);
     }
 
     @Override

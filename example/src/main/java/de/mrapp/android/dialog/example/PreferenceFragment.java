@@ -39,6 +39,7 @@ import de.mrapp.android.dialog.animation.CircleRevealAnimation;
 import de.mrapp.android.dialog.animation.CircleTransitionAnimation;
 import de.mrapp.android.dialog.animation.CrossFadeTransitionAnimation;
 import de.mrapp.android.dialog.animation.DialogAnimation;
+import de.mrapp.android.dialog.animation.DrawableAnimation;
 import de.mrapp.android.dialog.animation.DrawableAnimation.AnimationListener;
 import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
@@ -545,6 +546,12 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
                 wizardDialog.setHeaderBackground(backgroundIds.getResourceId(position, 0),
                         headerBackgroundAnimation);
                 backgroundIds.recycle();
+                TypedArray iconIds =
+                        getResources().obtainTypedArray(R.array.wizard_dialog_header_icons);
+                DrawableAnimation headerIconAnimation =
+                        new CrossFadeTransitionAnimation.Builder(getActivity()).create();
+                wizardDialog.setHeaderIcon(iconIds.getResourceId(position, 0), headerIconAnimation);
+                iconIds.recycle();
             }
 
             @Override
@@ -577,8 +584,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             public void onAnimationEnd() {
                 int duration = getResources().getInteger(android.R.integer.config_shortAnimTime);
                 BackgroundAnimation animation =
-                        new CrossFadeTransitionAnimation.Builder(getActivity()).setDuration(duration)
-                                .create();
+                        new CrossFadeTransitionAnimation.Builder(getActivity())
+                                .setDuration(duration).create();
                 wizardDialog.setHeaderBackground(R.drawable.dialog_header_background, animation);
             }
 

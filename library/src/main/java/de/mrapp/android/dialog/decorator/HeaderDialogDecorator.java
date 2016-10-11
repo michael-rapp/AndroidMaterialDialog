@@ -35,6 +35,7 @@ import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.CircleTransitionAnimation;
 import de.mrapp.android.dialog.animation.CrossFadeTransitionAnimation;
+import de.mrapp.android.dialog.animation.DrawableAnimation;
 import de.mrapp.android.dialog.drawable.CircleTransitionDrawable;
 import de.mrapp.android.dialog.drawable.CrossFadeTransitionDrawable;
 import de.mrapp.android.dialog.model.MaterialDialog;
@@ -284,10 +285,57 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
 
     /**
      * Adapt's the icon of the dialog's header.
+     *
+     * @param animation
+     *         The animation, which should be used to change the icon, as an instance of the class
+     *         {@link DrawableAnimation} or null, if no animation should be used
      */
-    private void adaptHeaderIcon() {
+    private void adaptHeaderIcon(@Nullable final DrawableAnimation animation) {
         if (headerIconImageView != null) {
-            headerIconImageView.setImageDrawable(headerIcon);
+            Drawable newIcon = headerIcon;
+
+            if (animation != null && newIcon != null) {
+                Drawable previousIcon = headerIconImageView.getDrawable();
+
+                if (previousIcon != null) {
+                    if (previousIcon instanceof TransitionDrawable ||
+                            previousIcon instanceof CircleTransitionDrawable) {
+                        previousIcon = ((LayerDrawable) previousIcon).getDrawable(1);
+                    }
+
+                    if (animation instanceof CircleTransitionAnimation) {
+                        CircleTransitionAnimation circleTransitionAnimation =
+                                (CircleTransitionAnimation) animation;
+                        CircleTransitionDrawable transition =
+                                new CircleTransitionDrawable(new Drawable[]{previousIcon, newIcon});
+                        transition.setRadius(circleTransitionAnimation.getRadius());
+                        transition.setListener(circleTransitionAnimation.getListener());
+
+                        if (circleTransitionAnimation.getX() != null) {
+                            transition.setX(circleTransitionAnimation.getX());
+                        }
+
+                        if (circleTransitionAnimation.getY() != null) {
+                            transition.setY(circleTransitionAnimation.getY());
+                        }
+
+                        transition.startTransition(circleTransitionAnimation.getDuration());
+                        newIcon = transition;
+                    } else if (animation instanceof CrossFadeTransitionAnimation) {
+                        CrossFadeTransitionDrawable transition = new CrossFadeTransitionDrawable(
+                                new Drawable[]{previousIcon, newIcon});
+                        transition.setCrossFade(true);
+                        transition.setListener(animation.getListener());
+                        transition.startTransition(animation.getDuration());
+                        newIcon = transition;
+                    } else {
+                        throw new RuntimeException("Unknown type of animation: " +
+                                animation.getClass().getSimpleName());
+                    }
+                }
+            }
+
+            headerIconImageView.setImageDrawable(newIcon);
         }
     }
 
@@ -402,18 +450,30 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
 
     @Override
     public final void setHeaderIcon(@Nullable final Bitmap icon) {
+        setHeaderIcon(icon, null);
+    }
+
+    @Override
+    public final void setHeaderIcon(@Nullable final Bitmap icon,
+                                    @Nullable final DrawableAnimation animation) {
         this.headerIconBitmap = icon;
         this.headerIconId = -1;
         this.headerIcon = new BitmapDrawable(getContext().getResources(), icon);
-        adaptHeaderIcon();
+        adaptHeaderIcon(animation);
     }
 
     @Override
     public final void setHeaderIcon(@DrawableRes final int resourceId) {
+        setHeaderIcon(resourceId, null);
+    }
+
+    @Override
+    public void setHeaderIcon(@DrawableRes final int resourceId,
+                              @Nullable final DrawableAnimation animation) {
         this.headerIconBitmap = null;
         this.headerIconId = resourceId;
         this.headerIcon = ContextCompat.getDrawable(getContext(), resourceId);
-        adaptHeaderIcon();
+        adaptHeaderIcon(animation);
     }
 
     @Override
@@ -490,7 +550,7 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
         adaptHeaderBackground(null);
         adaptHeaderDividerColor();
         adaptHeaderDividerVisibility();
-        adaptHeaderIcon();
+        adaptHeaderIcon(null);
         adaptHeaderHeight();
     }
 

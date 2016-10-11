@@ -20,6 +20,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
+import de.mrapp.android.dialog.animation.DrawableAnimation;
 
 /**
  * Defines the interface of a decorator, which allows to modify the view hierarchy of a dialog,
@@ -150,11 +151,35 @@ public interface HeaderDialogDecorator extends Dialog {
     /**
      * Sets the icon of the dialog's header.
      *
+     * @param icon
+     *         The icon, which should be set, as an instance of the class {@link Bitmap} or null, if
+     *         no icon should be set
+     * @param animation
+     *         The animation, which should be used to change the icon, as an instance of the class
+     *         {@link DrawableAnimation} or null, if no animation should be used
+     */
+    void setHeaderIcon(@Nullable Bitmap icon, @Nullable DrawableAnimation animation);
+
+    /**
+     * Sets the icon of the dialog's header.
+     *
      * @param resourceId
      *         The resource id of the icon, which should be set, as an {@link Integer} value. The
      *         resource id must correspond to a valid drawable resource
      */
     void setHeaderIcon(@DrawableRes int resourceId);
+
+    /**
+     * Sets the icon of the dialog's header.
+     *
+     * @param resourceId
+     *         The resource id of the icon, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid drawable resource
+     * @param animation
+     *         The animation, which should be used to change the icon, as an instance of the class
+     *         {@link DrawableAnimation} or null, if no animation should be used
+     */
+    void setHeaderIcon(@DrawableRes int resourceId, @Nullable DrawableAnimation animation);
 
     /**
      * Returns the color of the divider of the dialog's header.

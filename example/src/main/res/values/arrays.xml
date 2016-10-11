@@ -27,4 +27,10 @@ License.
         <item>@drawable/dialog_header_background_green</item>
     </array>
 
+    <array name="wizard_dialog_header_icons">
+        <item>@drawable/dialog_header_icon</item>
+        <item>@drawable/dialog_header_icon_2</item>
+        <item>@drawable/dialog_header_icon_3</item>
+    </array>
+
 </resources>

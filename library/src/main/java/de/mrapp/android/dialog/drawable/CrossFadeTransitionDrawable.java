@@ -26,6 +26,16 @@ import android.support.annotation.NonNull;
 public class CrossFadeTransitionDrawable extends AbstractTransitionDrawable {
 
     /**
+     * True, if the first drawable is faded out, false otherwise.
+     */
+    private boolean crossFade;
+
+    /**
+     * True, if cross fading is used by a running transition, false otherwise.
+     */
+    private boolean useCrossFade;
+
+    /**
      * Creates a new layer drawable, which allows to cross-fade between the first and second layer.
      *
      * @param layers
@@ -33,23 +43,47 @@ public class CrossFadeTransitionDrawable extends AbstractTransitionDrawable {
      */
     public CrossFadeTransitionDrawable(@NonNull final Drawable[] layers) {
         super(layers);
+        this.crossFade = false;
+        this.useCrossFade = false;
+    }
+
+    /**
+     * Returns, whether the first drawable is faded out, or not.
+     *
+     * @return True, if the first drawable is faded out, false otherwise
+     */
+    public final boolean isCrossFade() {
+        return crossFade;
+    }
+
+    /**
+     * Sets, whether the first drawable should be faded out, or not.
+     *
+     * @param crossFade
+     *         True, if the first drawable should be faded out, false otherwise
+     */
+    public final void setCrossFade(final boolean crossFade) {
+        this.crossFade = crossFade;
     }
 
     @Override
     protected final void onStartTransition() {
-
+        this.useCrossFade = isCrossFade();
     }
 
     @Override
     protected final void onDraw(final float interpolatedTime, @NonNull final Canvas canvas) {
-        getDrawable(0).draw(canvas);
         int currentAlpha = Math.round(255 * interpolatedTime);
+        Drawable first = getDrawable(0);
 
-        if (currentAlpha > 0) {
-            Drawable second = getDrawable(1);
-            second.setAlpha(currentAlpha);
-            second.draw(canvas);
+        if (useCrossFade) {
+            first.setAlpha(255 - currentAlpha);
         }
+
+        first.draw(canvas);
+        Drawable second = getDrawable(1);
+        second.setAlpha(currentAlpha);
+        second.draw(canvas);
     }
 
 }
