@@ -20,7 +20,7 @@ import android.support.annotation.NonNull;
 
 /**
  * A layer drawable, which allows to translate between the first and second layer by downscaling the
- * first layer and subsequently upscaling the second layer.
+ * first layer and subsequently upscaling the second layer. Both layers should have the same size.
  *
  * @author Michael Rapp
  * @since 3.7.0
@@ -71,6 +71,12 @@ public class ScaleTransitionDrawable extends AbstractTransitionDrawable {
         int newTop = Math.round(bounds.top + (height - newHeight) / 2f);
         drawable.setBounds(newLeft, newTop, newLeft + newWidth, newTop + newHeight);
         drawable.draw(canvas);
+    }
+
+    @Override
+    protected final void onEndTransition() {
+        getDrawable(0).setBounds(bounds);
+        getDrawable(1).setBounds(bounds);
     }
 
 }

@@ -86,4 +86,10 @@ public class CrossFadeTransitionDrawable extends AbstractTransitionDrawable {
         second.draw(canvas);
     }
 
+    @Override
+    protected final void onEndTransition() {
+        getDrawable(0).setAlpha(255);
+        getDrawable(1).setAlpha(255);
+    }
+
 }

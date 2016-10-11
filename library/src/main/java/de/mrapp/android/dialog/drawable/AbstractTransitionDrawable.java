@@ -104,6 +104,11 @@ public abstract class AbstractTransitionDrawable extends LayerDrawable {
     protected abstract void onDraw(final float interpolatedTime, @NonNull final Canvas canvas);
 
     /**
+     * The method, which is invoked on subclasses when the transition is about to end.
+     */
+    protected abstract void onEndTransition();
+
+    /**
      * Creates a new layer drawable, which allows to translate between the first and second layer in
      * an animated manner.
      *
@@ -170,10 +175,9 @@ public abstract class AbstractTransitionDrawable extends LayerDrawable {
         }
 
         if (done) {
+            onEndTransition();
             Drawable first = getDrawable(0);
             Drawable second = getDrawable(1);
-            first.setAlpha(255);
-            second.setAlpha(255);
 
             if (state != TRANSITION_NONE) {
                 second.draw(canvas);

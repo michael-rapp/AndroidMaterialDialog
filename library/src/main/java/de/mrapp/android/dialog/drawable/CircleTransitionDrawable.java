@@ -203,4 +203,9 @@ public class CircleTransitionDrawable extends AbstractTransitionDrawable {
         }
     }
 
+    @Override
+    protected final void onEndTransition() {
+
+    }
+
 }
