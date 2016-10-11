@@ -172,12 +172,12 @@ public abstract class AbstractTransitionDrawable extends LayerDrawable {
         if (done) {
             Drawable first = getDrawable(0);
             Drawable second = getDrawable(1);
+            first.setAlpha(255);
+            second.setAlpha(255);
 
             if (state != TRANSITION_NONE) {
-                second.setAlpha(255);
                 second.draw(canvas);
             } else {
-                first.setAlpha(255);
                 first.draw(canvas);
             }
 
