@@ -123,8 +123,8 @@ public class ProgressDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
     private void adaptProgressBar() {
         getDialog().setCustomMessage(getCustomMessageId());
 
-        if (getView() != null) {
-            View progressView = getView().findViewById(R.id.progress_bar);
+        if (getRootView() != null) {
+            View progressView = getRootView().findViewById(R.id.progress_bar);
             progressBar = progressView instanceof CircularProgressBar ?
                     (CircularProgressBar) progressView : null;
             adaptProgressBarColor();
@@ -168,8 +168,8 @@ public class ProgressDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
      * Adapts the text size of the dialog's message, depending on whether a title is shown.
      */
     private void adaptMessageTextSize() {
-        if (getView() != null) {
-            View messageView = getView().findViewById(android.R.id.message);
+        if (getRootView() != null) {
+            View messageView = getRootView().findViewById(android.R.id.message);
 
             if (messageView instanceof TextView) {
                 TextView messageTextView = (TextView) messageView;

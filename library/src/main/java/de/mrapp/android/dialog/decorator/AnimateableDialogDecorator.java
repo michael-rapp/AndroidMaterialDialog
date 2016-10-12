@@ -386,7 +386,7 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
 
         if (animation != null) {
             Window window = getWindow();
-            View view = getView();
+            View view = getRootView();
 
             if (view != null && window != null) {
                 View animatedView = getDialog().isFullscreen() ? window.getDecorView() : view;
@@ -438,7 +438,7 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
             hidden = true;
 
             if (animation != null) {
-                View view = getView();
+                View view = getRootView();
                 Window window = getWindow();
 
                 if (view != null && window != null) {

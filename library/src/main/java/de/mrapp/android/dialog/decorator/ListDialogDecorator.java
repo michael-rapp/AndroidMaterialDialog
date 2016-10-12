@@ -140,11 +140,11 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
      * Adapts the list view, which is used to show the dialog's list items.
      */
     private void inflateListView() {
-        if (getView() != null) {
+        if (getRootView() != null) {
 
             if (adapter != null && !adapter.isEmpty()) {
                 getDialog().setView(R.layout.material_dialog_list_view);
-                View listView = getView().findViewById(android.R.id.list);
+                View listView = getRootView().findViewById(android.R.id.list);
                 this.listView = listView instanceof ListView ? (ListView) listView : null;
 
                 if (this.listView != null) {

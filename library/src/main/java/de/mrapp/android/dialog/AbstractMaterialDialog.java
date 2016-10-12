@@ -381,8 +381,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         setContentView(view);
         Window window = getWindow();
         assert window != null;
-        View rootView = view.findViewById(R.id.root);
-        onAttachDecorators(window, rootView);
+        onAttachDecorators(window, view);
     }
 
     @Override

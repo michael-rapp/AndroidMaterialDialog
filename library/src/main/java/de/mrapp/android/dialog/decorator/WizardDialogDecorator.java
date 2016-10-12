@@ -308,10 +308,10 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
      * Inflates the tab layout, which indicates the currently shown fragment.
      */
     private void inflateTabLayout() {
-        if (getView() != null) {
+        if (getDialogRootView() != null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            ViewGroup headerContainer = (ViewGroup) getView().findViewById(R.id.header);
-            ViewGroup contentContainer = (ViewGroup) getView().findViewById(R.id.content_container);
+            ViewGroup headerContainer = (ViewGroup) getDialogRootView().findViewById(R.id.header);
+            ViewGroup contentContainer = (ViewGroup) getDialogRootView().findViewById(R.id.content_container);
 
             if (tabLayout != null) {
                 headerContainer.removeViewInLayout(tabLayout);
@@ -340,7 +340,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
      * Inflates the layout, which is used to show the dialog's buttons.
      */
     private void inflateButtonBar() {
-        ViewGroup rootView = (ViewGroup) getView();
+        ViewGroup rootView = (ViewGroup) getDialogRootView();
 
         if (rootView != null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());

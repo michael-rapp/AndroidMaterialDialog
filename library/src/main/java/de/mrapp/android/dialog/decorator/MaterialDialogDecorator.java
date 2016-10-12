@@ -386,8 +386,8 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * default one or a custom view, if one has been set before.
      */
     private void inflateTitleView() {
-        if (getView() != null) {
-            titleContainer = (ViewGroup) getView().findViewById(R.id.title_container);
+        if (getRootView() != null) {
+            titleContainer = (ViewGroup) getRootView().findViewById(R.id.title_container);
             titleContainer.removeAllViews();
 
             if (customTitleView != null) {
@@ -413,8 +413,8 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * default one or a custom view, if one has been set before.
      */
     private void inflateMessageView() {
-        if (getView() != null) {
-            messageContainer = (ViewGroup) getView().findViewById(R.id.message_container);
+        if (getRootView() != null) {
+            messageContainer = (ViewGroup) getRootView().findViewById(R.id.message_container);
             messageContainer.removeAllViews();
 
             if (customMessageView != null) {
@@ -440,8 +440,8 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * default one or a custom view, if one has been set before.
      */
     private void inflateContentView() {
-        if (getView() != null) {
-            contentContainer = (ViewGroup) getView().findViewById(R.id.content_container);
+        if (getRootView() != null) {
+            contentContainer = (ViewGroup) getRootView().findViewById(R.id.content_container);
             contentContainer.removeAllViews();
 
             if (customView != null) {
@@ -460,7 +460,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * Adapts the layout params of the dialog.
      */
     private void adaptLayoutParams() {
-        DialogRootView rootView = (DialogRootView) getView();
+        DialogRootView rootView = (DialogRootView) getRootView();
 
         if (getWindow() != null && rootView != null) {
             rootView.setLayoutParams(createLayoutParams());
@@ -596,11 +596,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      *         class {@link BackgroundAnimation} or null, if no animation should be used
      */
     private void adaptBackground(@Nullable final BackgroundAnimation animation) {
-        if (getView() != null && getWindow() != null) {
+        if (getRootView() != null && getWindow() != null) {
             Drawable newBackground = background;
 
             if (animation != null && newBackground != null) {
-                View animatedView = isFullscreen() ? getWindow().getDecorView() : getView();
+                View animatedView = isFullscreen() ? getWindow().getDecorView() : getRootView();
                 Drawable previousBackground = animatedView.getBackground();
 
                 if (previousBackground != null) {
@@ -640,7 +640,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
                 }
             }
 
-            ViewUtil.setBackground(getView(), isFullscreen() ? null : newBackground);
+            ViewUtil.setBackground(getRootView(), isFullscreen() ? null : newBackground);
             ViewUtil.setBackground(getWindow().getDecorView(),
                     isFullscreen() ? newBackground : null);
         }

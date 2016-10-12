@@ -19,8 +19,10 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.Window;
 
+import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.dialog.model.DialogDecorator;
+import de.mrapp.android.dialog.view.DialogRootView;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -51,6 +53,11 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
     private View view;
 
     /**
+     * The root view of the dialog, whose view hierarchy is modified by the decorator.
+     */
+    private DialogRootView dialogRootView;
+
+    /**
      * The method, which is invoked, when the decorator is attached to the view hierarchy.
      *
      * @param window
@@ -79,6 +86,7 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
         this.dialog = dialog;
         this.window = null;
         this.view = null;
+        this.dialogRootView = null;
     }
 
     /**
@@ -114,6 +122,17 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
         return view;
     }
 
+    /**
+     * Returns the root view of the dialog, whose view hierarchy is modified by the decorator.
+     *
+     * @return The root view of the dialog, whose view hierarchy is modified by the decorator, as an
+     * instance of the class {@link DialogRootView} or null, if the decorator is not attached
+     */
+    @Nullable
+    public final DialogRootView getRootView() {
+        return dialogRootView;
+    }
+
     @Override
     public final Context getContext() {
         return dialog.getContext();
@@ -135,6 +154,7 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
         ensureNotNull(view, "The view may not be null");
         this.window = window;
         this.view = view;
+        this.dialogRootView = (DialogRootView) view.findViewById(R.id.root);
         onAttach(window, view);
     }
 
@@ -145,6 +165,7 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
     public final void detach() {
         this.window = null;
         this.view = null;
+        this.dialogRootView = null;
         onDetach();
     }
 

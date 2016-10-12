@@ -20,8 +20,10 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.Window;
 
+import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.dialog.model.DialogDecorator;
+import de.mrapp.android.dialog.view.DialogRootView;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -51,6 +53,11 @@ public abstract class AbstractDialogFragmentDecorator<DialogType extends Dialog>
      * The root view of the view hierarchy, which is modified by the decorator.
      */
     private View view;
+
+    /**
+     * The root view of the dialog, whose view hierarchy is modified by the decorator.
+     */
+    private DialogRootView dialogRootView;
 
     /**
      * The method, which is invoked, when the decorator is attached to the view hierarchy.
@@ -85,6 +92,7 @@ public abstract class AbstractDialogFragmentDecorator<DialogType extends Dialog>
         this.dialog = dialog;
         this.window = null;
         this.view = null;
+        this.dialogRootView = null;
     }
 
     /**
@@ -120,6 +128,17 @@ public abstract class AbstractDialogFragmentDecorator<DialogType extends Dialog>
         return view;
     }
 
+    /**
+     * Returns the root view of the dialog, whose view hierarchy is modified by the decorator.
+     *
+     * @return The root view of the dialog, whose view hierarchy is modified by the decorator, as an
+     * instance of the class {@link DialogRootView} or null, if the decorator is not attached
+     */
+    @Nullable
+    protected final DialogRootView getDialogRootView() {
+        return dialogRootView;
+    }
+
     @Override
     public final Context getContext() {
         return dialog.getContext();
@@ -141,9 +160,12 @@ public abstract class AbstractDialogFragmentDecorator<DialogType extends Dialog>
      */
     public final void attach(@NonNull final Window window, @NonNull final View view,
                              @NonNull final FragmentManager fragmentManager) {
+        ensureNotNull(window, "The window may not be null");
         ensureNotNull(view, "The view may not be null");
         ensureNotNull(fragmentManager, "The fragment manager may not be null");
+        this.window = window;
         this.view = view;
+        this.dialogRootView = (DialogRootView) view.findViewById(R.id.root);
         onAttach(window, view, fragmentManager);
     }
 
@@ -154,6 +176,7 @@ public abstract class AbstractDialogFragmentDecorator<DialogType extends Dialog>
     public final void detach() {
         this.window = null;
         this.view = null;
+        this.dialogRootView = null;
         onDetach();
     }
 

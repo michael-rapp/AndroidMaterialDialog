@@ -524,8 +524,7 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
         assert window != null;
         View view = getView();
         assert view != null;
-        View rootView = view.findViewById(R.id.root);
-        onAttachDecorators(window, rootView, getChildFragmentManager());
+        onAttachDecorators(window, view, getChildFragmentManager());
 
         if (showListener != null) {
             showListener.onShow(getDialog());
