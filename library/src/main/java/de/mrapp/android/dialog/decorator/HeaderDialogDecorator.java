@@ -384,6 +384,8 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
     @Override
     public final void showHeader(final boolean show) {
         this.showHeader = show;
+        getDialog().setFitsSystemWindows(getDialog().isFitsSystemWindowsLeft(), !show,
+                getDialog().isFitsSystemWindowsRight(), getDialog().isFitsSystemWindowsBottom());
         adaptHeaderVisibility();
     }
 
