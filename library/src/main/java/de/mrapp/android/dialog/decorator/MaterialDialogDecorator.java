@@ -30,6 +30,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.OnApplyWindowInsetsListener;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.WindowInsetsCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -290,6 +293,37 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     private int customMessageViewId = -1;
 
     /**
+     * The window insets, which have been applied to the root view of the view hierarchy, which is
+     * modified by the decorator.
+     */
+    private Rect windowInsets;
+
+    /**
+     * Creates and returns a listener, which allows to observe when window insets are applied to the
+     * root view of the view hierarchy, which is modified by the decorator.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnApplyWindowInsetsListener}
+     */
+    private OnApplyWindowInsetsListener createWindowInsetsListener() {
+        return new OnApplyWindowInsetsListener() {
+
+            @Override
+            public WindowInsetsCompat onApplyWindowInsets(final View v,
+                                                          final WindowInsetsCompat insets) {
+                windowInsets = insets.hasSystemWindowInsets() ?
+                        new Rect(insets.getSystemWindowInsetLeft(),
+                                insets.getSystemWindowInsetTop(),
+                                insets.getSystemWindowInsetRight(),
+                                insets.getSystemWindowInsetBottom()) : null;
+                adaptLayoutParams();
+                return insets;
+            }
+
+        };
+    }
+
+    /**
      * Creates and returns the layout params, which should be used by the dialog's root view.
      *
      * @return The layout params, which have been created, as an instance of the class {@link
@@ -303,10 +337,14 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         boolean rtl = isRtl();
         int shadowWidth = isFullscreen() ? 0 :
                 getContext().getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
-        int leftMargin = getLeftMargin() - shadowWidth;
-        int topMargin = getTopMargin() - shadowWidth;
-        int rightMargin = getRightMargin() - shadowWidth;
-        int bottomMargin = getBottomMargin() - shadowWidth;
+        int leftWindowInset = isFullscreen() && windowInsets != null ? windowInsets.left : 0;
+        int topWindowInset = isFullscreen() && windowInsets != null ? windowInsets.top : 0;
+        int rightWindowInset = isFullscreen() && windowInsets != null ? windowInsets.right : 0;
+        int bottomWindowInset = isFullscreen() && windowInsets != null ? windowInsets.bottom : 0;
+        int leftMargin = getLeftMargin() - shadowWidth + leftWindowInset;
+        int topMargin = getTopMargin() - shadowWidth + topWindowInset;
+        int rightMargin = getRightMargin() - shadowWidth + rightWindowInset;
+        int bottomMargin = getBottomMargin() - shadowWidth + bottomWindowInset;
         int width =
                 getLayoutDimension(getWidth(), leftMargin + rightMargin, windowDimensions.right);
         int height =
@@ -460,7 +498,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * Adapts the layout params of the dialog.
      */
     private void adaptLayoutParams() {
-        DialogRootView rootView = (DialogRootView) getRootView();
+        DialogRootView rootView = getRootView();
 
         if (getWindow() != null && rootView != null) {
             rootView.setLayoutParams(createLayoutParams());
@@ -1045,6 +1083,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         window.setBackgroundDrawable(null);
+        ViewCompat.setOnApplyWindowInsetsListener(view, createWindowInsetsListener());
         inflateTitleView();
         inflateMessageView();
         inflateContentView();
