@@ -195,7 +195,7 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
      * Inflates the dialog's header.
      */
     private void inflateHeader() {
-        ViewGroup rootView = (ViewGroup) getRootView();
+        ViewGroup rootView = getRootView();
 
         if (rootView != null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
