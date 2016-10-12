@@ -240,6 +240,37 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     }
 
     @Override
+    public final boolean isFitsSystemWindowsLeft() {
+        return decorator.isFitsSystemWindowsLeft();
+    }
+
+    @Override
+    public final boolean isFitsSystemWindowsTop() {
+        return decorator.isFitsSystemWindowsTop();
+    }
+
+    @Override
+    public final boolean isFitsSystemWindowsRight() {
+        return decorator.isFitsSystemWindowsRight();
+    }
+
+    @Override
+    public final boolean isFitsSystemWindowsBottom() {
+        return decorator.isFitsSystemWindowsBottom();
+    }
+
+    @Override
+    public final void setFitsSystemWindows(final boolean fitsSystemsWindows) {
+        decorator.setFitsSystemWindows(fitsSystemsWindows);
+    }
+
+    @Override
+    public final void setFitsSystemWindows(final boolean left, final boolean top,
+                                           final boolean right, final boolean bottom) {
+        decorator.setFitsSystemWindows(left, top, right, bottom);
+    }
+
+    @Override
     public final Drawable getIcon() {
         return decorator.getIcon();
     }

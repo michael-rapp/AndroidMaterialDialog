@@ -13,14 +13,12 @@
  */
 package de.mrapp.android.dialog.decorator;
 
-import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
@@ -293,6 +291,12 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     private int customMessageViewId = -1;
 
     /**
+     * A boolean array, which contains, whether the dialog should inset its content as specific
+     * edges, or not.
+     */
+    private boolean[] fitsSystemWindows = new boolean[]{true, true, true, true};
+
+    /**
      * The window insets, which have been applied to the root view of the view hierarchy, which is
      * modified by the decorator.
      */
@@ -334,25 +338,28 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         Window window = getWindow();
         assert window != null;
         window.getDecorView().getWindowVisibleDisplayFrame(windowDimensions);
-        boolean rtl = isRtl();
         int shadowWidth = isFullscreen() ? 0 :
                 getContext().getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
-        int leftWindowInset = isFullscreen() && windowInsets != null ? windowInsets.left : 0;
-        int topWindowInset = isFullscreen() && windowInsets != null ? windowInsets.top : 0;
-        int rightWindowInset = isFullscreen() && windowInsets != null ? windowInsets.right : 0;
-        int bottomWindowInset = isFullscreen() && windowInsets != null ? windowInsets.bottom : 0;
-        int leftMargin = getLeftMargin() - shadowWidth + leftWindowInset;
-        int topMargin = getTopMargin() - shadowWidth + topWindowInset;
-        int rightMargin = getRightMargin() - shadowWidth + rightWindowInset;
-        int bottomMargin = getBottomMargin() - shadowWidth + bottomWindowInset;
+        int leftInset = isFitsSystemWindowsLeft() && isFullscreen() && windowInsets != null ?
+                windowInsets.left : 0;
+        int topInset = isFitsSystemWindowsTop() && isFullscreen() && windowInsets != null ?
+                windowInsets.top : 0;
+        int rightInset = isFitsSystemWindowsRight() && isFullscreen() && windowInsets != null ?
+                windowInsets.right : 0;
+        int bottomInset = isFitsSystemWindowsBottom() && isFullscreen() && windowInsets != null ?
+                windowInsets.bottom : 0;
+        int leftMargin = getLeftMargin() - shadowWidth + leftInset;
+        int topMargin = getTopMargin() - shadowWidth + topInset;
+        int rightMargin = getRightMargin() - shadowWidth + rightInset;
+        int bottomMargin = getBottomMargin() - shadowWidth + bottomInset;
         int width =
                 getLayoutDimension(getWidth(), leftMargin + rightMargin, windowDimensions.right);
         int height =
                 getLayoutDimension(getHeight(), topMargin + bottomMargin, windowDimensions.bottom);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(width, height);
-        layoutParams.leftMargin = rtl ? rightMargin : leftMargin;
+        layoutParams.leftMargin = leftMargin;
         layoutParams.topMargin = topMargin;
-        layoutParams.rightMargin = rtl ? leftMargin : rightMargin;
+        layoutParams.rightMargin = rightMargin;
         layoutParams.bottomMargin = bottomMargin;
 
         if ((getGravity() & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL) {
@@ -380,20 +387,6 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         }
 
         return layoutParams;
-    }
-
-    /**
-     * Returns, whether a right-to-left layout should be used, or not.
-     *
-     * @return True, if a right-to-left layout should be used, false otherwise;
-     */
-    private boolean isRtl() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            Configuration configuration = getContext().getResources().getConfiguration();
-            return configuration.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
-        }
-
-        return false;
     }
 
     /**
@@ -846,6 +839,39 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         ensureAtLeast(right, 0, "The right margin must be at least 0");
         ensureAtLeast(bottom, 0, "The bottom margin must be at least 0");
         this.margin = new int[]{left, top, right, bottom};
+        adaptLayoutParams();
+    }
+
+    @Override
+    public final boolean isFitsSystemWindowsLeft() {
+        return fitsSystemWindows[0];
+    }
+
+    @Override
+    public final boolean isFitsSystemWindowsTop() {
+        return fitsSystemWindows[1];
+    }
+
+    @Override
+    public final boolean isFitsSystemWindowsRight() {
+        return fitsSystemWindows[2];
+    }
+
+    @Override
+    public final boolean isFitsSystemWindowsBottom() {
+        return fitsSystemWindows[3];
+    }
+
+    @Override
+    public final void setFitsSystemWindows(final boolean fitsSystemWindows) {
+        setFitsSystemWindows(fitsSystemWindows, fitsSystemWindows, fitsSystemWindows,
+                fitsSystemWindows);
+    }
+
+    @Override
+    public final void setFitsSystemWindows(final boolean left, final boolean top,
+                                           final boolean right, final boolean bottom) {
+        this.fitsSystemWindows = new boolean[]{left, top, right, bottom};
         adaptLayoutParams();
     }
 

@@ -219,6 +219,62 @@ public interface MaterialDialogDecorator extends Dialog {
     void setMargin(int left, int top, int right, int bottom);
 
     /**
+     * Returns, whether the dialog accounts for system screen decorations such as the status bar and
+     * insets its content at the left edge.
+     *
+     * @return True, if the dialog insets its content at the left edge, false otherwise
+     */
+    boolean isFitsSystemWindowsLeft();
+
+    /**
+     * Returns, whether the dialog accounts for system screen decorations such as the status bar and
+     * insets its content at the top edge.
+     *
+     * @return True, if the dialog insets its content at the top edge, false otherwise
+     */
+    boolean isFitsSystemWindowsTop();
+
+    /**
+     * Returns, whether the dialog accounts for system screen decorations such as the status bar and
+     * insets its content at the right edge.
+     *
+     * @return True, if the dialog insets its content at the right edge, false otherwise
+     */
+    boolean isFitsSystemWindowsRight();
+
+    /**
+     * Returns, whether the dialog accounts for system screen decorations such as the status bar and
+     * insets its content at the bottom edge.
+     *
+     * @return True, if the dialog insets its content at the bottom edge, false otherwise
+     */
+    boolean isFitsSystemWindowsBottom();
+
+    /**
+     * Sets, whether the dialog should account for system screen decorations such as the status bar
+     * and inset its content, or not.
+     *
+     * @param fitsSystemWindows
+     *         True, if the dialog should inset its content, false otherwise
+     */
+    void setFitsSystemWindows(boolean fitsSystemWindows);
+
+    /**
+     * Sets, whether the dialog should account for system screen decorations such as the status bar
+     * and inset its content, or not.
+     *
+     * @param left
+     *         True, if the dialog should inset its content at the left edge, false otherwise
+     * @param top
+     *         True, if the dialog should inset its content at the top edge, false otherwise
+     * @param right
+     *         True, if the dialog should inset its content at the right edge, false otherwise
+     * @param bottom
+     *         True, if the dialog should inset its content at the bottom edge, false otherwise
+     */
+    void setFitsSystemWindows(boolean left, boolean top, boolean right, boolean bottom);
+
+    /**
      * Returns the icon of the dialog.
      *
      * @return The icon of the dialog, as an instance of the class {@link Drawable} or null, if no

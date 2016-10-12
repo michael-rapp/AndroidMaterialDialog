@@ -521,6 +521,41 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     }
 
     /**
+     * Sets, whether the dialog, which is created by the builder, should account for system screen
+     * decorations such as the status bar and inset its content, or not.
+     *
+     * @param fitsSystemWindows
+     *         True, if the dialog should inset its content, false otherwise
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setFitsSystemWindows(final boolean fitsSystemWindows) {
+        getProduct().setFitsSystemWindows(fitsSystemWindows);
+        return self();
+    }
+
+    /**
+     * Sets, whether the dialog, which is created by the builder, should account for system screen
+     * decorations such as the status bar and inset its content, or not.
+     *
+     * @param left
+     *         True, if the dialog should inset its content at the left edge, false otherwise
+     * @param top
+     *         True, if the dialog should inset its content at the top edge, false otherwise
+     * @param right
+     *         True, if the dialog should inset its content at the right edge, false otherwise
+     * @param bottom
+     *         True, if the dialog should inset its content at the bottom edge, false otherwise
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setFitsSystemWindows(final boolean left, final boolean top,
+                                                  final boolean right, final boolean bottom) {
+        getProduct().setFitsSystemWindows(left, top, right, bottom);
+        return self();
+    }
+
+    /**
      * Sets the color of the title of the dialog, which is created by the builder.
      *
      * @param color
