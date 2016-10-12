@@ -20,7 +20,7 @@ import android.support.annotation.NonNull;
  * An animation, which can be used to change backgrounds via cross-fading.
  *
  * @author Michael Rapp
- * @since 3.7.0
+ * @since 4.0.0
  */
 public class CrossFadeTransitionAnimation extends BackgroundAnimation {
 

@@ -29,7 +29,7 @@ import static de.mrapp.android.util.Condition.ensureAtLeast;
  * second layer as a circle, which grows from a specific position.
  *
  * @author Michael Rapp
- * @since 3.7.0
+ * @since 4.0.0
  */
 public class CircleTransitionDrawable extends AbstractTransitionDrawable {
 

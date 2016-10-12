@@ -30,7 +30,7 @@ Alternatively, the library can be added to your Android app as a Gradle dependen
 
 ```groovy
 dependencies {
-    compile 'com.github.michael-rapp:android-material-dialog:3.7.0'
+    compile 'com.github.michael-rapp:android-material-dialog:4.0.0'
 }
 ```
 

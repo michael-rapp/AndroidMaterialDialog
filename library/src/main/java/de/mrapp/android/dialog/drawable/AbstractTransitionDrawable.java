@@ -27,7 +27,7 @@ import de.mrapp.android.dialog.animation.DrawableAnimation.AnimationListener;
  * second layer in an animated manner.
  *
  * @author Michael Rapp
- * @since 3.7.0
+ * @since 4.0.0
  */
 public abstract class AbstractTransitionDrawable extends LayerDrawable {
 

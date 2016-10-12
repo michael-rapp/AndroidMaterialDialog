@@ -26,7 +26,7 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @param <BuilderType>
  *         The type of the builder
  * @author Michael Rapp
- * @since 3.7.0
+ * @since 4.0.0
  */
 public abstract class AbstractBuilder<Type, BuilderType extends AbstractBuilder<Type, ?>> {
 

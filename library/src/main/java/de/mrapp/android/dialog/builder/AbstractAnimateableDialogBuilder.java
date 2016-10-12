@@ -31,7 +31,7 @@ import de.mrapp.android.dialog.model.AnimateableDialog;
  * @param <BuilderType>
  *         The type of the builder
  * @author Michael Rapp
- * @since 3.7.0
+ * @since 4.0.0
  */
 public abstract class AbstractAnimateableDialogBuilder<DialogType extends AnimateableDialog, BuilderType extends AbstractAnimateableDialogBuilder<DialogType, ?>>
         extends AbstractHeaderDialogBuilder<DialogType, BuilderType> {

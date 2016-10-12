@@ -28,7 +28,7 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * An abstract base class for all animations, which can be used to show or hide a dialog.
  *
  * @author Michael Rapp
- * @since 3.7.0
+ * @since 4.0.0
  */
 public abstract class DialogAnimation {
 

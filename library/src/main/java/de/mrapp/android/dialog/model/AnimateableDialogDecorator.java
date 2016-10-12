@@ -23,7 +23,7 @@ import de.mrapp.android.dialog.animation.DialogAnimation;
  * pre-Lollipop devices, must implement.
  *
  * @author Michael Rapp
- * @since 3.7.0
+ * @since 4.0.0
  */
 public interface AnimateableDialogDecorator extends Dialog {
 

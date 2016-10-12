@@ -23,7 +23,7 @@ import static de.mrapp.android.util.Condition.ensureAtLeast;
  * An animation, which can be used to show or hide a dialog by animating its position and size.
  *
  * @author Michael Rapp
- * @since 3.7.0
+ * @since 4.0.0
  */
 public class RectangleRevealAnimation extends DialogAnimation {
 

@@ -20,7 +20,7 @@ import android.support.annotation.NonNull;
  * An abstract base class for all animations, which can be used to change backgrounds.
  *
  * @author Michael Rapp
- * @since 3.7.0
+ * @since 4.0.0
  */
 public abstract class BackgroundAnimation extends DrawableAnimation {
 

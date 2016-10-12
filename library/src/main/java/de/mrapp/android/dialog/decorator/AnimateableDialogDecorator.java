@@ -41,7 +41,7 @@ import static de.mrapp.android.util.DisplayUtil.getStatusBarHeight;
  * contain a header.
  *
  * @author Michael Rapp
- * @since 3.7.0
+ * @since 4.0.0
  */
 public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDialog>
         implements de.mrapp.android.dialog.model.AnimateableDialogDecorator {

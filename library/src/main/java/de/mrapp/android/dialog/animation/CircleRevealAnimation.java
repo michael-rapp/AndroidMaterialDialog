@@ -25,7 +25,7 @@ import static de.mrapp.android.util.Condition.ensureAtLeast;
  * clipping circle.
  *
  * @author Michael Rapp
- * @since 3.7.0
+ * @since 4.0.0
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class CircleRevealAnimation extends DialogAnimation {

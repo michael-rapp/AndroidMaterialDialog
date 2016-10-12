@@ -21,7 +21,7 @@ import android.support.annotation.NonNull;
  * animation.
  *
  * @author Michael Rapp
- * @since 3.7.0
+ * @since 4.0.0
  */
 public class ScaleTransitionAnimation extends DrawableAnimation {
 

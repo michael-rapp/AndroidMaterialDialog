@@ -21,7 +21,7 @@ import android.support.annotation.NonNull;
  * A layer drawable, which allows to cross-fade between the first and second layer.
  *
  * @author Michael Rapp
- * @since 3.7.0
+ * @since 4.0.0
  */
 public class CrossFadeTransitionDrawable extends AbstractTransitionDrawable {
 

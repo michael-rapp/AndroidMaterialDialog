@@ -18,7 +18,7 @@ package de.mrapp.android.dialog.model;
  * Design guidelines even on pre-Lollipop devices, must implement.
  *
  * @author Michael Rapp
- * @since 3.7.0
+ * @since 4.0.0
  */
 public interface AnimateableDialog extends HeaderDialog, AnimateableDialogDecorator {
 

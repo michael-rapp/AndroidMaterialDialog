@@ -35,7 +35,7 @@ import de.mrapp.android.dialog.model.AnimateableDialog;
  * Material Design guidelines even on pre-Lollipop devices.
  *
  * @author Michael Rapp
- * @since 3.7.0
+ * @since 4.0.0
  */
 public abstract class AbstractAnimateableDialog extends AbstractHeaderDialog
         implements AnimateableDialog {
