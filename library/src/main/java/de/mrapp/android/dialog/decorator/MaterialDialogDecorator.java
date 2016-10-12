@@ -671,6 +671,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
                 }
             }
 
+            getWindow().setBackgroundDrawable(null);
             ViewUtil.setBackground(getRootView(), isFullscreen() ? null : newBackground);
             ViewUtil.setBackground(getWindow().getDecorView(),
                     isFullscreen() ? newBackground : null);
@@ -1107,8 +1108,6 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        window.setBackgroundDrawable(null);
         ViewCompat.setOnApplyWindowInsetsListener(view, createWindowInsetsListener());
         inflateTitleView();
         inflateMessageView();

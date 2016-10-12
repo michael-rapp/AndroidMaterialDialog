@@ -35,14 +35,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.RelativeLayout;
 
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
 import de.mrapp.android.dialog.model.MaterialDialog;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
-import static de.mrapp.android.util.DisplayUtil.getDisplayWidth;
 
 /**
  * An abstract base class for all dialogs, which are designed according to Android 5's Material
@@ -92,24 +90,6 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      */
     private View inflateLayout() {
         return View.inflate(getContext(), R.layout.material_dialog, null);
-    }
-
-    /**
-     * Creates and returns the layout params, which should be used by the dialog's root view.
-     *
-     * @param rootView
-     *         The root view as an instance of the class {@link View}. The view may not be null
-     * @return The layout params, which have been created, as an instance of the class {@link
-     * RelativeLayout.LayoutParams}
-     */
-    private RelativeLayout.LayoutParams createLayoutParams(@NonNull final View rootView) {
-        RelativeLayout.LayoutParams layoutParams =
-                (RelativeLayout.LayoutParams) rootView.getLayoutParams();
-        int horizontalMargin =
-                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_horizontal_margin);
-        int width = getContext().getResources().getDimensionPixelSize(R.dimen.dialog_width);
-        layoutParams.width = Math.min(width, getDisplayWidth(getContext()) - horizontalMargin * 2);
-        return layoutParams;
     }
 
     /**
@@ -543,8 +523,9 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
             onRestoreInstanceState(savedInstanceState);
         }
 
-        View rootView = view.findViewById(R.id.root);
-        rootView.setLayoutParams(createLayoutParams(rootView));
+        Window window = getDialog().getWindow();
+        assert window != null;
+        onAttachDecorators(window, view, getChildFragmentManager());
         return view;
     }
 
@@ -553,9 +534,7 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
         super.onStart();
         Window window = getDialog().getWindow();
         assert window != null;
-        View view = getView();
-        assert view != null;
-        onAttachDecorators(window, view, getChildFragmentManager());
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         if (showListener != null) {
             showListener.onShow(getDialog());

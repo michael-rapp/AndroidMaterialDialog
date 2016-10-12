@@ -29,6 +29,7 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
@@ -412,6 +413,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         setContentView(view);
         Window window = getWindow();
         assert window != null;
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         onAttachDecorators(window, view);
     }
 
