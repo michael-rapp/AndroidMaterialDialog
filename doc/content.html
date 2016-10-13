@@ -46,11 +46,11 @@
 
                 <h4><a name="implementation-details">1 Implementation details</a></h4>
 
-                <p>The builder <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a>, which is provided by this library, has been designed in order to be similar to the Android SDK's built-in class <a href="http://developer.android.com/reference/android/app/AlertDialog.Builder.html" target="_blank" class="code">AlertDialog.Builder</a> and therefore provides the same functionality. The builder creates a dialog, which is instatiated from the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.html" target="_blank" class="code">MaterialDialog</a> and whose appearance is designed according to the Android 5 "Material Design" guidelines, which can be found <a href="http://www.google.com/design/spec/material-design/introduction.html" target="_blank" class="code">here</a>. Such a dialog can contain a title, an icon, a message and up to three buttons. All of these properties are optional. Furthermore, the dialog can be used to display a list view, which contains a specific set of list items, using a specific choice mode. It is also possible to set custom views for the dialog's title or content in order to realize a "Material Design"-styled custom dialog. How to create dialogs using these different properties will be discussed in the following sections.</p>
+                <p>This library provides various builders, which allow to create dialogs, which are designed according to Android 5's "Material Design" guidelines. The guidelines can be found <a href="http://www.google.com/design/spec/material-design/introduction.html" target="_blank" class="code">here</a>. The most important builder is implemented in class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a>. It creates dialogs, which are instantiated from the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.html" target="_blank" class="code">MaterialDialog</a>. Such dialogs can contain a title, an icon, a message and up to three buttons. All of these properties are optional. Furthermore, the dialog can be used to display a list view, which contains a specific set of list items, using a specific choice mode. It is also possible to use custom views for displaying the dialog's title, message, content or buttons in order to realize a "Material Design"-styled custom dialog. In the following sections it is discussed how dialogs can be created by using the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> or other builders, which are provided by the library.</p>
 
                 <h4><a name="specifying-title-icon-and-message">2 Specifying a title, icon and message</a></h4>
 
-                <p>In order to create a dialog, an instance of the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> has to be created at first. The builder therefore provides the constructor <tt>Builder(Context)</tt>, which expects an instance of the class <a href="http://developer.android.com/reference/android/content/Context.html" target="_blank" class="code">Context</a> as a parameter.</p>
+                <p>In order to create a <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.html" target="_blank" class="code">MaterialDialog</a>, an instance of the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> has to be created at first. The builder therefore provides the constructor <tt>Builder(Context)</tt>, which expects an instance of the class <a href="http://developer.android.com/reference/android/content/Context.html" target="_blank" class="code">Context</a> as a parameter.</p>
 
                 <p>To specify the title of the dialog, which should be created by the builder, the following two methods can be used. One of them allows to pass the title as an instance of the class <a href="http://developer.android.com/reference/java/lang/CharSequence.html" target="_blank" class="code">CharSequence</a>, the other one expects the resource ID of a string resource as a parameter.</p>
 
@@ -64,15 +64,15 @@
 
                 <p>To show an icon to the left of the dialog's title, the following three methods can be used. The icon is also shown if no title is specified.</p>
 
-                <p class="center"><tt>setIcon(Drawable):Builder</tt></p>
+                <p class="center"><tt>setIcon(Bitmap):Builder</tt></p>
                 <p class="center"><tt>setIcon(int):Builder</tt></p>
                 <p class="center"><tt>setIconAttribute(int):Builder</tt></p>
 
-                <p>The <tt>setIcon</tt>-methods shown above allow to specify the icon by either passing an instance of the class <a href="http://developer.android.com/reference/android/graphics/drawable/Drawable.html" target="_blank" class="code">Drawable</a> or the resource ID of a drawable resource as a parameter. The <tt>setIconAttribute</tt>-method allows to pass the attribute of theme, which is currently applied on the builder's context to specify the drawable. An example of such an attribute is <tt>android.R.attr.alertDialogIcon</tt>.</p>
+                <p>The <tt>setIcon</tt>-methods shown above allow to specify the icon by either passing an instance of the class <a href="http://developer.android.com/reference/android/graphics/Bitmap.html" target="_blank" class="code">Bitmap</a> or the resource ID of a drawable resource as a parameter. The <tt>setIconAttribute</tt>-method allows to pass the an attribute of the theme, which is applied on the builder to specify the icon. An example of such an attribute is <tt>android.R.attr.alertDialogIcon</tt>.</p>
 
                 <h4><a name="specifying-the-buttons">3 Specifying the dialog's buttons</a></h4>
 
-                <p>As already mentioned, the a dialog, which is created by a <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> may contain up to three buttons. These buttons, which are called "negative button", "neutral button" and "positive button" are added to the dialog in this particular order from left to right. For adding each of these buttons to the dialog, two dedicated methods exist. One of them allows to specify the button's text as an instance of the class <a href="http://developer.android.com/reference/java/lang/CharSequence.html" target="_blank" class="code">CharSequence</a>, the other one allows to pass the resource ID of a string resource. All of these methods are listed below:</p>
+                <p>As already mentioned, the a dialog, which is created by a <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> may contain up to three buttons. These buttons, which are called "negative button", "neutral button" and "positive button", are added to the dialog in this particular order from left to right. For adding each of these buttons to the dialog, two dedicated methods exist. One of them allows to specify the button's text as an instance of the class <a href="http://developer.android.com/reference/java/lang/CharSequence.html" target="_blank" class="code">CharSequence</a>, the other one allows to pass the resource ID of a string resource. All of these methods are listed below:</p>
 
                 <p class="center"><tt>setNegativeButton(CharSequence, OnClickListener):Builder</tt></p>
                 <p class="center"><tt>setNegativeButton(int, OnClickListener):Builder</tt></p>
@@ -81,7 +81,7 @@
                 <p class="center"><tt>setPositiveButton(CharSequence, OnClickListener):Builder</tt></p>
                 <p class="center"><tt>setPositiveeButton(int, OnClickListener):Builder</tt></p>
 
-                <p>The second parameter of all methods shown above allows to pass a listener, which therefore must implement the interface <a href="http://developer.android.com/reference/android/content/DialogInterface.OnClickListener.html" target="_blank" class="code">DialogInterface.OnClickListener</a>, to the button. The listener is invoked when the user closes the dialog by clicking the appropriate button. Passing a <tt>null</tt> reference instead of a listener implementation, does not cause the app to crash and the dialog will be closed anyways, when the button is clicked.</p>
+                <p>The second parameter of all methods shown above allows to pass a listener, which therefore must implement the interface <a href="http://developer.android.com/reference/android/content/DialogInterface.OnClickListener.html" target="_blank" class="code">DialogInterface.OnClickListener</a>, to the button. The listener is invoked when the user closes the dialog by clicking the corresponding button. A <tt>null</tt> reference can be passed to the methods, if no listener should be invoked. Even if no listener is registered, the dialog will be closed when the button is clicked.</p>
 
                 <p>By default the dialog's buttons are aligned horizontally, but as the "Material Design" guidelines introduced an alternative way of aligning a dialog's buttons, the builder's method <tt>stackButtons(boolean):Builder</tt> can be used to align the buttons vertically. The following screenshots shows a dialog, whose buttons are stacked:<p>
 
@@ -91,7 +91,7 @@
 
 		<p>The class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> provides various methods, which can be used to customize the appearance of dialogs. The following table gives an overview of these methods and shows the default values, which are used when not overridden.</p>
 
-		<table>
+		         <table>
                     <tr>
                         <th>Setter methods</th>
                         <th>Explaination</th>
@@ -141,7 +141,7 @@
 			<td><center>Must be a valid color, not a resource ID.</center></td>
                     </tr>
                     <tr>
-                        <td><tt>setBackground(Drawable):Builder</br>setBackground(int):Builder</br>setBackgroundColor(int):Builder</tt></td>
+                        <td><tt>setBackground(Bitmap):Builder</br>setBackground(int):Builder</br>setBackgroundColor(int):Builder</tt></td>
                         <td>Sets the dialog's background.</td>
                         <td><center><tt>android.R.background</tt></center></td>
 			<td><center>When specyfied via a resource ID, the resource ID must correspond to a valid drawable resource.</center></td>
@@ -159,13 +159,13 @@
 			<td><center>none</center></td>
                     </tr>
                     <tr>
-                        <td><tt>setHeaderBackground(Drawable):Builder</br>setHeaderBackground(int):Builder</br>setHeaderBackgroundColor(int):Builder</tt></td>
+                        <td><tt>setHeaderBackground(Bitmap):Builder</br>setHeaderBackground(int):Builder</br>setHeaderBackgroundColor(int):Builder</tt></td>
                         <td>Sets the background of the dialog's header.</td>
                         <td><center><tt>R.attr.colorPrimary</tt></center></td>
 			<td><center>When specyfied via a resource ID, the resource ID must correspond to a valid drawable resource.</center></td>
                     </tr>
                     <tr>
-                        <td><tt>setHeaderIcon(Drawable):Builder</br>setHeaderIcon(int):Builder</tt></td>
+                        <td><tt>setHeaderIcon(Bitmap):Builder</br>setHeaderIcon(int):Builder</tt></td>
                         <td>Sets the icon of the dialog's header.</td>
                         <td><center><tt>null</tt></center></td>
 			<td><center>When specyfied via a resource ID, the resource ID must correspond to a valid drawable resource.</center></td>
@@ -190,11 +190,11 @@
                     </tr>
 		</table>
 
-		<p>If a dialog, which is created by the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a>, should use an individual theme instead of the App's default theme, the theme's resource ID can be passed to the builder's constructor. By default a light theme is used. If the default theme, which is used by all of the library's builders, should be overwritten, the theme attribute <tt>materialDialogTheme</tt> can be specified in the app's theme.</p>
+		<p>If a dialog, which is created by the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a>, should use a different theme than the light theme, which is used by default, the theme's resource ID can be passed to the builder's constructor. If the default theme, which is used by all of the library's builders, should be overridden, the theme attribute <tt>materialDialogTheme</tt> can be specified in the app's theme. For an example of how to use this attribute and a list of all built-in themes the library provides, refer to the "Examples" section in this documentation.</p>
 
-        <p>Besides using the setter methods mentioned above, theme attributes can be used to change the appearance of dialogs. The following table shows all available attributes. They must either be defined in the app's global theme or in the theme, whose ID is passed to the builder's constructor, if any.</p>
+        <p>As an alternative to using the setter methods mentioned above, theme attributes can be used to change the appearance of dialogs. The following table shows all available attributes. They must be defined in the theme, which is is applied on the dialog.</p>
 
-		<table>
+		        <table>
                     <tr>
                         <th>Theme attribute</th>
                         <th>Explaination</th>
@@ -276,24 +276,165 @@
                         <td><center><tt>boolean</tt></center></td>
                     </tr>
 		</table>
+		
+	           	<h4><a name="specifying-the-size-and-location">5 Specifying the dialog's size and location</a></h4>
 
-                <h4><a name="show-list-items">5 Use the dialog to show list items</a></h4>
+		        <p>Besides the setter methods, which allow to modify the appearance of a <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.html" target="_blank" class="code">MaterialDialog</a>, the builder <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> provides additional methods, which allow to specify the size and location of the dialog. These methods are shown in the following table.</p>
+		        
+		        <table>
+                    <tr>
+                        <th>Setter methods</th>
+                        <th>Explaination</th>
+                        <th>Default value</th>
+			<th>Restrictions</th>
+                    </tr>
+                    <tr>
+                        <td><tt>setFullscreen(boolean):Builder</tt></td>
+                        <td>Sets, whether the dialog should be shown fullscreen, or not.</td>
+                        <td><center><tt>false</center></td>
+		             	<td><center>none</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setGravity(int):Builder</tt></td>
+                        <td>Sets the gravity of the dialog.</td>
+                        <td><center><tt>Dialog.Gravity.CENTER</tt></center></td>
+			<td><center>Must be one of the values defined in the interface <tt>Dialog.Gravity</tt>. Multiple values can be combined by using the bitwise OR operation.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setWidth(int):Builder</tt></td>
+                        <td>Sets the width of the dialog in pixels.</td>
+                        <td><center><tt>Dialog.WRAP_CONTENT</tt></center></td>
+			<td><center>Must be at least 1, respectively Dialog.WRAP_CONTENT or Dialog.MATCH_PARENT.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setHeight(int):Builder</tt></td>
+                        <td>Sets the height of the dialog in pixels.</td>
+                        <td><center><tt>Dialog.WRAP_CONTENT</tt>, respectively <tt>580dp</tt> on tablets, <tt>480dp</tt> on phablets and <tt>528dp</tt> on phablets in landscape mode</center></td>
+			<td><center>Must be at least 1, respectively Dialog.WRAP_CONTENT or Dialog.MATCH_PARENT.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setMaxWidth(int):Builder</tt></td>
+                        <td>Sets the maximum width of the dialog in pixels.</td>
+                        <td><center><tt>-1</tt></center></td>
+			<td><center>Must be at least 1, respectively -1, if no maximum width should be set.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setMaxHeight(int):Builder</tt></td>
+                        <td>Sets the maximum height of the dialog in pixels.</td>
+                        <td><center><tt>-1</tt>, respectively <tt>800dp</tt> on tablets in portrait mode</center></td>
+			<td><center>Must be at least 1, respectively -1, if no maximum height should be set.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setMargin(int,int,int,int):Builder</tt></td>
+                        <td>Sets the left, top, right and bottom margin of the dialog in pixels.</td>
+                        <td><center><tt>10dp</tt> for all margins</center></td>
+			<td><center>All margins must be at least 0.</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>setFitsSystemWindows(boolean,</br>boolean,boolean,boolean):Builder</tt></td>
+                        <td>Sets, whether the dialogs content should be inset at the left, top, right and bottom in order to prevent it from overlapping with the status and navigation bar when using a translucent fullscreen theme.</td>
+                        <td><center><tt>true</tt> for all values. When a header is shown, the content is not inset at the top</center></td>
+			<td><center>none</center></td>
+                    </tr>
+		        </table>
+		        
+		        <p>The table below shows the theme attributes, which can be used in order to specify the size and location of a dialog as an alternative to the setter methods mentioned above. The attributes must be defined in the theme, which is applied on the dialog.</p>
+
+		        <table>
+                    <tr>
+                        <th>Theme attribute</th>
+                        <th>Explaination</th>
+                        <th>Format</th>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogFullscreen</tt></td>
+                        <td>Specifies, whether the dialog should be shown fullscreen, or not.</td>
+                        <td><center><tt>boolean</center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogWidth</tt></td>
+                        <td>Specifies the width of the dialog.</td>
+                        <td><center><tt>dimension</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogHeight</tt></td>
+                        <td>Specifies the height of the dialog.</td>
+                        <td><center><tt>dimension</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogMaxWidth</tt></td>
+                        <td>Specifies the maximum width of the dialog.</td>
+                        <td><center><tt>dimension</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogMaxHeight</tt></td>
+                        <td>Specifies the maximum height of the dialog.</td>
+                        <td><center><tt>dimension</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogMarginLeft</tt></td>
+                        <td>Specifies the left margin of the dialog.</td>
+                        <td><center><tt>dimension</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogMarginTop</tt></td>
+                        <td>Specifies the top margin of the dialog.</td>
+                        <td><center><tt>dimension</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogMarginRight</tt></td>
+                        <td>Specifies the right margin of the dialog.</td>
+                        <td><center><tt>dimension</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogMarginBottom</tt></td>
+                        <td>Specifies the bottom margin of the dialog.</td>
+                        <td><center><tt>dimension</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogGravity</tt></td>
+                        <td>Specifies the gravity of the dialog.</td>
+                        <td><center><tt>integer</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogFitsSystemWindowsLeft</tt></td>
+                        <td>Specifies, whether the dialog's content should be inset at the left.</td>
+                        <td><center><tt>boolean</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogFitsSystemWindowsTop</tt></td>
+                        <td>Specifies, whether the dialog's content should be inset at the top.</td>
+                        <td><center><tt>boolean</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogFitsSystemWindowsRight</tt></td>
+                        <td>Specifies, whether the dialog's content should be inset at the right.</td>
+                        <td><center><tt>boolean</tt></center></td>
+                    </tr>
+                    <tr>
+                        <td><tt>materialDialogFitsSystemWindowsBottom</tt></td>
+                        <td>Specifies, whether the dialog's content should be inset at the bottom.</td>
+                        <td><center><tt>boolean</tt></center></td>
+                    </tr>
+		        </table>
+
+                <h4><a name="show-list-items">6 Use the dialog to show list items</a></h4>
 
                 <p>A dialog, which is created by the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> can also be used to show list items. Three different choice modes are available. Each one of them will be discussed in one of the following subsections.</p>
 
-                <h5><a name="no-choice-mode">5.1 No choice mode</a></h4>
+                <h5><a name="no-choice-mode">6.1 No choice mode</a></h4>
 
-                <p>To show list views within the dialog using no choice mode, which means that the items are not selectable, can be established by using one of the following methods:</p>
+                <p>To show list views within the dialog using no choice mode, which means that the items are not selectable, the following methods can be used:</p>
 
                 <p class="center"><tt>setItems(CharSequence[], OnClickListener):Builder</tt></p>
                 <p class="center"><tt>setItems(int, OnClickListener):Builder</tt></p>
                 <p class="center"><tt>setAdapter(ListAdapter, OnClickListener):Builder</tt></p>
 
-                <p>The <tt>setItems</tt>-methods mentioned above can be used to specify the list items as an array of <a href="http://developer.android.com/reference/java/lang/CharSequence.html" target="_blank" class="code">CharSequence</a> objects or by passing the resource ID of an array resource. When using these methods, the builder will create an adapter to manage the items by itself. Alternatively, the <tt>setAdapter</tt>-method allows to pass such an adapter to the builder. Such an adapter has to take care of storing and visualizing the items. Furthermore, all of the methods shown above allows to pass a listener, which has to implement the interface <a href="http://developer.android.com/reference/android/content/DialogInterface.OnClickListener.html" target="_blank" class="code">DialogInterface.OnClickListener</a>, to the builder. Such a listener will be notified, when the user clicks one of the list items. Clicking a list item when using no choice mode will cause the dialog to be closed. The following screenshot shows a dialog, which contains list views using no choice mode:</p>
+                <p>The <tt>setItems</tt>-methods mentioned above can be used to specify the list items as an array of <a href="http://developer.android.com/reference/java/lang/CharSequence.html" target="_blank" class="code">CharSequence</a> objects or by passing the resource ID of an array resource. When using these methods, the builder will create an adapter to manage the items by itself. Alternatively, the <tt>setAdapter</tt>-method allows to pass such an adapter to the builder. Such an adapter must take care of storing and displaying the individual items. Furthermore, all of the methods shown above allows to pass a listener, which has to implement the interface <a href="http://developer.android.com/reference/android/content/DialogInterface.OnClickListener.html" target="_blank" class="code">DialogInterface.OnClickListener</a>, to the builder. Such a listener will be notified, when the user clicks one of the list items. Clicking a list item, when using no choice mode, will cause the dialog to be closed. The following screenshot shows a dialog, which contains list views using no choice mode:</p>
 
                 <p><center><a href="images/example.png" target="_blank".><img src="images/example-no-choice-mode.png" alt="Example"></center></a></p>
 
-                <h5><a name="single-choice-mode">5.2 Single choice mode</a></h4>
+                <h5><a name="single-choice-mode">6.2 Single choice mode</a></h4>
 
                 <p>To show selectable list items, of whom only one item can be selected at once, the following methods can be used:</p>
 
@@ -301,21 +442,21 @@
                 <p class="center"><tt>setSingleChoiceItems(int, int, OnClickListener):Builder</tt></p>
                 <p class="center"><tt>setSingleChoiceItems(ListAdapter, int, OnClickListener):Builder</tt></p>
 
-                <p>These methods are very similar to the methods discussed in the previous section, but all of them expect an additional <tt>Integer</tt> value, which specifies the position of the item, which should be selected by default, as a parameter. If this value is set to <tt>-1</tt>, no item will be selected by default. The semantic of the other parameters is equal to the semantics of the previously discussed method parameters. When a list item is selected while using single choice mode, the dialog will not be closed. The following screenshot shows a dialog, which contains list views using single choice mode:</p>
+                <p>These methods are very similar to the methods discussed in the previous section, but all of them expect an additional <tt>Integer</tt> value, which specifies the position of the item, which should be selected by default, as a parameter. If this value is set to <tt>-1</tt>, no item will be selected by default. The semantic of the other parameters is equal to the semantics of the previously discussed method parameters. When a list item is selected while using single choice mode, the dialog will not be closed. The following screenshot shows a dialog, which contains list views using the single choice mode:</p>
 
                 <p><center><a href="images/example.png" target="_blank".><img src="images/example-single-choice-mode.png" alt="Example"></center></a></p>
 
-                <h5><a name="multi-choice-mode">5.3 Multi choice mode</a></h4>
+                <h5><a name="multi-choice-mode">6.3 Multi choice mode</a></h4>
 
                 <p>The third possibility to show list items within the dialog is to use the multi choice mode, which means, that multiple items can be selected at once. This can be established by using one of the following methods:</p>
                 <p class="center"><tt>setMultiChoiceItems(CharSequence[], boolean[], OnMultiChoiceClickListener):Builder</tt></p>
                 <p class="center"><tt>setMultiChoiceItems(int, boolean[], OnMultiChoiceClickListener):Builder</tt></p>
 
-                <p>These methods are slightly different from the already discussed ones, as the listener, which can be passed to be notified, when a list item's selection changes, has to implement the interface <a href="http://developer.android.com/reference/android/content/DialogInterface.OnMultiChoiceClickListener.html" target="_blank" class="code">DialogInterface.OnMultiChoiceClickListener</a>. Also, the items, which should be selected by default are specified by passing a <tt>Boolean</tt> array. The array's length must be equal to the number of items, as the <tt>Boolean</tt> at a specific index indicates, whether the list item at the according position should be selected, or not. Like when using the single choice mode, the dialog is not closed when a list item is selected while using multi choice mode. The following screenshot shows a dialog, which contains list views using multi choice mode:</p>
+                <p>These methods are slightly different from the already discussed ones, as the listener, which can be passed to be notified, when a list item's selection changes, has to implement the interface <a href="http://developer.android.com/reference/android/content/DialogInterface.OnMultiChoiceClickListener.html" target="_blank" class="code">DialogInterface.OnMultiChoiceClickListener</a>. Also, the items, which should be selected by default, are specified by passing a <tt>boolean</tt> array. The array's length must be equal to the number of items, as the <tt>boolean</tt> value at each index indicates, whether the list item at the corresponding position should be selected, or not. Similar to the single choice mode, the dialog is not closed when a list item is selected using the multi choice mode. The following screenshot shows a dialog, which contains list items using the multi choice mode:</p>
 
                 <p><center><a href="images/example.png" target="_blank".><img src="images/example-multi-choice-mode.png" alt="Example"></center></a></p>
 
-                <h4><a name="using-custom-views">6 Using custom views</a></h4>
+                <h4><a name="using-custom-views">7 Using custom views</a></h4>
 
                 <p>If the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> should be used to create a "Material Design"-styled custom dialog, the following methods can be used to replace the dialog's child views, which are used to show its title, message, buttons or content (the <a href="http://developer.android.com/reference/android/widget/ListView.html" target="_blank" class="code">ListView</a>, which is used to show the list items).</p>
 
@@ -332,15 +473,15 @@
 
                 <p><center><a href="images/example.png" target="_blank".><img src="images/example-custom-views.png" alt="Example"></center></a></p>
 
-                <h4><a name="creating-and-showing-the-dialog">7 Creating and showing the dialog</a></h4>
+                <h4><a name="creating-and-showing-the-dialog">8 Creating and showing the dialog</a></h4>
 
                 <p>Once an instance of the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> has been configured by using the setter methods discussed in the previous sections of this documentation, the builder's method <tt>create():MaterialDialog</tt> can be used to create the dialog as an instance of the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.html" target="_blank" class="code">MaterialDialog</a>. Such a dialog instance can be shown by calling its <tt>show</tt>-method. A shorter way of showing the dialog, which is created by a <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a>, is to call the builder's <tt>show</tt>-method. This method implicitly calls the <tt>create</tt>-method to create the dialog, as well as the dialog's <tt>show</tt>-method to show the dialog on the screen. After a <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.html" target="_blank" class="code">MaterialDialog</a> has been shown using its <tt>show</tt>-method, some of its attributes can still be changed. The class therefore provides a subset of the methods, which are also provided by the builder. Additionaly getter methods, which allow to retrieve a dialog's attributes, are also provided.</p>
 
-		<h4><a name="validating-the-dialog-content">8 Validating the dialog's content</a></h4>
+		<h4><a name="validating-the-dialog-content">9 Validating the dialog's content</a></h4>
 		
 		<p>It is also possible to validate a dialog's content when its positive button is clicked by the user. Therfore the interface <a href="javadoc/de/mrapp/android/dialog/DialogValidator.html" target="_blank" class="code">DialogValidator</a> has to be implemented. It defines the method <tt>validate(AbstractValidateableDialog):boolean</tt>, which has to be overridden in order to return, whether the dialog's content is valid, or not. Multiple instances of this interface can be added to one single instance of the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> by using either one of the methods <tt>addValidator(DialogValidator):Builder</tt> or <tt>addAllValidators(Collection):Builder</tt>. Previously added listener instances can be removed afterwards by using the method <tt>removeValidator(DialogValidator):Builder</tt> or <tt>removeAllValidators(Collection):Builder</tt>. When the dialog's positive button is clicked by the user, all added validators will be executed. If one of them returns <tt>false</tt> from its <tt>validate</tt>-method, the dialog will not be dismissed. When the negative or neutral button is clicked instead, no validation will be performed.</p>
 
-		<h4><a name="progress-dialog">9 The class ProgressDialog</a></h4>
+		<h4><a name="progress-dialog">10 The class ProgressDialog</a></h4>
 		
 		<p>The class <a href="javadoc/de/mrapp/android/dialog/ProgressDialog.Builder.html" target="_blank" class="code">ProgressDialog.Builder</a> implements a builder, which allows to create dialogs, which can be used to indicate a running progress. Besides a circular progress bar such dialogs can contain a title, a message and up to three buttons.</p>
 		
@@ -349,7 +490,7 @@
 		<p>For configuring the dialog's title, message and buttons the methods and theme attributes, which have already been discussed and are similar to those of the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a> can be used. Furthermore, the following methods are provided by the class <a href="javadoc/de/mrapp/android/dialog/MaterialDialog.Builder.html" target="_blank" class="code">MaterialDialog.Builder</a>:</p>
 
 
-		<table>
+		        <table>
                     <tr>
                         <th>Setter methods</th>
                         <th>Explaination</th>
@@ -380,11 +521,11 @@
                         <td><center><tt>ProgressBarPosition.LEFT</tt></center></td>
 			<td><center>The position may not be null.</center></td>
                     </tr>
-		</table>
+		        </table>
 		
 		<p>As an alternative to using the setter methods shown above, theme attributes, which are shown in the table below, can be used to change the appearance of the dialog.</p>
 
-		<table>
+		        <table>
                     <tr>
                         <th>Theme attribute</th>
                         <th>Explaination</th>
@@ -410,9 +551,9 @@
                         <td>Specifies the position of the dialogs' progress bars.</td>
                         <td><center><tt>enum</tt></center></td>
                     </tr>
-		</table>
+		        </table>
 		
-		<h4><a name="wizard-dialog">10 The class WizardDialog</a></h4>
+		<h4><a name="wizard-dialog">11 The class WizardDialog</a></h4>
 		
 		<p>The class <a href="javadoc/de/mrapp/android/dialog/WizardDialog.Builder.html" target="_blank" class="code">WizardDialog.Builder</a> provides a builder, which allows to create dialogs, which can contain multiple fragments. It is possible to switch between the tabs by either clicking the tabs, which indicate the currently shown fragmentClass, or by using buttons at the bottom of the dialog. Such a dialog can also contain a title, a message and a header. When the dialog contains a header, its tabs can be placed within the header.</p>
 		
@@ -589,7 +730,7 @@
 
                 <div class="reference"><a name="reference4" class="reference">[4]</a><a href="http://developer.android.com/reference/java/lang/CharSequence.html" target="_blank">http://developer.android.com/reference/java/lang/CharSequence.html</a> &#150; Class CharSequence</div>
 
-                <div class="reference"><a name="reference5" class="reference">[5]</a><a href="http://developer.android.com/reference/android/graphics/drawable/Drawable.html" target="_blank">http://developer.android.com/reference/android/graphics/drawable/Drawable.html</a> &#150; Class Drawable</div>
+                <div class="reference"><a name="reference5" class="reference">[5]</a><a href="http://developer.android.com/reference/android/graphics/Bitmap.html" target="_blank">http://developer.android.com/reference/android/graphics/Bitmap.html</a> &#150; Class Bitmap</div>
 
                 <div class="reference"><a name="reference6" class="reference">[6]</a><a href="http://developer.android.com/reference/android/content/DialogInterface.OnClickListener.htmll" target="_blank">http://developer.android.com/reference/android/content/DialogInterface.OnClickListener.html</a> &#150; Class DialogInterface.OnClickListener</div>
 
