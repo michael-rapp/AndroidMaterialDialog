@@ -172,6 +172,13 @@ RectangleRevealAnimation animation = new RectangleRevealAnimation.Builder(this).
 ```java
 CircleRevealAnimation animation = new RectangleRevealAnimation.Builder(this).setX(0).setY(0).setRadius(0).setDuration(1000L).create();
 ``` 
+A dialog, which is shown and hidden using a `RectangleRevealAnimation` can be seen below.
+
+![](doc/images/example-rectangle-reveal-animation.gif) 
+
+In the following a dialog, which is shown and hidden using a `CircleRevealAnimation`, is shown.
+
+![](doc/images/example-circle-reveal-animation.gif)
 
 Besides using animations to show or hide dialogs, they can also be used to change a dialog's background, header background or header icon in an animated manner. This is possible by using the `setBackground`-, `setHeaderBackground`- or `setHeaderIcon`-methods, which take instances of the class `DrawableAnimation` or `BackgroundAnimation` as arguments. The following types of animations can be used as the arguments of these methods:
 
@@ -192,6 +199,10 @@ CircleTransitionAnimation animation = new CircleTransitionAnimation(this).setX(0
 ```java
 ScaleTransitionAnimation animation = new ScaleTransitionAnimation.Builder(this).setDuration(1000L).create();
 ```
+
+An example of a dialog, which uses a `CrossFadeTransitionAnimation` for animating its background, a `CircleTransitionAnimation` for animating its header background and a `ScaleTransitionAnimation` for animating its header icon, can be seen below.
+
+![](doc/images/example-animated-wizard-dialog.gif)
 
 ## Contact information
 
