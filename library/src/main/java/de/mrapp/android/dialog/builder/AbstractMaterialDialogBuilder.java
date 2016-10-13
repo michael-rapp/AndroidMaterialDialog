@@ -218,6 +218,26 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     }
 
     /**
+     * Obtains, whether the dialog's content should be inset, from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the boolean value, which specifies whether the dialog's
+     *         content should be inset, should be obtained from, as a {@link Integer} value
+     */
+    private void obtainFitsSystemWindows(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.materialDialogFitsSystemWindowsLeft,
+                        R.attr.materialDialogFitsSystemWindowsTop,
+                        R.attr.materialDialogFitsSystemWindowsRight,
+                        R.attr.materialDialogFitsSystemWindowsBottom});
+        boolean left = typedArray.getBoolean(0, true);
+        boolean top = typedArray.getBoolean(1, true);
+        boolean right = typedArray.getBoolean(2, true);
+        boolean bottom = typedArray.getBoolean(3, true);
+        setFitsSystemWindows(left, top, right, bottom);
+    }
+
+    /**
      * Obtains the background from a specific theme.
      *
      * @param themeResourceId
@@ -283,6 +303,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         obtainMaxWidth(themeResourceId);
         obtainMaxHeight(themeResourceId);
         obtainMargin(themeResourceId);
+        obtainFitsSystemWindows(themeResourceId);
         obtainBackground(themeResourceId);
         obtainMessageColor(themeResourceId);
         obtainTitleColor(themeResourceId);

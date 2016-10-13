@@ -56,6 +56,10 @@ License.
         <enum name="right_top" value="0x100100"/>
         <enum name="right_bottom" value="0x101000"/>
     </attr>
+    <attr name="materialDialogFitsSystemWindowsLeft" format="boolean"/>
+    <attr name="materialDialogFitsSystemWindowsTop" format="boolean"/>
+    <attr name="materialDialogFitsSystemWindowsRight" format="boolean"/>
+    <attr name="materialDialogFitsSystemWindowsBottom" format="boolean"/>
     <attr name="materialDialogBackground" format="color|reference"/>
     <attr name="materialDialogButtonTextColor" format="color"/>
     <attr name="materialDialogDisabledButtonTextColor" format="color"/>
