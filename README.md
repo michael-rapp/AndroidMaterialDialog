@@ -122,7 +122,7 @@ The picture below shows a dialog, which contains a header with a background imag
 The library comes with pre-defined dark and light theme variants. Furthermore three different fullscreen themes are available per variant. The following table shows the IDs of all themes. They can be references in XML using the syntax `@style/MaterialDialog.Light`. In Java code the syntax `R.id.MaterialDialog_Light` can be used respectively. When using a fullscreen theme, dialogs take the whole available space by default. By using the `CenterInside` variants, the dialogs' width and height are restricted to take only as much space as necessary, while the backround is displayed across the whole screen. The `Translucent` variants use a translucent status and navigation bar (only on devices with API level 21 or greater).
 
 |                                 | Dark variant                                         | Dark variant                                               |
-| ------------------------------- |:----------------------------------------------------:| ----------------------------------------------------------:|
+| ------------------------------- |------------------------------------------------------| -----------------------------------------------------------|
 | Default                         | `MaterialDialog`                                     | `MaterialDialog.Light`                                     |
 | Fullscreen                      | `MaterialDialog.Fullscreen`                          | `MaterialDialog.Light.Fullscreen`                          |
 | Fullscreen Translucent          | `MaterialDialog.Fullscreen.Translucent`              | `MaterialDialog.Light.Fullscreen.Translucent`              |
