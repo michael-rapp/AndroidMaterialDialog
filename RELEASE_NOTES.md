@@ -1,5 +1,13 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 4.0.0 (Oct. 14th 2016)
+
+A major release, which introduces the following features:
+
+- Implemented support for built-in animations.
+- The size, margin, and gravity of dialogs can now be specified.
+- Added fullscreen themes.
+
 ## Version 3.6.10 (Sep. 27th 2016)
 
 A bugfix release, which fixes the following issues:
