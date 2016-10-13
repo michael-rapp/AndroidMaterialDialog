@@ -493,8 +493,8 @@ public interface WizardDialogDecorator {
      * changed.
      *
      * @param listener
-     *         The listener, which should be added, as an instance of the type {@link
-     *         OnPageChangeListener}. The listener may not be null
+     *         The listener, which should be added, as an instance of the type OnPageChangeListener.
+     *         The listener may not be null
      */
     void addOnPageChangeListener(@NonNull OnPageChangeListener listener);
 
@@ -503,8 +503,8 @@ public interface WizardDialogDecorator {
      * has been changed, anymore.
      *
      * @param listener
-     *         The listener, which should be removed, as an instance of the type {@link
-     *         OnPageChangeListener}. The listener may not be null
+     *         The listener, which should be removed, as an instance of the type
+     *         OnPageChangeListener. The listener may not be null
      */
     void removeOnPageChangeListener(@NonNull OnPageChangeListener listener);
 

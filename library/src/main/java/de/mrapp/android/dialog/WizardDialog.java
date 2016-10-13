@@ -807,8 +807,8 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          * which is created by the builder, has been changed.
          *
          * @param listener
-         *         The listener, which should be added, as an instance of the type {@link
-         *         OnPageChangeListener}. The listener may not be null
+         *         The listener, which should be added, as an instance of the type
+         *         OnPageChangeListener. The listener may not be null
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}
          */
