@@ -1,20 +1,22 @@
 # AndroidMaterialDialog - README
 
-"AndroidMaterialDialog" is an Android-library, which provides a builder, which allows to create dialogs, which are designed according to Android 5's Material Design guidelines even on pre-Lollipop devices.
+"AndroidMaterialDialog" is an Android-library, which provides builders for creating dialogs, which are designed according to Android 5's Material Design guidelines even on pre-Lollipop devices. The following screenshots show the appearances of dialogs, which have been created using the library.
 
 ![](doc/images/example1.png)
 
 ![](doc/images/example2.png)
 
-The library provides the following features:
+The library provides the following main features:
 
-- The builder has been designed to be similar to the Android SDK's built-in class `android.app.AlertDialog.Builder` and therefore provides all of its functionalities, including the possibilities to create dialogs with a title, icon, message, up to three buttons and optional list items.
-- The library uses the AppCompat v7 support library in order to retrieve the color of a dialog's button texts from the applied theme. Alternatively, these colors can be set manually using the builder.
-- A dialog's title, message and content can be replaced by any custom view.
-- The builder supports to create dialogs, whose buttons are stacked, as introduced in the Material Design guidelines.
-- All dialogs can contain a header, which shows a background image or color as well as an optional icon.
-- The library provides additional builders, which allow to create progress dialogs or a dialog, which allows to switch between multiple fragments.
+- The builder `MaterialDialog.Builder` allows to create dialogs, which may contain a title, an icon, a message, up to three buttons and optional list items.
+- By using the builder `ProgressDialog.Builder` it is possible to create dialogs, which show a circular progress bar.
+- Dialogs, which are created using the builder `WizardDialog.Builder`, contain a `ViewPager` for switching between multiple fragments.
+- The library comes with a light and dark theme. For both themes a fullscreen variant is available as well.
+- All dialogs may contain a header, which consists of a background image or color and an optional icon.
+- By offering various methods for changing the appearance of UI elements, the library's dialogs are highly customizable. It is even possible to replace a dialog's title, message, content or buttons with custom views. Also the size and position of dialogs can be modified.
+- The library offers built-in support for easy use of animations. This corresponds to showing and hiding dialogs in an animated manner, as well as changing backgrounds and icons by using animations.
 
+The project also includes an example application, which implements some example dialogs for demonstrating the use of the library.
 
 ## License Agreement
 
@@ -38,35 +40,12 @@ Before version 2.0.0 this project was hosted on [Sourceforge](https://sourceforg
 
 ## Examples
 
-### Creating a theme for the dialogs
-
-This library comes with a built-in dark and light theme for the dialogs it provides. By default the light theme is used. It can be referenced by using the resource id `@style/MaterialDialog.Light` (or the id `R.style.MaterialDialog_Light` when referencing it in Java code). The dark theme can be referenced by using the resource id `@style/MaterialDialog` or `R.style.MaterialDialog` respectively. In order to use one of the predefined themes when creating a dialog, the id of the theme has to be passed to the constructor of the builder `MaterialDialog.Builder` (or another builder provided by the library) like shown in the examples below. In order to globally overwrite the theme, which should be used by all of the library's builders, the theme attribute `materialDialogTheme` can be specified in the app's theme.
-
-In addition, it might be useful to extend the predefined themes in order to overwrite some theme attributes. One common use-case is to overwrite the theme attribute `colorAccent`, which specifies the default text color of a dialog's buttons. In such case a new style resource, which extends one of the built-in themes, must be added to your app's `res/values/styles.xml` file. The following example illustrates how such a style can be defined and can be set as the default theme for all of the library's builders:
-
-```xml
-<resources>
-
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorPrimaryDark">@color/color_primary_dark</item>
-        <item name="colorAccent">@color/color_accent</item>
-        <item name="materialDialogTheme">@style/CustomLightTheme</item>
-    </style>
-
-    <style name="CustomLightTheme" parent="@style/MaterialDialog.Light">
-        <item name="colorAccent">@color/color_accent</item>
-    </style>
-
-</resources>
-```
-
 ### Creating a typical alert dialog
 
-The code below shows how to create and show an alert dialog by using the library's `MaterialDialog.Builder`. The dialog contains a title and message and can be closed by the user by either using a "OK" button or a "Cancel" button. The `this` parameter, which is passed to the builder's constructor in the example below, must be a `Context`, e.g. an `Activity`. The `null` parameters, which are passed to the `setPositiveButton`- and `setNegativeButton`-methods can be replaced by instances of the type `DialogInterface.OnClickListener` in order to execute some code when the user closes the dialog by clicking the corresponding button. As the methods of the class `MaterialDialog.Builder`, which is provided by this library, are nearly identical to the API of the Android SDK's class [`AlertDialog.Builder`](http://developer.android.com/reference/android/app/AlertDialog.Builder.html), the practices, which are described in [this](http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog) section of the Android developer guide, do also work together with this library.
+The code below shows how to create and show an alert dialog by using the library's `MaterialDialog.Builder`. The dialog contains a title and message and can be closed by the user by either using a "OK" button or a "Cancel" button. The `this` parameter, which is passed to the builder's constructor in the example below, must be a `Context`, e.g. an `Activity`. The `null` parameters, which are passed to the `setPositiveButton`- and `setNegativeButton`-methods can be replaced by instances of the type `DialogInterface.OnClickListener` in order to execute some code when the user closes the dialog by clicking the corresponding button.
 
 ```java
-MaterialDialog.Builder dialogBuilder = new MaterialDialog.Builder(this, R.style.MaterialDialog_Light); 
+MaterialDialog.Builder dialogBuilder = new MaterialDialog.Builder(this); 
 dialogBuilder.setTitle(R.string.dialog_title); 
 dialogBuilder.setMessage(R.string.dialog_message); 
 dialogBuilder.setTitle(R.string.dialog_title); 
@@ -80,26 +59,12 @@ The appearance of the dialog, which is created by the given sample code, is show
 
 ![](doc/images/example-alert-dialog.png)
 
-### Showing a header
-
-All dialogs can contain a header, which shows a background image or color as well as an optional icon. The following code shows how a dialog can be configured to contain such a header once it has been instantiated like shown above. The resource IDs, which have to be passed as the parameters of the 'setHeaderBackground'- and 'setHeaderIcon'-methods, must correspond to valid drawable resources. Alternatively instances of the class [AlertDialog.Builder](http://developer.android.com/reference/android/app/AlertDialog.Builder.html) can be passed to the methods.
-
-```java
-dialogBuilder.showHeader(true); 
-dialogBuilder.setHeaderBackground(R.drawable.header_background); 
-dialogBuilder.setHeaderIcon(R.drawable.header_icon);
-```
-
-The picture below shows a dialog, which contains a header with a background image and an icon:
-
-![](doc/images/example-header-dialog.png)
-
 ### Creating a progress dialog
 
-The following source code shows how a progress dialog, which displays a circular progress bar, can be created. Such like a regular `MaterialDialog`, such a dialog can contain a title, a message and up to three buttons. By using the `setProgressBarPosition`-method, the position of the dialog's progress bar can be specified. Possible values are `LEFT`, `TOP`, `RIGHT` and `BOTTOM`, each specifying the position relative to the dialog's message.
+The following source code shows how a progress dialog, which displays a circular progress bar, can be created. Such as a regular `MaterialDialog`, such a dialog can contain a title, a message and up to three buttons. By using the `setProgressBarPosition`-method, the position of the dialog's progress bar can be specified. Possible values are `LEFT`, `TOP`, `RIGHT` and `BOTTOM`, each specifying the position in relation to the dialog's message.
 
 ```java
-ProgressDialog.Builder dialogBuilder = new ProgressDialog.Builder(this, R.style.MaterialDialog_Light); 
+ProgressDialog.Builder dialogBuilder = new ProgressDialog.Builder(this); 
 dialogBuilder.setTitle(R.string.dialog_title); 
 dialogBuilder.setMessage(R.string.dialog_message); 
 dialogBuilder.setPositiveButton(android.R.string.ok, null); 
@@ -115,10 +80,10 @@ The screenshot below shows the appearance of a `ProgressDialog`, which has been 
 
 ### Creating a wizard dialog
 
-A `WizardDialog` allows to show multiple fragments and provides a navigation to switch between them, either via tabs or via buttons at the bottom of the dialog. The source code below shows how such a dialog can be created. The tabs, which indicate the currently selected fragment, are shown in the dialog's header if possible. This behavior can be customized by using the `setTabPosition`-method. If the value `USE_HEADER` is passed to the method, the tabs are shown in the header, if the dialog does neither contain a title, nor a message. The default value `PREFER_HEADER` causes the tabs to be shown in the header regardless of any title or message are shown. And the value `NO_HEADER` prevents the tabs from being shown in the header at all. By default, the tabs, which are shown by the dialog are not clickable and the currently shown fragment can only be changed using swipe gestures or the button bar. If the tabs should be clickable, the `enableTabLayout`-method has to be used. Furthermore, the detection of swipe gestures can be disabled using the `enableSwipe`-method and visibility of the dialog's button bar can be toggled using the `showButtonBar`-method. 
+A `WizardDialog` allows to show multiple fragments and provides a navigation for switching between them by either using tabs or buttons, which are located at the bottom of the dialog. The source code below shows how such a dialog can be created. The tabs, which indicate the currently selected fragment, are shown in the dialog's header if possible. This behavior can be customized by using the `setTabPosition`-method. If the value `USE_HEADER` is passed to the method, the tabs are shown in the header, if the dialog does neither contain a title, nor a message. The default value `PREFER_HEADER` causes the tabs to be shown in the header regardless of any title or message are shown. And the value `NO_HEADER` prevents the tabs from being shown in the header at all. By default, the tabs, which are shown by the dialog are not clickable and the currently shown fragment can only be changed using swipe gestures or the button bar. If the tabs should be clickable, the `enableTabLayout`-method has to be used. Furthermore, the detection of swipe gestures can be disabled using the `enableSwipe`-method and the visibility of the dialog's button bar can be toggled using the `showButtonBar`-method. 
 
 ```java
-WizardDialog.Builder dialogBuilder = new WizardDialog.Builder(this, R.style.MaterialDialog_Light); 
+WizardDialog.Builder dialogBuilder = new WizardDialog.Builder(this); 
 dialogBuilder.showHeader(true); 
 dialogBuilder.setHeaderBackground(R.drawable.header_background); 
 dialogBuilder.addFragment(R.string.fragment1_title, Fragment1.class); 
@@ -136,6 +101,98 @@ The following screenshot illustrates one possible appearance of a `WizardDialog`
 
 ![](doc/images/example-wizard-dialog.png)
 
+### Showing a header
+
+All dialogs may contain a header, which consists of a background image or color and an optional icon. The following code shows how a dialog can be configured to contain such a header, once a builder has been instantiated like shown in the previous sections.
+
+```java
+...
+dialogBuilder.showHeader(true); 
+dialogBuilder.setHeaderBackground(R.drawable.header_background); 
+dialogBuilder.setHeaderIcon(R.drawable.header_icon);
+...
+```
+
+The picture below shows a dialog, which contains a header with a background image and an icon:
+
+![](doc/images/example-header-dialog.png)
+
+### Using themes
+
+The library comes with pre-defined dark and light theme variants. Furthermore three different fullscreen themes are available per variant. The following table shows the IDs of all themes. They can be references in XML using the syntax `@style/MaterialDialog.Light`. In Java code the syntax `R.id.MaterialDialog_Light` can be used respectively. When using a fullscreen theme, dialogs take the whole available space by default. By using the `CenterInside` variants, the dialogs' width and height are restricted to take only as much space as necessary, while the backround is displayed across the whole screen. The `Translucent` variants use a translucent status and navigation bar (only on devices with API level 21 or greater).
+
+|                                 | Dark variant                                         | Dark variant                                               |
+| ------------------------------- |:----------------------------------------------------:| ----------------------------------------------------------:|
+| Default                         | `MaterialDialog`                                     | `MaterialDialog.Light`                                     |
+| Fullscreen                      | `MaterialDialog.Fullscreen`                          | `MaterialDialog.Light.Fullscreen`                          |
+| Fullscreen Translucent          | `MaterialDialog.Fullscreen.Translucent`              | `MaterialDialog.Light.Fullscreen.Translucent`              |
+| Fullscreen Centered             | `MaterialDialog.Fullscreen.CenterInside`             | `MaterialDialog.Light.Fullscreen.CenterInside`             |
+| Fullscreen Centered Translucent | `MaterialDialog.Fullscreen.CenterInside.Translucent` | `MaterialDialog.Light.Fullscreen.CenterInside.Translucent` |
+
+In order to use one of the predefined themes, the id of the respective theme has to be passed as an argument to the constructor of the builder `MaterialDialog.Builder` (or another builder provided by the library) as shown in the code below.
+
+```java
+WizardDialog.Builder dialogBuilder = new WizardDialog.Builder(this, R.style.MaterialDialog_Light); 
+...
+```
+
+As an alternative, the theme, which should be used by all of the library's builders by default, can be globally specified. This requires to include the theme attribute `materialDialogTheme` in the app's theme (in the `res/values/style.xml` file) as shown in the example below. When a divergent theme is passed to a builder's constructor, that particular theme is prefered over the theme, which is specified using the `materialDialogTheme` attribute.
+
+Moreover, it might be useful to extend the predefined themes in order to overwrite some theme attributes. One common use-case is to overwrite the theme attribute `colorAccent`, which specifies the default text color of a dialog's buttons. In such case a new style resource, which extends one of the built-in themes, must be added to your app's `res/values/styles.xml` file. The following example illustrates how such a style can be defined and can be set as the default theme for all of the library's builders.
+
+```xml
+<resources>
+
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="materialDialogTheme">@style/CustomLightTheme</item>
+    </style>
+
+    <style name="CustomDialogTheme" parent="@style/MaterialDialog.Light">
+        <item name="colorAccent">@color/color_accent</item>
+    </style>
+
+</resources>
+```
+
+## Using animations
+
+The `setShowAnimation`-, `setDismissAnimation`- and `setCancelAnimation`methods of a dialog can be used to specify the animations, which should be used when the dialog is shown, dismissed or canceled. All of these methods take an instance of the class `DialogAnimation` as a parameter. This parameter specifies the properties of the animation, e.g. its duration. Currently two types of animations are supported:
+
+- **`RectangleRevealAnimation`:** Allows to show or hide a dialog by translating it from/to a specific position and animating its size. Instances of this animation can be created as shown below. The `x` and `y` properties specify the position of the dialog in pixels. The coordinate `x=0,y=0` corresponds to the top left corner of the display. The `width` and `height` properties specify the size of the dialog in pixels.
+
+```java
+RectangleRevealAnimation animation = new RectangleRevealAnimation.Builder(this).setX(0).setY(0).setWidth(0).setHeight(0).setDuration(1000L).create()
+```
+
+- **`CircleRevealAnimation`:** (only on devices with API level 21 or greater): Allows to show a dialog by cropping its content to a circle with a specific radius, which grows from a specific position. When the animation is used to hide a dialog, the circle is shrinked to the given radius and position. The code below shows how such an animation can be created. The properties `x` and `y` specify the position in pixels. The coordinate `x=0,y=0` corresponds to the top left corner of the display. The property `radius` correpsonds to the radius of the circle, the dialog's content is cropped to, in pixels.
+
+```java
+CircleRevealAnimation animation = new RectangleRevealAnimation.Builder(this).setX(0).setY(0).setRadius(0).setDuration(1000L).create();
+``` 
+
+Besides using animations to show or hide dialogs, they can also be used to change a dialog's background, header background or header icon in an animated manner. This is possible by using the `setBackground`-, `setHeaderBackground`- or `setHeaderIcon`-methods, which take instances of the class `DrawableAnimation` or `BackgroundAnimation` as arguments. The following types of animations can be used as the arguments of these methods:
+
+- **`CrossFadeTransitionAnimation`:** Allows to change a background or icon using cross-fading. Instances of this class can be created as shown below.
+
+```java
+CrossFadeTransitionAnimation animation = new CrossFadeTransitionAnimation(this).setDuration(1000L).create();
+```
+
+- **`CircleTransitionAnimation`:** Allows to change a background or icon by cropping the new background or icon as a circle with a specific radius, which grows from a specific position. The `x` and `y` properties, which can be seen in the example below, correspond to the position the circle grows from in pixels. If these properties are not specified, the center is used. The `radius` property corresponds to the initial radius of the circle in pixels.
+
+```java
+CircleTransitionAnimation animation = new CircleTransitionAnimation(this).setX(0).setY(0).setRadius(0).setDuration(1000L).create();
+```
+
+- **`ScaleTransitionAnimation`:** This type of animation can only be used for animating icons. It is not applicable on backgrounds. It downscales the initial icon until it fully dissapears and afterwards shows the new icon by upscaling it. Both icons should have the same size. Instances of this type of animation can be created using the following code.
+
+```java
+ScaleTransitionAnimation animation = new ScaleTransitionAnimation.Builder(this).setDuration(1000L).create();
+```
+
 ## Contact information
 
-For personal feedback or questions feel free to contact me via the mail address, which is mentioned on my [Github profile](https://github.com/michael-rapp). If you have found any bugs or want to post a feature request please use the [bugtracker](https://github.com/michael-rapp/AndroidMaterialViews/issues) to report them.
+For personal feedback or questions feel free to contact me via the mail address, which is mentioned on my [Github profile](https://github.com/michael-rapp). If you have found any bugs or want to post a feature request please use the [bugtracker](https://github.com/michael-rapp/AndroidMaterialDialog/issues) to report them.

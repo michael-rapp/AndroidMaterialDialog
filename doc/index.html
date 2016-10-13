@@ -26,7 +26,7 @@
 
                  <h4>About</h4>
 
-                 <p>"AndroidMaterialDialog" is an Android-library, which provides a builder, which allows to create dialogs, which are designed according to Android 5's Material Design guidelines even on pre-Lollipop devices. The following screenshots show the appearance of a dialog, which has been created by using the library:</p>
+                 <p>"AndroidMaterialDialog" is an Android-library, which provides builders for creating dialogs, which are designed according to Android 5's Material Design guidelines even on pre-Lollipop devices. The following screenshots show the appearances of dialogs, which have been created using the library.</p>
 
                  <p><center><a href="images/example1.png" target="_blank"><img src="images/example1.png" width="800" alt="Example"></a></center></p>
                  
@@ -34,16 +34,19 @@
 
                  <p>The aim of this documentation is to offer an overview of the project's source code and to explain, how the interface, which is provided by the library, can be used and how the underlying implementations are supposed to work.</p>            
 
-                <p>The library provides the following features:</p>
+                <p>The library provides the following main features:</p>
 
                 <ul>
-                    <li>The builder has been designed to be similar to the Android SDK's built-in class  <tt>android.app.AlertDialog.Builder</tt> and therefore provides all of its functionalities, including the possibilities to create dialogs with a title, icon, message, up to three buttons and optional list items.</li>
-                    <li>The library uses the AppCompat v7 support library in order to retrieve the color of a dialog's title and button texts from the applied theme. Alternatively, these colors can be set manually using the builder.</li>
-                    <li>A dialog's title message and content can be replaced by any custom view.</li>
-                    <li>The builder supports to create dialogs, whose buttons are stacked, as introduced in the Material Design guidelines.</li>
-                    <li>All dialogs can contain a header, which shows a background image or color as well as an optional icon.</li>
-                    <li>The library provides additional builders, which allow to create progress dialogs or a dialog, which allows to switch between multiple fragments.</li>
+                    <li>The builder <tt>MaterialDialog.Builder</tt> allows to create dialogs, which may contain a title, an icon, a message, up to three buttons and optional list items.</li>
+                    <li>By using the builder <tt>ProgressDialog.Builder</tt> it is possible to create dialogs, which show a circular progress bar.</li>
+                    <li>Dialogs, which are created using the builder <tt>WizardDialog.Builder</tt>, contain a <tt>ViewPager</tt> for switching between multiple fragments.</li>
+                    <li>The library comes with a light and dark theme. For both themes a fullscreen variant is available as well.</li>
+                    <li>All dialogs may contain a header, which consists of a background image or color and an optional icon.</li>
+                    <li>By offering various methods for changing the appearance of UI elements, the library's dialogs are highly customizable. It is even possible to replace a dialog's title, message, content or buttons with custom views. Also the size and position of dialogs can be modified.</li>
+                    <li>The library offers built-in support for easy use of animations. This corresponds to showing and hiding dialogs in an animated manner, as well as changing backgrounds and icons by using animations.</li>
                 </ul>
+                
+                <p>The project also includes an example application, which implements some example dialogs for demonstrating the use of the library.</p>
 
                 <h4>License Agreement</h4>
 
