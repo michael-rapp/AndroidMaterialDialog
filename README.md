@@ -159,6 +159,10 @@ Moreover, it might be useful to extend the predefined themes in order to overwri
 </resources>
 ```
 
+The screenshots below show the appearance of dialogs, which use the themes `MaterialDialog`, `MaterialDialog.Fullscreen.Translucent` and `MaterialDialog.Fullscreen.CenterInside.Translucent`.
+
+![](doc/images/example3.png) 
+
 ## Using animations
 
 The `setShowAnimation`-, `setDismissAnimation`- and `setCancelAnimation`-methods of a dialog can be used to specify the animations, which should be used when the dialog is shown, dismissed or canceled. All of these methods take an instance of the class `DialogAnimation` as a parameter. This parameter specifies the properties of the animation, e.g. its duration. Currently two types of animations are supported:
