@@ -484,8 +484,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 WizardDialog.Builder builder = new WizardDialog.Builder(getActivity(),
-                        shouldUseFullscreen() ? R.style.DarkFullscreenDialogTheme :
-                                R.style.DarkDialogTheme);
+                        shouldUseFullscreen() ? R.style.DarkFullscreenDialogTheme : 0);
                 configureHeaderDialogBuilder(builder);
                 builder.enableTabLayout(!shouldHeaderBeShown());
 
