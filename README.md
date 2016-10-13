@@ -121,7 +121,7 @@ The picture below shows a dialog, which contains a header with a background imag
 
 ### Using themes
 
-The library comes with pre-defined dark and light theme variants. Furthermore three different fullscreen themes are available per variant. The following table shows the IDs of all themes. They can be references in XML using the syntax `@style/MaterialDialog.Light`. In Java code the syntax `R.id.MaterialDialog_Light` can be used respectively. When using a fullscreen theme, dialogs take the whole available space by default. By using the `CenterInside` variants, the dialogs' width and height are restricted to take only as much space as necessary, while the backround is displayed across the whole screen. The `Translucent` variants use a translucent status and navigation bar (only on devices with API level 21 or greater).
+The library comes with pre-defined dark and light theme variants. Furthermore three different fullscreen themes are available per variant. The following table shows the IDs of all themes. They can be referenced in XML using the syntax `@style/MaterialDialog.Light`. In Java code the syntax `R.id.MaterialDialog_Light` can be used respectively. When using a fullscreen theme, dialogs take the whole available space by default. By using the `CenterInside` variants, the dialogs' width and height are restricted to take only as much space as necessary, while the backround is still displayed across the whole screen. The `Translucent` variants use a translucent status and navigation bar (only on devices with API level 21 or greater).
 
 |                                 | Dark variant                                         | Dark variant                                               |
 | ------------------------------- |------------------------------------------------------| -----------------------------------------------------------|
@@ -138,7 +138,7 @@ WizardDialog.Builder dialogBuilder = new WizardDialog.Builder(this, R.style.Mate
 ...
 ```
 
-As an alternative, the theme, which should be used by all of the library's builders by default, can be globally specified. This requires to include the theme attribute `materialDialogTheme` in the app's theme (in the `res/values/style.xml` file) as shown in the example below. When a divergent theme is passed to a builder's constructor, that particular theme is prefered over the theme, which is specified using the `materialDialogTheme` attribute.
+As an alternative, the theme, which should be used by all of the library's builders by default, can be globally specified. This requires to include the theme attribute `materialDialogTheme` in the app's theme (in the `res/values/styles.xml` file) as shown in the example below. When a divergent theme is passed to a builder's constructor, that particular theme is prefered over the theme, which is specified using the `materialDialogTheme` attribute.
 
 Moreover, it might be useful to extend the predefined themes in order to overwrite some theme attributes. One common use-case is to overwrite the theme attribute `colorAccent`, which specifies the default text color of a dialog's buttons. In such case a new style resource, which extends one of the built-in themes, must be added to your app's `res/values/styles.xml` file. The following example illustrates how such a style can be defined and can be set as the default theme for all of the library's builders.
 
@@ -149,7 +149,7 @@ Moreover, it might be useful to extend the predefined themes in order to overwri
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
-        <item name="materialDialogTheme">@style/CustomLightTheme</item>
+        <item name="materialDialogTheme">@style/CustomDialogTheme</item>
     </style>
 
     <style name="CustomDialogTheme" parent="@style/MaterialDialog.Light">
@@ -161,7 +161,7 @@ Moreover, it might be useful to extend the predefined themes in order to overwri
 
 ## Using animations
 
-The `setShowAnimation`-, `setDismissAnimation`- and `setCancelAnimation`methods of a dialog can be used to specify the animations, which should be used when the dialog is shown, dismissed or canceled. All of these methods take an instance of the class `DialogAnimation` as a parameter. This parameter specifies the properties of the animation, e.g. its duration. Currently two types of animations are supported:
+The `setShowAnimation`-, `setDismissAnimation`- and `setCancelAnimation`-methods of a dialog can be used to specify the animations, which should be used when the dialog is shown, dismissed or canceled. All of these methods take an instance of the class `DialogAnimation` as a parameter. This parameter specifies the properties of the animation, e.g. its duration. Currently two types of animations are supported:
 
 - **`RectangleRevealAnimation`:** Allows to show or hide a dialog by translating it from/to a specific position and animating its size. Instances of this animation can be created as shown below. The `x` and `y` properties specify the position of the dialog in pixels. The coordinate `x=0,y=0` corresponds to the top left corner of the display. The `width` and `height` properties specify the size of the dialog in pixels.
 
@@ -169,7 +169,7 @@ The `setShowAnimation`-, `setDismissAnimation`- and `setCancelAnimation`methods 
 RectangleRevealAnimation animation = new RectangleRevealAnimation.Builder(this).setX(0).setY(0).setWidth(0).setHeight(0).setDuration(1000L).create()
 ```
 
-- **`CircleRevealAnimation`:** (only on devices with API level 21 or greater): Allows to show a dialog by cropping its content to a circle with a specific radius, which grows from a specific position. When the animation is used to hide a dialog, the circle is shrinked to the given radius and position. The code below shows how such an animation can be created. The properties `x` and `y` specify the position in pixels. The coordinate `x=0,y=0` corresponds to the top left corner of the display. The property `radius` correpsonds to the radius of the circle, the dialog's content is cropped to, in pixels.
+- **`CircleRevealAnimation`** (only on devices with API level 21 or greater): Allows to show a dialog by cropping its content to a circle with a specific radius, which grows from a specific position. When the animation is used to hide a dialog, the circle is shrinked to the given radius and position. The code below shows how such an animation can be created. The properties `x` and `y` specify the position in pixels. The coordinate `x=0,y=0` corresponds to the top left corner of the display. The property `radius` correpsonds to the radius of the circle, the dialog's content is cropped to, in pixels.
 
 ```java
 CircleRevealAnimation animation = new RectangleRevealAnimation.Builder(this).setX(0).setY(0).setRadius(0).setDuration(1000L).create();
