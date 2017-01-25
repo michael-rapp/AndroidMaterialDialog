@@ -806,7 +806,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     @Override
     public final void setMaxHeight(final int maxHeight) {
         if (maxHeight != -1) {
-            ensureAtLeast(maxWidth, 1, "The maximum height must be at least 1");
+            ensureAtLeast(maxHeight, 1, "The maximum height must be at least 1");
         }
 
         this.maxHeight = maxHeight;
