@@ -1,5 +1,15 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 4.0.1 (Jan. 25th 2017)
+
+A bugfix release, which introduces the following changes:
+
+- Fixed a crash on tablets in portrait mode.
+- Updated `targetSdkVersion` to API level 25 (Android 7.1).
+- Updated AppCompat v7 support library to version 25.1.0.
+- Updated dependency "AndroidMaterialViews" to version 2.1.4.
+- Updated dependency "AndroidUtil" to version 1.12.3.
+
 ## Version 4.0.0 (Oct. 14th 2016)
 
 A major release, which introduces the following features:
