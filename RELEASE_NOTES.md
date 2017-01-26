@@ -1,6 +1,6 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
-## Version 4.0.1 (Jan. 25th 2017)
+## Version 4.0.1 (Jan. 26th 2017)
 
 A bugfix release, which introduces the following changes:
 
