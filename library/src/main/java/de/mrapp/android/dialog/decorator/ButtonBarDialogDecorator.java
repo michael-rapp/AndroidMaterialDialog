@@ -201,15 +201,15 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
      * Inflates the layout, which is used to show the dialog's buttons.
      */
     private void inflateButtonBar() {
-        ViewGroup rootView = getRootView();
+        ViewGroup contentRootView = getContentRootView();
 
-        if (rootView != null) {
+        if (contentRootView != null) {
             if (buttonBarContainer == null) {
                 LayoutInflater layoutInflater = LayoutInflater.from(getContext());
                 buttonBarContainer = (ViewGroup) layoutInflater
-                        .inflate(R.layout.button_bar_container, rootView, false);
+                        .inflate(R.layout.button_bar_container, contentRootView, false);
                 buttonBarDivider = buttonBarContainer.findViewById(R.id.button_bar_divider);
-                rootView.addView(buttonBarContainer);
+                contentRootView.addView(buttonBarContainer);
             }
 
             if (buttonBarContainer.getChildCount() > 1) {

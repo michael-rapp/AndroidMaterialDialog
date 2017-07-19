@@ -201,6 +201,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     private int[] margin = new int[]{0, 0, 0, 0};
 
     /**
+     * The padding of the dialog.
+     */
+    private int[] padding = new int[]{0, 0, 0, 0};
+
+    /**
      * The title of the dialog.
      */
     private CharSequence title;
@@ -418,7 +423,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private void inflateTitleView() {
         if (getRootView() != null) {
-            titleContainer = (ViewGroup) getRootView().findViewById(R.id.title_container);
+            titleContainer = getRootView().findViewById(R.id.title_container);
             titleContainer.removeAllViews();
 
             if (customTitleView != null) {
@@ -445,7 +450,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private void inflateMessageView() {
         if (getRootView() != null) {
-            messageContainer = (ViewGroup) getRootView().findViewById(R.id.message_container);
+            messageContainer = getRootView().findViewById(R.id.message_container);
             messageContainer.removeAllViews();
 
             if (customMessageView != null) {
@@ -472,7 +477,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private void inflateContentView() {
         if (getRootView() != null) {
-            contentContainer = (ViewGroup) getRootView().findViewById(R.id.content_container);
+            contentContainer = getRootView().findViewById(R.id.content_container);
             contentContainer.removeAllViews();
 
             if (customView != null) {
@@ -501,6 +506,18 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             rootView.showShadow(!isFullscreen());
             rootView.setMaxWidth(getMaxWidth());
             rootView.setMaxHeight(getMaxHeight());
+        }
+    }
+
+    /**
+     * Adapts the padding of the dialog.
+     */
+    private void adaptPadding() {
+        ViewGroup contentRootView = getContentRootView();
+
+        if (contentRootView != null) {
+            contentRootView.setPadding(getPaddingLeft(), getPaddingTop(), getPaddingRight(),
+                    getPaddingBottom());
         }
     }
 
@@ -844,6 +861,36 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     @Override
+    public final int getPaddingLeft() {
+        return padding[0];
+    }
+
+    @Override
+    public final int getPaddingTop() {
+        return padding[1];
+    }
+
+    @Override
+    public final int getPaddingRight() {
+        return padding[2];
+    }
+
+    @Override
+    public final int getPaddingBottom() {
+        return padding[3];
+    }
+
+    @Override
+    public final void setPadding(final int left, final int top, final int right, final int bottom) {
+        ensureAtLeast(left, 0, "The left padding must be at least 0");
+        ensureAtLeast(top, 0, "The top padding must be at least 0");
+        ensureAtLeast(right, 0, "The right padding must be at least 0");
+        ensureAtLeast(bottom, 0, "The bottom padding must be at least 0");
+        this.padding = new int[]{left, top, right, bottom};
+        adaptPadding();
+    }
+
+    @Override
     public final boolean isFitsSystemWindowsLeft() {
         return fitsSystemWindows[0];
     }
@@ -1113,6 +1160,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         inflateMessageView();
         inflateContentView();
         adaptLayoutParams();
+        adaptPadding();
         adaptTitle();
         adaptTitleColor();
         adaptIcon();

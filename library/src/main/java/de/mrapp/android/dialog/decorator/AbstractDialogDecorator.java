@@ -17,6 +17,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 
 import de.mrapp.android.dialog.R;
@@ -58,6 +59,12 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
     private DialogRootView dialogRootView;
 
     /**
+     * The root view of the content of the dialog, whose view hierarchy is modified by the
+     * decorator.
+     */
+    private ViewGroup contentRootView;
+
+    /**
      * The method, which is invoked, when the decorator is attached to the view hierarchy.
      *
      * @param window
@@ -87,6 +94,7 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
         this.window = null;
         this.view = null;
         this.dialogRootView = null;
+        this.contentRootView = null;
     }
 
     /**
@@ -133,6 +141,19 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
         return dialogRootView;
     }
 
+    /**
+     * Returns the root view of the content of the dialog, whose view hierarchy is modified by the
+     * decorator.
+     *
+     * @return The root view of the content of the dialog, whose view hierarchy is modified by the
+     * decorator, as an instance of the class {@link ViewGroup} or null, if the decorator is not
+     * attached
+     */
+    @Nullable
+    public final ViewGroup getContentRootView() {
+        return contentRootView;
+    }
+
     @Override
     public final Context getContext() {
         return dialog.getContext();
@@ -154,7 +175,8 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
         ensureNotNull(view, "The view may not be null");
         this.window = window;
         this.view = view;
-        this.dialogRootView = (DialogRootView) view.findViewById(R.id.root);
+        this.dialogRootView = view.findViewById(R.id.root);
+        this.contentRootView = view.findViewById(R.id.content_root);
         onAttach(window, view);
     }
 
@@ -166,6 +188,7 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
         this.window = null;
         this.view = null;
         this.dialogRootView = null;
+        this.contentRootView = null;
         onDetach();
     }
 

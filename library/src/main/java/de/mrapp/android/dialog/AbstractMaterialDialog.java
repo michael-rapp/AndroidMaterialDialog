@@ -241,6 +241,31 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     }
 
     @Override
+    public final int getPaddingLeft() {
+        return decorator.getPaddingLeft();
+    }
+
+    @Override
+    public final int getPaddingTop() {
+        return decorator.getPaddingTop();
+    }
+
+    @Override
+    public final int getPaddingRight() {
+        return decorator.getPaddingRight();
+    }
+
+    @Override
+    public final int getPaddingBottom() {
+        return decorator.getPaddingBottom();
+    }
+
+    @Override
+    public final void setPadding(final int left, final int top, final int right, final int bottom) {
+        decorator.setPadding(left, top, right, bottom);
+    }
+
+    @Override
     public final boolean isFitsSystemWindowsLeft() {
         return decorator.isFitsSystemWindowsLeft();
     }

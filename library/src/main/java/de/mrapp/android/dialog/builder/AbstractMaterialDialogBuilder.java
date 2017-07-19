@@ -218,6 +218,26 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     }
 
     /**
+     * Obtains the üadding from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the padding should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainPadding(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.materialDialogPaddingLeft, R.attr.materialDialogPaddingTop,
+                        R.attr.materialDialogPaddingRight, R.attr.materialDialogPaddingBottom});
+        int defaultTopPadding =
+                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_top_padding);
+        int left = typedArray.getDimensionPixelSize(0, 0);
+        int top = typedArray.getDimensionPixelSize(1, defaultTopPadding);
+        int right = typedArray.getDimensionPixelSize(2, 0);
+        int bottom = typedArray.getDimensionPixelSize(3, 0);
+        setPadding(left, top, right, bottom);
+    }
+
+    /**
      * Obtains, whether the dialog's content should be inset, from a specific theme.
      *
      * @param themeResourceId
@@ -303,6 +323,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         obtainMaxWidth(themeResourceId);
         obtainMaxHeight(themeResourceId);
         obtainMargin(themeResourceId);
+        obtainPadding(themeResourceId);
         obtainFitsSystemWindows(themeResourceId);
         obtainBackground(themeResourceId);
         obtainMessageColor(themeResourceId);
@@ -538,6 +559,30 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     public final BuilderType setMargin(final int left, final int top, final int right,
                                        final int bottom) {
         getProduct().setMargin(left, top, right, bottom);
+        return self();
+    }
+
+    /**
+     * Sets the padding of the dialog, which is created by the builder.
+     *
+     * @param left
+     *         The left padding, which should be set, in pixels as an {@link Integer} value. The
+     *         left padding must be at least 0
+     * @param top
+     *         The top padding, which should be set, in pixels as an {@link Integer} value. The top
+     *         padding must be at least 0
+     * @param right
+     *         The right padding, which should be set, in pixels as an {@link Integer} value. The
+     *         right padding must be at least 0
+     * @param bottom
+     *         The bottom padding, which should be set, in pixels as an {@link Integer} value. The
+     *         bottom padding must be at least 0
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setPadding(final int left, final int top, final int right,
+                                        final int bottom) {
+        getProduct().setPadding(left, top, right, bottom);
         return self();
     }
 

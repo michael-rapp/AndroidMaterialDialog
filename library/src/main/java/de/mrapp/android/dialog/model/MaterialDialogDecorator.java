@@ -219,6 +219,52 @@ public interface MaterialDialogDecorator extends Dialog {
     void setMargin(int left, int top, int right, int bottom);
 
     /**
+     * Returns the left padding of the dialog.
+     *
+     * @return The left padding of the dialog in pixels as an {@link Integer} value
+     */
+    int getPaddingLeft();
+
+    /**
+     * Returns the top padding of the dialog.
+     *
+     * @return The top padding of the dialog in pixels as an {@link Integer} value
+     */
+    int getPaddingTop();
+
+    /**
+     * Returns the right padding of the dialog.
+     *
+     * @return The right padding of the dialog in pixels as an {@link Integer} value
+     */
+    int getPaddingRight();
+
+    /**
+     * Returns the bottom padding of the dialog.
+     *
+     * @return The bottom padding of the dialog in pixels as an {@link Integer} value
+     */
+    int getPaddingBottom();
+
+    /**
+     * Sets the padding of the dialog.
+     *
+     * @param left
+     *         The left padding, which should be set, in pixels as an {@link Integer} value. The
+     *         left padding must be at least 0
+     * @param top
+     *         The top padding, which should be set, in pixels as an {@link Integer} value. The top
+     *         padding must be at least 0
+     * @param right
+     *         The right padding, which should be set, in pixels as an {@link Integer} value. The
+     *         right padding must be at least 0
+     * @param bottom
+     *         The bottom padding, which should be set, in pixels as an {@link Integer} value. The
+     *         bottom padding must be at least 0
+     */
+    void setPadding(int left, int top, int right, int bottom);
+
+    /**
      * Returns, whether the dialog accounts for system screen decorations such as the status bar and
      * insets its content at the left edge.
      *

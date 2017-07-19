@@ -35,6 +35,10 @@ License.
     <attr name="materialDialogMarginTop" format="dimension"/>
     <attr name="materialDialogMarginRight" format="dimension"/>
     <attr name="materialDialogMarginBottom" format="dimension"/>
+    <attr name="materialDialogPaddingLeft" format="dimension"/>
+    <attr name="materialDialogPaddingTop" format="dimension"/>
+    <attr name="materialDialogPaddingRight" format="dimension"/>
+    <attr name="materialDialogPaddingBottom" format="dimension"/>
     <attr name="materialDialogGravity" format="integer">
         <enum name="center" value="0x000011"/>
         <enum name="center_horizontal" value="0x000001"/>
