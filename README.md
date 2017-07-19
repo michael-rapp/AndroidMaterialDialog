@@ -63,6 +63,24 @@ The appearance of the dialog, which is created by the given sample code, is show
 
 ![](doc/images/example-alert-dialog.png)
 
+### Using custom views
+
+In order to adjust the appearance of a `MaterialDialog`, it is possible to specify custom views for displaying its title, message, content and button bar. All of these custom views can be given as a layout resource or as a `View` instance. The following example illustrates, how such custom views can be set to a `MaterialDialog.Builder`, which has been instantiated as shown in the previous section.
+
+```java
+MaterialDialog.Builder builder = new MaterialDialog.Builder(context);
+builder.setView(R.layout.custom_dialog_content);
+builder.setCustomTitle(R.layout.custom_dialog_title);
+builder.setCustomMessage(R.layout.custom_dialog_message);
+builder.setCustomButtonBar(R.layout.custom_dialog_button_bar);
+```
+
+To enable the dialog's title to be shown in a custom view, the custom view or one of its children must be an `EditText` with the id `android.R.id.title`. To enable the dialog's message to be shown, an `EditText` with the id `android.R.id.message` must be available accordingly. If using a custom view for displaying the dialog's buttons, the individual `Button` widgets are referenced via the ids `android.R.id.button1` (primary button), `android.R.id.button2` (secondary button) and `android.R.id.button2` (tertiary button).
+
+An example, which uses custom views for displaying the title, message, content and buttons, is shown in the screenshot below.
+
+![](doc/images/example-custom-views.png)
+
 ### Creating a progress dialog
 
 The following source code shows how a progress dialog, which displays a circular progress bar, can be created. Such as a regular `MaterialDialog`, such a dialog can contain a title, a message and up to three buttons. By using the `setProgressBarPosition`-method, the position of the dialog's progress bar can be specified. Possible values are `LEFT`, `TOP`, `RIGHT` and `BOTTOM`, each specifying the position in relation to the dialog's message.
