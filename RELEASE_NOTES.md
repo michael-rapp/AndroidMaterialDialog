@@ -4,6 +4,7 @@
 
 A minor release, which introduces the following changes:
 
+- Added setter-methods and theme attributes for customizing the padding of dialogs.
 - Updated `targetSdkVersion` to API level 26 (Android 8.0).
 - Updated AppCompat v7 support library to version 25.3.1.
 - Updated Android Design support library to version 25.3.1.
