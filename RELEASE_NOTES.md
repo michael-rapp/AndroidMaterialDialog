@@ -1,5 +1,14 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 4.0.2 (Jul. 20th 2017)
+
+A minor release, which introduces the following changes:
+
+- Updated `targetSdkVersion` to API level 26 (Android 8.0).
+- Updated AppCompat v7 support library to version 25.3.1.
+- Updated Android Design support library to version 25.3.1.
+- Updated dependency "AndroidUtil" to version 1.17.0.
+
 ## Version 4.0.1 (Jan. 26th 2017)
 
 A bugfix release, which introduces the following changes:
