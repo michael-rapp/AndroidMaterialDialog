@@ -1,5 +1,12 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 4.0.3 (Aug. 26th 2017)
+
+A minor release, which introduces the following changes:
+
+- Fixed an issue, which prevented the divider above a `WizardDialog`'s button bar from being shown.
+- Added setter-method and theme attribute for customizing the left and right margin of the divider above a dialog's button bar.
+
 ## Version 4.0.2 (Jul. 20th 2017)
 
 A minor release, which introduces the following changes:
