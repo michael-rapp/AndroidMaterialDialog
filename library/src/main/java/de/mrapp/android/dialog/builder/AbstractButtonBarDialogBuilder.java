@@ -105,6 +105,20 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
     }
 
     /**
+     * Obtains the left and right margin of the divider, which is located above the dialog's
+     * buttons, from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the margin should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainButtonBarDividerMargin(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.materialDialogButtonBarDividerMargin});
+        setButtonBarDividerMargin(typedArray.getDimensionPixelSize(0, 0));
+    }
+
+    /**
      * Creates a new builder, which allows to create dialogs, which allow to create and show
      * dialogs, which are designed according to Android 5's Material Design guidelines even on
      * pre-Lollipop devices and may contain up to three buttons.
@@ -350,6 +364,21 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
     }
 
     /**
+     * Sets the left and right margin of the divider, which is located above the buttons of the
+     * dialog, which is created by the builder.
+     *
+     * @param margin
+     *         The left and right margin, which should be set, in pixels as an {@link Integer}
+     *         value. The margin must be at least 0
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setButtonBarDividerMargin(final int margin) {
+        getProduct().setButtonBarDividerMargin(margin);
+        return self();
+    }
+
+    /**
      * Sets the custom view, which should be used to show the buttons of the dialog, which is
      * created by the builder.
      *
@@ -387,6 +416,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
         obtainDisabledButtonTextColor(themeResourceId);
         obtainShowButtonBarDivider(themeResourceId);
         obtainButtonBarDividerColor(themeResourceId);
+        obtainButtonBarDividerMargin(themeResourceId);
     }
 
 }

@@ -390,6 +390,20 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
         }
 
         /**
+         * Obtains the left and right margin of the divider, which is located above the dialog's
+         * buttons, from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the margin should be obtained from, as an {@link
+         *         Integer} value
+         */
+        private void obtainButtonBarDividerMargin(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogButtonBarDividerMargin});
+            setButtonBarDividerMargin(typedArray.getDimensionPixelSize(0, 0));
+        }
+
+        /**
          * Creates a new builder, which allows to create dialogs, which are designed according to
          * Android 5's Material Design guidelines even on pre-Lollipop devices and provide a
          * navigation for switching between multiple fragments.
@@ -699,6 +713,21 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
         }
 
         /**
+         * Sets the left and right margin of the divider, which is located above the dialog's
+         * buttons.
+         *
+         * @param margin
+         *         The left and right margin, which should be set, in pixels as an {@link Integer}
+         *         value. The margin must be at least 0
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}
+         */
+        public final Builder setButtonBarDividerMargin(final int margin) {
+            getProduct().setButtonBarDividerMargin(margin);
+            return self();
+        }
+
+        /**
          * Sets the text of the dialog's back button.
          *
          * @param resourceId
@@ -886,6 +915,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
             obtainFinishButtonText(themeResourceId);
             obtainShowButtonBarDivider(themeResourceId);
             obtainButtonBarDividerColor(themeResourceId);
+            obtainButtonBarDividerMargin(themeResourceId);
         }
 
     }
@@ -1105,6 +1135,16 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
     @Override
     public final void setButtonBarDividerColor(final int color) {
         decorator.setButtonBarDividerColor(color);
+    }
+
+    @Override
+    public final int getButtonBarDividerMargin() {
+        return decorator.getButtonBarDividerMargin();
+    }
+
+    @Override
+    public final void setButtonBarDividerMargin(final int margin) {
+        decorator.setButtonBarDividerMargin(margin);
     }
 
     @Override

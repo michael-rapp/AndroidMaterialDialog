@@ -27,12 +27,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import java.util.Locale;
 
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.listener.OnClickListenerWrapper;
 import de.mrapp.android.dialog.model.ValidateableDialog;
+
+import static de.mrapp.android.util.Condition.ensureAtLeast;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -79,6 +82,13 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
      */
     private static final String BUTTON_BAR_DIVIDER_COLOR_EXTRA =
             ButtonBarDialogDecorator.class.getSimpleName() + "::buttonBarDividerColor";
+
+    /**
+     * The name of the extra, which is used to store the color of the divider, which is shown above
+     * the dialog's buttons, within a bundle.
+     */
+    private static final String BUTTON_BAR_DIVIDER_MARGIN_EXTRA =
+            ButtonBarDialogDecorator.class.getSimpleName() + "::buttonBarDividerMargin";
 
     /**
      * The name of the extra, which is used to store the text of the positive button within a
@@ -186,6 +196,11 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
      * The color of the divider, which is located above the dialog's buttons.
      */
     private int buttonBarDividerColor;
+
+    /**
+     * The left and right margin of the divider, which is located above the dialog's buttons.
+     */
+    private int buttonBarDividerMargin;
 
     /**
      * The resource id of the custom button bar of the dialog.
@@ -367,6 +382,19 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     }
 
     /**
+     * Adapts the left and right margin of the divider, which is shown above the dialog's buttons.
+     */
+    private void adaptButtonBarDividerMargin() {
+        if (buttonBarDivider != null) {
+            LinearLayout.LayoutParams layoutParams =
+                    (LinearLayout.LayoutParams) buttonBarDivider.getLayoutParams();
+            layoutParams.leftMargin = buttonBarDividerMargin;
+            layoutParams.rightMargin = buttonBarDividerMargin;
+            buttonBarDivider.setLayoutParams(layoutParams);
+        }
+    }
+
+    /**
      * Creates a new decorator, which allows to modify the view hierarchy of a dialog, which is
      * designed according to Android 5's Material design guidelines even on pre-Lollipop devices and
      * may contain up to three buttons.
@@ -494,6 +522,18 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     }
 
     @Override
+    public final int getButtonBarDividerMargin() {
+        return buttonBarDividerMargin;
+    }
+
+    @Override
+    public final void setButtonBarDividerMargin(final int margin) {
+        ensureAtLeast(margin, 0, "The margin must be at least 0");
+        this.buttonBarDividerMargin = margin;
+        adaptButtonBarDividerMargin();
+    }
+
+    @Override
     public final void setCustomButtonBar(@LayoutRes final int resourceId) {
         customButtonBarView = null;
         customButtonBarViewId = resourceId;
@@ -514,6 +554,7 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
         outState.putInt(DISABLED_BUTTON_TEXT_COLOR_EXTRA, getDisabledButtonTextColor());
         outState.putBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA, isButtonBarDividerShown());
         outState.putInt(BUTTON_BAR_DIVIDER_COLOR_EXTRA, getButtonBarDividerColor());
+        outState.putInt(BUTTON_BAR_DIVIDER_MARGIN_EXTRA, getButtonBarDividerMargin());
         outState.putCharSequence(POSITIVE_BUTTON_TEXT_EXTRA, positiveButtonText);
         outState.putCharSequence(NEUTRAL_BUTTON_TEXT_EXTRA, neutralButtonText);
         outState.putCharSequence(NEGATIVE_BUTTON_TEXT_EXTRA, negativeButtonText);
@@ -526,6 +567,7 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
         setDisabledButtonTextColor(savedInstanceState.getInt(DISABLED_BUTTON_TEXT_COLOR_EXTRA));
         showButtonBarDivider(savedInstanceState.getBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA));
         setButtonBarDividerColor(savedInstanceState.getInt(BUTTON_BAR_DIVIDER_COLOR_EXTRA));
+        setButtonBarDividerMargin(savedInstanceState.getInt(BUTTON_BAR_DIVIDER_MARGIN_EXTRA));
         setPositiveButton(savedInstanceState.getCharSequence(POSITIVE_BUTTON_TEXT_EXTRA), null);
         setNeutralButton(savedInstanceState.getCharSequence(NEUTRAL_BUTTON_TEXT_EXTRA), null);
         setNegativeButton(savedInstanceState.getCharSequence(NEGATIVE_BUTTON_TEXT_EXTRA), null);
@@ -541,6 +583,7 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
         adaptNegativeButton();
         adaptButtonBarDividerVisibility();
         adaptButtonBarDividerColor();
+        adaptButtonBarDividerMargin();
     }
 
     @Override

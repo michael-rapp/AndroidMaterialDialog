@@ -389,6 +389,24 @@ public interface WizardDialogDecorator {
     void setButtonBarDividerColor(int color);
 
     /**
+     * Returns the left and right margin of the divider, which is located above the dialog's
+     * buttons.
+     *
+     * @return The left and right margin of the divider, which is located above the dialog's
+     * buttons, in pixels as an {@link Integer} value
+     */
+    int getButtonBarDividerMargin();
+
+    /**
+     * Sets the left and right margin of the divider, which is located above the dialog's buttons.
+     *
+     * @param margin
+     *         The left and right margin, which should be set, in pixels as an {@link Integer}
+     *         value. The margin must be at least 0
+     */
+    void setButtonBarDividerMargin(int margin);
+
+    /**
      * Returns the text of the dialog's back button.
      *
      * @return The text of the dialog's back button as an instance of the type {@link CharSequence}

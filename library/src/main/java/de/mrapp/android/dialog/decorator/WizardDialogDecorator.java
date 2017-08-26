@@ -144,6 +144,13 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
             WizardDialogDecorator.class.getSimpleName() + "::buttonBarDividerColor";
 
     /**
+     * The name of the extra, which is used to store the left and right margin of the divider, which
+     * is located above the dialog's buttons, within a bundle.
+     */
+    private static final String BUTTON_BAR_DIVIDER_MARGIN_EXTRA =
+            WizardDialogDecorator.class.getSimpleName() + "::buttonBarDividerMargin";
+
+    /**
      * The name of the extra, which is used to store the text of the back button of the dialog
      * within a bundle.
      */
@@ -305,13 +312,18 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     private int buttonBarDividerColor;
 
     /**
+     * The left and right margin of the divider, which is located above the dialog's buttons.
+     */
+    private int buttonBarDividerMargin;
+
+    /**
      * Inflates the tab layout, which indicates the currently shown fragment.
      */
     private void inflateTabLayout() {
         if (getDialogRootView() != null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            ViewGroup headerContainer = (ViewGroup) getDialogRootView().findViewById(R.id.header);
-            ViewGroup contentContainer = (ViewGroup) getDialogRootView().findViewById(R.id.content_container);
+            ViewGroup headerContainer = getDialogRootView().findViewById(R.id.header);
+            ViewGroup contentContainer = getDialogRootView().findViewById(R.id.content_container);
 
             if (tabLayout != null) {
                 headerContainer.removeViewInLayout(tabLayout);
@@ -340,20 +352,20 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
      * Inflates the layout, which is used to show the dialog's buttons.
      */
     private void inflateButtonBar() {
-        ViewGroup rootView = (ViewGroup) getDialogRootView();
+        ViewGroup rootView = getDialogRootView();
 
         if (rootView != null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             buttonBarContainer = (ViewGroup) layoutInflater
                     .inflate(R.layout.button_bar_container, rootView, false);
+            buttonBarDivider = buttonBarContainer.findViewById(R.id.button_bar_divider);
             rootView.addView(buttonBarContainer);
             View view = layoutInflater
                     .inflate(R.layout.horizontal_button_bar, buttonBarContainer, false);
             buttonBarContainer.addView(view);
-            nextButton = (Button) view.findViewById(android.R.id.button1);
-            finishButton = (Button) view.findViewById(android.R.id.button2);
-            backButton = (Button) view.findViewById(android.R.id.button3);
-            buttonBarDivider = view.findViewById(R.id.button_bar_divider);
+            nextButton = view.findViewById(android.R.id.button1);
+            finishButton = view.findViewById(android.R.id.button2);
+            backButton = view.findViewById(android.R.id.button3);
         }
     }
 
@@ -564,6 +576,19 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     private void adaptButtonBarDividerColor() {
         if (buttonBarDivider != null) {
             buttonBarDivider.setBackgroundColor(buttonBarDividerColor);
+        }
+    }
+
+    /**
+     * Adapts the left and right margin of the divider, which is shown above the dialog's buttons.
+     */
+    private void adaptButtonBarDividerMargin() {
+        if (buttonBarDivider != null) {
+            LinearLayout.LayoutParams layoutParams =
+                    (LinearLayout.LayoutParams) buttonBarDivider.getLayoutParams();
+            layoutParams.leftMargin = buttonBarDividerMargin;
+            layoutParams.rightMargin = buttonBarDividerMargin;
+            buttonBarDivider.setLayoutParams(layoutParams);
         }
     }
 
@@ -891,6 +916,18 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     }
 
     @Override
+    public final int getButtonBarDividerMargin() {
+        return buttonBarDividerMargin;
+    }
+
+    @Override
+    public final void setButtonBarDividerMargin(final int margin) {
+        ensureAtLeast(margin, 0, "The margin must be at least 0");
+        this.buttonBarDividerMargin = margin;
+        adaptButtonBarDividerMargin();
+    }
+
+    @Override
     public final CharSequence getBackButtonText() {
         return backButtonText;
     }
@@ -1006,6 +1043,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
         outState.putInt(BUTTON_TEXT_COLOR_EXTRA, getButtonTextColor());
         outState.putBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA, isButtonBarDividerShown());
         outState.putInt(BUTTON_BAR_DIVIDER_COLOR_EXTRA, getButtonBarDividerColor());
+        outState.putInt(BUTTON_BAR_DIVIDER_MARGIN_EXTRA, getButtonBarDividerMargin());
         outState.putCharSequence(BACK_BUTTON_TEXT_EXTRA, getBackButtonText());
         outState.putCharSequence(NEXT_BUTTON_TEXT_EXTRA, getNextButtonText());
         outState.putCharSequence(FINISH_BUTTON_TEXT_EXTRA, getFinishButtonText());
@@ -1027,6 +1065,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
         setButtonTextColor(savedInstanceState.getInt(BUTTON_TEXT_COLOR_EXTRA));
         showButtonBarDivider(savedInstanceState.getBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA));
         setButtonBarDividerColor(savedInstanceState.getInt(BUTTON_BAR_DIVIDER_COLOR_EXTRA));
+        setButtonBarDividerMargin(savedInstanceState.getInt(BUTTON_BAR_DIVIDER_MARGIN_EXTRA));
         CharSequence backButtonText = savedInstanceState.getCharSequence(BACK_BUTTON_TEXT_EXTRA);
         CharSequence nextButtonText = savedInstanceState.getCharSequence(NEXT_BUTTON_TEXT_EXTRA);
         CharSequence finishButtonText =
@@ -1080,6 +1119,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
             adaptButtonBarVisibility();
             adaptButtonBarDividerVisibility();
             adaptButtonBarDividerColor();
+            adaptButtonBarDividerMargin();
             adaptButtonVisibility();
         }
     }
