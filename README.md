@@ -187,6 +187,11 @@ The screenshots below show the appearance of dialogs, which use the themes `Mate
 
 The `setShowAnimation`-, `setDismissAnimation`- and `setCancelAnimation`-methods of a dialog can be used to specify the animations, which should be used when the dialog is shown, dismissed or canceled. All of these methods take an instance of the class `DialogAnimation` as a parameter. This parameter specifies the properties of the animation, e.g. its duration. Currently two types of animations are supported:
 
+- **`FadeAnimation`** Allows to show or hide a dialog by fading it in or out. Instances of this animation can be created as shown in the following.
+ 
+```java
+FadeAnimation animation = new FadeAnimation.Builder(this).setAlpha(0f).setDuration(1000L).create();
+```
 - **`RectangleRevealAnimation`:** Allows to show or hide a dialog by translating it from/to a specific position and animating its size. Instances of this animation can be created as shown below. The `x` and `y` properties specify the position of the dialog in pixels. The coordinate `x=0,y=0` corresponds to the top left corner of the display. The `width` and `height` properties specify the size of the dialog in pixels.
 
 ```java
