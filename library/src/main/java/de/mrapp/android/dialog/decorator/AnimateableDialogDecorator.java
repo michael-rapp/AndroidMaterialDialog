@@ -29,6 +29,7 @@ import android.view.Window;
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.animation.CircleRevealAnimation;
 import de.mrapp.android.dialog.animation.DialogAnimation;
+import de.mrapp.android.dialog.animation.FadeAnimation;
 import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
 import de.mrapp.android.dialog.model.HeaderDialog;
 
@@ -62,6 +63,46 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
      * True, if the dialog has already been hidden, false otherwise.
      */
     private boolean hidden;
+
+    /**
+     * Creates an animator, which should be used for a fade animation.
+     *
+     * @param animatedView
+     *         The animated view as an instance of the class {@link View}. The view may not be null
+     * @param animation
+     *         The animation as an instance of the class {@link FadeAnimation}. The animation may
+     *         not be null
+     * @param listener
+     *         The listener, which should be notified about the animation's events, as an instance
+     *         of the type {@link AnimatorListener} or null, if no listener should be notified
+     * @param show
+     *         True, if the animation should be used to show the dialog, false otherwise
+     * @return The animator, which has been created, as an instance of the class {@link
+     * ViewPropertyAnimator} or null, if no animation should be used
+     */
+    private ViewPropertyAnimator createAnimator(@NonNull final View animatedView,
+                                                @NonNull final FadeAnimation animation,
+                                                @Nullable final AnimatorListener listener,
+                                                final boolean show) {
+        if (animation.getAlpha() != null) {
+            ViewPropertyAnimator animator =
+                    animatedView.animate().setInterpolator(animation.getInterpolator())
+                            .setDuration(getDuration(animatedView, animation))
+                            .setStartDelay(animation.getStartDelay()).setListener(listener);
+
+            if (show) {
+                animatedView.setAlpha(animation.getAlpha());
+                animator.alpha(1);
+            } else {
+                animatedView.setAlpha(1f);
+                animator.alpha(animation.getAlpha());
+            }
+
+            return animator;
+        }
+
+        return null;
+    }
 
     /**
      * Creates an animator, which should be used for a rectangular reveal animation.
@@ -375,7 +416,16 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
             if (view != null && window != null) {
                 View animatedView = getDialog().isFullscreen() ? window.getDecorView() : view;
 
-                if (animation instanceof RectangleRevealAnimation) {
+                if (animation instanceof FadeAnimation) {
+                    FadeAnimation fadeAnimation = (FadeAnimation) animation;
+                    ViewPropertyAnimator animator =
+                            createAnimator(animatedView, fadeAnimation, listener, true);
+
+                    if (animator != null) {
+                        animator.start();
+                        return true;
+                    }
+                } else if (animation instanceof RectangleRevealAnimation) {
                     RectangleRevealAnimation rectangleRevealAnimation =
                             (RectangleRevealAnimation) animation;
                     ViewPropertyAnimator animator =
@@ -428,7 +478,16 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
                 if (view != null && window != null) {
                     View animatedView = getDialog().isFullscreen() ? window.getDecorView() : view;
 
-                    if (animation instanceof RectangleRevealAnimation) {
+                    if (animation instanceof FadeAnimation) {
+                        FadeAnimation fadeAnimation = (FadeAnimation) animation;
+                        ViewPropertyAnimator animator =
+                                createAnimator(animatedView, fadeAnimation, listener, false);
+
+                        if (animator != null) {
+                            animator.start();
+                            return true;
+                        }
+                    } else if (animation instanceof RectangleRevealAnimation) {
                         RectangleRevealAnimation rectangleRevealAnimation =
                                 (RectangleRevealAnimation) animation;
                         ViewPropertyAnimator animator =
