@@ -46,8 +46,6 @@ import de.mrapp.android.dialog.animation.ScaleTransitionAnimation;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
 
-import static de.mrapp.android.util.DisplayUtil.getStatusBarHeight;
-
 /**
  * A preference fragment, which contains the example app's settings.
  *
@@ -391,13 +389,12 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
      */
     private DialogAnimation createRectangularRevealAnimation(@NonNull final Preference preference) {
         if (shouldUseAnimations()) {
-            ListView listView = (ListView) getActivity().findViewById(android.R.id.list);
+            ListView listView = getActivity().findViewById(android.R.id.list);
             View view = listView.getChildAt(preference.getOrder() + 1);
             int[] location = new int[2];
             view.getLocationOnScreen(location);
             return new RectangleRevealAnimation.Builder(getActivity()).setWidth(view.getWidth())
-                    .setHeight(view.getHeight()).setX(location[0])
-                    .setY(location[1] - getStatusBarHeight(getActivity())).create();
+                    .setHeight(view.getHeight()).setX(location[0]).setY(location[1]).create();
         }
 
         return null;

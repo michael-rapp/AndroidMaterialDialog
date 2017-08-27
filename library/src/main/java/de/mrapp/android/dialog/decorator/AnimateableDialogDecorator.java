@@ -32,9 +32,6 @@ import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
 import de.mrapp.android.dialog.model.HeaderDialog;
 
-import static de.mrapp.android.util.DisplayUtil.getDisplayHeight;
-import static de.mrapp.android.util.DisplayUtil.getStatusBarHeight;
-
 /**
  * A decorator, which allows to modify the view hierarchy of an animateable dialog, which is
  * designed according to Android 5's Material Design guidelines even on pre-Lollipop devices and may
@@ -84,9 +81,8 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
     private ViewPropertyAnimator createAnimator(@NonNull final View animatedView,
                                                 @NonNull final RectangleRevealAnimation animation,
                                                 @Nullable final AnimatorListener listener) {
-        if (animation.getX() != null || animation.getY() != null ||
-                animation.getWidth() != null || animation.getHeight() != null ||
-                animation.getAlpha() != null) {
+        if (animation.getX() != null || animation.getY() != null || animation.getWidth() != null ||
+                animation.getHeight() != null || animation.getAlpha() != null) {
             return animatedView.animate().setInterpolator(animation.getInterpolator())
                     .setDuration(getDuration(animatedView, animation))
                     .setStartDelay(animation.getStartDelay()).setListener(listener);
@@ -121,13 +117,7 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
         }
 
         if (animation.getY() != null) {
-            int y = animation.getY();
-
-            if (animatedView.getHeight() >= getDisplayHeight(getContext())) {
-                y += getStatusBarHeight(getContext());
-            }
-
-            translationY = y - animatedView.getTop() - shadowWidth;
+            translationY = animation.getY() - animatedView.getTop() - shadowWidth;
         }
 
         if (animation.getWidth() != null) {
@@ -186,13 +176,7 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
         }
 
         if (animation.getY() != null) {
-            int y = animation.getY();
-
-            if (animatedView.getHeight() >= getDisplayHeight(getContext())) {
-                y += getStatusBarHeight(getContext());
-            }
-
-            translationY = y - animatedView.getTop() - shadowWidth;
+            translationY = animation.getY() - animatedView.getTop() - shadowWidth;
         }
 
         if (animation.getWidth() != null) {
