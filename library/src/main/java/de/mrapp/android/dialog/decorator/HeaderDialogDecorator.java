@@ -202,9 +202,8 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
             headerContainer = (ViewGroup) layoutInflater
                     .inflate(R.layout.material_dialog_header, rootView, false);
             headerBackgroundImageView =
-                    (ImageView) headerContainer.findViewById(R.id.header_background_image_view);
-            headerIconImageView =
-                    (ImageView) headerContainer.findViewById(R.id.header_icon_image_view);
+                    headerContainer.findViewById(R.id.header_background_image_view);
+            headerIconImageView = headerContainer.findViewById(R.id.header_icon_image_view);
             headerDivider = headerContainer.findViewById(R.id.header_divider);
             rootView.addView(headerContainer, 0);
         }

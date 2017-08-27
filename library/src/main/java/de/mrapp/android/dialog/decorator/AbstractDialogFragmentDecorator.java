@@ -165,7 +165,7 @@ public abstract class AbstractDialogFragmentDecorator<DialogType extends Dialog>
         ensureNotNull(fragmentManager, "The fragment manager may not be null");
         this.window = window;
         this.view = view;
-        this.dialogRootView = (DialogRootView) view.findViewById(R.id.root);
+        this.dialogRootView = view.findViewById(R.id.root);
         onAttach(window, view, fragmentManager);
     }
 
