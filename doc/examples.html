@@ -179,7 +179,13 @@
                 <h4>Using animations</h4>
                 
                 <p>The <tt>setShowAnimation</tt>-, <tt>setDismissAnimation</tt>- and <tt>setCancelAnimation</tt>-methods of a dialog can be used to specify the animations, which should be used when the dialog is shown, dismissed or canceled. All of these methods take an instance of the class <a href="javadoc/de/mrapp/android/dialog/animation/DialogAnimation.html" target="_blank" class="code">DialogAnimation</a> as a parameter. This parameter specifies the properties of the animation, e.g. its duration. Currently two types of animations are supported:</p>
-                
+
+                <ul>
+                    <li><b><tt>FadeAnimation</tt>:</b> Allows to show or hide a dialog by fading it in or out. Instances of this animation can be created as shown below.</li>
+                </ul>
+
+                <div class="code-block">FadeAnimation animation = <strong><font color='#7f0055'>new</font></strong> FadeAnimation.Builder(<strong><font color='#7f0055'>this</font></strong>)</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.setAlpha(0f).setDuration(1000L).create();</div>
+
                 <ul>
                   <li><b><tt>RectangleRevealAnimation</tt>:</b> Allows to show or hide a dialog by translating it from/to a specific position and animating its size. Instances of this animation can be created as shown below. The <tt>x</tt> and <tt>y</tt> properties specify the position of the dialog in pixels. The coordinate <tt>x=0,y=0</tt> corresponds to the top left corner of the display. The <tt>width</tt> and <tt>height</tt> properties specify the size of the dialog in pixels.</li>
                 </ul>
