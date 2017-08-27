@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 4.1.0 (Aug. 28th 2017)
+
+A feature release, which introduces the following changes:
+
+- Dialogs can now be shown or hidden using a `FadeAnimation`.
+
 ## Version 4.0.3 (Aug. 26th 2017)
 
 A minor release, which introduces the following changes:
