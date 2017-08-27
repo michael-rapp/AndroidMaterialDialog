@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
@@ -70,6 +71,16 @@ public abstract class AbstractHeaderDialog extends AbstractMaterialDialog implem
     @Override
     public final void showHeader(final boolean show) {
         decorator.showHeader(show);
+    }
+
+    @Override
+    public final void setCustomHeader(@Nullable final View view) {
+        decorator.setCustomHeader(view);
+    }
+
+    @Override
+    public final void setCustomHeader(@LayoutRes final int resourceId) {
+        decorator.setCustomHeader(resourceId);
     }
 
     @Override

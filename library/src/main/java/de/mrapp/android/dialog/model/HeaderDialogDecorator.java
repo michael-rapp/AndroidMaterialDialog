@@ -17,7 +17,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.DrawableAnimation;
@@ -46,6 +48,24 @@ public interface HeaderDialogDecorator extends Dialog {
      *         True, if the dialog's header should be shown, false otherwise
      */
     void showHeader(boolean show);
+
+    /**
+     * Sets the custom view, which should be used to show the header of the dialog.
+     *
+     * @param view
+     *         The view, which should be set, as an instance of the class {@link View} or null, if
+     *         no custom view should be used to show the header
+     */
+    void setCustomHeader(@Nullable View view);
+
+    /**
+     * Sets the custom view, which should be used to show the header of the dialog.
+     *
+     * @param resourceId
+     *         The resource id of the view, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid layout resource
+     */
+    void setCustomHeader(@LayoutRes int resourceId);
 
     /**
      * Returns the height of the dialog's header.

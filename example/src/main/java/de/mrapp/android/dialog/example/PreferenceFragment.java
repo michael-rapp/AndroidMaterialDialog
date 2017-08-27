@@ -196,6 +196,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         builder.setCustomTitle(R.layout.custom_dialog_title);
         builder.setCustomMessage(R.layout.custom_dialog_message);
         builder.setCustomButtonBar(R.layout.custom_dialog_button_bar);
+        builder.setCustomHeader(R.layout.custom_dialog_header);
         customDialog = builder.create();
     }
 

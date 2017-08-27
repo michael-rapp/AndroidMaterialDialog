@@ -20,6 +20,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -117,9 +118,14 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
             HeaderDialogDecorator.class.getSimpleName() + "::headerIconId";
 
     /**
-     * The view group, which contains the views of the dialog's header.
+     * The view group, which contains all views of the dialog's header.
      */
-    private ViewGroup headerContainer;
+    private ViewGroup header;
+
+    /**
+     * The view group, which contains the content of the dialog's header.
+     */
+    private ViewGroup headerContentContainer;
 
     /**
      * The image view, which is used to show the background of the dialog's header.
@@ -140,6 +146,16 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
      * True, if the dialog's header is shown, false otherwise.
      */
     private boolean showHeader;
+
+    /**
+     * The custom header view of the dialog.
+     */
+    private View customHeaderView;
+
+    /**
+     * The resource id of the custom header view of the dialog.
+     */
+    private int customHeaderViewId = -1;
 
     /**
      * The height of the dialog's header.
@@ -198,14 +214,44 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
         ViewGroup rootView = getRootView();
 
         if (rootView != null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            headerContainer = (ViewGroup) layoutInflater
-                    .inflate(R.layout.material_dialog_header, rootView, false);
-            headerBackgroundImageView =
-                    headerContainer.findViewById(R.id.header_background_image_view);
-            headerIconImageView = headerContainer.findViewById(R.id.header_icon_image_view);
-            headerDivider = headerContainer.findViewById(R.id.header_divider);
-            rootView.addView(headerContainer, 0);
+            if (header == null) {
+                LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+                header = (ViewGroup) layoutInflater
+                        .inflate(R.layout.material_dialog_header, rootView, false);
+                headerBackgroundImageView = header.findViewById(R.id.header_background_image_view);
+                headerContentContainer = header.findViewById(R.id.header_content_container);
+                headerDivider = header.findViewById(R.id.header_divider);
+                rootView.addView(header, 0);
+            }
+
+            headerContentContainer.removeAllViews();
+
+            if (customHeaderView != null) {
+                headerContentContainer.addView(customHeaderView);
+            } else if (customHeaderViewId != -1) {
+                LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+                View view =
+                        layoutInflater.inflate(customHeaderViewId, headerContentContainer, false);
+                headerContentContainer.addView(view);
+            } else {
+                LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+                View view = layoutInflater
+                        .inflate(R.layout.header_icon_image_view, headerContentContainer, false);
+                headerContentContainer.addView(view);
+            }
+
+            View iconView = headerContentContainer.findViewById(android.R.id.icon);
+            headerIconImageView = iconView instanceof ImageView ? (ImageView) iconView : null;
+        }
+    }
+
+    /**
+     * Adapts the view, which is used to show the dialog's header.
+     */
+    private void adaptHeaderView() {
+        if (header != null) {
+            inflateHeader();
+            adaptHeaderIcon(null);
         }
     }
 
@@ -213,8 +259,8 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
      * Adapts the visibility of the dialog's header.
      */
     private void adaptHeaderVisibility() {
-        if (headerContainer != null) {
-            headerContainer.setVisibility(showHeader ? View.VISIBLE : View.GONE);
+        if (header != null) {
+            header.setVisibility(showHeader ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -222,8 +268,8 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
      * Adapts the height of the dialog's header.
      */
     private void adaptHeaderHeight() {
-        if (headerContainer != null) {
-            ViewGroup.LayoutParams layoutParams = headerContainer.getLayoutParams();
+        if (header != null) {
+            ViewGroup.LayoutParams layoutParams = header.getLayoutParams();
             layoutParams.height = headerHeight;
         }
     }
@@ -386,6 +432,20 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
         getDialog().setFitsSystemWindows(getDialog().isFitsSystemWindowsLeft(), !show,
                 getDialog().isFitsSystemWindowsRight(), getDialog().isFitsSystemWindowsBottom());
         adaptHeaderVisibility();
+    }
+
+    @Override
+    public final void setCustomHeader(@Nullable final View view) {
+        customHeaderView = view;
+        customHeaderViewId = -1;
+        adaptHeaderView();
+    }
+
+    @Override
+    public final void setCustomHeader(@LayoutRes final int resourceId) {
+        customHeaderView = null;
+        customHeaderViewId = resourceId;
+        adaptHeaderView();
     }
 
     @Override
@@ -563,8 +623,11 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
 
     @Override
     protected final void onDetach() {
+        header = null;
+        headerContentContainer = null;
         headerBackgroundImageView = null;
         headerIconImageView = null;
+        headerDivider = null;
     }
 
 }

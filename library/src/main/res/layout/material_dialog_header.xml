@@ -14,7 +14,6 @@ implied. See the License for the specific language governing permissions and lim
 License.
 -->
 <FrameLayout
-    android:id="@+id/header"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dialog_header_height">
@@ -26,12 +25,10 @@ License.
         android:contentDescription="@null"
         android:scaleType="centerCrop"/>
 
-    <ImageView
-        android:id="@+id/header_icon_image_view"
+    <RelativeLayout
+        android:id="@+id/header_content_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="@null"
-        android:scaleType="centerInside"/>
+        android:layout_height="match_parent"/>
 
     <View
         android:id="@+id/header_divider"

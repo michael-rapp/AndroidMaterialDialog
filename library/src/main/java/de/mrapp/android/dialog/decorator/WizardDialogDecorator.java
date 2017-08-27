@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -322,11 +323,12 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     private void inflateTabLayout() {
         if (getDialogRootView() != null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            ViewGroup headerContainer = getDialogRootView().findViewById(R.id.header);
+            ViewGroup headerContentContainer =
+                    getDialogRootView().findViewById(R.id.header_content_container);
             ViewGroup contentContainer = getDialogRootView().findViewById(R.id.content_container);
 
             if (tabLayout != null) {
-                headerContainer.removeViewInLayout(tabLayout);
+                headerContentContainer.removeViewInLayout(tabLayout);
                 contentContainer.removeView(tabLayout);
                 tabLayout = null;
             }
@@ -336,8 +338,12 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
                             TextUtils.isEmpty(getDialog().getMessage())) ||
                             getTabPosition() == TabPosition.PREFER_HEADER)) {
                 tabLayout = (TabLayout) layoutInflater
-                        .inflate(R.layout.wizard_dialog_tab_layout, headerContainer, false);
-                headerContainer.addView(tabLayout);
+                        .inflate(R.layout.wizard_dialog_tab_layout, headerContentContainer, false);
+                RelativeLayout.LayoutParams layoutParams =
+                        new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                headerContentContainer.addView(tabLayout, layoutParams);
             } else {
                 tabLayout = (TabLayout) layoutInflater
                         .inflate(R.layout.wizard_dialog_tab_layout, contentContainer, false);

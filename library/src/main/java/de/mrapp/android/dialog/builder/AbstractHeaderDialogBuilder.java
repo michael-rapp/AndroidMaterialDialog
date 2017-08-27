@@ -19,10 +19,12 @@ import android.graphics.Bitmap;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.HeaderDialog;
@@ -177,6 +179,36 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
      */
     public final BuilderType showHeader(final boolean show) {
         getProduct().showHeader(show);
+        return self();
+    }
+
+    /**
+     * Sets the custom view, which should be used to show the header of the dialog, which is created
+     * by the builder.
+     *
+     * @param view
+     *         The view, which should be set, as an instance of the class {@link View} or null, if
+     *         no custom view should be used to show the header
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setCustomHeader(@Nullable final View view) {
+        getProduct().setCustomHeader(view);
+        return self();
+    }
+
+    /**
+     * Sets the custom view, which should be used to show the header of the dialog, which is created
+     * by the builder.
+     *
+     * @param resourceId
+     *         The resource id of the view, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid layout resource
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setCustomHeader(@LayoutRes final int resourceId) {
+        getProduct().setCustomHeader(resourceId);
         return self();
     }
 
