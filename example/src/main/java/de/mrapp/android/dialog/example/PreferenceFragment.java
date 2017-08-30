@@ -26,6 +26,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
@@ -392,10 +393,21 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         if (shouldUseAnimations()) {
             ListView listView = getActivity().findViewById(android.R.id.list);
             View view = listView.getChildAt(preference.getOrder() + 1);
-            int[] location = new int[2];
-            view.getLocationOnScreen(location);
+            int[] viewLocation = new int[2];
+            view.getLocationOnScreen(viewLocation);
+            View rootView = getActivity().findViewById(android.R.id.content);
+            int[] rootViewLocation = new int[2];
+            rootView.getLocationOnScreen(rootViewLocation);
+            ActionBar toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+            int y = viewLocation[1];
+
+            if (!shouldUseFullscreen()) {
+                y -= (rootViewLocation[1] - (toolbar != null ? toolbar.getHeight() : 0));
+            }
+
             return new RectangleRevealAnimation.Builder(getActivity()).setWidth(view.getWidth())
-                    .setHeight(view.getHeight()).setX(location[0]).setY(location[1]).create();
+                    .setDuration(4000).setHeight(view.getHeight()).setX(viewLocation[0]).setY(y)
+                    .create();
         }
 
         return null;
