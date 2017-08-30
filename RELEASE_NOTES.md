@@ -1,10 +1,12 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
-## Version 4.1.0 (Aug. 28th 2017)
+## Version 4.1.0 (Aug. 31th 2017)
 
 A feature release, which introduces the following changes:
 
 - Dialogs can now be shown or hidden using a `FadeAnimation`.
+- Custom layouts can now be used to display a dialog's header using the `setCustomHeader`-methods as requested in https://github.com/michael-rapp/AndroidMaterialDialog/issues/13
+- Omitted the use of deprecated methods.
 
 ## Version 4.0.3 (Aug. 26th 2017)
 
