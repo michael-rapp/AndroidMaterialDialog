@@ -73,9 +73,15 @@ builder.setView(R.layout.custom_dialog_content);
 builder.setCustomTitle(R.layout.custom_dialog_title);
 builder.setCustomMessage(R.layout.custom_dialog_message);
 builder.setCustomButtonBar(R.layout.custom_dialog_button_bar);
+builder.setCustomHeader(R.layout.custom_dialog_header);
 ```
 
-To enable the dialog's title to be shown in a custom view, the custom view or one of its children must be an `EditText` with the id `android.R.id.title`. To enable the dialog's message to be shown, an `EditText` with the id `android.R.id.message` must be available accordingly. If using a custom view for displaying the dialog's buttons, the individual `Button` widgets are referenced via the ids `android.R.id.button1` (primary button), `android.R.id.button2` (secondary button) and `android.R.id.button2` (tertiary button).
+When using custom layouts, which contain views of the same type and being associated with the same id as the views in the original layout, the dialog's methods (e.g. the `setTitle`-method) can be used as before. To do so, the following views must be contained by the different types of layouts:
+
+- To enable the dialog's title to be shown in a custom view, the custom view or one of its children must be an `EditText` with the id `android.R.id.title`. 
+- To enable the dialog's message to be shown, an `EditText` with the id `android.R.id.message` must be available accordingly. 
+- If using a custom view for displaying the dialog's buttons, the individual `Button` widgets are referenced via the ids `android.R.id.button1` (primary button), `android.R.id.button2` (secondary button) and `android.R.id.button2` (tertiary button). 
+- When using a custom layout for displaying the dialog's header, it must contain an `ImageView` with the id `android.R.id.icon` to be able to show the header's icon.
 
 An example, which uses custom views for displaying the title, message, content and buttons, is shown in the screenshot below.
 
