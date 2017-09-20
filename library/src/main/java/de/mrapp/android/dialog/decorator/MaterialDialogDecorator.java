@@ -36,6 +36,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -139,6 +140,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * The parent view of the view, which is used to show the dialog's message.
      */
     private ViewGroup messageContainer;
+
+    /**
+     * The image view, which is used to show the icon of the dialog.
+     */
+    private ImageView iconImageView;
 
     /**
      * The text view, which is used to show the title of the dialog.
@@ -441,6 +447,8 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
             View titleView = titleContainer.findViewById(android.R.id.title);
             titleTextView = titleView instanceof TextView ? (TextView) titleView : null;
+            View iconView = titleContainer.findViewById(android.R.id.icon);
+            iconImageView = iconView instanceof ImageView ? (ImageView) iconView : null;
         }
     }
 
@@ -577,8 +585,9 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * Adapts the dialog's icon.
      */
     private void adaptIcon() {
-        if (titleTextView != null) {
-            titleTextView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+        if (iconImageView != null) {
+            iconImageView.setImageDrawable(icon);
+            iconImageView.setVisibility(icon != null ? View.VISIBLE : View.GONE);
         }
 
         adaptTitleContainerVisibility();
