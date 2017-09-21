@@ -32,6 +32,7 @@ import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 
+import de.mrapp.android.dialog.Area;
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.dialog.model.MaterialDialog;
@@ -308,6 +309,24 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     }
 
     /**
+     * Obtains the scrollable area from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the scrollable area should be obtained from, as an
+     *         {@link Integer} value
+     */
+    private void obtainScrollableArea(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.materialDialogScrollableAreaTop,
+                        R.attr.materialDialogScrollableAreaBottom});
+        int topIndex = typedArray.getInt(0, -1);
+        int bottomIndex = typedArray.getInt(1, -1);
+        Area top = topIndex != -1 ? Area.fromIndex(topIndex) : null;
+        Area bottom = bottomIndex != -1 ? Area.fromIndex(bottomIndex) : null;
+        setScrollableArea(top, bottom);
+    }
+
+    /**
      * Obtains all relevant attributes from the current theme.
      *
      * @param themeResourceId
@@ -328,6 +347,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         obtainBackground(themeResourceId);
         obtainMessageColor(themeResourceId);
         obtainTitleColor(themeResourceId);
+        obtainScrollableArea(themeResourceId);
     }
 
     /**
@@ -874,6 +894,39 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      */
     public final BuilderType setCustomMessage(@LayoutRes final int resourceId) {
         getProduct().setCustomMessage(resourceId);
+        return self();
+    }
+
+    /**
+     * Sets the area of the dialog, which is created by the builder, which should be scrollable.
+     *
+     * @param area
+     *         The area, which should be set, as a value of the enum {@link Area} or null, if no
+     *         area should be scrollable
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setScrollableArea(@Nullable final Area area) {
+        getProduct().setScrollableArea(area);
+        return self();
+    }
+
+    /**
+     * Sets the areas of the dialog, which is created by the builder, which should be scrollable.
+     *
+     * @param top
+     *         The top-most area, which should be scrollable, as a value of the enum {@link Area} or
+     *         null, if no area should be scrollable
+     * @param bottom
+     *         The bottom-most area, which should be scrollable, as a value of the enum {@link
+     *         Area}. If the top-most area is null, the bottom-most are must be null as well. The
+     *         index of the bottom-most area must be at least the index of the top-most area
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setScrollableArea(@Nullable final Area top,
+                                               @Nullable final Area bottom) {
+        getProduct().setScrollableArea(top, bottom);
         return self();
     }
 

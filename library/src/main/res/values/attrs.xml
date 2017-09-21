@@ -105,5 +105,19 @@ License.
     <attr name="materialDialogNextButtonText" format="string"/>
     <attr name="materialDialogFinishButtonText" format="string"/>
     <attr name="materialDialogShowDividersOnScroll" format="boolean"/>
+    <attr name="materialDialogScrollableAreaTop" format="enum">
+        <enum name="header" value="0"/>
+        <enum name="title" value="1"/>
+        <enum name="message" value="2"/>
+        <enum name="content" value="3"/>
+        <enum name="button_bar" value="4"/>
+    </attr>
+    <attr name="materialDialogScrollableAreaBottom" format="enum">
+        <enum name="header" value="0"/>
+        <enum name="title" value="1"/>
+        <enum name="message" value="2"/>
+        <enum name="content" value="3"/>
+        <enum name="button_bar" value="4"/>
+    </attr>
 
 </resources>

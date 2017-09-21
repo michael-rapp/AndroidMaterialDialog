@@ -21,9 +21,11 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
 
+import de.mrapp.android.dialog.Area;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 
 /**
@@ -559,5 +561,36 @@ public interface MaterialDialogDecorator extends Dialog {
      *         resource id must correspond to a valid string resource
      */
     void setTitle(@StringRes int resourceId);
+
+    /**
+     * Returns the area of the dialog, whichi s scrollable.
+     *
+     * @return A pair, which contains the top-most and bottom-most scrollable area of the dialog, as
+     * an instance of the class {@link Pair} or null, if no area is scrollable
+     */
+    @Nullable
+    Pair<Area, Area> getScrollableArea();
+
+    /**
+     * Sets the area of the dialog, which should be scrollable.
+     *
+     * @param area
+     *         The area, which should be set, as a value of the enum {@link Area} or null, if no
+     *         area should be scrollable
+     */
+    void setScrollableArea(@Nullable Area area);
+
+    /**
+     * Sets the areas of the dialog, which should be scrollable.
+     *
+     * @param top
+     *         The top-most area, which should be scrollable, as a value of the enum {@link Area} or
+     *         null, if no area should be scrollable
+     * @param bottom
+     *         The bottom-most area, which should be scrollable, as a value of the enum {@link
+     *         Area}. If the top-most area is null, the bottom-most are must be null as well. The
+     *         index of the bottom-most area must be at least the index of the top-most area
+     */
+    void setScrollableArea(@Nullable Area top, @Nullable Area bottom);
 
 }

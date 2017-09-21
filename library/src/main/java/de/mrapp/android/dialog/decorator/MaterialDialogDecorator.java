@@ -28,6 +28,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.view.OnApplyWindowInsetsListener;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
@@ -40,6 +41,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import de.mrapp.android.dialog.Area;
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.CircleTransitionAnimation;
@@ -52,6 +54,8 @@ import de.mrapp.android.dialog.view.DialogRootView;
 import de.mrapp.android.util.ViewUtil;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
+import static de.mrapp.android.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.Condition.ensureTrue;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -312,6 +316,16 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * modified by the decorator.
      */
     private Rect windowInsets;
+
+    /**
+     * The top-most scrollable area.
+     */
+    private Area topScrollableArea;
+
+    /**
+     * The bottom-most scrollable area.
+     */
+    private Area bottomScrollableArea;
 
     /**
      * Creates and returns a listener, which allows to observe when window insets are applied to the
@@ -1112,6 +1126,34 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     @Override
     public final void setTitle(@StringRes final int resourceId) {
         setTitle(getContext().getText(resourceId));
+    }
+
+    @Nullable
+    @Override
+    public final Pair<Area, Area> getScrollableArea() {
+        return topScrollableArea != null ? Pair.create(topScrollableArea, bottomScrollableArea) :
+                null;
+    }
+
+    @Override
+    public final void setScrollableArea(@Nullable final Area area) {
+        setScrollableArea(area, area);
+    }
+
+    @Override
+    public final void setScrollableArea(@Nullable final Area top, @Nullable final Area bottom) {
+        if (top != null) {
+            ensureNotNull(bottom,
+                    "If the top-most area is not null, the bottom-most area may neither be null");
+            ensureAtLeast(bottom.getIndex(), top.getIndex(),
+                    "The index of the bottom-most area must be at least the index of the top-most area");
+        } else {
+            ensureTrue(bottom == null,
+                    "If the top-most area is null, the bottom-most area must be null as well");
+        }
+
+        this.topScrollableArea = top;
+        this.bottomScrollableArea = bottom;
     }
 
     @Override

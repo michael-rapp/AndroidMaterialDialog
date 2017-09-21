@@ -27,6 +27,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
+import android.support.v4.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -428,6 +429,22 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     public final void setTitle(@Nullable final CharSequence title) {
         super.setTitle(title);
         decorator.setTitle(title);
+    }
+
+    @Nullable
+    @Override
+    public final Pair<Area, Area> getScrollableArea() {
+        return decorator.getScrollableArea();
+    }
+
+    @Override
+    public final void setScrollableArea(@Nullable final Area area) {
+        decorator.setScrollableArea(area);
+    }
+
+    @Override
+    public final void setScrollableArea(@Nullable final Area top, @Nullable final Area bottom) {
+        decorator.setScrollableArea(top, bottom);
     }
 
     @Override
