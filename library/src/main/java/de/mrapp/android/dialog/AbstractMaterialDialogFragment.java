@@ -30,6 +30,7 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -509,6 +510,22 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     @Override
     public final void setTitle(@StringRes final int resourceId) {
         decorator.setTitle(resourceId);
+    }
+
+    @Nullable
+    @Override
+    public final Pair<Area, Area> getScrollableArea() {
+        return decorator.getScrollableArea();
+    }
+
+    @Override
+    public final void setScrollableArea(@Nullable final Area area) {
+        decorator.setScrollableArea(area);
+    }
+
+    @Override
+    public final void setScrollableArea(@Nullable final Area top, @Nullable final Area bottom) {
+        decorator.setScrollableArea(top, bottom);
     }
 
     @Override
