@@ -321,9 +321,19 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
                         R.attr.materialDialogScrollableAreaBottom});
         int topIndex = typedArray.getInt(0, -1);
         int bottomIndex = typedArray.getInt(1, -1);
-        Area top = topIndex != -1 ? Area.fromIndex(topIndex) : null;
-        Area bottom = bottomIndex != -1 ? Area.fromIndex(bottomIndex) : null;
-        setScrollableArea(top, bottom);
+
+        if (topIndex != -1) {
+            Area top = Area.fromIndex(topIndex);
+
+            if (bottomIndex != -1) {
+                Area bottom = Area.fromIndex(bottomIndex);
+                setScrollableArea(top, bottom);
+            } else {
+                setScrollableArea(top);
+            }
+        } else {
+            setScrollableArea(Area.CONTENT);
+        }
     }
 
     /**
