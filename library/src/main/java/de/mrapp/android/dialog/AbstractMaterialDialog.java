@@ -33,10 +33,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ScrollView;
 
+import java.util.Map;
+
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
 import de.mrapp.android.dialog.model.MaterialDialog;
+import de.mrapp.android.dialog.view.DialogRootView;
 
 /**
  * An abstract base class for all dialogs, which are designed according to Android 5's Material
@@ -121,10 +124,15 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
      * @param view
      *         The root view of the view hierarchy, which should be modified by the decorators, as
      *         an instance of the class {@link View}. The view may not be null
+     * @return A map, which contains the views, which have been inflated by the decorators, mapped
+     * to the areas they correspond to, as an instance of the type {@link Map} or null, if the
+     * decorator has not inflated any views
      */
     @CallSuper
-    protected void onAttachDecorators(@NonNull final Window window, @NonNull final View view) {
-        decorator.attach(window, view, scrollableArea);
+    @NonNull
+    protected Map<Area, View> onAttachDecorators(@NonNull final Window window,
+                                                 @NonNull final View view) {
+        return decorator.attach(window, view);
     }
 
     /**
@@ -461,11 +469,6 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     }
 
     @Override
-    public final ScrollView getScrollView() {
-        return decorator.getScrollView();
-    }
-
-    @Override
     public final void onStart() {
         super.onStart();
         View view = inflateLayout();
@@ -474,7 +477,10 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         Window window = getWindow();
         assert window != null;
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        onAttachDecorators(window, view);
+        DialogRootView rootView = view.findViewById(R.id.dialog_root_view);
+        assert rootView != null;
+        Map<Area, View> areas = onAttachDecorators(window, view);
+        rootView.addAreas(areas, scrollableArea);
     }
 
     @Override

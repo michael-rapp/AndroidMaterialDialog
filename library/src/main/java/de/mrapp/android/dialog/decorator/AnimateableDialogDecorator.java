@@ -26,7 +26,11 @@ import android.view.ViewAnimationUtils;
 import android.view.ViewPropertyAnimator;
 import android.view.Window;
 
+import java.util.Collections;
+import java.util.Map;
+
 import de.mrapp.android.dialog.R;
+import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.CircleRevealAnimation;
 import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.animation.FadeAnimation;
@@ -560,13 +564,16 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
 
     }
 
+    @NonNull
     @Override
-    protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
-
+    protected final Map<Area, View> onAttach(@NonNull final Window window,
+                                             @NonNull final View view) {
+        return Collections.emptyMap();
     }
 
     @Override
     protected final void onDetach() {
 
     }
+
 }

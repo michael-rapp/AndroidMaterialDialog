@@ -40,8 +40,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.mrapp.android.dialog.R;
-import de.mrapp.android.dialog.ScrollableArea;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.CircleTransitionAnimation;
@@ -434,8 +436,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             if (titleContainer == null) {
                 LayoutInflater layoutInflater = LayoutInflater.from(getContext());
                 titleContainer = (ViewGroup) layoutInflater
-                        .inflate(R.layout.material_dialog_title_container, getContentRootView(),
-                                false);
+                        .inflate(R.layout.material_dialog_title_container, getRootView(), false);
             } else {
                 titleContainer.removeAllViews();
             }
@@ -469,8 +470,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             if (messageContainer == null) {
                 LayoutInflater layoutInflater = LayoutInflater.from(getContext());
                 messageContainer = (ViewGroup) layoutInflater
-                        .inflate(R.layout.material_dialog_message_container, getContentRootView(),
-                                false);
+                        .inflate(R.layout.material_dialog_message_container, getRootView(), false);
             } else {
                 messageContainer.removeAllViews();
             }
@@ -502,8 +502,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             if (contentContainer == null) {
                 LayoutInflater layoutInflater = LayoutInflater.from(getContext());
                 contentContainer = (ViewGroup) layoutInflater
-                        .inflate(R.layout.material_dialog_content_container, getContentRootView(),
-                                false);
+                        .inflate(R.layout.material_dialog_content_container, getRootView(), false);
             } else {
                 contentContainer.removeAllViews();
             }
@@ -541,7 +540,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * Adapts the padding of the dialog.
      */
     private void adaptPadding() {
-        ViewGroup contentRootView = getContentRootView();
+        ViewGroup contentRootView = getRootView();
 
         if (contentRootView != null) {
             contentRootView.setPadding(getPaddingLeft(), getPaddingTop(), getPaddingRight(),
@@ -1182,17 +1181,10 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         }
     }
 
+    @NonNull
     @Override
-    public final void addViews(@NonNull final ScrollableArea scrollableArea) {
-        if (titleContainer != null && messageContainer != null && contentContainer != null) {
-            addArea(titleContainer, scrollableArea, Area.TITLE);
-            addArea(messageContainer, scrollableArea, Area.MESSAGE);
-            addArea(contentContainer, scrollableArea, Area.CONTENT);
-        }
-    }
-
-    @Override
-    protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
+    protected final Map<Area, View> onAttach(@NonNull final Window window,
+                                             @NonNull final View view) {
         ViewCompat.setOnApplyWindowInsetsListener(view, createWindowInsetsListener());
         inflateTitleView();
         inflateMessageView();
@@ -1205,6 +1197,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         adaptMessage();
         adaptMessageColor();
         adaptBackground(null);
+        Map<Area, View> result = new HashMap<>();
+        result.put(Area.TITLE, titleContainer);
+        result.put(Area.MESSAGE, messageContainer);
+        result.put(Area.CONTENT, contentContainer);
+        return result;
     }
 
     @Override

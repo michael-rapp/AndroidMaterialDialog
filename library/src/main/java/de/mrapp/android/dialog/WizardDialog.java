@@ -33,6 +33,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
+import java.util.Map;
+
+import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
 import de.mrapp.android.dialog.model.WizardDialogDecorator;
 import de.mrapp.android.util.ThemeUtil;
@@ -1224,11 +1227,14 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
         decorator.onRestoreInstanceState(savedInstanceState);
     }
 
+    @NonNull
     @Override
-    protected final void onAttachDecorators(@NonNull final Window window, @NonNull final View view,
-                                            @NonNull final FragmentManager fragmentManager) {
-        super.onAttachDecorators(window, view, fragmentManager);
-        decorator.attach(window, view, fragmentManager);
+    protected final Map<Area, View> onAttachDecorators(@NonNull final Window window,
+                                                       @NonNull final View view,
+                                                       @NonNull final FragmentManager fragmentManager) {
+        Map<Area, View> result = super.onAttachDecorators(window, view, fragmentManager);
+        result.putAll(decorator.attach(window, view, fragmentManager));
+        return result;
     }
 
     @Override

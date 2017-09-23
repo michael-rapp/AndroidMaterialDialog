@@ -26,6 +26,9 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.Window;
 
+import java.util.Map;
+
+import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.DrawableAnimation;
 import de.mrapp.android.dialog.decorator.HeaderDialogDecorator;
@@ -184,12 +187,15 @@ public abstract class AbstractHeaderDialogFragment extends AbstractMaterialDialo
         decorator.onRestoreInstanceState(savedInstanceState);
     }
 
+    @NonNull
     @CallSuper
     @Override
-    protected void onAttachDecorators(@NonNull final Window window, @NonNull final View view,
-                                      @NonNull final FragmentManager fragmentManager) {
-        super.onAttachDecorators(window, view, fragmentManager);
-        decorator.attach(window, view, getScrollableArea());
+    protected Map<Area, View> onAttachDecorators(@NonNull final Window window,
+                                                 @NonNull final View view,
+                                                 @NonNull final FragmentManager fragmentManager) {
+        Map<Area, View> result = super.onAttachDecorators(window, view, fragmentManager);
+        result.putAll(decorator.attach(window, view));
+        return result;
     }
 
     @CallSuper

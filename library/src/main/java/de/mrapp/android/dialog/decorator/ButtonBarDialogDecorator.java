@@ -29,10 +29,11 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import de.mrapp.android.dialog.R;
-import de.mrapp.android.dialog.ScrollableArea;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.listener.OnClickListenerWrapper;
 import de.mrapp.android.dialog.model.ValidateableDialog;
@@ -218,11 +219,11 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
      * Inflates the layout, which is used to show the dialog's buttons.
      */
     private void inflateButtonBar() {
-        if (getContentRootView() != null) {
+        if (getRootView() != null) {
             if (buttonBarContainer == null) {
                 LayoutInflater layoutInflater = LayoutInflater.from(getContext());
                 buttonBarContainer = (ViewGroup) layoutInflater
-                        .inflate(R.layout.button_bar_container, getContentRootView(), false);
+                        .inflate(R.layout.button_bar_container, getRootView(), false);
                 buttonBarDivider = buttonBarContainer.findViewById(R.id.button_bar_divider);
             }
 
@@ -572,15 +573,10 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
         setNegativeButton(savedInstanceState.getCharSequence(NEGATIVE_BUTTON_TEXT_EXTRA), null);
     }
 
+    @NonNull
     @Override
-    public final void addViews(@NonNull final ScrollableArea scrollableArea) {
-        if (buttonBarContainer != null) {
-            addArea(buttonBarContainer, scrollableArea, Area.BUTTON_BAR);
-        }
-    }
-
-    @Override
-    protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
+    protected final Map<Area, View> onAttach(@NonNull final Window window,
+                                             @NonNull final View view) {
         // TODO contentDivider = view.findViewById(R.id.content_divider);
         inflateButtonBar();
         adaptButtonTextColor();
@@ -590,6 +586,9 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
         adaptButtonBarDividerVisibility();
         adaptButtonBarDividerColor();
         adaptButtonBarDividerMargin();
+        Map<Area, View> result = new HashMap<>();
+        result.put(Area.BUTTON_BAR, buttonBarContainer);
+        return result;
     }
 
     @Override

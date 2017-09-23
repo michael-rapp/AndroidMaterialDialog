@@ -23,7 +23,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ScrollView;
 
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 
@@ -560,14 +559,5 @@ public interface MaterialDialogDecorator extends Dialog {
      *         resource id must correspond to a valid string resource
      */
     void setTitle(@StringRes int resourceId);
-
-    /**
-     * Returns the scroll view, which contains the dialog's scrollable areas.
-     *
-     * @return The scroll view, which contains the dialog's scrollable areas, as an instance of the
-     * class {@link ScrollView} or null, if the dialog has not been shown yet or if the dialog does
-     * not contain any scrollable areas
-     */
-    ScrollView getScrollView();
 
 }

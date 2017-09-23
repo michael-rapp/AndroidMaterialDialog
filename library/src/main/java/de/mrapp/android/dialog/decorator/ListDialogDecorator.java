@@ -25,7 +25,11 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.util.Collections;
+import java.util.Map;
+
 import de.mrapp.android.dialog.R;
+import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.adapter.ArrayAdapter;
 import de.mrapp.android.dialog.listener.OnItemClickListenerWrapper;
 import de.mrapp.android.dialog.listener.OnMultiChoiceClickListenerWrapper;
@@ -426,10 +430,13 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         }
     }
 
+    @NonNull
     @Override
-    protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
+    protected final Map<Area, View> onAttach(@NonNull final Window window,
+                                             @NonNull final View view) {
         inflateListView();
         adaptItemColor();
+        return Collections.emptyMap();
     }
 
     @Override

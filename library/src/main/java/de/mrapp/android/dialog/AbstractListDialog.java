@@ -27,6 +27,9 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.util.Map;
+
+import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.decorator.ListDialogDecorator;
 import de.mrapp.android.dialog.model.ListDialog;
 
@@ -162,11 +165,14 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
         super.onRestoreInstanceState(savedInstanceState);
     }
 
+    @NonNull
     @CallSuper
     @Override
-    protected void onAttachDecorators(@NonNull final Window window, @NonNull final View view) {
-        super.onAttachDecorators(window, view);
-        decorator.attach(window, view, getScrollableArea());
+    protected Map<Area, View> onAttachDecorators(@NonNull final Window window,
+                                                 @NonNull final View view) {
+        Map<Area, View> result = super.onAttachDecorators(window, view);
+        result.putAll(decorator.attach(window, view));
+        return result;
     }
 
     @CallSuper

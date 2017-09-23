@@ -30,9 +30,20 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+
+import java.util.Comparator;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import de.mrapp.android.dialog.R;
+import de.mrapp.android.dialog.ScrollableArea;
+import de.mrapp.android.dialog.ScrollableArea.Area;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
 
@@ -45,6 +56,20 @@ import static de.mrapp.android.util.Condition.ensureAtLeast;
  * @since 3.4.3
  */
 public class DialogRootView extends LinearLayout {
+
+    /**
+     * A comparator, which compares values of the enum {@link Area}.
+     */
+    private static class AreaComparator implements Comparator<Area> {
+
+        @Override
+        public int compare(Area area1, Area area2) {
+            int index1 = area1.getIndex();
+            int index2 = area2.getIndex();
+            return index1 > index2 ? 1 : (index1 == index2 ? 0 : -1);
+        }
+
+    }
 
     /**
      * True, if the view's shadow is shown, false otherwise.
@@ -82,6 +107,11 @@ public class DialogRootView extends LinearLayout {
     private Canvas backingCanvas;
 
     /**
+     * The scroll view, which contains the scrollable areas of the dialog.
+     */
+    private ScrollView scrollView;
+
+    /**
      * Initializes the view.
      */
     private void initialize() {
@@ -89,6 +119,32 @@ public class DialogRootView extends LinearLayout {
                 ContextCompat.getDrawable(getContext(), android.R.drawable.dialog_holo_light_frame);
         paint = new Paint();
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY));
+    }
+
+    /**
+     * Inflates the scroll view, which contains the dialog's scrollable areas, if it has not been
+     * inflated yet.
+     *
+     * @param scrollableArea
+     *         The scrollable area of the dialog, as an instance of the class {@link
+     *         ScrollableArea}. The scrollable area may not be null
+     */
+    private void inflateScrollView(@NonNull final ScrollableArea scrollableArea) {
+        if (scrollView == null) {
+            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+            scrollView = (ScrollView) layoutInflater
+                    .inflate(R.layout.material_dialog_scroll_view, this, false);
+
+            if (scrollableArea.getBottomScrollableArea().getIndex() -
+                    scrollableArea.getTopScrollableArea().getIndex() > 0) {
+                LinearLayout scrollContainer = new LinearLayout(getContext());
+                scrollContainer.setOrientation(LinearLayout.VERTICAL);
+                scrollView.addView(scrollContainer, ScrollView.LayoutParams.MATCH_PARENT,
+                        ScrollView.LayoutParams.MATCH_PARENT);
+            }
+
+            addView(scrollView);
+        }
     }
 
     /**
@@ -238,6 +294,50 @@ public class DialogRootView extends LinearLayout {
 
         this.maxHeight = maxHeight;
         requestLayout();
+    }
+
+    /**
+     * Returns the scroll view, which contains the dialog's scrollable areas.
+     *
+     * @return The scroll view, which contains the dialog's scrollable areas, as an instance of the
+     * class {@link ScrollView} or null, if the decorator is not attached or if the dialog does not
+     * contain any scrollable areas
+     */
+    @Nullable
+    public final ScrollView getScrollView() {
+        return scrollView;
+    }
+
+    /**
+     * Adds the different areas of a dialog to the root view.
+     *
+     * @param areas
+     *         A map, which contains the areas, which should be added, as keys and their
+     *         corresponding views as values, as an instance of the type {@link Map}. The map may
+     *         not be null
+     * @param scrollableArea
+     *         The scrollable area of the dialog as an instance of the class {@link ScrollableArea}.
+     *         The scrollable area may not be null
+     */
+    public final void addAreas(@NonNull final Map<Area, View> areas,
+                               @NonNull final ScrollableArea scrollableArea) {
+        SortedMap<Area, View> sortedMap = new TreeMap<>(new AreaComparator());
+        sortedMap.putAll(areas);
+
+        for (Map.Entry<Area, View> entry : sortedMap.entrySet()) {
+            Area area = entry.getKey();
+            View view = entry.getValue();
+
+            if (scrollableArea.isScrollable(area)) {
+                inflateScrollView(scrollableArea);
+                ViewGroup scrollContainer =
+                        scrollView.getChildCount() > 0 ? (ViewGroup) scrollView.getChildAt(0) :
+                                scrollView;
+                scrollContainer.addView(view);
+            } else {
+                addView(view);
+            }
+        }
     }
 
     @Override

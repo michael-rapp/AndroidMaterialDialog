@@ -35,12 +35,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ScrollView;
+
+import java.util.Map;
 
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
 import de.mrapp.android.dialog.model.MaterialDialog;
+import de.mrapp.android.dialog.view.DialogRootView;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -169,11 +171,16 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      * @param fragmentManager
      *         The fragment manager, which can be used to show fragment within the dialog, as an
      *         instance of the class FragmentManager. The fragment manager may not be null
+     * @return A map, which contains the views, which have been inflated by the decorators, mapped
+     * to the areas they correspond to, as an instance of the type {@link Map} or null, if the
+     * decorator has not inflated any views
      */
+    @NonNull
     @CallSuper
-    protected void onAttachDecorators(@NonNull final Window window, @NonNull final View view,
-                                      @NonNull final FragmentManager fragmentManager) {
-        decorator.attach(window, view, scrollableArea);
+    protected Map<Area, View> onAttachDecorators(@NonNull final Window window,
+                                                 @NonNull final View view,
+                                                 @NonNull final FragmentManager fragmentManager) {
+        return decorator.attach(window, view);
     }
 
     /**
@@ -543,11 +550,6 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     }
 
     @Override
-    public final ScrollView getScrollView() {
-        return decorator.getScrollView();
-    }
-
-    @Override
     public final void cancel() {
         if (getDialog() != null) {
             getDialog().cancel();
@@ -586,7 +588,10 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
 
         Window window = getDialog().getWindow();
         assert window != null;
-        onAttachDecorators(window, view, getChildFragmentManager());
+        DialogRootView rootView = view.findViewById(R.id.dialog_root_view);
+        assert rootView != null;
+        Map<Area, View> areas = onAttachDecorators(window, view, getChildFragmentManager());
+        rootView.addAreas(areas, scrollableArea);
         return view;
     }
 

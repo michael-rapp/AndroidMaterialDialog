@@ -30,8 +30,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.mrapp.android.dialog.R;
-import de.mrapp.android.dialog.ScrollableArea;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.CircleTransitionAnimation;
@@ -213,11 +215,11 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
      * Inflates the dialog's header.
      */
     private void inflateHeader() {
-        if (getContentRootView() != null) {
+        if (getRootView() != null) {
             if (header == null) {
                 LayoutInflater layoutInflater = LayoutInflater.from(getContext());
                 header = (ViewGroup) layoutInflater
-                        .inflate(R.layout.material_dialog_header, getContentRootView(), false);
+                        .inflate(R.layout.material_dialog_header, getRootView(), false);
                 headerBackgroundImageView = header.findViewById(R.id.header_background_image_view);
                 headerContentContainer = header.findViewById(R.id.header_content_container);
                 headerDivider = header.findViewById(R.id.header_divider);
@@ -609,15 +611,10 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
         }
     }
 
+    @NonNull
     @Override
-    public final void addViews(@NonNull final ScrollableArea scrollableArea) {
-        if (header != null) {
-            addArea(header, scrollableArea, Area.HEADER);
-        }
-    }
-
-    @Override
-    protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
+    protected final Map<Area, View> onAttach(@NonNull final Window window,
+                                             @NonNull final View view) {
         inflateHeader();
         adaptHeaderVisibility();
         adaptHeaderBackground(null);
@@ -625,6 +622,9 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
         adaptHeaderDividerVisibility();
         adaptHeaderIcon(null);
         adaptHeaderHeight();
+        Map<Area, View> result = new HashMap<>();
+        result.put(Area.HEADER, header);
+        return result;
     }
 
     @Override

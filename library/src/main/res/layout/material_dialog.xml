@@ -20,20 +20,11 @@ License.
     android:fitsSystemWindows="true">
 
     <de.mrapp.android.dialog.view.DialogRootView
-        android:id="@+id/root"
+        android:id="@+id/dialog_root_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:clickable="true"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/content_root"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"/>
-
-    </de.mrapp.android.dialog.view.DialogRootView>
+        android:orientation="vertical"/>
 
 </RelativeLayout>

@@ -26,6 +26,9 @@ import android.support.annotation.StyleRes;
 import android.view.View;
 import android.view.Window;
 
+import java.util.Map;
+
+import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.decorator.AnimateableDialogDecorator;
 import de.mrapp.android.dialog.model.AnimateableDialog;
@@ -202,12 +205,14 @@ public abstract class AbstractAnimateableDialog extends AbstractHeaderDialog
         return false;
     }
 
+    @NonNull
     @CallSuper
     @Override
-    protected void onAttachDecorators(@NonNull final Window window, @NonNull final View view) {
-        super.onAttachDecorators(window, view);
-        decorator.attach(window, view, getScrollableArea());
-
+    protected Map<Area, View> onAttachDecorators(@NonNull final Window window,
+                                                 @NonNull final View view) {
+        Map<Area, View> result = super.onAttachDecorators(window, view);
+        result.putAll(decorator.attach(window, view));
+        return result;
     }
 
     @CallSuper

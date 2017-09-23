@@ -16,15 +16,13 @@ package de.mrapp.android.dialog.decorator;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
+
+import java.util.Map;
 
 import de.mrapp.android.dialog.R;
-import de.mrapp.android.dialog.ScrollableArea;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.dialog.model.DialogDecorator;
@@ -64,17 +62,6 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
     private DialogRootView dialogRootView;
 
     /**
-     * The root view of the content of the dialog, whose view hierarchy is modified by the
-     * decorator.
-     */
-    private ViewGroup contentRootView;
-
-    /**
-     * The scroll view, which contains the scrollable areas of the dialog.
-     */
-    private ScrollView scrollView;
-
-    /**
      * Returns the index, a view, which corresponds to a specific area, should be added at.
      *
      * @param parent
@@ -111,8 +98,13 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
      * @param view
      *         The root view of the dialog, which is modified by the decorator, as an instance of
      *         the class {@link View}. The view may not be null
+     * @return A map, which contains the views, which have been inflated by the decorator, mapped to
+     * the areas they correspond to, as an instance of the type {@link Map} or null, if the
+     * decorator has not inflated any views
      */
-    protected abstract void onAttach(@NonNull final Window window, @NonNull final View view);
+    @NonNull
+    protected abstract Map<Area, View> onAttach(@NonNull final Window window,
+                                                @NonNull final View view);
 
     /**
      * The method, which is invoked, when the decorator is detached from the view hierarchy.
@@ -132,7 +124,6 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
         this.window = null;
         this.view = null;
         this.dialogRootView = null;
-        this.contentRootView = null;
     }
 
     /**
@@ -144,58 +135,6 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
     @NonNull
     protected final DialogType getDialog() {
         return dialog;
-    }
-
-    /**
-     * Adds a specific area to the dialog.
-     *
-     * @param view
-     *         The view, which corresponds to the area, should be added, as an instance of the class
-     *         {@link View}. The view may not ben null
-     * @param scrollableArea
-     *         The scrollable area of the dialog, as an instance of the class {@link
-     *         ScrollableArea}. The scrollable area may not be null
-     * @param area
-     *         The area, which should be added, as a value of the enum {@link Area}
-     */
-    protected final void addArea(@NonNull final View view,
-                                 @NonNull final ScrollableArea scrollableArea,
-                                 @NonNull final Area area) {
-        if (getContentRootView() != null) {
-            view.setTag(area);
-
-            if (scrollableArea.isScrollable(area)) {
-                if (scrollView == null) {
-                    scrollView = getContentRootView().findViewById(R.id.scroll_view);
-
-                    if (scrollView == null) {
-                        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-                        scrollView = (ScrollView) layoutInflater
-                                .inflate(R.layout.material_dialog_scroll_view, getContentRootView(),
-                                        false);
-                        scrollView.setTag(scrollableArea.getTopScrollableArea());
-
-                        if (scrollableArea.getBottomScrollableArea().getIndex() -
-                                scrollableArea.getTopScrollableArea().getIndex() > 0) {
-                            LinearLayout scrollContainer = new LinearLayout(getContext());
-                            scrollContainer.setOrientation(LinearLayout.VERTICAL);
-                            scrollView
-                                    .addView(scrollContainer, ScrollView.LayoutParams.MATCH_PARENT,
-                                            ScrollView.LayoutParams.MATCH_PARENT);
-                        }
-
-                        getContentRootView().addView(scrollView);
-                    }
-                }
-
-                ViewGroup scrollContainer =
-                        scrollView.getChildCount() > 0 ? (ViewGroup) scrollView.getChildAt(0) :
-                                scrollView;
-                scrollContainer.addView(view, getIndexOfArea(scrollContainer, area));
-            } else {
-                getContentRootView().addView(view, getIndexOfArea(getContentRootView(), area));
-            }
-        }
     }
 
     /**
@@ -224,36 +163,14 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
      * Returns the root view of the dialog, whose view hierarchy is modified by the decorator.
      *
      * @return The root view of the dialog, whose view hierarchy is modified by the decorator, as an
-     * instance of the class {@link DialogRootView} or null, if the decorator is not attached
+     * instance of the class {@link DialogRootView} or null, if the decorator is not attached@return
+     * A map, which contains the views, which have been inflated by the decorator, mapped to the
+     * areas they correspond to, as an instance of the type {@link Map} or null, if the decorator
+     * has not inflated any views
      */
     @Nullable
     public final DialogRootView getRootView() {
         return dialogRootView;
-    }
-
-    /**
-     * Returns the root view of the content of the dialog, whose view hierarchy is modified by the
-     * decorator.
-     *
-     * @return The root view of the content of the dialog, whose view hierarchy is modified by the
-     * decorator, as an instance of the class {@link ViewGroup} or null, if the decorator is not
-     * attached
-     */
-    @Nullable
-    public final ViewGroup getContentRootView() {
-        return contentRootView;
-    }
-
-    /**
-     * Returns the scroll view, which contains the dialog's scrollable areas.
-     *
-     * @return The scroll view, which contains the dialog's scrollable areas, as an instance of the
-     * class {@link ScrollView} or null, if the decorator is not attached or if the dialog does not
-     * contain any scrollable areas
-     */
-    @Nullable
-    public final ScrollView getScrollView() {
-        return scrollView;
     }
 
     /**
@@ -266,31 +183,18 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
      * @param view
      *         The root view of the view hierarchy, which should be modified by the decorator, as an
      *         instance of the class {@link View}. The view may not be null
-     * @param scrollableArea
-     *         The scrollable area of the dialog, as an instance of the class {@link
-     *         ScrollableArea}. The scrollable area may not be null
+     * @return A map, which contains the views, which have been inflated by the decorator, mapped to
+     * the areas they correspond to, as an instance of the type {@link Map} or null, if the
+     * decorator has not inflated any views
      */
-    public final void attach(@NonNull final Window window, @NonNull final View view,
-                             @NonNull final ScrollableArea scrollableArea) {
+    @NonNull
+    public final Map<Area, View> attach(@NonNull final Window window, @NonNull final View view) {
         ensureNotNull(window, "The window may not be null");
         ensureNotNull(view, "The view may not be null");
         this.window = window;
         this.view = view;
-        this.dialogRootView = view.findViewById(R.id.root);
-        this.contentRootView = view.findViewById(R.id.content_root);
-        onAttach(window, view);
-        addViews(scrollableArea);
-    }
-
-    /**
-     * Adds the views, which are managed by the decorator, to the dialog.
-     *
-     * @param scrollableArea
-     *         The scrollable area of the dialog, as an instance of the class {@link
-     *         ScrollableArea}. The scrollable area may not be null
-     */
-    public void addViews(@NonNull final ScrollableArea scrollableArea) {
-
+        this.dialogRootView = view.findViewById(R.id.dialog_root_view);
+        return onAttach(window, view);
     }
 
     /**
@@ -301,8 +205,6 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
         this.window = null;
         this.view = null;
         this.dialogRootView = null;
-        this.contentRootView = null;
-        this.scrollView = null;
         onDetach();
     }
 

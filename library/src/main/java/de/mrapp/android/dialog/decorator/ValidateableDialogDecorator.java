@@ -19,10 +19,13 @@ import android.view.View;
 import android.view.Window;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import de.mrapp.android.dialog.DialogValidator;
+import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.model.AnimateableDialog;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
@@ -95,9 +98,11 @@ public class ValidateableDialogDecorator extends AbstractDialogDecorator<Animate
 
     }
 
+    @NonNull
     @Override
-    protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
-
+    protected final Map<Area, View> onAttach(@NonNull final Window window,
+                                             @NonNull final View view) {
+        return Collections.emptyMap();
     }
 
     @Override

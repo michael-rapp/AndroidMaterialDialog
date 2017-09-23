@@ -21,7 +21,11 @@ import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 
+import java.util.Collections;
+import java.util.Map;
+
 import de.mrapp.android.dialog.R;
+import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.model.ButtonBarDialog;
 import de.mrapp.android.dialog.model.ListDialog;
 
@@ -189,12 +193,15 @@ public class ScrollableDialogDecorator extends AbstractDialogDecorator<ListDialo
         showDividersOnScroll(savedInstanceState.getBoolean(SHOW_DIVIDERS_ON_SCROLL_EXTRA));
     }
 
+    @NonNull
     @Override
-    protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
+    protected final Map<Area, View> onAttach(@NonNull final Window window,
+                                             @NonNull final View view) {
         // TODO contentDivider = view.findViewById(R.id.content_divider);
         buttonBarDivider = view.findViewById(R.id.button_bar_divider);
         View contentContainer = view.findViewById(R.id.content_container);
         registerScrollListener(contentContainer);
+        return Collections.emptyMap();
     }
 
     @Override

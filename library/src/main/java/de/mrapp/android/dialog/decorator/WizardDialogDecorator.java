@@ -33,11 +33,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import de.mrapp.android.dialog.R;
+import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.WizardDialog;
 import de.mrapp.android.dialog.WizardDialog.TabPosition;
 import de.mrapp.android.dialog.WizardDialog.WizardListener;
@@ -1099,9 +1103,10 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
         }
     }
 
+    @NonNull
     @Override
-    protected final void onAttach(@NonNull final Window window, @NonNull final View view,
-                                  @NonNull final FragmentManager fragmentManager) {
+    protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
+                                             @NonNull final FragmentManager fragmentManager) {
         View viewPagerView = view.findViewById(R.id.view_pager);
 
         if (viewPagerView instanceof ViewPager) {
@@ -1127,7 +1132,12 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
             adaptButtonBarDividerColor();
             adaptButtonBarDividerMargin();
             adaptButtonVisibility();
+            Map<Area, View> result = new HashMap<>();
+            result.put(Area.BUTTON_BAR, buttonBarContainer);
+            return result;
         }
+
+        return Collections.emptyMap();
     }
 
     @Override

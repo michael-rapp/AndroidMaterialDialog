@@ -194,10 +194,11 @@ public class ArrayAdapter<Type> extends android.widget.ArrayAdapter<Type> {
     public final View getView(final int position, final View convertView,
                               @NonNull final ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
-        int horizontalPadding = getContext().getResources()
-                .getDimensionPixelSize(R.dimen.dialog_horizontal_padding);
-        view.setPadding(horizontalPadding, view.getPaddingTop(), horizontalPadding,
-                view.getPaddingBottom());
+        int leftPadding =
+                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_left_padding);
+        int rightPadding =
+                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_right_padding);
+        view.setPadding(leftPadding, view.getPaddingTop(), rightPadding, view.getPaddingBottom());
 
         if (getItemColor() != -1) {
             TextView textView = null;

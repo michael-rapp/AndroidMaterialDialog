@@ -20,7 +20,10 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.Window;
 
+import java.util.Map;
+
 import de.mrapp.android.dialog.R;
+import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.dialog.model.DialogDecorator;
 import de.mrapp.android.dialog.view.DialogRootView;
@@ -71,9 +74,14 @@ public abstract class AbstractDialogFragmentDecorator<DialogType extends Dialog>
      * @param fragmentManager
      *         The fragment manager, which should be used by the decorator, as an instance of the
      *         class FragmentManager. The fragment manager may not be null
+     * @return A map, which contains the views, which have been inflated by the decorator, mapped to
+     * the areas they correspond to, as an instance of the type {@link Map} or null, if the
+     * decorator has not inflated any views
      */
-    protected abstract void onAttach(@NonNull final Window window, @NonNull final View view,
-                                     @NonNull final FragmentManager fragmentManager);
+    @NonNull
+    protected abstract Map<Area, View> onAttach(@NonNull final Window window,
+                                                @NonNull final View view,
+                                                @NonNull final FragmentManager fragmentManager);
 
     /**
      * The method, which is invoked, when the decorator is detached from the view hierarchy.
@@ -157,16 +165,20 @@ public abstract class AbstractDialogFragmentDecorator<DialogType extends Dialog>
      * @param fragmentManager
      *         The fragment manager, which should be used by the decorator, as an instance of the
      *         class FragmentManager. The fragment manager may not be null
+     * @return A map, which contains the views, which have been inflated by the decorator, mapped to
+     * the areas they correspond to, as an instance of the type {@link Map} or null, if the
+     * decorator has not inflated any views
      */
-    public final void attach(@NonNull final Window window, @NonNull final View view,
-                             @NonNull final FragmentManager fragmentManager) {
+    @NonNull
+    public final Map<Area, View> attach(@NonNull final Window window, @NonNull final View view,
+                                        @NonNull final FragmentManager fragmentManager) {
         ensureNotNull(window, "The window may not be null");
         ensureNotNull(view, "The view may not be null");
         ensureNotNull(fragmentManager, "The fragment manager may not be null");
         this.window = window;
         this.view = view;
-        this.dialogRootView = view.findViewById(R.id.root);
-        onAttach(window, view, fragmentManager);
+        this.dialogRootView = view.findViewById(R.id.dialog_root_view);
+        return onAttach(window, view, fragmentManager);
     }
 
     /**
