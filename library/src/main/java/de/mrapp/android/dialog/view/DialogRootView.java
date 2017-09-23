@@ -341,6 +341,11 @@ public class DialogRootView extends LinearLayout {
     }
 
     @Override
+    public final void setPadding(final int left, final int top, final int right, final int bottom) {
+        // TODO Implement
+    }
+
+    @Override
     protected final void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
         int shadowWidth = isShadowShown() ?
                 getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width) : 0;
