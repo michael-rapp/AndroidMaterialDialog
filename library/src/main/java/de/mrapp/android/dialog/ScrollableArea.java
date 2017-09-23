@@ -238,13 +238,13 @@ public final class ScrollableArea implements Serializable, Parcelable {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return "ScrollableArea{" + "topScrollableArea=" + topScrollableArea +
                 ", bottomScrollableArea=" + bottomScrollableArea + '}';
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + (topScrollableArea == null ? 0 : topScrollableArea.hashCode());
