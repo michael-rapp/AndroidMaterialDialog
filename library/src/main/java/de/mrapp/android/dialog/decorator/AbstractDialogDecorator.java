@@ -256,11 +256,6 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
         return scrollView;
     }
 
-    @Override
-    public final Context getContext() {
-        return dialog.getContext();
-    }
-
     /**
      * Attaches the decorator to the view hierarchy. This enables the decorator to modify the view
      * hierarchy until it is detached.
@@ -309,6 +304,11 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
         this.contentRootView = null;
         this.scrollView = null;
         onDetach();
+    }
+
+    @Override
+    public final Context getContext() {
+        return dialog.getContext();
     }
 
 }
