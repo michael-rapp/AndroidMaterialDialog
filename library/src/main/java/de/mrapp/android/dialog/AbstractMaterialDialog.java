@@ -67,6 +67,11 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     private ScrollableArea scrollableArea;
 
     /**
+     * The root view of the dialog.
+     */
+    private DialogRootView rootView;
+
+    /**
      * Inflates the dialog's root view.
      *
      * @return The view, which has been inflated, as an instance of the class {@link View}. The view
@@ -153,6 +158,11 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     protected boolean onCanceledOnTouchOutside() {
         cancel();
         return true;
+    }
+
+    @Override
+    public final ScrollView getScrollView() {
+        return rootView != null ? rootView.getScrollView() : null;
     }
 
     @NonNull
@@ -477,7 +487,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         Window window = getWindow();
         assert window != null;
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        DialogRootView rootView = view.findViewById(R.id.dialog_root_view);
+        rootView = view.findViewById(R.id.dialog_root_view);
         assert rootView != null;
         Map<Area, View> areas = onAttachDecorators(window, view);
         rootView.addAreas(areas, scrollableArea);
@@ -487,6 +497,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     public final void onStop() {
         super.onStop();
         onDetachDecorators();
+        rootView = null;
     }
 
     @CallSuper

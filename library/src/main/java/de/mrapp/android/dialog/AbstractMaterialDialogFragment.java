@@ -35,6 +35,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ScrollView;
 
 import java.util.Map;
 
@@ -71,6 +72,11 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      * The scrollable area of the dialog.
      */
     private ScrollableArea scrollableArea;
+
+    /**
+     * The root view of the dialog.
+     */
+    private DialogRootView rootView;
 
     /**
      * The resource id of the theme, which should be used by the dialog.
@@ -231,6 +237,11 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     @Override
     public void setOnDismissListener(@Nullable final OnDismissListener listener) {
         dismissListener = listener;
+    }
+
+    @Override
+    public final ScrollView getScrollView() {
+        return rootView != null ? rootView.getScrollView() : null;
     }
 
     @NonNull
@@ -588,7 +599,7 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
 
         Window window = getDialog().getWindow();
         assert window != null;
-        DialogRootView rootView = view.findViewById(R.id.dialog_root_view);
+        rootView = view.findViewById(R.id.dialog_root_view);
         assert rootView != null;
         Map<Area, View> areas = onAttachDecorators(window, view, getChildFragmentManager());
         rootView.addAreas(areas, scrollableArea);
@@ -611,6 +622,7 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     public final void onDestroy() {
         super.onDestroy();
         onDetachDecorators();
+        rootView = null;
     }
 
     @Override

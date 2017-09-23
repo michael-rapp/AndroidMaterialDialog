@@ -16,6 +16,7 @@ package de.mrapp.android.dialog.model;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.widget.ScrollView;
 
 import de.mrapp.android.dialog.ScrollableArea;
 import de.mrapp.android.dialog.ScrollableArea.Area;
@@ -72,6 +73,15 @@ public interface MaterialDialog extends MaterialDialogDecorator, DialogInterface
      *         DialogInterface.OnDismissListener}, or null, if no listener should be set
      */
     void setOnDismissListener(@Nullable DialogInterface.OnDismissListener listener);
+
+    /**
+     * Returns the scroll view, which contains the scrollable areas of the dialog.
+     *
+     * @return The scroll view, which contains the scrollable areas of the dialog, as an instance of
+     * the class {@link ScrollView} or null, if the dialog is not shown or if the dialog does not
+     * contain any scrollable areas
+     */
+    ScrollView getScrollView();
 
     /**
      * Returns the scrollable area of the dialog.
