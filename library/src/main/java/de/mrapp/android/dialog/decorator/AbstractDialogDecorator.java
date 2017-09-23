@@ -75,6 +75,34 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
     private ScrollView scrollView;
 
     /**
+     * Returns the index, a view, which corresponds to a specific area, should be added at.
+     *
+     * @param parent
+     *         The parent, the view should be added to, as an instance of the class {@link
+     *         ViewGroup}. The parent may not be null
+     * @param area
+     *         The area, the view, which should be added, corresponds to, as a value of the enum
+     *         {@link Area}
+     * @return The index, the view should be added at, as an {@link Integer} value
+     */
+    private int getIndexOfArea(@NonNull final ViewGroup parent, final Area area) {
+        int index = 0;
+
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            View child = parent.getChildAt(i);
+            Area childArea = (Area) child.getTag();
+
+            if (childArea.getIndex() > area.getIndex()) {
+                return index;
+            }
+
+            index++;
+        }
+
+        return index;
+    }
+
+    /**
      * The method, which is invoked, when the decorator is attached to the view hierarchy.
      *
      * @param window
@@ -134,6 +162,8 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
                                  @NonNull final ScrollableArea scrollableArea,
                                  @NonNull final Area area) {
         if (getContentRootView() != null) {
+            view.setTag(area);
+
             if (scrollableArea.isScrollable(area)) {
                 if (scrollView == null) {
                     scrollView = getContentRootView().findViewById(R.id.scroll_view);
@@ -143,6 +173,7 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
                         scrollView = (ScrollView) layoutInflater
                                 .inflate(R.layout.material_dialog_scroll_view, getContentRootView(),
                                         false);
+                        scrollView.setTag(scrollableArea.getTopScrollableArea());
                         if (scrollableArea.getBottomScrollableArea().getIndex() -
                                 scrollableArea.getTopScrollableArea().getIndex() > 0) {
                             LinearLayout scrollContainer = new LinearLayout(getContext());
@@ -159,9 +190,9 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
                 ViewGroup scrollContainer =
                         scrollView.getChildCount() > 0 ? (ViewGroup) scrollView.getChildAt(0) :
                                 scrollView;
-                scrollContainer.addView(view);
+                scrollContainer.addView(view, getIndexOfArea(scrollContainer, area));
             } else {
-                getContentRootView().addView(view);
+                getContentRootView().addView(view, getIndexOfArea(getContentRootView(), area));
             }
         }
     }
