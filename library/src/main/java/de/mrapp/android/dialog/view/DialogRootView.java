@@ -154,6 +154,15 @@ public class DialogRootView extends LinearLayout {
     }
 
     /**
+     * Returns the inset of the view, depending on whether the dialog's shadow is shown, or not.
+     *
+     * @return The inset of the view in pixels as an {@link Integer} value
+     */
+    private int getInset() {
+        return isShadowShown() ? shadowWidth : 0;
+    }
+
+    /**
      * Creates a new root view of a dialog, which is designed according to Android 5's Material
      * Design guidelines even on pre-Lollipop devices.
      *
@@ -345,9 +354,9 @@ public class DialogRootView extends LinearLayout {
             Area area = entry.getKey();
             View view = entry.getValue();
             int paddingLeft = area != Area.HEADER && area != Area.BUTTON_BAR ?
-                    dialogPaddingLeft + shadowWidth : 0;
+                    dialogPaddingLeft + getInset() : getInset();
             int paddingRight = area != Area.HEADER && area != Area.BUTTON_BAR ?
-                    dialogPaddingRight + shadowWidth : 0;
+                    dialogPaddingRight + getInset() : getInset();
             view.setPadding(paddingLeft, 0, paddingRight, 0);
 
             if (scrollableArea.isScrollable(area)) {
@@ -369,11 +378,11 @@ public class DialogRootView extends LinearLayout {
 
     @Override
     protected final void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-        int inset = isShadowShown() ? shadowWidth : 0;
         int maxWidthMeasureSpec = getMaxWidth() != -1 ?
-                MeasureSpec.makeMeasureSpec(getMaxWidth() + (inset * 2), MeasureSpec.AT_MOST) : -1;
-        int maxHeightMeasureSpec = getMaxHeight() != -1 ?
-                MeasureSpec.makeMeasureSpec(getMaxHeight() + (inset * 2), MeasureSpec.AT_MOST) : -1;
+                MeasureSpec.makeMeasureSpec(getMaxWidth() + (getInset() * 2), MeasureSpec.AT_MOST) :
+                -1;
+        int maxHeightMeasureSpec = getMaxHeight() != -1 ? MeasureSpec
+                .makeMeasureSpec(getMaxHeight() + (getInset() * 2), MeasureSpec.AT_MOST) : -1;
         super.onMeasure(maxWidthMeasureSpec != -1 ? maxWidthMeasureSpec : widthMeasureSpec,
                 maxHeightMeasureSpec != -1 ? maxHeightMeasureSpec : heightMeasureSpec);
     }

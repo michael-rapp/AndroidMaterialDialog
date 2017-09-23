@@ -433,13 +433,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private void inflateTitleView() {
         if (getRootView() != null) {
-            if (titleContainer == null) {
-                LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-                titleContainer = (ViewGroup) layoutInflater
-                        .inflate(R.layout.material_dialog_title_container, getRootView(), false);
-            } else {
-                titleContainer.removeAllViews();
-            }
+            inflateTitleContainer();
 
             if (customTitleView != null) {
                 titleContainer.addView(customTitleView);
@@ -462,18 +456,27 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     /**
+     * Inflates the container, which contains the dialog's title, if it is not yet inflated.
+     */
+    private void inflateTitleContainer() {
+        if (titleContainer == null) {
+            titleContainer = new RelativeLayout(getContext());
+            titleContainer.setId(R.id.title_container);
+            titleContainer.setLayoutParams(
+                    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT));
+        } else {
+            titleContainer.removeAllViews();
+        }
+    }
+
+    /**
      * Inflates the view, which is used to show the dialog's message. The view may either be the
      * default one or a custom view, if one has been set before.
      */
     private void inflateMessageView() {
         if (getRootView() != null) {
-            if (messageContainer == null) {
-                LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-                messageContainer = (ViewGroup) layoutInflater
-                        .inflate(R.layout.material_dialog_message_container, getRootView(), false);
-            } else {
-                messageContainer.removeAllViews();
-            }
+            inflateMessageContainer();
 
             if (customMessageView != null) {
                 messageContainer.addView(customMessageView);
@@ -494,18 +497,27 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     /**
+     * Inflates the container, which contains the dialog's message, if it is not yet inflated.
+     */
+    private void inflateMessageContainer() {
+        if (messageContainer == null) {
+            messageContainer = new RelativeLayout(getContext());
+            messageContainer.setId(R.id.message_container);
+            messageContainer.setLayoutParams(
+                    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT));
+        } else {
+            messageContainer.removeAllViews();
+        }
+    }
+
+    /**
      * Inflates the view, which is used to show the dialog's content. The view may either be the
      * default one or a custom view, if one has been set before.
      */
     private void inflateContentView() {
         if (getRootView() != null) {
-            if (contentContainer == null) {
-                LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-                contentContainer = (ViewGroup) layoutInflater
-                        .inflate(R.layout.material_dialog_content_container, getRootView(), false);
-            } else {
-                contentContainer.removeAllViews();
-            }
+            inflateContentContainer();
 
             if (customView != null) {
                 contentContainer.addView(customView);
@@ -516,6 +528,21 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             }
 
             adaptContentContainerVisibility();
+        }
+    }
+
+    /**
+     * Inflates the container, which contains the dialog's content, if it is not yet inflated.
+     */
+    private void inflateContentContainer() {
+        if (contentContainer == null) {
+            contentContainer = new RelativeLayout(getContext());
+            contentContainer.setId(R.id.content_container);
+            contentContainer.setLayoutParams(
+                    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT));
+        } else {
+            contentContainer.removeAllViews();
         }
     }
 

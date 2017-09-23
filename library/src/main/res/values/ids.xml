@@ -13,10 +13,10 @@ distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, e
 implied. See the License for the specific language governing permissions and limitations under the
 License.
 -->
-<RelativeLayout
-    android:id="@+id/title_container"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/dialog_title_bottom_padding"
-    android:visibility="gone"/>
+<resources>
+
+    <item name="title_container" type="id"/>
+    <item name="message_container" type="id"/>
+    <item name="content_container" type="id"/>
+
+</resources>
