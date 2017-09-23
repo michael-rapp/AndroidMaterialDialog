@@ -37,6 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -349,15 +350,20 @@ public class DialogRootView extends LinearLayout {
         removeAllViews();
         SortedMap<Area, View> sortedMap = new TreeMap<>(new AreaComparator());
         sortedMap.putAll(areas);
+        Iterator<Map.Entry<Area, View>> iterator = sortedMap.entrySet().iterator();
+        boolean first = true;
 
-        for (Map.Entry<Area, View> entry : sortedMap.entrySet()) {
+        while (iterator.hasNext()) {
+            Map.Entry<Area, View> entry = iterator.next();
             Area area = entry.getKey();
             View view = entry.getValue();
             int paddingLeft = area != Area.HEADER && area != Area.BUTTON_BAR ?
                     dialogPaddingLeft + getInset() : getInset();
+            int paddingTop = first ? getInset() : 0;
             int paddingRight = area != Area.HEADER && area != Area.BUTTON_BAR ?
                     dialogPaddingRight + getInset() : getInset();
-            view.setPadding(paddingLeft, 0, paddingRight, 0);
+            int paddingBottom = !iterator.hasNext() ? getInset() : 0;
+            view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
 
             if (scrollableArea.isScrollable(area)) {
                 inflateScrollView(scrollableArea);
@@ -368,6 +374,8 @@ public class DialogRootView extends LinearLayout {
             } else {
                 addView(view);
             }
+
+            first = false;
         }
     }
 
