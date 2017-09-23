@@ -32,8 +32,7 @@ License.
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/dialog_top_padding"/>
+            android:orientation="vertical"/>
 
     </de.mrapp.android.dialog.view.DialogRootView>
 

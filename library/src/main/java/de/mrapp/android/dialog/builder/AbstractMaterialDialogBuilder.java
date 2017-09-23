@@ -229,12 +229,18 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                 new int[]{R.attr.materialDialogPaddingLeft, R.attr.materialDialogPaddingTop,
                         R.attr.materialDialogPaddingRight, R.attr.materialDialogPaddingBottom});
+        int defaultLeftPadding =
+                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_left_padding);
         int defaultTopPadding =
                 getContext().getResources().getDimensionPixelSize(R.dimen.dialog_top_padding);
-        int left = typedArray.getDimensionPixelSize(0, 0);
+        int defaultRightPadding =
+                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_right_padding);
+        int defaultBottomPadding =
+                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_bottom_padding);
+        int left = typedArray.getDimensionPixelSize(0, defaultLeftPadding);
         int top = typedArray.getDimensionPixelSize(1, defaultTopPadding);
-        int right = typedArray.getDimensionPixelSize(2, 0);
-        int bottom = typedArray.getDimensionPixelSize(3, 0);
+        int right = typedArray.getDimensionPixelSize(2, defaultRightPadding);
+        int bottom = typedArray.getDimensionPixelSize(3, defaultBottomPadding);
         setPadding(left, top, right, bottom);
     }
 
