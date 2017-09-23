@@ -189,7 +189,7 @@ public abstract class AbstractHeaderDialogFragment extends AbstractMaterialDialo
     protected void onAttachDecorators(@NonNull final Window window, @NonNull final View view,
                                       @NonNull final FragmentManager fragmentManager) {
         super.onAttachDecorators(window, view, fragmentManager);
-        decorator.attach(window, view);
+        decorator.attach(window, view, getScrollableArea());
     }
 
     @CallSuper

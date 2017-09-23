@@ -32,8 +32,8 @@ import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 
-import de.mrapp.android.dialog.Area;
 import de.mrapp.android.dialog.R;
+import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.dialog.model.MaterialDialog;
 import de.mrapp.android.util.ThemeUtil;

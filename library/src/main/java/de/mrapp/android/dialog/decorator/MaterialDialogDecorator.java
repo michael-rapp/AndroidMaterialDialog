@@ -28,7 +28,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.util.Pair;
 import android.support.v4.view.OnApplyWindowInsetsListener;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
@@ -41,8 +40,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import de.mrapp.android.dialog.Area;
 import de.mrapp.android.dialog.R;
+import de.mrapp.android.dialog.ScrollableArea;
+import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.CircleTransitionAnimation;
 import de.mrapp.android.dialog.animation.CrossFadeTransitionAnimation;
@@ -54,8 +54,6 @@ import de.mrapp.android.dialog.view.DialogRootView;
 import de.mrapp.android.util.ViewUtil;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureNotNull;
-import static de.mrapp.android.util.Condition.ensureTrue;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -318,16 +316,6 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     private Rect windowInsets;
 
     /**
-     * The top-most scrollable area.
-     */
-    private Area topScrollableArea;
-
-    /**
-     * The bottom-most scrollable area.
-     */
-    private Area bottomScrollableArea;
-
-    /**
      * Creates and returns a listener, which allows to observe when window insets are applied to the
      * root view of the view hierarchy, which is modified by the decorator.
      *
@@ -443,8 +431,14 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private void inflateTitleView() {
         if (getRootView() != null) {
-            titleContainer = getRootView().findViewById(R.id.title_container);
-            titleContainer.removeAllViews();
+            if (titleContainer == null) {
+                LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+                titleContainer = (ViewGroup) layoutInflater
+                        .inflate(R.layout.material_dialog_title_container, getContentRootView(),
+                                false);
+            } else {
+                titleContainer.removeAllViews();
+            }
 
             if (customTitleView != null) {
                 titleContainer.addView(customTitleView);
@@ -472,8 +466,14 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private void inflateMessageView() {
         if (getRootView() != null) {
-            messageContainer = getRootView().findViewById(R.id.message_container);
-            messageContainer.removeAllViews();
+            if (messageContainer == null) {
+                LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+                messageContainer = (ViewGroup) layoutInflater
+                        .inflate(R.layout.material_dialog_message_container, getContentRootView(),
+                                false);
+            } else {
+                messageContainer.removeAllViews();
+            }
 
             if (customMessageView != null) {
                 messageContainer.addView(customMessageView);
@@ -499,8 +499,14 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private void inflateContentView() {
         if (getRootView() != null) {
-            contentContainer = getRootView().findViewById(R.id.content_container);
-            contentContainer.removeAllViews();
+            if (contentContainer == null) {
+                LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+                contentContainer = (ViewGroup) layoutInflater
+                        .inflate(R.layout.material_dialog_content_container, getContentRootView(),
+                                false);
+            } else {
+                contentContainer.removeAllViews();
+            }
 
             if (customView != null) {
                 contentContainer.addView(customView);
@@ -1128,34 +1134,6 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         setTitle(getContext().getText(resourceId));
     }
 
-    @Nullable
-    @Override
-    public final Pair<Area, Area> getScrollableArea() {
-        return topScrollableArea != null ? Pair.create(topScrollableArea, bottomScrollableArea) :
-                null;
-    }
-
-    @Override
-    public final void setScrollableArea(@Nullable final Area area) {
-        setScrollableArea(area, area);
-    }
-
-    @Override
-    public final void setScrollableArea(@Nullable final Area top, @Nullable final Area bottom) {
-        if (top != null) {
-            ensureNotNull(bottom,
-                    "If the top-most area is not null, the bottom-most area may neither be null");
-            ensureAtLeast(bottom.getIndex(), top.getIndex(),
-                    "The index of the bottom-most area must be at least the index of the top-most area");
-        } else {
-            ensureTrue(bottom == null,
-                    "If the top-most area is null, the bottom-most area must be null as well");
-        }
-
-        this.topScrollableArea = top;
-        this.bottomScrollableArea = bottom;
-    }
-
     @Override
     public final void onSaveInstanceState(@NonNull final Bundle outState) {
         outState.putInt(TITLE_COLOR_EXTRA, getTitleColor());
@@ -1201,6 +1179,15 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             setBackground(savedInstanceState.getInt(BACKGROUND_ID_EXTRA));
         } else if (savedInstanceState.containsKey(BACKGROUND_COLOR_EXTRA)) {
             setBackgroundColor(savedInstanceState.getInt(BACKGROUND_COLOR_EXTRA));
+        }
+    }
+
+    @Override
+    public final void addViews(@NonNull final ScrollableArea scrollableArea) {
+        if (titleContainer != null && messageContainer != null && contentContainer != null) {
+            addArea(titleContainer, scrollableArea, Area.TITLE);
+            addArea(messageContainer, scrollableArea, Area.MESSAGE);
+            addArea(contentContainer, scrollableArea, Area.CONTENT);
         }
     }
 

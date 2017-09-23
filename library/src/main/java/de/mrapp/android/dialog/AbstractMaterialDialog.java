@@ -27,12 +27,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
-import android.support.v4.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ScrollView;
 
+import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
 import de.mrapp.android.dialog.model.MaterialDialog;
@@ -50,6 +51,11 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
      * The decorator, which is used by the dialog.
      */
     private final MaterialDialogDecorator decorator;
+
+    /**
+     * The scrollable area of the dialog.
+     */
+    private ScrollableArea scrollableArea;
 
     /**
      * Inflates the dialog's root view.
@@ -94,6 +100,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
                                      @StyleRes final int themeResourceId) {
         super(context, themeResourceId);
         this.decorator = new MaterialDialogDecorator(this);
+        this.scrollableArea = ScrollableArea.create(Area.CONTENT);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setCanceledOnTouchOutside(true);
     }
@@ -111,7 +118,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
      */
     @CallSuper
     protected void onAttachDecorators(@NonNull final Window window, @NonNull final View view) {
-        decorator.attach(window, view);
+        decorator.attach(window, view, scrollableArea);
     }
 
     /**
@@ -132,6 +139,22 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     protected boolean onCanceledOnTouchOutside() {
         cancel();
         return true;
+    }
+
+    @NonNull
+    @Override
+    public final ScrollableArea getScrollableArea() {
+        return scrollableArea;
+    }
+
+    @Override
+    public final void setScrollableArea(@Nullable final Area area) {
+        this.scrollableArea = ScrollableArea.create(area);
+    }
+
+    @Override
+    public final void setScrollableArea(@Nullable final Area top, @Nullable final Area bottom) {
+        this.scrollableArea = ScrollableArea.create(top, bottom);
     }
 
     @Override
@@ -431,20 +454,9 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         decorator.setTitle(title);
     }
 
-    @Nullable
     @Override
-    public final Pair<Area, Area> getScrollableArea() {
-        return decorator.getScrollableArea();
-    }
-
-    @Override
-    public final void setScrollableArea(@Nullable final Area area) {
-        decorator.setScrollableArea(area);
-    }
-
-    @Override
-    public final void setScrollableArea(@Nullable final Area top, @Nullable final Area bottom) {
-        decorator.setScrollableArea(top, bottom);
+    public final ScrollView getScrollView() {
+        return decorator.getScrollView();
     }
 
     @Override

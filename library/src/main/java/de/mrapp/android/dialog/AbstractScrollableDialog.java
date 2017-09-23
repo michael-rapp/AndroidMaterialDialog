@@ -86,7 +86,7 @@ public abstract class AbstractScrollableDialog extends AbstractListDialog
     @Override
     protected void onAttachDecorators(@NonNull final Window window, @NonNull final View view) {
         super.onAttachDecorators(window, view);
-        decorator.attach(window, view);
+        decorator.attach(window, view, getScrollableArea());
     }
 
     @CallSuper

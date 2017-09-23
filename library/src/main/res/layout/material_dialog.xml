@@ -15,7 +15,6 @@ License.
 -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -34,41 +33,7 @@ License.
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingTop="@dimen/dialog_top_padding"
-            tools:ignore="UselessParent">
-
-            <RelativeLayout
-                android:id="@+id/title_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/dialog_title_bottom_padding"
-                android:paddingLeft="@dimen/dialog_horizontal_padding"
-                android:paddingRight="@dimen/dialog_horizontal_padding"
-                android:visibility="gone"/>
-
-            <RelativeLayout
-                android:id="@+id/message_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/dialog_message_bottom_padding"
-                android:paddingLeft="@dimen/dialog_horizontal_padding"
-                android:paddingRight="@dimen/dialog_horizontal_padding"
-                android:visibility="gone"/>
-
-            <View
-                android:id="@+id/content_divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/button_bar_divider_color_light"
-                android:visibility="gone"/>
-
-            <RelativeLayout
-                android:id="@+id/content_container"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:visibility="gone"/>
-        </LinearLayout>
+            android:paddingTop="@dimen/dialog_top_padding"/>
 
     </de.mrapp.android.dialog.view.DialogRootView>
 

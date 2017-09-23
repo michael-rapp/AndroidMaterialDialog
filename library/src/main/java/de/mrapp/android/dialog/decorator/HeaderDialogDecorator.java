@@ -31,6 +31,8 @@ import android.view.Window;
 import android.widget.ImageView;
 
 import de.mrapp.android.dialog.R;
+import de.mrapp.android.dialog.ScrollableArea;
+import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.CircleTransitionAnimation;
 import de.mrapp.android.dialog.animation.CrossFadeTransitionAnimation;
@@ -211,17 +213,14 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
      * Inflates the dialog's header.
      */
     private void inflateHeader() {
-        ViewGroup rootView = getRootView();
-
-        if (rootView != null) {
+        if (getContentRootView() != null) {
             if (header == null) {
                 LayoutInflater layoutInflater = LayoutInflater.from(getContext());
                 header = (ViewGroup) layoutInflater
-                        .inflate(R.layout.material_dialog_header, rootView, false);
+                        .inflate(R.layout.material_dialog_header, getContentRootView(), false);
                 headerBackgroundImageView = header.findViewById(R.id.header_background_image_view);
                 headerContentContainer = header.findViewById(R.id.header_content_container);
                 headerDivider = header.findViewById(R.id.header_divider);
-                rootView.addView(header, 0);
             }
 
             headerContentContainer.removeAllViews();
@@ -607,6 +606,13 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
             setHeaderIcon((Bitmap) savedInstanceState.getParcelable(HEADER_ICON_BITMAP_EXTRA));
         } else if (savedInstanceState.containsKey(HEADER_ICON_ID_EXTRA)) {
             setHeaderIcon(savedInstanceState.getInt(HEADER_ICON_ID_EXTRA));
+        }
+    }
+
+    @Override
+    public final void addViews(@NonNull final ScrollableArea scrollableArea) {
+        if (header != null) {
+            addArea(header, scrollableArea, Area.HEADER);
         }
     }
 

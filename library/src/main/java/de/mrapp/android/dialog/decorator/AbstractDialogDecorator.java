@@ -16,11 +16,16 @@ package de.mrapp.android.dialog.decorator;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import de.mrapp.android.dialog.R;
+import de.mrapp.android.dialog.ScrollableArea;
+import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.dialog.model.DialogDecorator;
 import de.mrapp.android.dialog.view.DialogRootView;
@@ -65,6 +70,11 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
     private ViewGroup contentRootView;
 
     /**
+     * The scroll view, which contains the scrollable areas of the dialog.
+     */
+    private ScrollView scrollView;
+
+    /**
      * The method, which is invoked, when the decorator is attached to the view hierarchy.
      *
      * @param window
@@ -106,6 +116,54 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
     @NonNull
     protected final DialogType getDialog() {
         return dialog;
+    }
+
+    /**
+     * Adds a specific area to the dialog.
+     *
+     * @param view
+     *         The view, which corresponds to the area, should be added, as an instance of the class
+     *         {@link View}. The view may not ben null
+     * @param scrollableArea
+     *         The scrollable area of the dialog, as an instance of the class {@link
+     *         ScrollableArea}. The scrollable area may not be null
+     * @param area
+     *         The area, which should be added, as a value of the enum {@link Area}
+     */
+    protected final void addArea(@NonNull final View view,
+                                 @NonNull final ScrollableArea scrollableArea,
+                                 @NonNull final Area area) {
+        if (getContentRootView() != null) {
+            if (scrollableArea.isScrollable(area)) {
+                if (scrollView == null) {
+                    scrollView = getContentRootView().findViewById(R.id.scroll_view);
+
+                    if (scrollView == null) {
+                        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+                        scrollView = (ScrollView) layoutInflater
+                                .inflate(R.layout.material_dialog_scroll_view, getContentRootView(),
+                                        false);
+                        if (scrollableArea.getBottomScrollableArea().getIndex() -
+                                scrollableArea.getTopScrollableArea().getIndex() > 0) {
+                            LinearLayout scrollContainer = new LinearLayout(getContext());
+                            scrollContainer.setOrientation(LinearLayout.VERTICAL);
+                            scrollView
+                                    .addView(scrollContainer, ScrollView.LayoutParams.MATCH_PARENT,
+                                            ScrollView.LayoutParams.MATCH_PARENT);
+                        }
+
+                        getContentRootView().addView(scrollView);
+                    }
+                }
+
+                ViewGroup scrollContainer =
+                        scrollView.getChildCount() > 0 ? (ViewGroup) scrollView.getChildAt(0) :
+                                scrollView;
+                scrollContainer.addView(view);
+            } else {
+                getContentRootView().addView(view);
+            }
+        }
     }
 
     /**
@@ -154,6 +212,18 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
         return contentRootView;
     }
 
+    /**
+     * Returns the scroll view, which contains the dialog's scrollable areas.
+     *
+     * @return The scroll view, which contains the dialog's scrollable areas, as an instance of the
+     * class {@link ScrollView} or null, if the decorator is not attached or if the dialog does not
+     * contain any scrollable areas
+     */
+    @Nullable
+    public final ScrollView getScrollView() {
+        return scrollView;
+    }
+
     @Override
     public final Context getContext() {
         return dialog.getContext();
@@ -169,8 +239,12 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
      * @param view
      *         The root view of the view hierarchy, which should be modified by the decorator, as an
      *         instance of the class {@link View}. The view may not be null
+     * @param scrollableArea
+     *         The scrollable area of the dialog, as an instance of the class {@link
+     *         ScrollableArea}. The scrollable area may not be null
      */
-    public final void attach(@NonNull final Window window, @NonNull final View view) {
+    public final void attach(@NonNull final Window window, @NonNull final View view,
+                             @NonNull final ScrollableArea scrollableArea) {
         ensureNotNull(window, "The window may not be null");
         ensureNotNull(view, "The view may not be null");
         this.window = window;
@@ -178,6 +252,18 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
         this.dialogRootView = view.findViewById(R.id.root);
         this.contentRootView = view.findViewById(R.id.content_root);
         onAttach(window, view);
+        addViews(scrollableArea);
+    }
+
+    /**
+     * Adds the views, which are managed by the decorator, to the dialog.
+     *
+     * @param scrollableArea
+     *         The scrollable area of the dialog, as an instance of the class {@link
+     *         ScrollableArea}. The scrollable area may not be null
+     */
+    public void addViews(@NonNull final ScrollableArea scrollableArea) {
+
     }
 
     /**
@@ -189,6 +275,7 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
         this.view = null;
         this.dialogRootView = null;
         this.contentRootView = null;
+        this.scrollView = null;
         onDetach();
     }
 

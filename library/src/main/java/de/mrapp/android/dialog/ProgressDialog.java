@@ -371,7 +371,7 @@ public class ProgressDialog extends AbstractButtonBarDialog implements ProgressD
     protected final void onAttachDecorators(@NonNull final Window window,
                                             @NonNull final View view) {
         super.onAttachDecorators(window, view);
-        decorator.attach(window, view);
+        decorator.attach(window, view, getScrollableArea());
     }
 
     @Override

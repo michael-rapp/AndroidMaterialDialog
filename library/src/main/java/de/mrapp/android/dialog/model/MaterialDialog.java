@@ -14,7 +14,11 @@
 package de.mrapp.android.dialog.model;
 
 import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import de.mrapp.android.dialog.ScrollableArea;
+import de.mrapp.android.dialog.ScrollableArea.Area;
 
 /**
  * Defines the interface, a dialog, which is designed according to Android 5's Material Design
@@ -68,5 +72,36 @@ public interface MaterialDialog extends MaterialDialogDecorator, DialogInterface
      *         DialogInterface.OnDismissListener}, or null, if no listener should be set
      */
     void setOnDismissListener(@Nullable DialogInterface.OnDismissListener listener);
+
+    /**
+     * Returns the scrollable area of the dialog.
+     *
+     * @return The scrollable area of the dialog as an instance of the class {@link ScrollableArea}.
+     * The scrollable area may not be null
+     */
+    @NonNull
+    ScrollableArea getScrollableArea();
+
+    /**
+     * Sets the area of the dialog, which should be scrollable.
+     *
+     * @param area
+     *         The area, which should be set, as a value of the enum {@link Area} or null, if no
+     *         area should be scrollable
+     */
+    void setScrollableArea(@Nullable Area area);
+
+    /**
+     * Sets the areas of the dialog, which should be scrollable.
+     *
+     * @param top
+     *         The top-most area, which should be scrollable, as a value of the enum {@link Area} or
+     *         null, if no area should be scrollable
+     * @param bottom
+     *         The bottom-most area, which should be scrollable, as a value of the enum {@link
+     *         Area}. If the top-most area is null, the bottom-most are must be null as well. The
+     *         index of the bottom-most area must be at least the index of the top-most area
+     */
+    void setScrollableArea(@Nullable Area top, @Nullable Area bottom);
 
 }

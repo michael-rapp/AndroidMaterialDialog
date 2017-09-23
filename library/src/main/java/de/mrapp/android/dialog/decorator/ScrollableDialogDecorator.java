@@ -191,7 +191,7 @@ public class ScrollableDialogDecorator extends AbstractDialogDecorator<ListDialo
 
     @Override
     protected final void onAttach(@NonNull final Window window, @NonNull final View view) {
-        contentDivider = view.findViewById(R.id.content_divider);
+        // TODO contentDivider = view.findViewById(R.id.content_divider);
         buttonBarDivider = view.findViewById(R.id.button_bar_divider);
         View contentContainer = view.findViewById(R.id.content_container);
         registerScrollListener(contentContainer);
