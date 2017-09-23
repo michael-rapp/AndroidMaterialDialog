@@ -174,11 +174,13 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     @Override
     public final void setScrollableArea(@Nullable final Area area) {
         this.scrollableArea = ScrollableArea.create(area);
+        // TODO Refresh layout
     }
 
     @Override
     public final void setScrollableArea(@Nullable final Area top, @Nullable final Area bottom) {
         this.scrollableArea = ScrollableArea.create(top, bottom);
+        // TODO Refresh layout
     }
 
     @Override
@@ -490,7 +492,8 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         rootView = view.findViewById(R.id.dialog_root_view);
         assert rootView != null;
         Map<Area, View> areas = onAttachDecorators(window, view);
-        rootView.addAreas(areas, scrollableArea);
+        rootView.addAreas(areas, scrollableArea, getPaddingLeft(), getPaddingTop(),
+                getPaddingRight(), getPaddingBottom());
     }
 
     @Override

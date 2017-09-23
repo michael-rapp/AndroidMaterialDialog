@@ -72,6 +72,11 @@ public class DialogRootView extends LinearLayout {
     }
 
     /**
+     * The width of the dialog's shadow.
+     */
+    private int shadowWidth;
+
+    /**
      * True, if the view's shadow is shown, false otherwise.
      */
     private boolean showShadow = true;
@@ -115,6 +120,7 @@ public class DialogRootView extends LinearLayout {
      * Initializes the view.
      */
     private void initialize() {
+        shadowWidth = getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
         background =
                 ContextCompat.getDrawable(getContext(), android.R.drawable.dialog_holo_light_frame);
         paint = new Paint();
@@ -318,15 +324,31 @@ public class DialogRootView extends LinearLayout {
      * @param scrollableArea
      *         The scrollable area of the dialog as an instance of the class {@link ScrollableArea}.
      *         The scrollable area may not be null
+     * @param dialogPaddingLeft
+     *         The left padding of the dialog in pixels as an {@link Integer} value
+     * @param dialogPaddingTop
+     *         The top padding of the dialog in pixels as an {@link Integer} value
+     * @param dialogPaddingRight
+     *         The right padding of the dialog in pixels as an {@link Integer} value
+     * @param dialogPaddingBottom
+     *         The bottom padding of the dialog in pixels as an {@link Integer} value
      */
     public final void addAreas(@NonNull final Map<Area, View> areas,
-                               @NonNull final ScrollableArea scrollableArea) {
+                               @NonNull final ScrollableArea scrollableArea,
+                               final int dialogPaddingLeft, final int dialogPaddingTop,
+                               final int dialogPaddingRight, final int dialogPaddingBottom) {
+        removeAllViews();
         SortedMap<Area, View> sortedMap = new TreeMap<>(new AreaComparator());
         sortedMap.putAll(areas);
 
         for (Map.Entry<Area, View> entry : sortedMap.entrySet()) {
             Area area = entry.getKey();
             View view = entry.getValue();
+            int paddingLeft = area != Area.HEADER && area != Area.BUTTON_BAR ?
+                    dialogPaddingLeft + shadowWidth : 0;
+            int paddingRight = area != Area.HEADER && area != Area.BUTTON_BAR ?
+                    dialogPaddingRight + shadowWidth : 0;
+            view.setPadding(paddingLeft, 0, paddingRight, 0);
 
             if (scrollableArea.isScrollable(area)) {
                 inflateScrollView(scrollableArea);
@@ -347,12 +369,11 @@ public class DialogRootView extends LinearLayout {
 
     @Override
     protected final void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-        int shadowWidth = isShadowShown() ?
-                getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width) : 0;
-        int maxWidthMeasureSpec = getMaxWidth() != -1 ? MeasureSpec
-                .makeMeasureSpec(getMaxWidth() + (shadowWidth * 2), MeasureSpec.AT_MOST) : -1;
-        int maxHeightMeasureSpec = getMaxHeight() != -1 ? MeasureSpec
-                .makeMeasureSpec(getMaxHeight() + (shadowWidth * 2), MeasureSpec.AT_MOST) : -1;
+        int inset = isShadowShown() ? shadowWidth : 0;
+        int maxWidthMeasureSpec = getMaxWidth() != -1 ?
+                MeasureSpec.makeMeasureSpec(getMaxWidth() + (inset * 2), MeasureSpec.AT_MOST) : -1;
+        int maxHeightMeasureSpec = getMaxHeight() != -1 ?
+                MeasureSpec.makeMeasureSpec(getMaxHeight() + (inset * 2), MeasureSpec.AT_MOST) : -1;
         super.onMeasure(maxWidthMeasureSpec != -1 ? maxWidthMeasureSpec : widthMeasureSpec,
                 maxHeightMeasureSpec != -1 ? maxHeightMeasureSpec : heightMeasureSpec);
     }

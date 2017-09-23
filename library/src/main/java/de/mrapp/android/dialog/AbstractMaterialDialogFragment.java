@@ -253,11 +253,13 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     @Override
     public final void setScrollableArea(@Nullable final Area area) {
         this.scrollableArea = ScrollableArea.create(area);
+        // TODO Refresh layout
     }
 
     @Override
     public final void setScrollableArea(@Nullable final Area top, @Nullable final Area bottom) {
         this.scrollableArea = ScrollableArea.create(top, bottom);
+        // TODO Refresh layout
     }
 
     @Override
@@ -602,7 +604,8 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
         rootView = view.findViewById(R.id.dialog_root_view);
         assert rootView != null;
         Map<Area, View> areas = onAttachDecorators(window, view, getChildFragmentManager());
-        rootView.addAreas(areas, scrollableArea);
+        rootView.addAreas(areas, scrollableArea, getPaddingLeft(), getPaddingTop(),
+                getPaddingRight(), getPaddingBottom());
         return view;
     }
 
