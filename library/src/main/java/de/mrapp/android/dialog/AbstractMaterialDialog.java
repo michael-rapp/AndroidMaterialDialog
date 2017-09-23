@@ -48,6 +48,12 @@ import de.mrapp.android.dialog.model.MaterialDialog;
 public abstract class AbstractMaterialDialog extends Dialog implements MaterialDialog {
 
     /**
+     * The name of the extra, which is used to store the scrollable area within a bundle.
+     */
+    private static final String SCROLLABLE_AREA_EXTRA =
+            AbstractMaterialDialog.class.getSimpleName() + "::scrollableArea";
+
+    /**
      * The decorator, which is used by the dialog.
      */
     private final MaterialDialogDecorator decorator;
@@ -483,6 +489,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     public Bundle onSaveInstanceState() {
         Bundle outState = super.onSaveInstanceState();
         decorator.onSaveInstanceState(outState);
+        outState.putParcelable(SCROLLABLE_AREA_EXTRA, scrollableArea);
         return outState;
     }
 
@@ -490,6 +497,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     @Override
     public void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         decorator.onRestoreInstanceState(savedInstanceState);
+        scrollableArea = savedInstanceState.getParcelable(SCROLLABLE_AREA_EXTRA);
         super.onRestoreInstanceState(savedInstanceState);
     }
 

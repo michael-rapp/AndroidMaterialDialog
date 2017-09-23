@@ -13,8 +13,12 @@
  */
 package de.mrapp.android.dialog;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import java.io.Serializable;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
 import static de.mrapp.android.util.Condition.ensureNotNull;
@@ -26,7 +30,24 @@ import static de.mrapp.android.util.Condition.ensureTrue;
  * @author Michael Rapp
  * @since 4.2.0
  */
-public final class ScrollableArea {
+public final class ScrollableArea implements Serializable, Parcelable {
+
+    /**
+     * A creator, which allows to create instances of the class {@link ScrollableArea} from parcels.
+     */
+    public static final Creator<ScrollableArea> CREATOR = new Creator<ScrollableArea>() {
+
+        @Override
+        public ScrollableArea createFromParcel(final Parcel source) {
+            return new ScrollableArea(source);
+        }
+
+        @Override
+        public ScrollableArea[] newArray(final int size) {
+            return new ScrollableArea[size];
+        }
+
+    };
 
     /**
      * Contains all area of a dialog, which may be scrollable.
@@ -135,6 +156,18 @@ public final class ScrollableArea {
     }
 
     /**
+     * Creates a new scrollable area.
+     *
+     * @param source
+     *         The source, the scrollable area should be created from, as an instance of the class
+     *         {@link Parcel}. The source may not be null
+     */
+    private ScrollableArea(@NonNull final Parcel source) {
+        this.topScrollableArea = (Area) source.readSerializable();
+        this.bottomScrollableArea = (Area) source.readSerializable();
+    }
+
+    /**
      * Creates and returns a new scrollable area.
      *
      * @param area
@@ -191,6 +224,46 @@ public final class ScrollableArea {
      */
     public final Area getBottomScrollableArea() {
         return bottomScrollableArea;
+    }
+
+    @Override
+    public final int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public final void writeToParcel(final Parcel dest, final int flags) {
+        dest.writeSerializable(topScrollableArea);
+        dest.writeSerializable(bottomScrollableArea);
+    }
+
+    @Override
+    public String toString() {
+        return "ScrollableArea{" + "topScrollableArea=" + topScrollableArea +
+                ", bottomScrollableArea=" + bottomScrollableArea + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (topScrollableArea == null ? 0 : topScrollableArea.hashCode());
+        result = prime * result +
+                (bottomScrollableArea == null ? 0 : bottomScrollableArea.hashCode());
+        return result;
+    }
+
+    @Override
+    public final boolean equals(final Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ScrollableArea other = (ScrollableArea) obj;
+        return topScrollableArea == other.topScrollableArea &&
+                bottomScrollableArea.equals(other.bottomScrollableArea);
     }
 
 }
