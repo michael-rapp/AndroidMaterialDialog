@@ -174,6 +174,7 @@ public abstract class AbstractDialogDecorator<DialogType extends Dialog>
                                 .inflate(R.layout.material_dialog_scroll_view, getContentRootView(),
                                         false);
                         scrollView.setTag(scrollableArea.getTopScrollableArea());
+
                         if (scrollableArea.getBottomScrollableArea().getIndex() -
                                 scrollableArea.getTopScrollableArea().getIndex() > 0) {
                             LinearLayout scrollContainer = new LinearLayout(getContext());
