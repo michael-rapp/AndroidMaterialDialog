@@ -247,7 +247,8 @@ public interface MaterialDialogDecorator extends Dialog {
     int getPaddingBottom();
 
     /**
-     * Sets the padding of the dialog.
+     * Sets the padding of the dialog. The padding does not apply to the dialog's header and
+     * buttons.
      *
      * @param left
      *         The left padding, which should be set, in pixels as an {@link Integer} value. The
