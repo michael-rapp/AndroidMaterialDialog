@@ -83,6 +83,11 @@ public class DialogRootView extends LinearLayout {
     private boolean showShadow = true;
 
     /**
+     * The padding of the view.
+     */
+    private int[] padding;
+
+    /**
      * The maximum width of the view.
      */
     private int maxWidth = -1;
@@ -122,6 +127,7 @@ public class DialogRootView extends LinearLayout {
      */
     private void initialize() {
         shadowWidth = getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
+        padding = new int[]{0, 0, 0, 0};
         background =
                 ContextCompat.getDrawable(getContext(), android.R.drawable.dialog_holo_light_frame);
         paint = new Paint();
@@ -257,6 +263,7 @@ public class DialogRootView extends LinearLayout {
      */
     public final void showShadow(final boolean showShadow) {
         this.showShadow = showShadow;
+        super.setPadding(getInset(), getInset(), getInset(), getInset());
         invalidate();
     }
 
@@ -351,19 +358,16 @@ public class DialogRootView extends LinearLayout {
         SortedMap<Area, View> sortedMap = new TreeMap<>(new AreaComparator());
         sortedMap.putAll(areas);
         Iterator<Map.Entry<Area, View>> iterator = sortedMap.entrySet().iterator();
-        boolean first = true;
 
         while (iterator.hasNext()) {
             Map.Entry<Area, View> entry = iterator.next();
             Area area = entry.getKey();
             View view = entry.getValue();
-            int paddingLeft = area != Area.HEADER && area != Area.BUTTON_BAR ?
-                    dialogPaddingLeft + getInset() : getInset();
-            int paddingTop = first ? getInset() : 0;
-            int paddingRight = area != Area.HEADER && area != Area.BUTTON_BAR ?
-                    dialogPaddingRight + getInset() : getInset();
-            int paddingBottom = !iterator.hasNext() ? getInset() : 0;
-            view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+            int paddingLeft =
+                    area != Area.HEADER && area != Area.BUTTON_BAR ? dialogPaddingLeft : 0;
+            int paddingRight =
+                    area != Area.HEADER && area != Area.BUTTON_BAR ? dialogPaddingRight : 0;
+            view.setPadding(paddingLeft, 0, paddingRight, 0);
 
             if (scrollableArea.isScrollable(area)) {
                 inflateScrollView(scrollableArea);
@@ -374,14 +378,13 @@ public class DialogRootView extends LinearLayout {
             } else {
                 addView(view);
             }
-
-            first = false;
         }
     }
 
     @Override
     public final void setPadding(final int left, final int top, final int right, final int bottom) {
-        // TODO Implement
+        padding = new int[]{left, top, right, bottom};
+        // TODO Apply padding
     }
 
     @Override
