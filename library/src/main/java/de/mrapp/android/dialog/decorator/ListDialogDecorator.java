@@ -433,7 +433,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     @NonNull
     @Override
     protected final Map<Area, View> onAttach(@NonNull final Window window,
-                                             @NonNull final View view) {
+                                             @NonNull final View view, final Void param) {
         inflateListView();
         adaptItemColor();
         return Collections.emptyMap();

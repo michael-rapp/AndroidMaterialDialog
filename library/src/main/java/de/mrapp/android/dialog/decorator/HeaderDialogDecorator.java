@@ -613,8 +613,8 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
 
     @NonNull
     @Override
-    protected final Map<Area, View> onAttach(@NonNull final Window window,
-                                             @NonNull final View view) {
+    protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
+                                             final Void param) {
         inflateHeader();
         adaptHeaderVisibility();
         adaptHeaderBackground(null);

@@ -312,7 +312,8 @@ public class ProgressDialog extends AbstractButtonBarDialog implements ProgressD
      */
     protected ProgressDialog(@NonNull final Context context, @StyleRes final int themeResourceId) {
         super(context, themeResourceId);
-        this.decorator = new de.mrapp.android.dialog.decorator.ProgressDialogDecorator(this);
+        decorator = new de.mrapp.android.dialog.decorator.ProgressDialogDecorator(this);
+        addDecorator(decorator);
         setCancelable(false);
     }
 
@@ -368,21 +369,6 @@ public class ProgressDialog extends AbstractButtonBarDialog implements ProgressD
     public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         decorator.onRestoreInstanceState(savedInstanceState);
         super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    @NonNull
-    @Override
-    protected final Map<Area, View> onAttachDecorators(@NonNull final Window window,
-                                                       @NonNull final View view) {
-        Map<Area, View> result = super.onAttachDecorators(window, view);
-        result.putAll(decorator.attach(window, view));
-        return result;
-    }
-
-    @Override
-    protected final void onDetachDecorators() {
-        super.onDetachDecorators();
-        decorator.detach();
     }
 
 }

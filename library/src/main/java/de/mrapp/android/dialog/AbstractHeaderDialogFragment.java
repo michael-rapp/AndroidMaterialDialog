@@ -22,13 +22,8 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.view.View;
-import android.view.Window;
 
-import java.util.Map;
-
-import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.DrawableAnimation;
 import de.mrapp.android.dialog.decorator.HeaderDialogDecorator;
@@ -55,7 +50,8 @@ public abstract class AbstractHeaderDialogFragment extends AbstractMaterialDialo
      * on pre-Lollipop devices, is able to show fragments and may contain a header.
      */
     public AbstractHeaderDialogFragment() {
-        this.decorator = new HeaderDialogDecorator(this);
+        decorator = new HeaderDialogDecorator(this);
+        addDecorator(decorator);
     }
 
     @Override
@@ -185,24 +181,6 @@ public abstract class AbstractHeaderDialogFragment extends AbstractMaterialDialo
     protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         decorator.onRestoreInstanceState(savedInstanceState);
-    }
-
-    @NonNull
-    @CallSuper
-    @Override
-    protected Map<Area, View> onAttachDecorators(@NonNull final Window window,
-                                                 @NonNull final View view,
-                                                 @NonNull final FragmentManager fragmentManager) {
-        Map<Area, View> result = super.onAttachDecorators(window, view, fragmentManager);
-        result.putAll(decorator.attach(window, view));
-        return result;
-    }
-
-    @CallSuper
-    @Override
-    protected void onDetachDecorators() {
-        super.onDetachDecorators();
-        decorator.detach();
     }
 
 }

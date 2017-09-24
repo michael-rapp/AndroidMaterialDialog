@@ -1210,8 +1210,8 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @NonNull
     @Override
-    protected final Map<Area, View> onAttach(@NonNull final Window window,
-                                             @NonNull final View view) {
+    protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
+                                             final Void param) {
         ViewCompat.setOnApplyWindowInsetsListener(view, createWindowInsetsListener());
         inflateTitleView();
         inflateMessageView();

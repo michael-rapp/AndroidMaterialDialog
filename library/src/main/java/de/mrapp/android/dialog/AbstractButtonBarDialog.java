@@ -23,12 +23,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 
-import java.util.Map;
-
-import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.decorator.ButtonBarDialogDecorator;
 import de.mrapp.android.dialog.model.ButtonBarDialog;
 
@@ -61,7 +57,8 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
     protected AbstractButtonBarDialog(@NonNull final Context context,
                                       @StyleRes final int themeResourceId) {
         super(context, themeResourceId);
-        this.decorator = new ButtonBarDialogDecorator(this);
+        decorator = new ButtonBarDialogDecorator(this);
+        addDecorator(decorator);
     }
 
     @Override
@@ -188,23 +185,6 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
     public void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         decorator.onRestoreInstanceState(savedInstanceState);
         super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    @NonNull
-    @CallSuper
-    @Override
-    protected Map<Area, View> onAttachDecorators(@NonNull final Window window,
-                                                 @NonNull final View view) {
-        Map<Area, View> result = super.onAttachDecorators(window, view);
-        result.putAll(decorator.attach(window, view));
-        return result;
-    }
-
-    @CallSuper
-    @Override
-    protected void onDetachDecorators() {
-        super.onDetachDecorators();
-        decorator.detach();
     }
 
 }

@@ -23,12 +23,7 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
-import android.view.View;
-import android.view.Window;
 
-import java.util.Map;
-
-import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.decorator.AnimateableDialogDecorator;
 import de.mrapp.android.dialog.model.AnimateableDialog;
@@ -126,7 +121,8 @@ public abstract class AbstractAnimateableDialog extends AbstractHeaderDialog
     protected AbstractAnimateableDialog(@NonNull final Context context,
                                         @StyleRes final int themeResourceId) {
         super(context, themeResourceId);
-        this.decorator = new AnimateableDialogDecorator(this);
+        decorator = new AnimateableDialogDecorator(this);
+        addDecorator(decorator);
         super.setOnShowListener(createOnShowListener());
     }
 
@@ -203,23 +199,6 @@ public abstract class AbstractAnimateableDialog extends AbstractHeaderDialog
         }
 
         return false;
-    }
-
-    @NonNull
-    @CallSuper
-    @Override
-    protected Map<Area, View> onAttachDecorators(@NonNull final Window window,
-                                                 @NonNull final View view) {
-        Map<Area, View> result = super.onAttachDecorators(window, view);
-        result.putAll(decorator.attach(window, view));
-        return result;
-    }
-
-    @CallSuper
-    @Override
-    protected void onDetachDecorators() {
-        super.onDetachDecorators();
-        decorator.detach();
     }
 
 }

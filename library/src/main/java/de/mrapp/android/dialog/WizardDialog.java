@@ -29,13 +29,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
-import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 
-import java.util.Map;
-
-import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
 import de.mrapp.android.dialog.model.WizardDialogDecorator;
 import de.mrapp.android.util.ThemeUtil;
@@ -934,6 +929,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
      */
     public WizardDialog() {
         decorator = new de.mrapp.android.dialog.decorator.WizardDialogDecorator(this);
+        addDecorator(decorator);
         setCancelable(false);
         setView(R.layout.wizard_dialog_view_pager);
     }
@@ -1225,22 +1221,6 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
     protected final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         decorator.onRestoreInstanceState(savedInstanceState);
-    }
-
-    @NonNull
-    @Override
-    protected final Map<Area, View> onAttachDecorators(@NonNull final Window window,
-                                                       @NonNull final View view,
-                                                       @NonNull final FragmentManager fragmentManager) {
-        Map<Area, View> result = super.onAttachDecorators(window, view, fragmentManager);
-        result.putAll(decorator.attach(window, view, fragmentManager));
-        return result;
-    }
-
-    @Override
-    protected final void onDetachDecorators() {
-        super.onDetachDecorators();
-        decorator.detach();
     }
 
 }

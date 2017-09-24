@@ -25,11 +25,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.view.View;
-import android.view.Window;
 
-import java.util.Map;
-
-import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.DrawableAnimation;
 import de.mrapp.android.dialog.decorator.HeaderDialogDecorator;
@@ -63,7 +59,8 @@ public abstract class AbstractHeaderDialog extends AbstractMaterialDialog implem
     protected AbstractHeaderDialog(@NonNull final Context context,
                                    @StyleRes final int themeResourceId) {
         super(context, themeResourceId);
-        this.decorator = new HeaderDialogDecorator(this);
+        decorator = new HeaderDialogDecorator(this);
+        addDecorator(decorator);
     }
 
     @Override
@@ -195,23 +192,6 @@ public abstract class AbstractHeaderDialog extends AbstractMaterialDialog implem
     public void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         decorator.onRestoreInstanceState(savedInstanceState);
         super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    @CallSuper
-    @NonNull
-    @Override
-    protected Map<Area, View> onAttachDecorators(@NonNull final Window window,
-                                                 @NonNull final View view) {
-        Map<Area, View> result = super.onAttachDecorators(window, view);
-        result.putAll(decorator.attach(window, view));
-        return result;
-    }
-
-    @CallSuper
-    @Override
-    protected void onDetachDecorators() {
-        super.onDetachDecorators();
-        decorator.detach();
     }
 
 }

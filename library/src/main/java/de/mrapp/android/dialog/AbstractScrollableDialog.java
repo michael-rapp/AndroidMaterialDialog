@@ -18,12 +18,7 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
-import android.view.View;
-import android.view.Window;
 
-import java.util.Map;
-
-import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.decorator.ScrollableDialogDecorator;
 import de.mrapp.android.dialog.model.ScrollableDialog;
 
@@ -56,7 +51,8 @@ public abstract class AbstractScrollableDialog extends AbstractListDialog
     protected AbstractScrollableDialog(@NonNull final Context context,
                                        @StyleRes final int themeResourceId) {
         super(context, themeResourceId);
-        this.decorator = new ScrollableDialogDecorator(this);
+        decorator = new ScrollableDialogDecorator(this);
+        addDecorator(decorator);
     }
 
     @Override
@@ -83,23 +79,6 @@ public abstract class AbstractScrollableDialog extends AbstractListDialog
     public void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         decorator.onRestoreInstanceState(savedInstanceState);
         super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    @NonNull
-    @CallSuper
-    @Override
-    protected Map<Area, View> onAttachDecorators(@NonNull final Window window,
-                                                 @NonNull final View view) {
-        Map<Area, View> result = super.onAttachDecorators(window, view);
-        result.putAll(decorator.attach(window, view));
-        return result;
-    }
-
-    @CallSuper
-    @Override
-    protected void onDetachDecorators() {
-        super.onDetachDecorators();
-        decorator.detach();
     }
 
 }

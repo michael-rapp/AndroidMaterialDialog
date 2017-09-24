@@ -37,10 +37,16 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ScrollView;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
+import de.mrapp.android.dialog.decorator.AbstractDecorator;
+import de.mrapp.android.dialog.decorator.AbstractDialogDecorator;
+import de.mrapp.android.dialog.decorator.AbstractDialogFragmentDecorator;
 import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
 import de.mrapp.android.dialog.model.MaterialDialog;
 import de.mrapp.android.dialog.view.DialogRootView;
@@ -67,6 +73,11 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      * The decorator, which is used by the dialog.
      */
     private final MaterialDialogDecorator decorator;
+
+    /**
+     * A collection, which contains the decorators, which are applied to the dialog.
+     */
+    private final Collection<AbstractDecorator> decorators;
 
     /**
      * The scrollable area of the dialog.
@@ -132,6 +143,61 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     }
 
     /**
+     * Applies all registered decorators to the dialog.
+     *
+     * @param window
+     *         The window, the dialog belongs to, as an instance of the class {@link Window}. The
+     *         window may not be null
+     * @param view
+     *         The view of the dialog as an instance of the class {@link View}. The view may not be
+     *         null
+     * @param fragmentManager
+     *         The fragment manager, which is used to show the dialog, as an instance of the class
+     *         {@link FragmentManager}. The fragment manager may not be null
+     * @return A map, which contains the views, which have been inflated by the decorators, mapped
+     * to the areas they correspond to, as an instance of the type {@link Map} or null, if the
+     * decorator has not inflated any views
+     */
+    private Map<Area, View> applyDecorators(@NonNull final Window window, @NonNull final View view,
+                                            @NonNull final FragmentManager fragmentManager) {
+        Map<Area, View> result = new HashMap<>();
+
+        for (AbstractDecorator<?, ?> decorator : decorators) {
+            if (decorator instanceof AbstractDialogDecorator) {
+                AbstractDialogDecorator<?> dialogDecorator = (AbstractDialogDecorator) decorator;
+                result.putAll(dialogDecorator.attach(window, view, null));
+            } else {
+                AbstractDialogFragmentDecorator<?> dialogFragmentDecorator =
+                        (AbstractDialogFragmentDecorator<?>) decorator;
+                result.putAll(dialogFragmentDecorator.attach(window, view, fragmentManager));
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Detaches all registered decorators from the dialog.
+     */
+    private void detachDecorators() {
+        for (AbstractDecorator<?, ?> decorator : decorators) {
+            decorator.detach();
+        }
+    }
+
+    /**
+     * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
+     * on pre-Lollipop devices and is able to show fragments.
+     */
+    public AbstractMaterialDialogFragment() {
+        this.decorator = new MaterialDialogDecorator(this);
+        this.decorators = new LinkedList<>();
+        this.scrollableArea = ScrollableArea.create(Area.CONTENT);
+        addDecorator(decorator);
+        setCanceledOnTouchOutside(true);
+    }
+
+    /**
      * Sets the resource id of the theme, which should be used by the dialog.
      *
      * @param themeResourceId
@@ -155,47 +221,14 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     }
 
     /**
-     * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
-     * on pre-Lollipop devices and is able to show fragments.
-     */
-    public AbstractMaterialDialogFragment() {
-        this.decorator = new MaterialDialogDecorator(this);
-        this.scrollableArea = ScrollableArea.create(Area.CONTENT);
-        setCanceledOnTouchOutside(true);
-    }
-
-    /**
-     * The method, which is invoked when the dialog's decorators should be attached. This method may
-     * be overridden by subclasses in order to attach additional decorators.
+     * Adds a decorator to the dialog.
      *
-     * @param window
-     *         The window of the dialog, whose view hierarchy should be modified by the decorators,
-     *         as an instance of the class {@link Window}. The window may not be null
-     * @param view
-     *         The root view of the view hierarchy, which should be modified by the decorators, as
-     *         an instance of the class {@link View}. The view may not be null
-     * @param fragmentManager
-     *         The fragment manager, which can be used to show fragment within the dialog, as an
-     *         instance of the class FragmentManager. The fragment manager may not be null
-     * @return A map, which contains the views, which have been inflated by the decorators, mapped
-     * to the areas they correspond to, as an instance of the type {@link Map} or null, if the
-     * decorator has not inflated any views
+     * @param decorator
+     *         The decorator, which should be added, as an instance of the class {@link
+     *         AbstractDecorator}. The decorator may not be null
      */
-    @NonNull
-    @CallSuper
-    protected Map<Area, View> onAttachDecorators(@NonNull final Window window,
-                                                 @NonNull final View view,
-                                                 @NonNull final FragmentManager fragmentManager) {
-        return decorator.attach(window, view);
-    }
-
-    /**
-     * The method, which is invoked when the dialog's decorators should be detached. This method
-     * must be overridden by subclasses if they attach additional decorators.
-     */
-    @CallSuper
-    protected void onDetachDecorators() {
-        decorator.detach();
+    protected void addDecorator(@NonNull final AbstractDecorator decorator) {
+        this.decorators.add(decorator);
     }
 
     /**
@@ -603,7 +636,7 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
         assert window != null;
         rootView = view.findViewById(R.id.dialog_root_view);
         assert rootView != null;
-        Map<Area, View> areas = onAttachDecorators(window, view, getChildFragmentManager());
+        Map<Area, View> areas = applyDecorators(window, view, getChildFragmentManager());
         rootView.addAreas(areas, scrollableArea, getPaddingLeft(), getPaddingTop(),
                 getPaddingRight(), getPaddingBottom());
         return view;
@@ -624,7 +657,7 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     @Override
     public final void onDestroy() {
         super.onDestroy();
-        onDetachDecorators();
+        detachDecorators();
         rootView = null;
     }
 
