@@ -19,10 +19,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.Window;
 
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.ScrollableArea.Area;
+import de.mrapp.android.dialog.listener.AreaListener;
 import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.dialog.model.DialogDecorator;
 import de.mrapp.android.dialog.view.DialogRootView;
@@ -42,6 +45,11 @@ public abstract class AbstractDecorator<DialogType extends Dialog, ParamType>
      * The dialog, whose view hierarchy is modified by the decorator.
      */
     private final DialogType dialog;
+
+    /**
+     * The listeners, which are notified, when an area has been modified by the decorator.
+     */
+    private final Set<AreaListener> areaListeners;
 
     /**
      * The window of the dialog, whose view hierarchy is modified by the decorator.
@@ -93,6 +101,7 @@ public abstract class AbstractDecorator<DialogType extends Dialog, ParamType>
     public AbstractDecorator(@NonNull final DialogType dialog) {
         ensureNotNull(dialog, "The dialog may not be null");
         this.dialog = dialog;
+        this.areaListeners = new LinkedHashSet<>();
         this.window = null;
         this.view = null;
         this.dialogRootView = null;
@@ -135,6 +144,59 @@ public abstract class AbstractDecorator<DialogType extends Dialog, ParamType>
         this.view = null;
         this.dialogRootView = null;
         onDetach();
+    }
+
+    /**
+     * Adds a new listener, which should be notified, when an area is modified by the dialog.
+     *
+     * @param listener
+     *         The listener, which should be added, as an instance of the type {@link AreaListener}.
+     *         The listener may not be null
+     */
+    public final void addAreaListener(@NonNull final AreaListener listener) {
+        ensureNotNull(listener, "The listener may not be null");
+        this.areaListeners.add(listener);
+    }
+
+    /**
+     * Removes a specific listener, which should not be notified, when an area is modified by the
+     * decorator, anymore.
+     *
+     * @param listener
+     *         The listener, which should be added, as an instance of the type {@link AreaListener}.
+     *         The listener may not be null
+     */
+    public final void removeAreaListener(@NonNull final AreaListener listener) {
+        ensureNotNull(listener, "The listener may not be null");
+        this.areaListeners.remove(listener);
+    }
+
+    /**
+     * Notifies the listeners, which have been registered to be notified, when the visibility of the
+     * dialog's areas has been changed, about an area being shown.
+     *
+     * @param area
+     *         The area, which has been shown, as a value of the enum {@link Area}. The area may not
+     *         be null
+     */
+    protected final void notifyOnAreaShown(@NonNull final Area area) {
+        for (AreaListener listener : areaListeners) {
+            listener.onAreaShown(area);
+        }
+    }
+
+    /**
+     * Notifies the listeners, which have been registered to be notified, when the visibility of the
+     * dialog's areas has been changed, about an area being hidden.
+     *
+     * @param area
+     *         The area, which has been hidden, as a value of the enum {@link Area}. The area may
+     *         not be null
+     */
+    protected final void notifyOnAreaHidden(@NonNull final Area area) {
+        for (AreaListener listener : areaListeners) {
+            listener.onAreaHidden(area);
+        }
     }
 
     /**

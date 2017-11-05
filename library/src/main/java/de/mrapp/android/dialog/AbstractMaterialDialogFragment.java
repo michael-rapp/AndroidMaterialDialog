@@ -13,6 +13,7 @@
  */
 package de.mrapp.android.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -64,12 +65,6 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
         implements MaterialDialog {
 
     /**
-     * The name of the extra, which is used to store the scrollable area within a bundle.
-     */
-    private static final String SCROLLABLE_AREA_EXTRA =
-            AbstractMaterialDialogFragment.class.getSimpleName() + "::scrollableArea";
-
-    /**
      * The decorator, which is used by the dialog.
      */
     private final MaterialDialogDecorator decorator;
@@ -78,11 +73,6 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      * A collection, which contains the decorators, which are applied to the dialog.
      */
     private final Collection<AbstractDecorator> decorators;
-
-    /**
-     * The scrollable area of the dialog.
-     */
-    private ScrollableArea scrollableArea;
 
     /**
      * The root view of the dialog.
@@ -134,6 +124,7 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     private View.OnTouchListener createCanceledOnTouchListener() {
         return new View.OnTouchListener() {
 
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(final View v, final MotionEvent event) {
                 return isCanceledOnTouchOutside() && !isFullscreen() && onCanceledOnTouchOutside();
@@ -148,6 +139,9 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      * @param window
      *         The window, the dialog belongs to, as an instance of the class {@link Window}. The
      *         window may not be null
+     * @param rootView
+     *         The root view of the dialog as an instance of the class {@link DialogRootView}. The
+     *         root view may not be null
      * @param view
      *         The view of the dialog as an instance of the class {@link View}. The view may not be
      *         null
@@ -158,7 +152,9 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      * to the areas they correspond to, as an instance of the type {@link Map} or null, if the
      * decorator has not inflated any views
      */
-    private Map<Area, View> applyDecorators(@NonNull final Window window, @NonNull final View view,
+    private Map<Area, View> applyDecorators(@NonNull final Window window,
+                                            @NonNull final DialogRootView rootView,
+                                            @NonNull final View view,
                                             @NonNull final FragmentManager fragmentManager) {
         Map<Area, View> result = new HashMap<>();
 
@@ -171,6 +167,8 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
                         (AbstractDialogFragmentDecorator<?>) decorator;
                 result.putAll(dialogFragmentDecorator.attach(window, view, fragmentManager));
             }
+
+            decorator.addAreaListener(rootView);
         }
 
         return result;
@@ -178,10 +176,15 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
 
     /**
      * Detaches all registered decorators from the dialog.
+     *
+     * @param rootView
+     *         The root view of the dialog as an instance of the class {@link DialogRootView}. The
+     *         root view may not be null
      */
-    private void detachDecorators() {
+    private void detachDecorators(@NonNull final DialogRootView rootView) {
         for (AbstractDecorator<?, ?> decorator : decorators) {
             decorator.detach();
+            decorator.removeAreaListener(rootView);
         }
     }
 
@@ -192,7 +195,6 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     public AbstractMaterialDialogFragment() {
         this.decorator = new MaterialDialogDecorator(this);
         this.decorators = new LinkedList<>();
-        this.scrollableArea = ScrollableArea.create(Area.CONTENT);
         addDecorator(decorator);
         setCanceledOnTouchOutside(true);
     }
@@ -254,7 +256,6 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     @CallSuper
     protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         decorator.onRestoreInstanceState(savedInstanceState);
-        scrollableArea = savedInstanceState.getParcelable(SCROLLABLE_AREA_EXTRA);
     }
 
     @Override
@@ -275,24 +276,6 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     @Override
     public final ScrollView getScrollView() {
         return rootView != null ? rootView.getScrollView() : null;
-    }
-
-    @NonNull
-    @Override
-    public final ScrollableArea getScrollableArea() {
-        return scrollableArea;
-    }
-
-    @Override
-    public final void setScrollableArea(@Nullable final Area area) {
-        this.scrollableArea = ScrollableArea.create(area);
-        // TODO Refresh layout
-    }
-
-    @Override
-    public final void setScrollableArea(@Nullable final Area top, @Nullable final Area bottom) {
-        this.scrollableArea = ScrollableArea.create(top, bottom);
-        // TODO Refresh layout
     }
 
     @Override
@@ -455,6 +438,22 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     public final void setFitsSystemWindows(final boolean left, final boolean top,
                                            final boolean right, final boolean bottom) {
         decorator.setFitsSystemWindows(left, top, right, bottom);
+    }
+
+    @NonNull
+    @Override
+    public final ScrollableArea getScrollableArea() {
+        return decorator.getScrollableArea();
+    }
+
+    @Override
+    public final void setScrollableArea(@Nullable final Area area) {
+        decorator.setScrollableArea(area);
+    }
+
+    @Override
+    public final void setScrollableArea(@Nullable final Area top, @Nullable final Area bottom) {
+        decorator.setScrollableArea(top, bottom);
     }
 
     @Override
@@ -623,8 +622,8 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState) {
+    public final View onCreateView(@NonNull final LayoutInflater inflater,
+                                   final ViewGroup container, final Bundle savedInstanceState) {
         View view = inflateLayout();
         view.setOnTouchListener(createCanceledOnTouchListener());
 
@@ -636,9 +635,8 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
         assert window != null;
         rootView = view.findViewById(R.id.dialog_root_view);
         assert rootView != null;
-        Map<Area, View> areas = applyDecorators(window, view, getChildFragmentManager());
-        rootView.addAreas(areas, scrollableArea, getPaddingLeft(), getPaddingTop(),
-                getPaddingRight(), getPaddingBottom());
+        Map<Area, View> areas = applyDecorators(window, rootView, view, getChildFragmentManager());
+        rootView.addAreas(areas);
         return view;
     }
 
@@ -657,7 +655,7 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     @Override
     public final void onDestroy() {
         super.onDestroy();
-        detachDecorators();
+        detachDecorators(rootView);
         rootView = null;
     }
 
@@ -693,7 +691,6 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     public void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         decorator.onSaveInstanceState(outState);
-        outState.putParcelable(SCROLLABLE_AREA_EXTRA, scrollableArea);
     }
 
 }

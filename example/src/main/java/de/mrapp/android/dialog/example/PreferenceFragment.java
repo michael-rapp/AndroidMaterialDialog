@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import de.mrapp.android.dialog.MaterialDialog;
 import de.mrapp.android.dialog.ProgressDialog;
+import de.mrapp.android.dialog.ScrollableArea;
 import de.mrapp.android.dialog.WizardDialog;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.CircleRevealAnimation;
@@ -149,6 +150,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
+        builder.setScrollableArea(ScrollableArea.Area.TITLE, ScrollableArea.Area.CONTENT);
         alertDialog = builder.create();
     }
 

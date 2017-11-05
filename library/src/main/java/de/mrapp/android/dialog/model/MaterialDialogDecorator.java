@@ -19,11 +19,13 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.view.KeyEvent;
 import android.view.View;
 
+import de.mrapp.android.dialog.ScrollableArea;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 
 /**
@@ -320,6 +322,38 @@ public interface MaterialDialogDecorator extends Dialog {
      *         True, if the dialog should inset its content at the bottom edge, false otherwise
      */
     void setFitsSystemWindows(boolean left, boolean top, boolean right, boolean bottom);
+
+    /**
+     * Returns the scrollable area of the dialog.
+     *
+     * @return The scrollable area of the dialog as an instance of the class {@link ScrollableArea}.
+     * The scrollable area may not be null
+     */
+    @NonNull
+    ScrollableArea getScrollableArea();
+
+    /**
+     * Sets the area of the dialog, which should be scrollable.
+     *
+     * @param area
+     *         The area, which should be set, as a value of the enum {@link ScrollableArea.Area} or
+     *         null, if no area should be scrollable
+     */
+    void setScrollableArea(@Nullable ScrollableArea.Area area);
+
+    /**
+     * Sets the areas of the dialog, which should be scrollable.
+     *
+     * @param top
+     *         The top-most area, which should be scrollable, as a value of the enum {@link
+     *         ScrollableArea.Area} or null, if no area should be scrollable
+     * @param bottom
+     *         The bottom-most area, which should be scrollable, as a value of the enum {@link
+     *         ScrollableArea.Area}. If the top-most area is null, the bottom-most are must be null
+     *         as well. The index of the bottom-most area must be at least the index of the top-most
+     *         area
+     */
+    void setScrollableArea(@Nullable ScrollableArea.Area top, @Nullable ScrollableArea.Area bottom);
 
     /**
      * Returns the icon of the dialog.

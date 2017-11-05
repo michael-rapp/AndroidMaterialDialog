@@ -29,6 +29,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -217,8 +218,11 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
 
     /**
      * Inflates the layout, which is used to show the dialog's buttons.
+     *
+     * @return The view, which has been inflated, as an instance of the class {@link View} or null,
+     * if no view has been inflated
      */
-    private void inflateButtonBar() {
+    private View inflateButtonBar() {
         if (getRootView() != null) {
             if (buttonBarContainer == null) {
                 LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -254,7 +258,10 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
             negativeButton =
                     negativeButtonView instanceof Button ? (Button) negativeButtonView : null;
             neutralButton = neutralButtonView instanceof Button ? (Button) neutralButtonView : null;
+            return buttonBarContainer;
         }
+
+        return null;
     }
 
     /**
@@ -578,17 +585,22 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
                                              final Void param) {
         // TODO contentDivider = view.findViewById(R.id.content_divider);
-        inflateButtonBar();
-        adaptButtonTextColor();
-        adaptPositiveButton();
-        adaptNeutralButton();
-        adaptNegativeButton();
-        adaptButtonBarDividerVisibility();
-        adaptButtonBarDividerColor();
-        adaptButtonBarDividerMargin();
-        Map<Area, View> result = new HashMap<>();
-        result.put(Area.BUTTON_BAR, buttonBarContainer);
-        return result;
+        View inflatedView = inflateButtonBar();
+
+        if (inflatedView != null) {
+            adaptButtonTextColor();
+            adaptPositiveButton();
+            adaptNeutralButton();
+            adaptNegativeButton();
+            adaptButtonBarDividerVisibility();
+            adaptButtonBarDividerColor();
+            adaptButtonBarDividerMargin();
+            Map<Area, View> result = new HashMap<>();
+            result.put(Area.BUTTON_BAR, buttonBarContainer);
+            return result;
+        }
+
+        return Collections.emptyMap();
     }
 
     @Override

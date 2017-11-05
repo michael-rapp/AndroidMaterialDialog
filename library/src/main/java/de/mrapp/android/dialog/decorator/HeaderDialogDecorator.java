@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -213,8 +214,11 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
 
     /**
      * Inflates the dialog's header.
+     *
+     * @return The view, which has been inflated, as an instance of the class {@link View} or null,
+     * if no view has been inflated
      */
-    private void inflateHeader() {
+    private View inflateHeader() {
         if (getRootView() != null) {
             if (header == null) {
                 LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -243,7 +247,10 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
 
             View iconView = headerContentContainer.findViewById(android.R.id.icon);
             headerIconImageView = iconView instanceof ImageView ? (ImageView) iconView : null;
+            return header;
         }
+
+        return null;
     }
 
     /**
@@ -261,7 +268,13 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
      */
     private void adaptHeaderVisibility() {
         if (header != null) {
-            header.setVisibility(showHeader ? View.VISIBLE : View.GONE);
+            if (showHeader) {
+                header.setVisibility(View.VISIBLE);
+                notifyOnAreaShown(Area.HEADER);
+            } else {
+                header.setVisibility(View.GONE);
+                notifyOnAreaHidden(Area.HEADER);
+            }
         }
     }
 
@@ -615,16 +628,21 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
     @Override
     protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
                                              final Void param) {
-        inflateHeader();
-        adaptHeaderVisibility();
-        adaptHeaderBackground(null);
-        adaptHeaderDividerColor();
-        adaptHeaderDividerVisibility();
-        adaptHeaderIcon(null);
-        adaptHeaderHeight();
-        Map<Area, View> result = new HashMap<>();
-        result.put(Area.HEADER, header);
-        return result;
+        View inflatedView = inflateHeader();
+
+        if (inflatedView != null) {
+            adaptHeaderVisibility();
+            adaptHeaderBackground(null);
+            adaptHeaderDividerColor();
+            adaptHeaderDividerVisibility();
+            adaptHeaderIcon(null);
+            adaptHeaderHeight();
+            Map<Area, View> result = new HashMap<>();
+            result.put(Area.HEADER, inflatedView);
+            return result;
+        }
+
+        return Collections.emptyMap();
     }
 
     @Override

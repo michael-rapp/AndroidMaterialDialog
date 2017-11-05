@@ -40,10 +40,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import de.mrapp.android.dialog.R;
+import de.mrapp.android.dialog.ScrollableArea;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.CircleTransitionAnimation;
@@ -66,6 +68,18 @@ import static de.mrapp.android.util.Condition.ensureAtLeast;
  */
 public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         implements de.mrapp.android.dialog.model.MaterialDialogDecorator {
+
+    /**
+     * The name of the extra, which is used to store the top scrollable area within a bundle.
+     */
+    private static final String TOP_SCROLLABLE_AREA_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::topScrollableArea";
+
+    /**
+     * The name of the extra, which is used to store the bottom scrollable area within a bundle.
+     */
+    private static final String BOTTOM_SCROLLABLE_AREA_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::bottomScrollableArea";
 
     /**
      * The name of the extra, which is used to store the color of the title of the dialog within a
@@ -214,6 +228,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * The padding of the dialog.
      */
     private int[] padding = new int[]{0, 0, 0, 0};
+
+    /**
+     * The scrollable area of the dialog.
+     */
+    private ScrollableArea scrollableArea;
 
     /**
      * The title of the dialog.
@@ -430,8 +449,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     /**
      * Inflates the view, which is used to show the dialog's title. The view may either be the
      * default one or a custom view, if one has been set before.
+     *
+     * @return The view, which has been inflated, as an instance of the class {@link View} or null,
+     * if no view has been inflated
      */
-    private void inflateTitleView() {
+    private View inflateTitleView() {
         if (getRootView() != null) {
             inflateTitleContainer();
 
@@ -452,7 +474,10 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             titleTextView = titleView instanceof TextView ? (TextView) titleView : null;
             View iconView = titleContainer.findViewById(android.R.id.icon);
             iconImageView = iconView instanceof ImageView ? (ImageView) iconView : null;
+            return titleContainer;
         }
+
+        return null;
     }
 
     /**
@@ -473,8 +498,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     /**
      * Inflates the view, which is used to show the dialog's message. The view may either be the
      * default one or a custom view, if one has been set before.
+     *
+     * @return The view, which has been inflated, as an instance of the class {@link View} or null,
+     * if no view has been inflated
      */
-    private void inflateMessageView() {
+    private View inflateMessageView() {
         if (getRootView() != null) {
             inflateMessageContainer();
 
@@ -493,7 +521,10 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
             View messageView = messageContainer.findViewById(android.R.id.message);
             messageTextView = messageView instanceof TextView ? (TextView) messageView : null;
+            return messageContainer;
         }
+
+        return null;
     }
 
     /**
@@ -514,8 +545,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     /**
      * Inflates the view, which is used to show the dialog's content. The view may either be the
      * default one or a custom view, if one has been set before.
+     *
+     * @return The view, which has been inflated, as an instance of the class {@link View} or null,
+     * if no view has been inflated
      */
-    private void inflateContentView() {
+    private View inflateContentView() {
         if (getRootView() != null) {
             inflateContentContainer();
 
@@ -528,7 +562,10 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             }
 
             adaptContentContainerVisibility();
+            return contentContainer;
         }
+
+        return null;
     }
 
     /**
@@ -567,11 +604,22 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * Adapts the padding of the dialog.
      */
     private void adaptPadding() {
-        ViewGroup contentRootView = getRootView();
+        ViewGroup dialogRootView = getRootView();
 
-        if (contentRootView != null) {
-            contentRootView.setPadding(getPaddingLeft(), getPaddingTop(), getPaddingRight(),
+        if (dialogRootView != null) {
+            dialogRootView.setPadding(getPaddingLeft(), getPaddingTop(), getPaddingRight(),
                     getPaddingBottom());
+        }
+    }
+
+    /**
+     * Adapts the scrollable area of the dialog.
+     */
+    private void adaptScrollableArea() {
+        DialogRootView dialogRootView = getRootView();
+
+        if (dialogRootView != null) {
+            dialogRootView.setScrollableArea(scrollableArea);
         }
     }
 
@@ -645,11 +693,15 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private void adaptTitleContainerVisibility() {
         if (titleContainer != null) {
-            if (customTitleView == null && customTitleViewId == -1) {
-                titleContainer.setVisibility(
-                        !TextUtils.isEmpty(title) || icon != null ? View.VISIBLE : View.GONE);
-            } else {
+            boolean visible = customTitleView != null || customTitleViewId != -1 ||
+                    !TextUtils.isEmpty(title) || icon != null;
+
+            if (visible) {
                 titleContainer.setVisibility(View.VISIBLE);
+                notifyOnAreaShown(Area.TITLE);
+            } else {
+                titleContainer.setVisibility(View.GONE);
+                notifyOnAreaHidden(Area.TITLE);
             }
         }
     }
@@ -682,11 +734,15 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private void adaptMessageContainerVisibility() {
         if (titleContainer != null) {
-            if (customMessageView == null && customMessageViewId == -1) {
-                messageContainer
-                        .setVisibility(!TextUtils.isEmpty(message) ? View.VISIBLE : View.GONE);
-            } else {
+            boolean visible = customMessageView != null || customMessageViewId != -1 ||
+                    !TextUtils.isEmpty(message);
+
+            if (visible) {
                 messageContainer.setVisibility(View.VISIBLE);
+                notifyOnAreaShown(Area.MESSAGE);
+            } else {
+                messageContainer.setVisibility(View.GONE);
+                notifyOnAreaHidden(Area.MESSAGE);
             }
         }
     }
@@ -755,10 +811,14 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * content.
      */
     private void adaptContentContainerVisibility() {
-        if (customView != null || customViewId != -1) {
-            contentContainer.setVisibility(View.VISIBLE);
-        } else {
-            contentContainer.setVisibility(View.GONE);
+        if (contentContainer != null) {
+            if (customView != null || customViewId != -1) {
+                contentContainer.setVisibility(View.VISIBLE);
+                notifyOnAreaShown(Area.CONTENT);
+            } else {
+                contentContainer.setVisibility(View.GONE);
+                notifyOnAreaHidden(Area.CONTENT);
+            }
         }
     }
 
@@ -978,6 +1038,24 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         adaptLayoutParams();
     }
 
+    @NonNull
+    @Override
+    public final ScrollableArea getScrollableArea() {
+        return scrollableArea;
+    }
+
+    @Override
+    public final void setScrollableArea(@Nullable final Area area) {
+        this.scrollableArea = ScrollableArea.create(area);
+        adaptScrollableArea();
+    }
+
+    @Override
+    public final void setScrollableArea(@Nullable final Area top, @Nullable final Area bottom) {
+        this.scrollableArea = ScrollableArea.create(top, bottom);
+        adaptScrollableArea();
+    }
+
     @Override
     public final Drawable getIcon() {
         return icon;
@@ -1162,6 +1240,9 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void onSaveInstanceState(@NonNull final Bundle outState) {
+        outState.putSerializable(TOP_SCROLLABLE_AREA_EXTRA, scrollableArea.getTopScrollableArea());
+        outState.putSerializable(BOTTOM_SCROLLABLE_AREA_EXTRA,
+                scrollableArea.getBottomScrollableArea());
         outState.putInt(TITLE_COLOR_EXTRA, getTitleColor());
         outState.putInt(MESSAGE_COLOR_EXTRA, getMessageColor());
         outState.putCharSequence(TITLE_EXTRA, getTitle());
@@ -1186,6 +1267,8 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+        setScrollableArea((Area) savedInstanceState.getSerializable(TOP_SCROLLABLE_AREA_EXTRA),
+                (Area) savedInstanceState.getSerializable(BOTTOM_SCROLLABLE_AREA_EXTRA));
         setTitleColor(savedInstanceState.getInt(TITLE_COLOR_EXTRA));
         setMessageColor(savedInstanceState.getInt(MESSAGE_COLOR_EXTRA));
         setTitle(savedInstanceState.getCharSequence(TITLE_EXTRA));
@@ -1213,22 +1296,28 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
                                              final Void param) {
         ViewCompat.setOnApplyWindowInsetsListener(view, createWindowInsetsListener());
-        inflateTitleView();
-        inflateMessageView();
-        inflateContentView();
-        adaptLayoutParams();
-        adaptPadding();
-        adaptTitle();
-        adaptTitleColor();
-        adaptIcon();
-        adaptMessage();
-        adaptMessageColor();
-        adaptBackground(null);
-        Map<Area, View> result = new HashMap<>();
-        result.put(Area.TITLE, titleContainer);
-        result.put(Area.MESSAGE, messageContainer);
-        result.put(Area.CONTENT, contentContainer);
-        return result;
+        View titleView = inflateTitleView();
+        View messageView = inflateMessageView();
+        View contentView = inflateContentView();
+
+        if (titleView != null && messageView != null && contentView != null) {
+            adaptLayoutParams();
+            adaptPadding();
+            adaptScrollableArea();
+            adaptTitle();
+            adaptTitleColor();
+            adaptIcon();
+            adaptMessage();
+            adaptMessageColor();
+            adaptBackground(null);
+            Map<Area, View> result = new HashMap<>();
+            result.put(Area.TITLE, titleContainer);
+            result.put(Area.MESSAGE, messageContainer);
+            result.put(Area.CONTENT, contentContainer);
+            return result;
+        }
+
+        return Collections.emptyMap();
     }
 
     @Override
