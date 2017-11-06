@@ -161,11 +161,12 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
         for (AbstractDecorator<?, ?> decorator : decorators) {
             if (decorator instanceof AbstractDialogDecorator) {
                 AbstractDialogDecorator<?> dialogDecorator = (AbstractDialogDecorator) decorator;
-                result.putAll(dialogDecorator.attach(window, view, null));
+                result.putAll(dialogDecorator.attach(window, view, result, null));
             } else {
                 AbstractDialogFragmentDecorator<?> dialogFragmentDecorator =
                         (AbstractDialogFragmentDecorator<?>) decorator;
-                result.putAll(dialogFragmentDecorator.attach(window, view, fragmentManager));
+                result.putAll(
+                        dialogFragmentDecorator.attach(window, view, result, fragmentManager));
             }
 
             decorator.addAreaListener(rootView);

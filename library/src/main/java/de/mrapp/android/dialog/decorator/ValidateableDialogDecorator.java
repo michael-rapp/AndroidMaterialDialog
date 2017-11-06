@@ -101,6 +101,7 @@ public class ValidateableDialogDecorator extends AbstractDialogDecorator<Animate
     @NonNull
     @Override
     protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
+                                             @NonNull final Map<Area, View> areas,
                                              final Void param) {
         return Collections.emptyMap();
     }

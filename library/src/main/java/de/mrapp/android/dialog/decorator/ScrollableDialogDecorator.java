@@ -196,6 +196,7 @@ public class ScrollableDialogDecorator extends AbstractDialogDecorator<ListDialo
     @NonNull
     @Override
     protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
+                                             @NonNull final Map<Area, View> areas,
                                              final Void param) {
         // TODO contentDivider = view.findViewById(R.id.content_divider);
         buttonBarDivider = view.findViewById(R.id.button_bar_divider);

@@ -271,6 +271,7 @@ public class ProgressDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
     @NonNull
     @Override
     protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
+                                             @NonNull final Map<Area, View> areas,
                                              final Void param) {
         adaptProgressBar();
         return Collections.emptyMap();

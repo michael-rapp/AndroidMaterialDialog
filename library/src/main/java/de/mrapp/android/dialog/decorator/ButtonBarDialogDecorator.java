@@ -583,6 +583,7 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     @NonNull
     @Override
     protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
+                                             @NonNull final Map<Area, View> areas,
                                              final Void param) {
         // TODO contentDivider = view.findViewById(R.id.content_divider);
         View inflatedView = inflateButtonBar();

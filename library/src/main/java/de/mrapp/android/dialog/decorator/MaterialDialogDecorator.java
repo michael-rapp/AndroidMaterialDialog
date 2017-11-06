@@ -37,6 +37,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -575,9 +576,10 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         if (contentContainer == null) {
             contentContainer = new RelativeLayout(getContext());
             contentContainer.setId(R.id.content_container);
-            contentContainer.setLayoutParams(
-                    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT));
+            LinearLayout.LayoutParams layoutParams =
+                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
+            layoutParams.weight = 1;
+            contentContainer.setLayoutParams(layoutParams);
         } else {
             contentContainer.removeAllViews();
         }
@@ -1294,6 +1296,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     @NonNull
     @Override
     protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
+                                             @NonNull final Map<Area, View> areas,
                                              final Void param) {
         ViewCompat.setOnApplyWindowInsetsListener(view, createWindowInsetsListener());
         View titleView = inflateTitleView();

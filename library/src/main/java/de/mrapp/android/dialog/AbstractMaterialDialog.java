@@ -121,7 +121,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         Map<Area, View> result = new HashMap<>();
 
         for (AbstractDecorator<?, ?> decorator : decorators) {
-            result.putAll(decorator.attach(window, view, null));
+            result.putAll(decorator.attach(window, view, result, null));
             decorator.addAreaListener(rootView);
         }
 

@@ -322,46 +322,70 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     private int buttonBarDividerMargin;
 
     /**
-     * Inflates the tab layout, which indicates the currently shown fragment.
+     * Re-inflates the tab layout, which indicates the currently shown fragment, if the dialog has
+     * already been created.
      */
-    private void inflateTabLayout() {
-        if (getRootView() != null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            ViewGroup headerContentContainer =
-                    getRootView().findViewById(R.id.header_content_container);
-            ViewGroup contentContainer = getRootView().findViewById(R.id.content_container);
+    private void reInflateTabLayout() {
+        View rootView = getRootView();
 
-            if (tabLayout != null) {
-                headerContentContainer.removeViewInLayout(tabLayout);
-                contentContainer.removeView(tabLayout);
-                tabLayout = null;
+        if (rootView != null) {
+            View headerContentContainer = rootView.findViewById(R.id.header_content_container);
+            View contentContainer = rootView.findViewById(R.id.content_container);
+
+            if (headerContentContainer != null && contentContainer != null) {
+                inflateTabLayout(headerContentContainer, contentContainer);
             }
-
-            if (getDialog().isHeaderShown() && getTabPosition() != TabPosition.NO_HEADER &&
-                    ((TextUtils.isEmpty(getDialog().getTitle()) &&
-                            TextUtils.isEmpty(getDialog().getMessage())) ||
-                            getTabPosition() == TabPosition.PREFER_HEADER)) {
-                tabLayout = (TabLayout) layoutInflater
-                        .inflate(R.layout.wizard_dialog_tab_layout, headerContentContainer, false);
-                RelativeLayout.LayoutParams layoutParams =
-                        new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                                RelativeLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                headerContentContainer.addView(tabLayout, layoutParams);
-            } else {
-                tabLayout = (TabLayout) layoutInflater
-                        .inflate(R.layout.wizard_dialog_tab_layout, contentContainer, false);
-                contentContainer.addView(tabLayout, 0);
-            }
-
-            tabLayout.setupWithViewPager(viewPager);
         }
     }
 
     /**
-     * Inflates the layout, which is used to show the dialog's buttons.
+     * Inflates the tab layout, which indicates the currently shown fragment.
+     *
+     * @param headerView
+     *         The view, which contains the dialog's header, as an instance of the class {@link
+     *         View}. The view may not be null
+     * @param contentView
+     *         The view, which contains the dialog's content, as an instance of the class {@link
+     *         View}. The view may not be null
      */
-    private void inflateButtonBar() {
+    private void inflateTabLayout(@NonNull final View headerView, @NonNull final View contentView) {
+        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+        ViewGroup headerContentContainer = headerView.findViewById(R.id.header_content_container);
+        ViewGroup contentContainer = contentView.findViewById(R.id.content_container);
+
+        if (tabLayout != null) {
+            headerContentContainer.removeViewInLayout(tabLayout);
+            contentContainer.removeView(tabLayout);
+            tabLayout = null;
+        }
+
+        if (getDialog().isHeaderShown() && getTabPosition() != TabPosition.NO_HEADER &&
+                ((TextUtils.isEmpty(getDialog().getTitle()) &&
+                        TextUtils.isEmpty(getDialog().getMessage())) ||
+                        getTabPosition() == TabPosition.PREFER_HEADER)) {
+            tabLayout = (TabLayout) layoutInflater
+                    .inflate(R.layout.wizard_dialog_tab_layout, headerContentContainer, false);
+            RelativeLayout.LayoutParams layoutParams =
+                    new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            headerContentContainer.addView(tabLayout, layoutParams);
+        } else {
+            tabLayout = (TabLayout) layoutInflater
+                    .inflate(R.layout.wizard_dialog_tab_layout, contentContainer, false);
+            contentContainer.addView(tabLayout, 0);
+        }
+
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
+    /**
+     * Inflates the layout, which is used to show the dialog's buttons.
+     *
+     * @return The view, which has been inflated, as an instance of the class {@link View} or null,
+     * if no view has been inflated
+     */
+    private View inflateButtonBar() {
         ViewGroup rootView = getRootView();
 
         if (rootView != null) {
@@ -376,7 +400,10 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
             nextButton = view.findViewById(android.R.id.button1);
             finishButton = view.findViewById(android.R.id.button2);
             backButton = view.findViewById(android.R.id.button3);
+            return buttonBarContainer;
         }
+
+        return null;
     }
 
     /**
@@ -799,7 +826,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     public final void setTabPosition(@NonNull final TabPosition tabPosition) {
         ensureNotNull(tabPosition, "The tab position may not be null");
         this.tabPosition = tabPosition;
-        inflateTabLayout();
+        reInflateTabLayout();
         adaptTabLayout();
     }
 
@@ -1106,35 +1133,45 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     @NonNull
     @Override
     protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
+                                             @NonNull final Map<Area, View> areas,
                                              @NonNull final FragmentManager fragmentManager) {
-        View viewPagerView = view.findViewById(R.id.view_pager);
+        View headerView = areas.get(Area.HEADER);
+        View contentView = areas.get(Area.CONTENT);
 
-        if (viewPagerView instanceof ViewPager) {
-            viewPagerAdapter = new ViewPagerAdapter(getContext(), fragmentManager, viewPagerItems);
-            viewPager = (ViewPager) viewPagerView;
-            viewPager.addOnPageChangeListener(this);
+        if (headerView != null && contentView != null) {
+            View viewPagerView = contentView.findViewById(R.id.view_pager);
 
-            for (OnPageChangeListener listener : onPageChangeListeners) {
-                viewPager.addOnPageChangeListener(listener);
+            if (viewPagerView instanceof ViewPager) {
+                View inflatedView = inflateButtonBar();
+
+                if (inflatedView != null) {
+                    viewPager = (ViewPager) viewPagerView;
+                    viewPager.addOnPageChangeListener(this);
+                    viewPagerAdapter =
+                            new ViewPagerAdapter(getContext(), fragmentManager, viewPagerItems);
+
+                    for (OnPageChangeListener listener : onPageChangeListeners) {
+                        viewPager.addOnPageChangeListener(listener);
+                    }
+
+                    viewPager.setAdapter(viewPagerAdapter);
+                    inflateTabLayout(headerView, contentView);
+                    adaptTabLayout();
+                    adaptViewPager();
+                    adaptButtonTextColor();
+                    adaptBackButton();
+                    adaptNextButton();
+                    adaptFinishButton();
+                    adaptButtonBarVisibility();
+                    adaptButtonBarDividerVisibility();
+                    adaptButtonBarDividerColor();
+                    adaptButtonBarDividerMargin();
+                    adaptButtonVisibility();
+                    Map<Area, View> result = new HashMap<>();
+                    result.put(Area.BUTTON_BAR, inflatedView);
+                    return result;
+                }
             }
-
-            viewPager.setAdapter(viewPagerAdapter);
-            inflateTabLayout();
-            adaptTabLayout();
-            adaptViewPager();
-            inflateButtonBar();
-            adaptButtonTextColor();
-            adaptBackButton();
-            adaptNextButton();
-            adaptFinishButton();
-            adaptButtonBarVisibility();
-            adaptButtonBarDividerVisibility();
-            adaptButtonBarDividerColor();
-            adaptButtonBarDividerMargin();
-            adaptButtonVisibility();
-            Map<Area, View> result = new HashMap<>();
-            result.put(Area.BUTTON_BAR, buttonBarContainer);
-            return result;
         }
 
         return Collections.emptyMap();

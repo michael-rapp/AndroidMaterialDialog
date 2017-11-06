@@ -75,6 +75,10 @@ public abstract class AbstractDecorator<DialogType extends Dialog, ParamType>
      * @param view
      *         The root view of the dialog, which is modified by the decorator, as an instance of
      *         the class {@link View}. The view may not be null
+     * @param areas
+     *         A map, which contains the areas, which have already been added by previously attached
+     *         decorators, as well as the corresponding views, as an instance of the type {@link
+     *         Map} or an empty map, if no areas have been added
      * @param param
      *         The parameter, which should be passed to the decorator, as an instance of the generic
      *         type ParamType or null, if no parameter should be passed
@@ -84,7 +88,9 @@ public abstract class AbstractDecorator<DialogType extends Dialog, ParamType>
      */
     @NonNull
     protected abstract Map<Area, View> onAttach(@NonNull final Window window,
-                                                @NonNull final View view, final ParamType param);
+                                                @NonNull final View view,
+                                                @NonNull final Map<Area, View> areas,
+                                                final ParamType param);
 
     /**
      * The method, which is invoked, when the decorator is detached from the view hierarchy.
@@ -117,6 +123,10 @@ public abstract class AbstractDecorator<DialogType extends Dialog, ParamType>
      * @param view
      *         The root view of the view hierarchy, which should be modified by the decorator, as an
      *         instance of the class {@link View}. The view may not be null
+     * @param areas
+     *         A map, which contains the areas, which have already been added by previously attached
+     *         decorators, as well as the corresponding views, as an instance of the type {@link
+     *         Map} or an empty map, if no areas have been added
      * @param param
      *         The parameter, which should be passed to the decorator, as an instance of the generic
      *         type ParamType or null, if no parameter should be passed
@@ -126,13 +136,14 @@ public abstract class AbstractDecorator<DialogType extends Dialog, ParamType>
      */
     @NonNull
     public final Map<Area, View> attach(@NonNull final Window window, @NonNull final View view,
+                                        @NonNull final Map<Area, View> areas,
                                         final ParamType param) {
         ensureNotNull(window, "The window may not be null");
         ensureNotNull(view, "The view may not be null");
         this.window = window;
         this.view = view;
         this.dialogRootView = view.findViewById(R.id.dialog_root_view);
-        return onAttach(window, view, param);
+        return onAttach(window, view, areas, param);
     }
 
     /**
