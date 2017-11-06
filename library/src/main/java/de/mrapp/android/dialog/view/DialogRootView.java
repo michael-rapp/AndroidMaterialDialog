@@ -37,6 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -147,9 +148,9 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     }
 
     /**
-     * Updates the areas, which are contained by the dialog.
+     * Adds the areas, which are contained by the dialog, to the root view.
      */
-    private void updateAreas() {
+    private void addAreas() {
         if (areas != null) {
             removeAllViews();
             scrollView = null;
@@ -157,11 +158,6 @@ public class DialogRootView extends LinearLayout implements AreaListener {
             for (Map.Entry<Area, View> entry : areas.entrySet()) {
                 Area area = entry.getKey();
                 View view = entry.getValue();
-                int paddingLeft =
-                        area != Area.HEADER && area != Area.BUTTON_BAR ? dialogPadding[0] : 0;
-                int paddingRight =
-                        area != Area.HEADER && area != Area.BUTTON_BAR ? dialogPadding[2] : 0;
-                view.setPadding(paddingLeft, 0, paddingRight, 0);
 
                 if (scrollableArea.isScrollable(area)) {
                     inflateScrollView(scrollableArea);
@@ -173,7 +169,165 @@ public class DialogRootView extends LinearLayout implements AreaListener {
                     addView(view);
                 }
             }
+
+            adaptAreaPadding();
         }
+    }
+
+    /**
+     * Adapts the padding of the areas, which are contained by the dialog.
+     */
+    private void adaptAreaPadding() {
+        if (areas != null) {
+            boolean paddingTopApplied = false;
+            Area previousArea = null;
+            View previousView = null;
+            int scrollViewMarginTop = 0;
+            int scrollViewMarginBottom = 0;
+            Iterator<Map.Entry<Area, View>> iterator = areas.entrySet().iterator();
+
+            while (iterator.hasNext()) {
+                Map.Entry<Area, View> entry = iterator.next();
+                Area area = entry.getKey();
+                View view = entry.getValue();
+
+                applyDialogPaddingLeft(area, view);
+                applyDialogPaddingRight(area, view);
+
+                if (!paddingTopApplied) {
+                    paddingTopApplied = applyDialogPaddingTop(area, view);
+                }
+
+                if (!iterator.hasNext()) {
+                    applyDialogPaddingBottom(area, view);
+                }
+
+                if (previousArea != null) {
+                    if (area == Area.BUTTON_BAR) {
+                        applyDialogPaddingBottom(previousArea, previousView);
+                    }
+
+                    scrollViewMarginBottom += addViewSpacing(previousArea, previousView, area);
+                }
+
+                previousArea = area;
+                previousView = view;
+            }
+
+            if (scrollView != null) {
+                LinearLayout.LayoutParams layoutParams =
+                        (LayoutParams) scrollView.getLayoutParams();
+                layoutParams.topMargin = scrollViewMarginTop;
+                layoutParams.bottomMargin = scrollViewMarginBottom;
+            }
+        }
+    }
+
+    /**
+     * Applies the dialog's left padding to the view of a specific area.
+     *
+     * @param area
+     *         The area, the view, the padding should be applied to, corresponds to, as an instance
+     *         of the class {@link Area}. The area may not be null
+     * @param view
+     *         The view, the padding should be applied to, as an instance of the class {@link View}.
+     *         The view may not be null
+     */
+    private void applyDialogPaddingLeft(@NonNull final Area area, @NonNull final View view) {
+        int padding = area != Area.HEADER && area != Area.BUTTON_BAR ? dialogPadding[0] : 0;
+        view.setPadding(padding, view.getPaddingTop(), view.getPaddingRight(),
+                view.getPaddingBottom());
+    }
+
+    /**
+     * Applies the dialog's top padding to the view of a specific area.
+     *
+     * @param area
+     *         The area, the view, the padding should be applied to, corresponds to, as an instance
+     *         of the class {@link Area}. The area may not be null
+     * @param view
+     *         The view, the padding should be applied to, as an instance of the class {@link View}.
+     *         The view may not be null
+     */
+    private boolean applyDialogPaddingTop(@NonNull final Area area, @NonNull final View view) {
+        if (area != Area.HEADER && area != Area.BUTTON_BAR) {
+            view.setPadding(view.getPaddingLeft(), dialogPadding[1], view.getPaddingRight(),
+                    view.getPaddingBottom());
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Applies the dialog's right padding to the view of a specific area.
+     *
+     * @param area
+     *         The area, the view, the padding should be applied to, corresponds to, as an instance
+     *         of the class {@link Area}. The area may not be null
+     * @param view
+     *         The view, the padding should be applied to, as an instance of the class {@link View}.
+     *         The view may not be null
+     */
+    private void applyDialogPaddingRight(@NonNull final Area area, @NonNull final View view) {
+        int padding = area != Area.HEADER && area != Area.BUTTON_BAR ? dialogPadding[2] : 0;
+        view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), padding,
+                view.getPaddingBottom());
+    }
+
+    /**
+     * Applies the dialog's bottom padding to the view of a specific area.
+     *
+     * @param area
+     *         The area, the view, the padding should be applied to, corresponds to, as an instance
+     *         of the class {@link Area}. The area may not be null
+     * @param view
+     *         The view, the padding should be applied to, as an instance of the class {@link View}.
+     *         The view may not be null
+     */
+    private void applyDialogPaddingBottom(@NonNull final Area area, @NonNull final View view) {
+        if (area != Area.HEADER && area != Area.BUTTON_BAR) {
+            view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(),
+                    dialogPadding[3]);
+        }
+    }
+
+    /**
+     * Adds spacing to the view of a specific area. The spacing is added to the view's current
+     * bottom padding.
+     *
+     * @param area
+     *         The area, the view, the spacing should be applied to, corresponds to, as an instance
+     *         of the class {@link Area}. The area may not be null
+     * @param view
+     *         The view, the spacing should be applied to, as an instance of the class {@link View}.
+     *         The view may not be null
+     * @return The bottom margin, which should be added to the dialog's scroll view, as an {@link
+     * Integer} value
+     */
+    private int addViewSpacing(@NonNull final Area area, @NonNull final View view,
+                               @NonNull final Area nextArea) {
+        int scrollViewMarginBottom = 0;
+        int padding = -1;
+
+        if (area == Area.TITLE) {
+            padding = getResources().getDimensionPixelSize(R.dimen.dialog_title_bottom_padding);
+        } else if (area == Area.MESSAGE) {
+            padding = getResources().getDimensionPixelSize(R.dimen.dialog_message_bottom_padding);
+        }
+
+        if (!scrollableArea.isScrollable(area) && scrollableArea.isScrollable(nextArea)) {
+            int originalPadding = padding;
+            padding = originalPadding / 2;
+            scrollViewMarginBottom = originalPadding - padding;
+        }
+
+        if (padding != -1) {
+            view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(),
+                    view.getPaddingBottom() + padding);
+        }
+
+        return scrollViewMarginBottom;
     }
 
     /**
@@ -383,7 +537,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     public final void setScrollableArea(@NonNull final ScrollableArea scrollableArea) {
         ensureNotNull(scrollableArea, "The scrollable area may not be null");
         this.scrollableArea = scrollableArea;
-        updateAreas();
+        addAreas();
     }
 
     /**
@@ -397,23 +551,23 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     public final void addAreas(@NonNull final Map<Area, View> areas) {
         this.areas = new TreeMap<>(new AreaComparator());
         this.areas.putAll(areas);
-        updateAreas();
+        addAreas();
     }
 
     @Override
     public final void onAreaShown(@NonNull final Area area) {
-        updateAreas();
+        adaptAreaPadding();
     }
 
     @Override
     public final void onAreaHidden(@NonNull final Area area) {
-        updateAreas();
+        adaptAreaPadding();
     }
 
     @Override
     public final void setPadding(final int left, final int top, final int right, final int bottom) {
         this.dialogPadding = new int[]{left, top, right, bottom};
-        updateAreas();
+        adaptAreaPadding();
     }
 
     @SuppressLint("DrawAllocation")
