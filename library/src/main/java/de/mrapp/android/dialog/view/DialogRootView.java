@@ -234,7 +234,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      *         The view may not be null
      */
     private void applyDialogPaddingLeft(@NonNull final Area area, @NonNull final View view) {
-        int padding = area != Area.HEADER && area != Area.BUTTON_BAR ? dialogPadding[0] : 0;
+        int padding = area != Area.HEADER && area != Area.BUTTON_BAR && area != Area.CONTENT ?
+                dialogPadding[0] : 0;
         view.setPadding(padding, view.getPaddingTop(), view.getPaddingRight(),
                 view.getPaddingBottom());
     }
@@ -271,7 +272,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      *         The view may not be null
      */
     private void applyDialogPaddingRight(@NonNull final Area area, @NonNull final View view) {
-        int padding = area != Area.HEADER && area != Area.BUTTON_BAR ? dialogPadding[2] : 0;
+        int padding = area != Area.HEADER && area != Area.BUTTON_BAR && area != Area.CONTENT ?
+                dialogPadding[2] : 0;
         view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), padding,
                 view.getPaddingBottom());
     }
