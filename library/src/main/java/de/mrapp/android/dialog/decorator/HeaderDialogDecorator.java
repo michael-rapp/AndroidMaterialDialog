@@ -456,6 +456,11 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
     }
 
     @Override
+    public final boolean isCustomHeaderUsed() {
+        return customHeaderView != null || customHeaderViewId != -1;
+    }
+
+    @Override
     public final void setCustomHeader(@LayoutRes final int resourceId) {
         customHeaderView = null;
         customHeaderViewId = resourceId;

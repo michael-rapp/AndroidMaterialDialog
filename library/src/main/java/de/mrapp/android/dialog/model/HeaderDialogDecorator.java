@@ -59,6 +59,13 @@ public interface HeaderDialogDecorator extends Dialog {
     void setCustomHeader(@Nullable View view);
 
     /**
+     * Returns, whether a custom view is set for showing the header of the dialog, or not.
+     *
+     * @return True, if a custom view is set for showing the header of the dialog, false otherwise
+     */
+    boolean isCustomHeaderUsed();
+
+    /**
      * Sets the custom view, which should be used to show the header of the dialog.
      *
      * @param resourceId

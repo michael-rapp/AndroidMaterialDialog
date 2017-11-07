@@ -541,6 +541,11 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     }
 
     @Override
+    public final boolean isCustomButtonBarUsed() {
+        return customButtonBarView != null || customButtonBarViewId != -1;
+    }
+
+    @Override
     public final void setCustomButtonBar(@LayoutRes final int resourceId) {
         customButtonBarView = null;
         customButtonBarViewId = resourceId;

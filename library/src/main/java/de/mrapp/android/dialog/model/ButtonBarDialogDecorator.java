@@ -254,6 +254,13 @@ public interface ButtonBarDialogDecorator extends Dialog {
     void setButtonBarDividerMargin(int margin);
 
     /**
+     * Returns, whether a custom view is set for showing the buttons of the dialog, or not.
+     *
+     * @return True, if a custom view is set for showing the buttons of the dialog, false otherwise
+     */
+    boolean isCustomButtonBarUsed();
+
+    /**
      * Sets the custom view, which should be used to show the buttons of the dialog.
      *
      * @param resourceId

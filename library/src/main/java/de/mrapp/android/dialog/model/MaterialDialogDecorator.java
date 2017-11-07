@@ -490,6 +490,13 @@ public interface MaterialDialogDecorator extends Dialog {
     void setBackgroundColor(@ColorInt int color, @Nullable final BackgroundAnimation animation);
 
     /**
+     * Returns, whether a custom view is set for showing the title of the dialog, or not.
+     *
+     * @return True, if a custom view is set for showing the title of the dialog, false otherwise
+     */
+    boolean isCustomTitleUsed();
+
+    /**
      * Sets the custom view, which should be used to show the title of the dialog.
      *
      * @param view
@@ -508,6 +515,13 @@ public interface MaterialDialogDecorator extends Dialog {
     void setCustomTitle(@LayoutRes int resourceId);
 
     /**
+     * Returns, whether a custom view is set for showing the dialog's message, or not.
+     *
+     * @return True, if a custom view is set for showing the dialog's message, false otherwise
+     */
+    boolean isCustomMessageUsed();
+
+    /**
      * Sets the custom view, which should be used to show the message of the dialog.
      *
      * @param view
@@ -524,6 +538,13 @@ public interface MaterialDialogDecorator extends Dialog {
      *         resource id must correspond to a valid layout resource
      */
     void setCustomMessage(@LayoutRes int resourceId);
+
+    /**
+     * Returns, whether a custom view is set for showing the content of the dialog, or not.
+     *
+     * @return True, if a custom view is set for showing the content of the dialog, false otherwise
+     */
+    boolean isCustomViewUsed();
 
     /**
      * Sets the custom view, which should be shown by the dialog.

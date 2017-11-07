@@ -692,8 +692,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private void adaptTitleContainerVisibility() {
         if (titleContainer != null) {
-            boolean visible = customTitleView != null || customTitleViewId != -1 ||
-                    !TextUtils.isEmpty(title) || icon != null;
+            boolean visible = isCustomTitleUsed() || !TextUtils.isEmpty(title) || icon != null;
 
             if (visible) {
                 titleContainer.setVisibility(View.VISIBLE);
@@ -733,8 +732,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private void adaptMessageContainerVisibility() {
         if (titleContainer != null) {
-            boolean visible = customMessageView != null || customMessageViewId != -1 ||
-                    !TextUtils.isEmpty(message);
+            boolean visible = isCustomMessageUsed() || !TextUtils.isEmpty(message);
 
             if (visible) {
                 messageContainer.setVisibility(View.VISIBLE);
@@ -811,7 +809,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private void adaptContentContainerVisibility() {
         if (contentContainer != null) {
-            if (customView != null || customViewId != -1) {
+            if (isCustomViewUsed()) {
                 contentContainer.setVisibility(View.VISIBLE);
                 notifyOnAreaShown(Area.CONTENT);
             } else {
@@ -1164,6 +1162,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     @Override
+    public final boolean isCustomTitleUsed() {
+        return customTitleView != null || customTitleViewId != -1;
+    }
+
+    @Override
     public final void setCustomTitle(@Nullable final View view) {
         customTitleView = view;
         customTitleViewId = -1;
@@ -1178,6 +1181,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     @Override
+    public final boolean isCustomMessageUsed() {
+        return customMessageView != null || customMessageViewId != -1;
+    }
+
+    @Override
     public final void setCustomMessage(@Nullable final View view) {
         customMessageView = view;
         customMessageViewId = -1;
@@ -1189,6 +1197,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         customMessageView = null;
         customMessageViewId = resourceId;
         adaptMessageView();
+    }
+
+    @Override
+    public final boolean isCustomViewUsed() {
+        return customView != null || customViewId != -1;
     }
 
     @Override

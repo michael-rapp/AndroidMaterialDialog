@@ -162,6 +162,11 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
     }
 
     @Override
+    public final boolean isCustomButtonBarUsed() {
+        return decorator.isCustomButtonBarUsed();
+    }
+
+    @Override
     public final void setCustomButtonBar(@LayoutRes final int resourceId) {
         decorator.setCustomButtonBar(resourceId);
     }

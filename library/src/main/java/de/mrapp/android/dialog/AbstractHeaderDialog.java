@@ -74,6 +74,11 @@ public abstract class AbstractHeaderDialog extends AbstractMaterialDialog implem
     }
 
     @Override
+    public final boolean isCustomHeaderUsed() {
+        return decorator.isCustomHeaderUsed();
+    }
+
+    @Override
     public final void setCustomHeader(@Nullable final View view) {
         decorator.setCustomHeader(view);
     }

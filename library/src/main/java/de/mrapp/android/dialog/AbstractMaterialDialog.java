@@ -448,6 +448,11 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     }
 
     @Override
+    public final boolean isCustomTitleUsed() {
+        return decorator.isCustomTitleUsed();
+    }
+
+    @Override
     public final void setCustomTitle(@Nullable final View view) {
         decorator.setCustomTitle(view);
     }
@@ -458,6 +463,11 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     }
 
     @Override
+    public final boolean isCustomMessageUsed() {
+        return decorator.isCustomMessageUsed();
+    }
+
+    @Override
     public final void setCustomMessage(@Nullable final View view) {
         decorator.setCustomMessage(view);
     }
@@ -465,6 +475,11 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     @Override
     public final void setCustomMessage(@LayoutRes final int resourceId) {
         decorator.setCustomMessage(resourceId);
+    }
+
+    @Override
+    public final boolean isCustomViewUsed() {
+        return decorator.isCustomViewUsed();
     }
 
     @Override
