@@ -593,9 +593,6 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
         if (getWindow() != null && rootView != null) {
             rootView.setLayoutParams(createLayoutParams());
-            int padding = isFullscreen() ? 0 :
-                    getContext().getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
-            rootView.setPadding(padding, padding, padding, padding);
             rootView.showShadow(!isFullscreen());
             rootView.setMaxWidth(getMaxWidth());
             rootView.setMaxHeight(getMaxHeight());
