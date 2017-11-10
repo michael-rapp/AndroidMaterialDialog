@@ -19,7 +19,9 @@ import android.support.annotation.ArrayRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -35,8 +37,6 @@ import de.mrapp.android.dialog.listener.OnItemClickListenerWrapper;
 import de.mrapp.android.dialog.listener.OnMultiChoiceClickListenerWrapper;
 import de.mrapp.android.dialog.model.ButtonBarDialog;
 import de.mrapp.android.util.ArrayUtil;
-
-import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -85,6 +85,12 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
      * The list view, which is used to show the dialog's list items.
      */
     private ListView listView;
+
+    /**
+     * True, if the custom view of the dialog has been inflated by the decorator itself, false
+     * otherwise.
+     */
+    private boolean inflatedCustomView;
 
     /**
      * The color of the list items of the dialog.
@@ -141,23 +147,46 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     private CharSequence[] multiChoiceItems;
 
     /**
-     * Adapts the list view, which is used to show the dialog's list items.
+     * Inflates the list view, which is used to show the dialog's list items.
+     *
+     * @param contentContainer
+     *         The view group, which contains the dialog's content, as an instance of the class
+     *         {@link ViewGroup}. The view group may not be null
      */
-    private void inflateListView() {
-        if (getRootView() != null) {
-            if (adapter != null && !adapter.isEmpty()) {
-                getDialog().setView(R.layout.material_dialog_list_view);
-                View listView = getRootView().findViewById(android.R.id.list);
-                this.listView = listView instanceof ListView ? (ListView) listView : null;
+    private void inflateListView(@NonNull final ViewGroup contentContainer) {
+        View listView = contentContainer.findViewById(android.R.id.list);
+        this.listView = listView instanceof ListView ? (ListView) listView : null;
 
-                if (this.listView != null) {
-                    this.listView.setVisibility(View.VISIBLE);
-                    this.listView.setChoiceMode(choiceMode);
-                    this.listView.setAdapter(adapter);
-                    this.listView.setOnItemSelectedListener(listViewItemSelectedListener);
-                    initializeSelectionListener();
-                    initializeCheckedItems();
+        if (this.listView == null) {
+            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+            this.listView = (ListView) layoutInflater
+                    .inflate(R.layout.material_dialog_list_view, contentContainer, false);
+            getDialog().setView(this.listView);
+            this.inflatedCustomView = true;
+        } else {
+            this.inflatedCustomView = false;
+        }
+    }
+
+    /**
+     * Attaches the adapter to the dialog's list view.
+     */
+    private void attachAdapter() {
+        if (listView != null) {
+            if (adapter != null) {
+                listView.setAdapter(adapter);
+                listView.setVisibility(adapter != null ? View.VISIBLE : View.GONE);
+                listView.setOnItemSelectedListener(listViewItemSelectedListener);
+                listView.setChoiceMode(choiceMode);
+                initializeSelectionListener();
+                initializeCheckedItems();
+                adaptItemColor();
+            } else {
+                if (inflatedCustomView) {
+                    getDialog().setView(null);
                 }
+
+                listView = null;
             }
         }
     }
@@ -261,17 +290,18 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     }
 
     @Override
-    public final void setItems(@NonNull final CharSequence[] items,
+    public final void setItems(@Nullable final CharSequence[] items,
                                @Nullable final DialogInterface.OnClickListener listener) {
-        ensureNotNull(items, "The items may not be null");
         this.items = items;
         this.singleChoiceItems = null;
         this.multiChoiceItems = null;
-        this.adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, items);
-        this.singleChoiceListener = listener;
+        this.adapter = items != null ?
+                new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, items) : null;
+        this.singleChoiceListener = items != null ? listener : null;
         this.multiChoiceListener = null;
-        this.choiceMode = ListView.CHOICE_MODE_NONE;
-        inflateListView();
+        this.choiceMode = items != null ? ListView.CHOICE_MODE_NONE : -1;
+        this.checkedItems = null;
+        attachAdapter();
     }
 
     @Override
@@ -281,36 +311,39 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     }
 
     @Override
-    public final void setAdapter(@NonNull final ListAdapter adapter,
+    public final void setAdapter(@Nullable final ListAdapter adapter,
                                  @Nullable final DialogInterface.OnClickListener listener) {
-        ensureNotNull(adapter, "The adapter may not be null");
         this.items = null;
         this.singleChoiceItems = null;
         this.multiChoiceItems = null;
         this.adapter = adapter;
-        this.singleChoiceListener = listener;
+        this.singleChoiceListener = adapter != null ? listener : null;
         this.multiChoiceListener = null;
-        this.choiceMode = ListView.CHOICE_MODE_NONE;
-        inflateListView();
+        this.choiceMode = adapter != null ? ListView.CHOICE_MODE_NONE : -1;
+        this.checkedItems = null;
+        attachAdapter();
     }
 
     @Override
-    public final void setSingleChoiceItems(@NonNull final CharSequence[] items,
+    public final void setSingleChoiceItems(@Nullable final CharSequence[] items,
                                            final int checkedItem,
                                            @Nullable final DialogInterface.OnClickListener listener) {
-        ensureNotNull(items, "The items may not be null");
         this.items = null;
         this.singleChoiceItems = items;
         this.multiChoiceItems = null;
-        this.adapter =
+        this.adapter = items != null ?
                 new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_single_choice,
-                        items);
-        this.singleChoiceListener = listener;
+                        items) : null;
+        this.singleChoiceListener = items != null ? listener : null;
         this.multiChoiceListener = null;
-        this.choiceMode = ListView.CHOICE_MODE_SINGLE;
-        this.checkedItems = new boolean[items.length];
-        this.checkedItems[checkedItem] = true;
-        inflateListView();
+        this.choiceMode = items != null ? ListView.CHOICE_MODE_SINGLE : -1;
+        this.checkedItems = items != null ? new boolean[items.length] : null;
+
+        if (this.checkedItems != null) {
+            this.checkedItems[checkedItem] = true;
+        }
+
+        attachAdapter();
     }
 
     @Override
@@ -321,38 +354,40 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     }
 
     @Override
-    public final void setSingleChoiceItems(@NonNull final ListAdapter adapter,
+    public final void setSingleChoiceItems(@Nullable final ListAdapter adapter,
                                            final int checkedItem,
                                            @Nullable final DialogInterface.OnClickListener listener) {
-        ensureNotNull(adapter, "The adapter may not be null");
         this.items = null;
         this.singleChoiceItems = null;
         this.multiChoiceItems = null;
         this.adapter = adapter;
-        this.singleChoiceListener = listener;
+        this.singleChoiceListener = adapter != null ? listener : null;
         this.multiChoiceListener = null;
-        this.choiceMode = ListView.CHOICE_MODE_SINGLE;
-        this.checkedItems = new boolean[adapter.getCount()];
-        this.checkedItems[checkedItem] = true;
-        inflateListView();
+        this.choiceMode = adapter != null ? ListView.CHOICE_MODE_SINGLE : -1;
+        this.checkedItems = adapter != null ? new boolean[adapter.getCount()] : null;
+
+        if (this.checkedItems != null) {
+            this.checkedItems[checkedItem] = true;
+        }
+
+        attachAdapter();
     }
 
     @Override
-    public final void setMultiChoiceItems(@NonNull final CharSequence[] items,
+    public final void setMultiChoiceItems(@Nullable final CharSequence[] items,
                                           @Nullable final boolean[] checkedItems,
                                           @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
-        ensureNotNull(items, "The items may not be null");
         this.items = null;
         this.singleChoiceItems = null;
         this.multiChoiceItems = items;
-        this.adapter =
+        this.adapter = items != null ?
                 new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_multiple_choice,
-                        items);
+                        items) : null;
         this.singleChoiceListener = null;
-        this.multiChoiceListener = listener;
-        this.choiceMode = ListView.CHOICE_MODE_MULTIPLE;
-        this.checkedItems = checkedItems;
-        inflateListView();
+        this.multiChoiceListener = items != null ? listener : null;
+        this.choiceMode = items != null ? ListView.CHOICE_MODE_MULTIPLE : -1;
+        this.checkedItems = items != null ? checkedItems : null;
+        attachAdapter();
     }
 
     @Override
@@ -364,19 +399,18 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     }
 
     @Override
-    public final void setMultiChoiceItems(@NonNull final ListAdapter adapter,
+    public final void setMultiChoiceItems(@Nullable final ListAdapter adapter,
                                           @Nullable final boolean[] checkedItems,
                                           @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
-        ensureNotNull(items, "The items may not be null");
         this.items = null;
         this.singleChoiceItems = null;
         this.multiChoiceItems = null;
         this.adapter = adapter;
         this.singleChoiceListener = null;
-        this.multiChoiceListener = listener;
-        this.choiceMode = ListView.CHOICE_MODE_MULTIPLE;
-        this.checkedItems = checkedItems;
-        inflateListView();
+        this.multiChoiceListener = adapter != null ? listener : null;
+        this.choiceMode = adapter != null ? ListView.CHOICE_MODE_MULTIPLE : -1;
+        this.checkedItems = adapter != null ? checkedItems : null;
+        attachAdapter();
     }
 
     @Override
@@ -435,14 +469,19 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
                                              @NonNull final Map<Area, View> areas,
                                              final Void param) {
-        inflateListView();
-        adaptItemColor();
+        View contentView = areas.get(Area.CONTENT);
+
+        if (contentView instanceof ViewGroup) {
+            inflateListView((ViewGroup) contentView);
+            attachAdapter();
+        }
+
         return Collections.emptyMap();
     }
 
     @Override
     protected final void onDetach() {
-        listView = null;
+        this.listView = null;
     }
 
 }

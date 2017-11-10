@@ -72,14 +72,14 @@ public interface ListDialogDecorator extends Dialog {
      * device has changed, in order to re-register the listener.
      *
      * @param items
-     *         The items, which should be set, as an array of the type {@link CharSequence}. The
-     *         items may not be null
+     *         The items, which should be set, as an array of the type {@link CharSequence} or null,
+     *         if no items should be shown by the dialog
      * @param listener
      *         The listener, which should be notified, when an item is clicked, as an instance of
      *         the type {@link DialogInterface.OnClickListener} or null, if no listener should be
      *         notified
      */
-    void setItems(@NonNull CharSequence[] items,
+    void setItems(@Nullable CharSequence[] items,
                   @Nullable DialogInterface.OnClickListener listener);
 
     /**
@@ -109,14 +109,14 @@ public interface ListDialogDecorator extends Dialog {
      * device has changed, in order to re-set the adapter and re-register the listener.
      *
      * @param adapter
-     *         The adapter, which should be set, as an instance of the type {@link ListAdapter}. The
-     *         adapter may not be null
+     *         The adapter, which should be set, as an instance of the type {@link ListAdapter} or
+     *         null, if no items should be shown by the dialog
      * @param listener
      *         The listener, which should be notified, when an item is clicked, as an instance of
      *         the type {@link DialogInterface.OnClickListener} or null, if no listener should be
      *         notified
      */
-    void setAdapter(@NonNull ListAdapter adapter,
+    void setAdapter(@Nullable ListAdapter adapter,
                     @Nullable DialogInterface.OnClickListener listener);
 
     /**
@@ -129,8 +129,8 @@ public interface ListDialogDecorator extends Dialog {
      * device has changed, in order to re-register the listener.
      *
      * @param items
-     *         The items, which should be set, as an array of the type {@link CharSequence}. The
-     *         items may not be null
+     *         The items, which should be set, as an array of the type {@link CharSequence} or null,
+     *         if no items should be shown by the dialog
      * @param checkedItem
      *         The index of the item, which should be selected by default, as an {@link Integer}
      *         value or -1, if no item should be selected by default
@@ -139,7 +139,7 @@ public interface ListDialogDecorator extends Dialog {
      *         the type {@link DialogInterface.OnClickListener} or null, if no listener should be
      *         notified
      */
-    void setSingleChoiceItems(@NonNull CharSequence[] items, int checkedItem,
+    void setSingleChoiceItems(@Nullable CharSequence[] items, int checkedItem,
                               @Nullable DialogInterface.OnClickListener listener);
 
     /**
@@ -175,8 +175,8 @@ public interface ListDialogDecorator extends Dialog {
      * device has changed, in order to re-set the adapter and re-register the listener.
      *
      * @param adapter
-     *         The adapter, which should be set, as an instance of the type {@link ListAdapter}. The
-     *         adapter may not be null
+     *         The adapter, which should be set, as an instance of the type {@link ListAdapter} or
+     *         null, if no items should be shown by the dialog
      * @param checkedItem
      *         The index of the item, which should be selected by default, as an {@link Integer}
      *         value or -1, if no item should be selected by default
@@ -185,7 +185,7 @@ public interface ListDialogDecorator extends Dialog {
      *         the type {@link DialogInterface.OnClickListener} or null, if no listener should be
      *         notified
      */
-    void setSingleChoiceItems(@NonNull ListAdapter adapter, int checkedItem,
+    void setSingleChoiceItems(@Nullable ListAdapter adapter, int checkedItem,
                               @Nullable DialogInterface.OnClickListener listener);
 
     /**
@@ -198,8 +198,8 @@ public interface ListDialogDecorator extends Dialog {
      * device has changed, in order to re-register the listener.
      *
      * @param items
-     *         The items, which should be set, as an array of the type {@link CharSequence}. The
-     *         items may not be null
+     *         The items, which should be set, as an array of the type {@link CharSequence} or null,
+     *         if no items should be shown by the dialog
      * @param checkedItems
      *         An array, which contains, whether the items, which correspond to the corresponding
      *         indices, should be selected by default, or not, as a {@link Boolean} array or null,
@@ -209,7 +209,7 @@ public interface ListDialogDecorator extends Dialog {
      *         the type {@link DialogInterface.OnMultiChoiceClickListener} or null, if no listener
      *         should be notified
      */
-    void setMultiChoiceItems(@NonNull CharSequence[] items, @Nullable boolean[] checkedItems,
+    void setMultiChoiceItems(@Nullable CharSequence[] items, @Nullable boolean[] checkedItems,
                              @Nullable DialogInterface.OnMultiChoiceClickListener listener);
 
     /**
@@ -246,8 +246,8 @@ public interface ListDialogDecorator extends Dialog {
      * device has changed, in order to re-set the adapter and re-register the listener.
      *
      * @param adapter
-     *         The adapter, which should be set, as an instance of the type {@link ListAdapter}. The
-     *         adapter may not be null
+     *         The adapter, which should be set, as an instance of the type {@link ListAdapter} or
+     *         null, if no items should be shown by the dialog
      * @param checkedItems
      *         An array, which contains, whether the items, which correspond to the corresponding
      *         indices, should be selected by default, or not, as a {@link Boolean} array or null,
@@ -257,7 +257,7 @@ public interface ListDialogDecorator extends Dialog {
      *         the type {@link DialogInterface.OnMultiChoiceClickListener} or null, if no listener
      *         should be notified
      */
-    void setMultiChoiceItems(@NonNull ListAdapter adapter, @Nullable boolean[] checkedItems,
+    void setMultiChoiceItems(@Nullable ListAdapter adapter, @Nullable boolean[] checkedItems,
                              @Nullable DialogInterface.OnMultiChoiceClickListener listener);
 
     /**
