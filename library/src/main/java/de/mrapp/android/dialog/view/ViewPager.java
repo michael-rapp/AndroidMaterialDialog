@@ -87,7 +87,18 @@ public class ViewPager extends android.support.v4.view.ViewPager {
 
     @Override
     public final boolean onTouchEvent(final MotionEvent event) {
-        return isSwipeEnabled() && super.onTouchEvent(event);
+        if (isSwipeEnabled()) {
+            return super.onTouchEvent(event);
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            performClick();
+        }
+
+        return false;
+    }
+
+    @Override
+    public final boolean performClick() {
+        return super.performClick();
     }
 
 }
