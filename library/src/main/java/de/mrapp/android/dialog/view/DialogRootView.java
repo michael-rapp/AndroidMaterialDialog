@@ -138,7 +138,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * Initializes the view.
      */
     private void initialize() {
-        scrollableArea = ScrollableArea.create(Area.CONTENT);
+        scrollableArea = ScrollableArea.create(null, null);
         dialogPadding = new int[]{0, 0, 0, 0};
         shadowWidth = getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
         background =
