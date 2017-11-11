@@ -159,8 +159,11 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
 
         if (this.listView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            this.listView = (ListView) layoutInflater
-                    .inflate(R.layout.material_dialog_list_view, contentContainer, false);
+            de.mrapp.android.dialog.view.ListView inflatedListView =
+                    (de.mrapp.android.dialog.view.ListView) layoutInflater
+                            .inflate(R.layout.material_dialog_list_view, contentContainer, false);
+            inflatedListView.setDialog(getDialog());
+            this.listView = inflatedListView;
             getDialog().setView(this.listView);
             this.inflatedCustomView = true;
         } else {

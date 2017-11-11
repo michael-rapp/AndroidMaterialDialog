@@ -22,8 +22,13 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 
+import de.mrapp.android.dialog.ScrollableArea.Area;
+import de.mrapp.android.dialog.model.MaterialDialog;
+
+import static de.mrapp.android.util.Condition.ensureNotNull;
+
 /**
- * A custom list view, which allows to expand its width to its content.
+ * A custom list view, which allows to expand its height to its content.
  *
  * @author Michael Rapp
  * @since 4.2.0
@@ -31,7 +36,12 @@ import android.util.AttributeSet;
 public class ListView extends android.widget.ListView {
 
     /**
-     * Creates a new custom list view, which allows to expand its width to its content.
+     * The dialog, which contains the list view.
+     */
+    private MaterialDialog dialog;
+
+    /**
+     * Creates a new custom list view, which allows to expand its height to its content.
      *
      * @param context
      *         The context, which should be used by the view, as an instance of the class {@link
@@ -42,7 +52,7 @@ public class ListView extends android.widget.ListView {
     }
 
     /**
-     * Creates a new custom list view, which allows to expand its width to its content.
+     * Creates a new custom list view, which allows to expand its height to its content.
      *
      * @param context
      *         The context, which should be used by the view, as an instance of the class {@link
@@ -56,7 +66,7 @@ public class ListView extends android.widget.ListView {
     }
 
     /**
-     * Creates a new custom list view, which allows to expand its width to its content.
+     * Creates a new custom list view, which allows to expand its height to its content.
      *
      * @param context
      *         The context, which should be used by the view, as an instance of the class {@link
@@ -75,7 +85,7 @@ public class ListView extends android.widget.ListView {
     }
 
     /**
-     * Creates a new custom list view, which allows to expand its width to its content.
+     * Creates a new custom list view, which allows to expand its height to its content.
      *
      * @param context
      *         The context, which should be used by the view, as an instance of the class {@link
@@ -98,9 +108,22 @@ public class ListView extends android.widget.ListView {
         super(context, attributeSet, defaultStyle, defaultStyleResource);
     }
 
+    /**
+     * Sets the dialog, which contains the list view.
+     *
+     * @param dialog
+     *         The dialog, which should be set, as an instance of the type {@link MaterialDialog}.
+     *         The dialog may not be null
+     */
+    public final void setDialog(@NonNull final MaterialDialog dialog) {
+        ensureNotNull(dialog, "The dialog may not be null");
+        this.dialog = dialog;
+    }
+
     @Override
     public final void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-        if (getChoiceMode() != CHOICE_MODE_NONE) {
+        if ((dialog != null && dialog.getScrollableArea().isScrollable(Area.CONTENT)) ||
+                getChoiceMode() != CHOICE_MODE_NONE) {
             int expandSpec =
                     MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
             super.onMeasure(widthMeasureSpec, expandSpec);
