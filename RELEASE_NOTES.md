@@ -4,6 +4,8 @@
 
 A feature release, which introduces the following changes:
 
+- A scrollable area can now be specified for dialogs.
+- The width, height, padding, margin and other properties of a `WizardDialog` are now properly restored after orientation changes.
 - Updated dependency "AndroidUtil" to version 1.17.2.
 - Updated dependency "AndroidMaterialViews" to version 2.1.5.
 
