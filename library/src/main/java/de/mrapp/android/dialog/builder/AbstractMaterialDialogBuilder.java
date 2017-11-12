@@ -338,7 +338,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
                 setScrollableArea(top);
             }
         } else {
-            setScrollableArea(Area.CONTENT);
+            setScrollableArea(null, null);
         }
     }
 
