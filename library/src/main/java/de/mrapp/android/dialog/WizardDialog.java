@@ -31,6 +31,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.widget.Button;
 
+import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
 import de.mrapp.android.dialog.model.WizardDialogDecorator;
 import de.mrapp.android.util.ThemeUtil;
@@ -932,6 +933,28 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
         addDecorator(decorator);
         setCancelable(false);
         setView(R.layout.wizard_dialog_view_pager);
+    }
+
+    @Override
+    public final void setScrollableArea(final Area area) {
+        if (area == Area.CONTENT) {
+            // The view pager expands to the dialog's height. It doesn't make sense to make it
+            // scrollable
+            super.setScrollableArea(null);
+        } else {
+            super.setScrollableArea(area);
+        }
+    }
+
+    @Override
+    public final void setScrollableArea(final Area top, final Area bottom) {
+        if (top == Area.CONTENT && bottom == Area.CONTENT) {
+            // The view pager expands to the dialog's height. It doesn't make sense to make it
+            // scrollable
+            super.setScrollableArea(null, null);
+        } else {
+            super.setScrollableArea(top, bottom);
+        }
     }
 
     @Override

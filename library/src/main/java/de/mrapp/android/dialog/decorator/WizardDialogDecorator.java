@@ -1146,6 +1146,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
 
                 if (inflatedView != null) {
                     viewPager = (ViewPager) viewPagerView;
+                    viewPager.setDialog(getDialog());
                     viewPager.addOnPageChangeListener(this);
                     viewPagerAdapter =
                             new ViewPagerAdapter(getContext(), fragmentManager, viewPagerItems);

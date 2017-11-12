@@ -150,7 +150,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
-        builder.setScrollableArea(ScrollableArea.Area.TITLE, ScrollableArea.Area.CONTENT);
         alertDialog = builder.create();
     }
 

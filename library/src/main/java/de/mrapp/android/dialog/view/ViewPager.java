@@ -19,6 +19,11 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import de.mrapp.android.dialog.ScrollableArea;
+import de.mrapp.android.dialog.model.MaterialDialog;
+
+import static de.mrapp.android.util.Condition.ensureNotNull;
+
 /**
  * A custom view pager, which allows to disable switching between fragments using swipe gestures.
  *
@@ -26,6 +31,11 @@ import android.view.MotionEvent;
  * @since 3.2.0
  */
 public class ViewPager extends android.support.v4.view.ViewPager {
+
+    /**
+     * The dialog, which contains the view pager.
+     */
+    private MaterialDialog dialog;
 
     /**
      * True, if switching between fragments using swipe gestures is enabled, false otherwise.
@@ -57,6 +67,18 @@ public class ViewPager extends android.support.v4.view.ViewPager {
      */
     public ViewPager(@NonNull final Context context, @Nullable final AttributeSet attributeSet) {
         super(context, attributeSet);
+    }
+
+    /**
+     * Sets the dialog, which contains the view pager.
+     *
+     * @param dialog
+     *         The dialog, which should be set, as an instance of the type {@link MaterialDialog}.
+     *         The dialog may not be null
+     */
+    public final void setDialog(@NonNull final MaterialDialog dialog) {
+        ensureNotNull(dialog, "The dialog may not be null");
+        this.dialog = dialog;
     }
 
     /**
@@ -99,6 +121,18 @@ public class ViewPager extends android.support.v4.view.ViewPager {
     @Override
     public final boolean performClick() {
         return super.performClick();
+    }
+
+    @Override
+    public final void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
+        if (dialog != null &&
+                dialog.getScrollableArea().isScrollable(ScrollableArea.Area.CONTENT)) {
+            super.onMeasure(widthMeasureSpec, MeasureSpec
+                    .makeMeasureSpec(dialog.getScrollView().getMeasuredHeight(),
+                            MeasureSpec.EXACTLY));
+        } else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
     }
 
 }

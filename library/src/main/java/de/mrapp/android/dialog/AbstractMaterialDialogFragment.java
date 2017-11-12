@@ -447,13 +447,15 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
         return decorator.getScrollableArea();
     }
 
+    @CallSuper
     @Override
-    public final void setScrollableArea(@Nullable final Area area) {
+    public void setScrollableArea(@Nullable final Area area) {
         decorator.setScrollableArea(area);
     }
 
+    @CallSuper
     @Override
-    public final void setScrollableArea(@Nullable final Area top, @Nullable final Area bottom) {
+    public void setScrollableArea(@Nullable final Area top, @Nullable final Area bottom) {
         decorator.setScrollableArea(top, bottom);
     }
 
