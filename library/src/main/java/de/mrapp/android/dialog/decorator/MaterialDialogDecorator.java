@@ -71,6 +71,107 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         implements de.mrapp.android.dialog.model.MaterialDialogDecorator {
 
     /**
+     * The name of the extra, which is used to store, whether the dialog is cancelable, or not,
+     * within a bundle.
+     */
+    private static final String CANCELABLE_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::cancelable";
+
+    /**
+     * The name of the extra, which is used to store, whether the dialog is canceled when touching
+     * the outside the window, or not, within a bundle.
+     */
+    private static final String CANCEL_ON_TOUCH_OUTSIDE_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::cancelOnTouchOutside";
+
+    /**
+     * The name of the extra, which is used to store, whether the dialog is shown fullscreen, or
+     * not, within a bundle.
+     */
+    private static final String FULLSCREEN_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::fullscreen";
+
+    /**
+     * The name of the extra, which is used to store the gravity of the dialog within a bundle.
+     */
+    private static final String GRAVITY_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::gravity";
+
+    /**
+     * The name of the extra, which is used to store the width of the dialog within a bundle.
+     */
+    private static final String WIDTH_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::width";
+
+    /**
+     * The name of the extra, which is used to store the height of the dialog within a bundle.
+     */
+    private static final String HEIGHT_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::height";
+
+    /**
+     * The name of the extra, which is used to store the maximum width of the dialog within a
+     * bundle.
+     */
+    private static final String MAX_WIDTH_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::maxWidth";
+
+    /**
+     * The name of the extra, which is used to store the maximum height of the dialog within a
+     * bundle.
+     */
+    private static final String MAX_HEIGHT_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::maxHeight";
+
+    /**
+     * The name of the extra, which is used to store the left margin within a bundle.
+     */
+    private static final String LEFT_MARGIN_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::leftMargin";
+
+    /**
+     * The name of the extra, which is used to store the top margin within a bundle.
+     */
+    private static final String TOP_MARGIN_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::topMargin";
+
+    /**
+     * The name of the extra, which is used to store the right margin within a bundle.
+     */
+    private static final String RIGHT_MARGIN_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::rightMargin";
+
+    /**
+     * The name of the extra, which is used to store the bottom margin within a bundle.
+     */
+    private static final String BOTTOM_MARGIN_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::bottomMargin";
+
+    /**
+     * The name of the extra, which is used to store the left padding within a bundle.
+     */
+    private static final String LEFT_PADDING_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::leftPadding";
+
+    /**
+     * The name of the extra, which is used to store the top padding within a bundle.
+     */
+    private static final String TOP_PADDING_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::topPadding";
+
+    /**
+     * The name of the extra, which is used to store the right padding within a bundle.
+     */
+    private static final String RIGHT_PADDING_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::rightPadding";
+
+    /**
+     * The name of the extra, which is used to store the bottom padding within a bundle.
+     */
+    private static final String BOTTOM_PADDING_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::bottomPadding";
+
+    /**
      * The name of the extra, which is used to store the top scrollable area within a bundle.
      */
     private static final String TOP_SCROLLABLE_AREA_EXTRA =
@@ -1252,6 +1353,22 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void onSaveInstanceState(@NonNull final Bundle outState) {
+        outState.putBoolean(CANCELABLE_EXTRA, isCancelable());
+        outState.putBoolean(CANCEL_ON_TOUCH_OUTSIDE_EXTRA, isCanceledOnTouchOutside());
+        outState.putBoolean(FULLSCREEN_EXTRA, isFullscreen());
+        outState.putInt(GRAVITY_EXTRA, getGravity());
+        outState.putInt(WIDTH_EXTRA, getWidth());
+        outState.putInt(HEIGHT_EXTRA, getHeight());
+        outState.putInt(MAX_WIDTH_EXTRA, getMaxWidth());
+        outState.putInt(MAX_HEIGHT_EXTRA, getMaxHeight());
+        outState.putInt(LEFT_MARGIN_EXTRA, getLeftMargin());
+        outState.putInt(TOP_MARGIN_EXTRA, getTopMargin());
+        outState.putInt(RIGHT_MARGIN_EXTRA, getRightMargin());
+        outState.putInt(BOTTOM_MARGIN_EXTRA, getBottomMargin());
+        outState.putInt(LEFT_PADDING_EXTRA, getPaddingLeft());
+        outState.putInt(TOP_PADDING_EXTRA, getPaddingTop());
+        outState.putInt(RIGHT_PADDING_EXTRA, getPaddingRight());
+        outState.putInt(BOTTOM_PADDING_EXTRA, getPaddingBottom());
         outState.putSerializable(TOP_SCROLLABLE_AREA_EXTRA, scrollableArea.getTopScrollableArea());
         outState.putSerializable(BOTTOM_SCROLLABLE_AREA_EXTRA,
                 scrollableArea.getBottomScrollableArea());
@@ -1279,6 +1396,22 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+        setCancelable(savedInstanceState.getBoolean(CANCELABLE_EXTRA));
+        setCanceledOnTouchOutside(savedInstanceState.getBoolean(CANCEL_ON_TOUCH_OUTSIDE_EXTRA));
+        setFullscreen(savedInstanceState.getBoolean(FULLSCREEN_EXTRA));
+        setGravity(savedInstanceState.getInt(GRAVITY_EXTRA));
+        setWidth(savedInstanceState.getInt(WIDTH_EXTRA));
+        setHeight(savedInstanceState.getInt(HEIGHT_EXTRA));
+        setMaxWidth(savedInstanceState.getInt(MAX_WIDTH_EXTRA));
+        setMaxHeight(savedInstanceState.getInt(MAX_HEIGHT_EXTRA));
+        setMargin(savedInstanceState.getInt(LEFT_MARGIN_EXTRA),
+                savedInstanceState.getInt(TOP_MARGIN_EXTRA),
+                savedInstanceState.getInt(RIGHT_MARGIN_EXTRA),
+                savedInstanceState.getInt(BOTTOM_MARGIN_EXTRA));
+        setPadding(savedInstanceState.getInt(LEFT_PADDING_EXTRA),
+                savedInstanceState.getInt(TOP_PADDING_EXTRA),
+                savedInstanceState.getInt(RIGHT_PADDING_EXTRA),
+                savedInstanceState.getInt(BOTTOM_PADDING_EXTRA));
         setScrollableArea((Area) savedInstanceState.getSerializable(TOP_SCROLLABLE_AREA_EXTRA),
                 (Area) savedInstanceState.getSerializable(BOTTOM_SCROLLABLE_AREA_EXTRA));
         setTitleColor(savedInstanceState.getInt(TITLE_COLOR_EXTRA));
