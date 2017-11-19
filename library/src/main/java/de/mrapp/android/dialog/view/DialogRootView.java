@@ -29,6 +29,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -183,7 +184,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
             boolean paddingTopApplied = false;
             Area previousArea = null;
             View previousView = null;
-            int scrollViewMarginTop = 0;
+            int scrollViewPaddingTop = 0;
             int scrollViewMarginBottom = 0;
             Iterator<Map.Entry<Area, View>> iterator = areas.entrySet().iterator();
 
@@ -208,7 +209,9 @@ public class DialogRootView extends LinearLayout implements AreaListener {
                         applyDialogPaddingBottom(previousArea, previousView);
                     }
 
-                    scrollViewMarginBottom += addViewSpacing(previousArea, previousView, area);
+                    Pair<Integer, Integer> pair = addViewSpacing(previousArea, previousView, area);
+                    scrollViewPaddingTop += pair.first != null ? pair.first : 0;
+                    scrollViewMarginBottom += pair.second != null ? pair.second : 0;
                 }
 
                 previousArea = area;
@@ -218,8 +221,10 @@ public class DialogRootView extends LinearLayout implements AreaListener {
             if (scrollView != null) {
                 LinearLayout.LayoutParams layoutParams =
                         (LayoutParams) scrollView.getLayoutParams();
-                layoutParams.topMargin = scrollViewMarginTop;
                 layoutParams.bottomMargin = scrollViewMarginBottom;
+                scrollView.setPadding(scrollView.getPaddingLeft(),
+                        scrollView.getPaddingTop() + scrollViewPaddingTop,
+                        scrollView.getPaddingRight(), scrollView.getPaddingBottom());
             }
         }
     }
@@ -300,38 +305,49 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * Adds spacing to the view of a specific area. The spacing is added to the view's current
      * bottom padding.
      *
-     * @param area
+     * @param previousArea
      *         The area, the view, the spacing should be applied to, corresponds to, as an instance
      *         of the class {@link Area}. The area may not be null
-     * @param view
+     * @param previousView
      *         The view, the spacing should be applied to, as an instance of the class {@link View}.
      *         The view may not be null
-     * @return The bottom margin, which should be added to the dialog's scroll view, as an {@link
-     * Integer} value
+     * @param area
+     *         The current area as a value of the enum {@link Area}. The area may not be null
+     * @return A pair, which contains the top and bottom padding, which should be added to the
+     * dialog's scroll view, as an instance of the class {@link Pair} value
      */
-    private int addViewSpacing(@NonNull final Area area, @NonNull final View view,
-                               @NonNull final Area nextArea) {
+    @NonNull
+    private Pair<Integer, Integer> addViewSpacing(@NonNull final Area previousArea,
+                                                  @NonNull final View previousView,
+                                                  @NonNull final Area area) {
+        int scrollViewPaddingTop = 0;
         int scrollViewMarginBottom = 0;
         int padding = -1;
 
-        if (area == Area.TITLE) {
+        if (previousArea == Area.TITLE) {
             padding = getResources().getDimensionPixelSize(R.dimen.dialog_title_bottom_padding);
-        } else if (area == Area.MESSAGE) {
+        } else if (previousArea == Area.MESSAGE) {
             padding = getResources().getDimensionPixelSize(R.dimen.dialog_message_bottom_padding);
         }
 
-        if (!scrollableArea.isScrollable(area) && scrollableArea.isScrollable(nextArea)) {
+        if (previousArea != Area.HEADER && !scrollableArea.isScrollable(previousArea) &&
+                scrollableArea.isScrollable(area)) {
+            int originalPadding = padding;
+            padding = originalPadding / 2;
+            scrollViewPaddingTop = originalPadding - padding;
+        } else if (area == Area.BUTTON_BAR && scrollableArea.isScrollable(previousArea) &&
+                !scrollableArea.isScrollable(area)) {
             int originalPadding = padding;
             padding = originalPadding / 2;
             scrollViewMarginBottom = originalPadding - padding;
         }
 
         if (padding != -1) {
-            view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(),
-                    view.getPaddingBottom() + padding);
+            previousView.setPadding(previousView.getPaddingLeft(), previousView.getPaddingTop(),
+                    previousView.getPaddingRight(), previousView.getPaddingBottom() + padding);
         }
 
-        return scrollViewMarginBottom;
+        return Pair.create(scrollViewPaddingTop, scrollViewMarginBottom);
     }
 
     /**

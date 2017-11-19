@@ -662,6 +662,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             builder.setHeaderBackground(R.drawable.dialog_header_background);
             builder.setHeaderIcon(R.drawable.dialog_header_icon);
         }
+
+        builder.setScrollableArea(ScrollableArea.Area.TITLE, ScrollableArea.Area.MESSAGE);
     }
 
     /**
