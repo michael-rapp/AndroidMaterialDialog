@@ -122,8 +122,7 @@ public class ListView extends android.widget.ListView {
 
     @Override
     public final void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-        if ((dialog != null && dialog.getScrollableArea().isScrollable(Area.CONTENT)) ||
-                getChoiceMode() != CHOICE_MODE_NONE) {
+        if (dialog != null && dialog.getScrollableArea().isScrollable(Area.CONTENT)) {
             int expandSpec =
                     MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
             super.onMeasure(widthMeasureSpec, expandSpec);
