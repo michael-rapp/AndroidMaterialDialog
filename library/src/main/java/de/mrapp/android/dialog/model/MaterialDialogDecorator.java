@@ -356,6 +356,56 @@ public interface MaterialDialogDecorator extends Dialog {
     void setScrollableArea(@Nullable ScrollableArea.Area top, @Nullable ScrollableArea.Area bottom);
 
     /**
+     * Returns, whether dividers, which are located above and below the dialog's scrollable areas,
+     * are shown, when being scrolled, or not.
+     *
+     * @return True, if the dividers, which are located above and below the dialog's scrollable
+     * areas, are shown, when scrolling, false otherwise
+     */
+    boolean areDividersShownOnScroll();
+
+    /**
+     * Sets, whether dividers, which are located above and below the dialog's scrollable areas,
+     * should be shown, when scrolled, or not.
+     *
+     * @param show
+     *         True, if the dividers, which are located above and below the dialog's scrollable
+     *         areas, should be shown, when scrolling, false otherwise
+     */
+    void showDividersOnScroll(boolean show);
+
+    /**
+     * Returns the color of dividers.
+     *
+     * @return The color of dividers as an {@link Integer} value
+     */
+    int getDividerColor();
+
+    /**
+     * Sets the color of dividers.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    void setDividerColor(@ColorInt int color);
+
+    /**
+     * Returns the left and right margin of dividers.
+     *
+     * @return The left and right margin of dividers in pixels as an {@link Integer} value
+     */
+    int getDividerMargin();
+
+    /**
+     * Sets the left and right margin of the divider, which is located above the dialog's button.
+     *
+     * @param margin
+     *         The left and right margin, which should be set, in pixels as an {@link Integer}
+     *         value. The margin must be at least 0
+     */
+    void setDividerMargin(int margin);
+
+    /**
      * Returns the icon of the dialog.
      *
      * @return The icon of the dialog, as an instance of the class {@link Drawable} or null, if no

@@ -55,16 +55,6 @@ public abstract class AbstractScrollableDialog extends AbstractListDialog
         addDecorator(decorator);
     }
 
-    @Override
-    public final boolean areDividersShownOnScroll() {
-        return decorator.areDividersShownOnScroll();
-    }
-
-    @Override
-    public final void showDividersOnScroll(final boolean show) {
-        decorator.showDividersOnScroll(show);
-    }
-
     @NonNull
     @CallSuper
     @Override

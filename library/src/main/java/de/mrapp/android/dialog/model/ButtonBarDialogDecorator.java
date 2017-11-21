@@ -221,39 +221,6 @@ public interface ButtonBarDialogDecorator extends Dialog {
     void showButtonBarDivider(boolean show);
 
     /**
-     * Returns the color of the divider, which is located above the dialog's buttons.
-     *
-     * @return The color of the divider, which is located above the dialog's buttons, as an {@link
-     * Integer} value
-     */
-    int getButtonBarDividerColor();
-
-    /**
-     * Sets the color of the divider, which is located above the dialog's buttons.
-     *
-     * @param color
-     *         The color, which should be set, as an {@link Integer} value
-     */
-    void setButtonBarDividerColor(int color);
-
-    /**
-     * Returns the left and right margin of the divider, which is located above the dialog's button.
-     *
-     * @return The left and right margin of the divider, which is located above the dialog's
-     * buttons, in pixels as an {@link Integer} value
-     */
-    int getButtonBarDividerMargin();
-
-    /**
-     * Sets the left and right margin of the divider, which is located above the dialog's button.
-     *
-     * @param margin
-     *         The left and right margin, which should be set, in pixels as an {@link Integer}
-     *         value. The margin must be at least 0
-     */
-    void setButtonBarDividerMargin(int margin);
-
-    /**
      * Returns, whether a custom view is set for showing the buttons of the dialog, or not.
      *
      * @return True, if a custom view is set for showing the buttons of the dialog, false otherwise

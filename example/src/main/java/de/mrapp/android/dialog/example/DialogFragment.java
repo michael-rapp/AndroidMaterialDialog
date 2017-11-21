@@ -14,6 +14,7 @@
 package de.mrapp.android.dialog.example;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,8 +37,8 @@ public class DialogFragment extends Fragment {
     public static final String INDEX_EXTRA = DialogFragment.class.getSimpleName() + "::IndexExtra";
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState) {
+    public final View onCreateView(@NonNull final LayoutInflater inflater,
+                                   final ViewGroup container, final Bundle savedInstanceState) {
         TextView textView = (TextView) inflater.inflate(R.layout.dialog_fragment, container, false);
         int index = getArguments() != null ? getArguments().getInt(INDEX_EXTRA, 1) : 1;
         CharSequence text = String.format(getString(R.string.dialog_fragment_text), index);

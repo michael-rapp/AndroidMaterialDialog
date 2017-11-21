@@ -46,6 +46,8 @@ import de.mrapp.android.dialog.drawable.CircleTransitionDrawable;
 import de.mrapp.android.dialog.drawable.CrossFadeTransitionDrawable;
 import de.mrapp.android.dialog.drawable.ScaleTransitionDrawable;
 import de.mrapp.android.dialog.model.MaterialDialog;
+import de.mrapp.android.dialog.view.DialogRootView.AreaViewType;
+import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
 
@@ -631,9 +633,10 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
 
     @NonNull
     @Override
-    protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
-                                             @NonNull final Map<Area, View> areas,
-                                             final Void param) {
+    protected final Map<ViewType, View> onAttach(@NonNull final Window window,
+                                                 @NonNull final View view,
+                                                 @NonNull final Map<ViewType, View> areas,
+                                                 final Void param) {
         View inflatedView = inflateHeader();
 
         if (inflatedView != null) {
@@ -643,8 +646,8 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
             adaptHeaderDividerVisibility();
             adaptHeaderIcon(null);
             adaptHeaderHeight();
-            Map<Area, View> result = new HashMap<>();
-            result.put(Area.HEADER, inflatedView);
+            Map<ViewType, View> result = new HashMap<>();
+            result.put(new AreaViewType(Area.HEADER), inflatedView);
             return result;
         }
 

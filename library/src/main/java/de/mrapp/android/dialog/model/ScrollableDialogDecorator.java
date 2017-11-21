@@ -23,23 +23,4 @@ package de.mrapp.android.dialog.model;
  */
 public interface ScrollableDialogDecorator extends Dialog {
 
-    /**
-     * Returns, whether dividers, which are located above and below the dialog's content, are shown,
-     * when the content is scrolled, or not.
-     *
-     * @return True, if the dividers, which are located above and below the dialog's content, are
-     * shown, when the content is scrolled, false otherwise
-     */
-    boolean areDividersShownOnScroll();
-
-    /**
-     * Sets, whether dividers, which are located above and below the dialog's content, should be
-     * shown, when the content is scrolled, or not.
-     *
-     * @param show
-     *         True, if the dividers, which are located above and below the dialog's content, should
-     *         be shown, when the content is scrolled, false otherwise
-     */
-    void showDividersOnScroll(boolean show);
-
 }

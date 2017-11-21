@@ -29,6 +29,7 @@ import de.mrapp.android.dialog.listener.AreaListener;
 import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.dialog.model.DialogDecorator;
 import de.mrapp.android.dialog.view.DialogRootView;
+import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -83,14 +84,14 @@ public abstract class AbstractDecorator<DialogType extends Dialog, ParamType>
      *         The parameter, which should be passed to the decorator, as an instance of the generic
      *         type ParamType or null, if no parameter should be passed
      * @return A map, which contains the views, which have been inflated by the decorator, mapped to
-     * the areas they correspond to, as an instance of the type {@link Map} or null, if the
-     * decorator has not inflated any views
+     * their view types, as an instance of the type {@link Map} or null, if the decorator has not
+     * inflated any views
      */
     @NonNull
-    protected abstract Map<Area, View> onAttach(@NonNull final Window window,
-                                                @NonNull final View view,
-                                                @NonNull final Map<Area, View> areas,
-                                                final ParamType param);
+    protected abstract Map<ViewType, View> onAttach(@NonNull final Window window,
+                                                    @NonNull final View view,
+                                                    @NonNull final Map<ViewType, View> areas,
+                                                    final ParamType param);
 
     /**
      * The method, which is invoked, when the decorator is detached from the view hierarchy.
@@ -131,13 +132,13 @@ public abstract class AbstractDecorator<DialogType extends Dialog, ParamType>
      *         The parameter, which should be passed to the decorator, as an instance of the generic
      *         type ParamType or null, if no parameter should be passed
      * @return A map, which contains the views, which have been inflated by the decorator, mapped to
-     * the areas they correspond to, as an instance of the type {@link Map} or null, if the
-     * decorator has not inflated any views
+     * their view types, as an instance of the type {@link Map} or null, if the decorator has not
+     * inflated any views
      */
     @NonNull
-    public final Map<Area, View> attach(@NonNull final Window window, @NonNull final View view,
-                                        @NonNull final Map<Area, View> areas,
-                                        final ParamType param) {
+    public final Map<ViewType, View> attach(@NonNull final Window window, @NonNull final View view,
+                                            @NonNull final Map<ViewType, View> areas,
+                                            final ParamType param) {
         ensureNotNull(window, "The window may not be null");
         ensureNotNull(view, "The view may not be null");
         this.window = window;

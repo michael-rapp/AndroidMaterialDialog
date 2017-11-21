@@ -27,7 +27,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,8 +37,11 @@ import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.listener.OnClickListenerWrapper;
 import de.mrapp.android.dialog.model.ValidateableDialog;
-
-import static de.mrapp.android.util.Condition.ensureAtLeast;
+import de.mrapp.android.dialog.view.DialogRootView.AreaViewType;
+import de.mrapp.android.dialog.view.DialogRootView.DividerLocation;
+import de.mrapp.android.dialog.view.DialogRootView.DividerViewType;
+import de.mrapp.android.dialog.view.DialogRootView.ViewType;
+import de.mrapp.android.dialog.view.Divider;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -79,20 +81,6 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
      */
     private static final String SHOW_BUTTON_BAR_DIVIDER_EXTRA =
             ButtonBarDialogDecorator.class.getSimpleName() + "::showButtonBarDivider";
-
-    /**
-     * The name of the extra, which is used to store the color of the divider, which is shown above
-     * the dialog's buttons, within a bundle.
-     */
-    private static final String BUTTON_BAR_DIVIDER_COLOR_EXTRA =
-            ButtonBarDialogDecorator.class.getSimpleName() + "::buttonBarDividerColor";
-
-    /**
-     * The name of the extra, which is used to store the color of the divider, which is shown above
-     * the dialog's buttons, within a bundle.
-     */
-    private static final String BUTTON_BAR_DIVIDER_MARGIN_EXTRA =
-            ButtonBarDialogDecorator.class.getSimpleName() + "::buttonBarDividerMargin";
 
     /**
      * The name of the extra, which is used to store the text of the positive button within a
@@ -138,12 +126,7 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     /**
      * The divider, which is shown above the dialog's buttons.
      */
-    private View buttonBarDivider;
-
-    /**
-     * The divider, which is shown above the dialog's custom view.
-     */
-    private View contentDivider;
+    private Divider buttonBarDivider;
 
     /**
      * The text color of the dialog's buttons.
@@ -195,16 +178,6 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
      * otherwise.
      */
     private boolean showButtonBarDivider;
-
-    /**
-     * The color of the divider, which is located above the dialog's buttons.
-     */
-    private int buttonBarDividerColor;
-
-    /**
-     * The left and right margin of the divider, which is located above the dialog's buttons.
-     */
-    private int buttonBarDividerMargin;
 
     /**
      * The resource id of the custom button bar of the dialog.
@@ -276,7 +249,6 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
             adaptButtonTextColor();
             adaptButtonBarContainerVisibility();
             adaptButtonBarDividerVisibility();
-            adaptButtonBarDividerColor();
         }
     }
 
@@ -372,32 +344,7 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     private void adaptButtonBarDividerVisibility() {
         if (buttonBarDivider != null) {
             buttonBarDivider.setVisibility(showButtonBarDivider ? View.VISIBLE : View.GONE);
-        }
-    }
-
-    /**
-     * Adapts the color of the divider, which is shown above the dialog's buttons.
-     */
-    private void adaptButtonBarDividerColor() {
-        if (buttonBarDivider != null) {
-            buttonBarDivider.setBackgroundColor(buttonBarDividerColor);
-        }
-
-        if (contentDivider != null) {
-            contentDivider.setBackgroundColor(buttonBarDividerColor);
-        }
-    }
-
-    /**
-     * Adapts the left and right margin of the divider, which is shown above the dialog's buttons.
-     */
-    private void adaptButtonBarDividerMargin() {
-        if (buttonBarDivider != null) {
-            LinearLayout.LayoutParams layoutParams =
-                    (LinearLayout.LayoutParams) buttonBarDivider.getLayoutParams();
-            layoutParams.leftMargin = buttonBarDividerMargin;
-            layoutParams.rightMargin = buttonBarDividerMargin;
-            buttonBarDivider.setLayoutParams(layoutParams);
+            buttonBarDivider.setVisibleByDefault(showButtonBarDivider);
         }
     }
 
@@ -518,29 +465,6 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     }
 
     @Override
-    public final int getButtonBarDividerColor() {
-        return buttonBarDividerColor;
-    }
-
-    @Override
-    public final void setButtonBarDividerColor(final int color) {
-        this.buttonBarDividerColor = color;
-        adaptButtonBarDividerColor();
-    }
-
-    @Override
-    public final int getButtonBarDividerMargin() {
-        return buttonBarDividerMargin;
-    }
-
-    @Override
-    public final void setButtonBarDividerMargin(final int margin) {
-        ensureAtLeast(margin, 0, "The margin must be at least 0");
-        this.buttonBarDividerMargin = margin;
-        adaptButtonBarDividerMargin();
-    }
-
-    @Override
     public final boolean isCustomButtonBarUsed() {
         return customButtonBarView != null || customButtonBarViewId != -1;
     }
@@ -565,8 +489,6 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
         outState.putInt(BUTTON_TEXT_COLOR_EXTRA, getButtonTextColor());
         outState.putInt(DISABLED_BUTTON_TEXT_COLOR_EXTRA, getDisabledButtonTextColor());
         outState.putBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA, isButtonBarDividerShown());
-        outState.putInt(BUTTON_BAR_DIVIDER_COLOR_EXTRA, getButtonBarDividerColor());
-        outState.putInt(BUTTON_BAR_DIVIDER_MARGIN_EXTRA, getButtonBarDividerMargin());
         outState.putCharSequence(POSITIVE_BUTTON_TEXT_EXTRA, positiveButtonText);
         outState.putCharSequence(NEUTRAL_BUTTON_TEXT_EXTRA, neutralButtonText);
         outState.putCharSequence(NEGATIVE_BUTTON_TEXT_EXTRA, negativeButtonText);
@@ -578,8 +500,6 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
         setButtonTextColor(savedInstanceState.getInt(BUTTON_TEXT_COLOR_EXTRA));
         setDisabledButtonTextColor(savedInstanceState.getInt(DISABLED_BUTTON_TEXT_COLOR_EXTRA));
         showButtonBarDivider(savedInstanceState.getBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA));
-        setButtonBarDividerColor(savedInstanceState.getInt(BUTTON_BAR_DIVIDER_COLOR_EXTRA));
-        setButtonBarDividerMargin(savedInstanceState.getInt(BUTTON_BAR_DIVIDER_MARGIN_EXTRA));
         setPositiveButton(savedInstanceState.getCharSequence(POSITIVE_BUTTON_TEXT_EXTRA), null);
         setNeutralButton(savedInstanceState.getCharSequence(NEUTRAL_BUTTON_TEXT_EXTRA), null);
         setNegativeButton(savedInstanceState.getCharSequence(NEGATIVE_BUTTON_TEXT_EXTRA), null);
@@ -587,10 +507,10 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
 
     @NonNull
     @Override
-    protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
-                                             @NonNull final Map<Area, View> areas,
-                                             final Void param) {
-        // TODO contentDivider = view.findViewById(R.id.content_divider);
+    protected final Map<ViewType, View> onAttach(@NonNull final Window window,
+                                                 @NonNull final View view,
+                                                 @NonNull final Map<ViewType, View> areas,
+                                                 final Void param) {
         View inflatedView = inflateButtonBar();
 
         if (inflatedView != null) {
@@ -599,10 +519,9 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
             adaptNeutralButton();
             adaptNegativeButton();
             adaptButtonBarDividerVisibility();
-            adaptButtonBarDividerColor();
-            adaptButtonBarDividerMargin();
-            Map<Area, View> result = new HashMap<>();
-            result.put(Area.BUTTON_BAR, buttonBarContainer);
+            Map<ViewType, View> result = new HashMap<>();
+            result.put(new AreaViewType(Area.BUTTON_BAR), buttonBarContainer);
+            result.put(new DividerViewType(DividerLocation.BOTTOM), buttonBarDivider);
             return result;
         }
 
@@ -611,7 +530,6 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
 
     @Override
     protected final void onDetach() {
-        contentDivider = null;
         buttonBarContainer = null;
         positiveButton = null;
         negativeButton = null;

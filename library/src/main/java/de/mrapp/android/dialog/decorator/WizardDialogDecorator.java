@@ -47,6 +47,9 @@ import de.mrapp.android.dialog.WizardDialog.TabPosition;
 import de.mrapp.android.dialog.WizardDialog.WizardListener;
 import de.mrapp.android.dialog.adapter.ViewPagerAdapter;
 import de.mrapp.android.dialog.datastructure.ViewPagerItem;
+import de.mrapp.android.dialog.view.DialogRootView;
+import de.mrapp.android.dialog.view.DialogRootView.AreaViewType;
+import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 import de.mrapp.android.dialog.view.ViewPager;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
@@ -1132,11 +1135,12 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
 
     @NonNull
     @Override
-    protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
-                                             @NonNull final Map<Area, View> areas,
-                                             @NonNull final FragmentManager fragmentManager) {
-        View headerView = areas.get(Area.HEADER);
-        View contentView = areas.get(Area.CONTENT);
+    protected final Map<ViewType, View> onAttach(@NonNull final Window window,
+                                                 @NonNull final View view,
+                                                 @NonNull final Map<ViewType, View> areas,
+                                                 @NonNull final FragmentManager fragmentManager) {
+        View headerView = areas.get(new AreaViewType(Area.HEADER));
+        View contentView = areas.get(new AreaViewType(Area.CONTENT));
 
         if (headerView != null && contentView != null) {
             View viewPagerView = contentView.findViewById(R.id.view_pager);
@@ -1168,8 +1172,8 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
                     adaptButtonBarDividerColor();
                     adaptButtonBarDividerMargin();
                     adaptButtonVisibility();
-                    Map<Area, View> result = new HashMap<>();
-                    result.put(Area.BUTTON_BAR, inflatedView);
+                    Map<ViewType, View> result = new HashMap<>();
+                    result.put(new AreaViewType(Area.BUTTON_BAR), inflatedView);
                     return result;
                 }
             }

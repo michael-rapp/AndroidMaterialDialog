@@ -25,6 +25,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.AttrRes;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
@@ -34,10 +35,12 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
+import java.io.Serializable;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedMap;
@@ -47,9 +50,11 @@ import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.ScrollableArea;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.listener.AreaListener;
+import de.mrapp.android.dialog.view.ScrollView.ScrollListener;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
 import static de.mrapp.android.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.DisplayUtil.dpToPixels;
 
 /**
  * The root view of a dialog, which is designed according to Android 5's Material Design guidelines
@@ -60,6 +65,161 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @since 3.4.3
  */
 public class DialogRootView extends LinearLayout implements AreaListener {
+
+    /**
+     * Defines the interface, a class, which represents a view type of a dialog, must implement.
+     */
+    public interface ViewType extends Serializable {
+
+    }
+
+    /**
+     * Represents a view, which corresponds to an {@link Area}.
+     */
+    public static class AreaViewType implements ViewType {
+
+        /**
+         * The constant serial version UID.
+         */
+        private static final long serialVersionUID = -4415484663952710929L;
+
+        /**
+         * The area, the view corresponds to.
+         */
+        private final Area area;
+
+        /**
+         * Creates a new view type, which represents a view, which corresponds to an {@link Area}.
+         *
+         * @param area
+         *         The area, the view corresponds to, as a value of the enum {@link Area}. The area
+         *         may not be null
+         */
+        public AreaViewType(final Area area) {
+            ensureNotNull(area, "The area may not be null");
+            this.area = area;
+        }
+
+        /**
+         * Returns the area, the view corresponds to.
+         *
+         * @return The area, the view corresponds to, as a value of the enum {@link Area}. The area
+         * may not be null
+         */
+        @NonNull
+        public final Area getArea() {
+            return area;
+        }
+
+        @Override
+        public final String toString() {
+            return "AreaViewType [area=" + area + "]";
+        }
+
+        @Override
+        public final int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + area.hashCode();
+            return result;
+        }
+
+        @Override
+        public final boolean equals(final Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            AreaViewType other = (AreaViewType) obj;
+            return area.equals(other.area);
+        }
+
+    }
+
+    /**
+     * Represents a divider.
+     */
+    public static class DividerViewType implements ViewType {
+
+        /**
+         * The constant serial version UID.
+         */
+        private static final long serialVersionUID = -7599447393953393719L;
+
+        /**
+         * The location of the divider.
+         */
+        private final DividerLocation location;
+
+        /**
+         * Creates a new view type, which represents a divider.
+         *
+         * @param location
+         *         The location of the divider as a value of the enum {@link DividerLocation}. The
+         *         location may not be null
+         */
+        public DividerViewType(@NonNull final DividerLocation location) {
+            ensureNotNull(location, "The location may not be null");
+            this.location = location;
+        }
+
+        /**
+         * Returns the location of the divider.
+         *
+         * @return The location of the divider as a value of the enum {@link DividerLocation}. The
+         * location may not be null
+         */
+        @NonNull
+        public final DividerLocation getLocation() {
+            return location;
+        }
+
+        @Override
+        public final String toString() {
+            return "DividerViewType [location=" + location + "]";
+        }
+
+        @Override
+        public final int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + location.hashCode();
+            return result;
+        }
+
+        @Override
+        public final boolean equals(final Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            DividerViewType other = (DividerViewType) obj;
+            return location.equals(other.location);
+        }
+
+    }
+
+    /**
+     * Contains all possible locations of a divider in relation to the scroll view, which is
+     * contained by a dialog.
+     */
+    public enum DividerLocation {
+
+        /**
+         * If the divider is located above the scroll view.
+         */
+        TOP,
+
+        /**
+         * If the divider is located below the scroll view.
+         */
+        BOTTOM
+
+    }
 
     /**
      * A comparator, which compares values of the enum {@link Area}.
@@ -121,14 +281,45 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     private ScrollView scrollView;
 
     /**
-     * The views, which are contained by the dialog, mapped to the corresponding areas.
+     * The divider, which is shown above the scrollable areas of the dialog.
+     */
+    private Divider topDivider;
+
+    /**
+     * The divider, which is shown below the scrollable areas of the dialog.
+     */
+    private Divider bottomDivider;
+
+    /**
+     * The views, which are contained by the dialog, mapped to the corresponding types.
      */
     private SortedMap<Area, View> areas;
+
+    /**
+     * The dividers, which are contained by the dialog, mapped to the corresponding locations.
+     */
+    private Map<DividerLocation, Divider> dividers;
 
     /**
      * The scrollable area of the dialog.
      */
     private ScrollableArea scrollableArea;
+
+    /**
+     * True, if the dividers, which are located above and below the dialog's scrollable areas, are
+     * shown, when scrolling, false otherwise
+     */
+    private boolean showDividersOnScroll;
+
+    /**
+     * The color of dividers.
+     */
+    private int dividerColor;
+
+    /**
+     * The left and right margin of dividers.
+     */
+    private int dividerMargin;
 
     /**
      * The padding of the dialog.
@@ -140,6 +331,9 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      */
     private void initialize() {
         scrollableArea = ScrollableArea.create(null, null);
+        showDividersOnScroll = true;
+        dividerColor = ContextCompat.getColor(getContext(), R.color.divider_color_light);
+        dividerMargin = 0;
         dialogPadding = new int[]{0, 0, 0, 0};
         shadowWidth = getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
         background =
@@ -156,24 +350,72 @@ public class DialogRootView extends LinearLayout implements AreaListener {
         if (areas != null) {
             removeAllViews();
             scrollView = null;
+            topDivider = null;
+            bottomDivider = null;
+            Area previousArea = null;
 
             for (Map.Entry<Area, View> entry : areas.entrySet()) {
                 Area area = entry.getKey();
                 View view = entry.getValue();
 
                 if (scrollableArea.isScrollable(area)) {
+                    if (topDivider == null && previousArea != null && previousArea != Area.HEADER &&
+                            !scrollableArea.isScrollable(previousArea)) {
+                        topDivider = addDivider();
+                    }
+
                     inflateScrollView(scrollableArea);
                     ViewGroup scrollContainer =
                             scrollView.getChildCount() > 0 ? (ViewGroup) scrollView.getChildAt(0) :
                                     scrollView;
                     scrollContainer.addView(view);
                 } else {
+                    if (bottomDivider == null && previousArea != null && area != Area.BUTTON_BAR &&
+                            !scrollableArea.isScrollable(previousArea) &&
+                            (scrollableArea.getBottomScrollableArea() == null ||
+                                    scrollableArea.getBottomScrollableArea().getIndex() <
+                                            area.getIndex())) {
+                        bottomDivider = addDivider();
+                    }
+
                     addView(view);
                 }
+
+                previousArea = area;
             }
 
             adaptAreaPadding();
         }
+    }
+
+    /**
+     * Adds the dividers, which are contained by the dialog, to the root view.
+     */
+    private void addDividers() {
+        for (Map.Entry<DividerLocation, Divider> entry : dividers.entrySet()) {
+            if (entry.getKey() == DividerLocation.BOTTOM && bottomDivider == null) {
+                bottomDivider = entry.getValue();
+            }
+        }
+    }
+
+    /**
+     * Adds a divider to the view.
+     *
+     * @return The divider, which has been added to the view, as an instance of the class {@link
+     * Divider}. The divider may not be null
+     */
+    @NonNull
+    private Divider addDivider() {
+        Divider divider = new Divider(getContext());
+        divider.setVisibility(View.INVISIBLE);
+        divider.setBackgroundColor(dividerColor);
+        LayoutParams layoutParams =
+                new LayoutParams(LayoutParams.MATCH_PARENT, dpToPixels(getContext(), 1));
+        layoutParams.leftMargin = dividerMargin;
+        layoutParams.rightMargin = dividerMargin;
+        addView(divider, layoutParams);
+        return divider;
     }
 
     /**
@@ -363,6 +605,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             scrollView = (ScrollView) layoutInflater
                     .inflate(R.layout.material_dialog_scroll_view, this, false);
+            scrollView.addScrollListener(createScrollListener());
 
             if (scrollableArea.getBottomScrollableArea().getIndex() -
                     scrollableArea.getTopScrollableArea().getIndex() > 0) {
@@ -373,6 +616,91 @@ public class DialogRootView extends LinearLayout implements AreaListener {
             }
 
             addView(scrollView);
+        }
+    }
+
+    /**
+     * Creates and returns a listener, which allows to observe when the scroll view, which is
+     * contained by the dialog, is scrolled.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnScrollChangedListener}. The listener may not be null
+     */
+    @NonNull
+    private ScrollListener createScrollListener() {
+        return new ScrollListener() {
+
+            @Override
+            public void onScrolled(final boolean scrolledToTop, final boolean scrolledToBottom) {
+                if (topDivider != null && !topDivider.isVisibleByDefault()) {
+                    topDivider.setVisibility(scrolledToTop ? View.INVISIBLE : View.VISIBLE, true);
+                }
+
+                if (bottomDivider != null && !bottomDivider.isVisibleByDefault()) {
+                    bottomDivider
+                            .setVisibility(scrolledToBottom ? View.INVISIBLE : View.VISIBLE, true);
+                }
+            }
+
+        };
+    }
+
+    /**
+     * Adapts the color of dividers.
+     */
+    private void adaptDividerColor() {
+        adaptDividerColor(topDivider);
+        adaptDividerColor(bottomDivider);
+
+        if (dividers != null) {
+            for (Divider divider : dividers.values()) {
+                adaptDividerColor(divider);
+            }
+        }
+    }
+
+    /**
+     * Adapts the color of a specific divider.
+     *
+     * @param divider
+     *         The divider, whose color should be adapted, as an instance of the class {@link
+     *         Divider}
+     */
+    private void adaptDividerColor(@Nullable final Divider divider) {
+        if (divider != null) {
+            divider.setBackgroundColor(dividerColor);
+        }
+    }
+
+    /**
+     * Adapts the left and right margin of dividers.
+     */
+    private void adaptDividerMargin() {
+        adaptDividerMargin(topDivider);
+        adaptDividerMargin(bottomDivider);
+
+        if (dividers != null) {
+            for (Divider divider : dividers.values()) {
+                adaptDividerMargin(divider);
+            }
+        }
+    }
+
+    /**
+     * Adapts the left and right margin of a specific divider.
+     *
+     * @param divider
+     *         The divider, whose left and right margin should be adapted, as an instance of the
+     *         class {@link Divider}
+     */
+    private void adaptDividerMargin(@Nullable final Divider divider) {
+        if (divider != null) {
+            ViewGroup.LayoutParams layoutParams = divider.getLayoutParams();
+
+            if (layoutParams instanceof LayoutParams) {
+                ((LayoutParams) layoutParams).leftMargin = dividerMargin;
+                ((LayoutParams) layoutParams).rightMargin = dividerMargin;
+            }
         }
     }
 
@@ -561,6 +889,43 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     }
 
     /**
+     * Sets, whether dividers, which are located above and below the dialog's scrollable areas,
+     * should be shown, when scrolled, or not.
+     *
+     * @param show
+     *         True, if the dividers, which are located above and below the dialog's scrollable
+     *         areas, should be shown, when scrolling, false otherwise
+     */
+    public final void showDividersOnScroll(final boolean show) {
+        this.showDividersOnScroll = show;
+        // TODO
+    }
+
+    /**
+     * Sets the color of dividers.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    public final void setDividerColor(@ColorInt final int color) {
+        this.dividerColor = color;
+        adaptDividerColor();
+    }
+
+    /**
+     * Sets the left and right margin of the divider, which is located above the dialog's button.
+     *
+     * @param margin
+     *         The left and right margin, which should be set, in pixels as an {@link Integer}
+     *         value. The margin must be at least 0
+     */
+    public final void setDividerMargin(final int margin) {
+        ensureAtLeast(margin, 0, "The margin must be at least 0");
+        this.dividerMargin = margin;
+        adaptDividerMargin();
+    }
+
+    /**
      * Adds the different areas of a dialog to the root view.
      *
      * @param areas
@@ -568,10 +933,23 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      *         corresponding views as values, as an instance of the type {@link Map}. The map may
      *         not be null
      */
-    public final void addAreas(@NonNull final Map<Area, View> areas) {
+    public final void addAreas(@NonNull final Map<ViewType, View> areas) {
         this.areas = new TreeMap<>(new AreaComparator());
-        this.areas.putAll(areas);
+        this.dividers = new HashMap<>();
+
+        for (Map.Entry<ViewType, View> entry : areas.entrySet()) {
+            ViewType viewType = entry.getKey();
+            View view = entry.getValue();
+
+            if (viewType instanceof AreaViewType) {
+                this.areas.put(((AreaViewType) viewType).getArea(), view);
+            } else if (viewType instanceof DividerViewType && view instanceof Divider) {
+                this.dividers.put(((DividerViewType) viewType).getLocation(), (Divider) view);
+            }
+        }
+
         addAreas();
+        addDividers();
     }
 
     @Override

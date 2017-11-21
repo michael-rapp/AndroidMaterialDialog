@@ -36,6 +36,8 @@ import de.mrapp.android.dialog.adapter.ArrayAdapter;
 import de.mrapp.android.dialog.listener.OnItemClickListenerWrapper;
 import de.mrapp.android.dialog.listener.OnMultiChoiceClickListenerWrapper;
 import de.mrapp.android.dialog.model.ButtonBarDialog;
+import de.mrapp.android.dialog.view.DialogRootView.AreaViewType;
+import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 import de.mrapp.android.util.ArrayUtil;
 
 /**
@@ -469,10 +471,11 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
 
     @NonNull
     @Override
-    protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
-                                             @NonNull final Map<Area, View> areas,
-                                             final Void param) {
-        View contentView = areas.get(Area.CONTENT);
+    protected final Map<ViewType, View> onAttach(@NonNull final Window window,
+                                                 @NonNull final View view,
+                                                 @NonNull final Map<ViewType, View> areas,
+                                                 final Void param) {
+        View contentView = areas.get(new AreaViewType(Area.CONTENT));
 
         if (contentView instanceof ViewGroup) {
             inflateListView((ViewGroup) contentView);

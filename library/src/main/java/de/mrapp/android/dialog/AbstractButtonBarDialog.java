@@ -143,25 +143,6 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
     }
 
     @Override
-    public final int getButtonBarDividerColor() {
-        return decorator.getButtonBarDividerColor();
-    }
-
-    @Override
-    public final void setButtonBarDividerColor(final int color) {
-        decorator.setButtonBarDividerColor(color);
-    }
-
-    @Override
-    public final int getButtonBarDividerMargin() {
-        return decorator.getButtonBarDividerMargin();
-    }
-
-    public final void setButtonBarDividerMargin(final int margin) {
-        decorator.setButtonBarDividerMargin(margin);
-    }
-
-    @Override
     public final boolean isCustomButtonBarUsed() {
         return decorator.isCustomButtonBarUsed();
     }

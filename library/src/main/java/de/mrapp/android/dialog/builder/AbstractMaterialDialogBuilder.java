@@ -343,6 +343,48 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     }
 
     /**
+     * Obtains, whether the dividers, which are located above and below the dialog's scrollable
+     * areas, should be shown when scrolling, or not, from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the boolean value should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainShowDividersOnScroll(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.materialDialogShowDividersOnScroll});
+        showDividersOnScroll(typedArray.getBoolean(0, true));
+    }
+
+    /**
+     * Obtains the color of dividers from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the color should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainDividerColor(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.materialDialogDividerColor});
+        int defaultColor =
+                ContextCompat.getColor(getContext(), R.color.divider_color_light);
+        setDividerColor(typedArray.getColor(0, defaultColor));
+    }
+
+    /**
+     * Obtains the left and right margin of dividers from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the margin should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainDividerMargin(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.materialDialogDividerMargin});
+        setButtonBarDividerMargin(typedArray.getDimensionPixelSize(0, 0));
+    }
+
+    /**
      * Obtains all relevant attributes from the current theme.
      *
      * @param themeResourceId
@@ -364,6 +406,9 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         obtainMessageColor(themeResourceId);
         obtainTitleColor(themeResourceId);
         obtainScrollableArea(themeResourceId);
+        obtainShowDividersOnScroll(themeResourceId);
+        obtainDividerColor(themeResourceId);
+        obtainDividerMargin(themeResourceId);
     }
 
     /**
@@ -943,6 +988,50 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     public final BuilderType setScrollableArea(@Nullable final Area top,
                                                @Nullable final Area bottom) {
         getProduct().setScrollableArea(top, bottom);
+        return self();
+    }
+
+    /**
+     * Sets, whether dividers, which are located above and below the scrollable areas dialog, which
+     * is created by the builder, should be shown when scrolling, or not.
+     *
+     * @param show
+     *         True, if the dividers, which are located above and below the dialog's scrollable
+     *         areas, should be shown when scrolling, false otherwise
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType showDividersOnScroll(boolean show) {
+        getProduct().showDividersOnScroll(show);
+        return self();
+    }
+
+    /**
+     * Sets the color of dividers, which are contained by the dialog, which is created by the
+     * builder.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setDividerColor(@ColorInt final int color) {
+        getProduct().setDividerColor(color);
+        return self();
+    }
+
+    /**
+     * Sets the left and right margin of dividers, which are contained by the dialog, which is
+     * created by the builder.
+     *
+     * @param margin
+     *         The left and right margin, which should be set, in pixels as an {@link Integer}
+     *         value. The margin must be at least 0
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setButtonBarDividerMargin(final int margin) {
+        getProduct().setDividerMargin(margin);
         return self();
     }
 

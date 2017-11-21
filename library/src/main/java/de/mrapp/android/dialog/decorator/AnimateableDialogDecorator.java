@@ -30,12 +30,12 @@ import java.util.Collections;
 import java.util.Map;
 
 import de.mrapp.android.dialog.R;
-import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.CircleRevealAnimation;
 import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.animation.FadeAnimation;
 import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
 import de.mrapp.android.dialog.model.HeaderDialog;
+import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 
 /**
  * A decorator, which allows to modify the view hierarchy of an animateable dialog, which is
@@ -566,9 +566,10 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
 
     @NonNull
     @Override
-    protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
-                                             @NonNull final Map<Area, View> areas,
-                                             final Void param) {
+    protected final Map<ViewType, View> onAttach(@NonNull final Window window,
+                                                 @NonNull final View view,
+                                                 @NonNull final Map<ViewType, View> areas,
+                                                 final Void param) {
         return Collections.emptyMap();
     }
 

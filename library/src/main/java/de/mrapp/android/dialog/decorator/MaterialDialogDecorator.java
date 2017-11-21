@@ -56,6 +56,8 @@ import de.mrapp.android.dialog.drawable.CircleTransitionDrawable;
 import de.mrapp.android.dialog.drawable.CrossFadeTransitionDrawable;
 import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.dialog.view.DialogRootView;
+import de.mrapp.android.dialog.view.DialogRootView.AreaViewType;
+import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 import de.mrapp.android.util.ViewUtil;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
@@ -182,6 +184,26 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private static final String BOTTOM_SCROLLABLE_AREA_EXTRA =
             MaterialDialogDecorator.class.getSimpleName() + "::bottomScrollableArea";
+
+    /**
+     * The name of the extra, which is used to store, whether the dividers, which are located above
+     * and below the dialog's scrollable areas, should be shown when scrolling, or not, within
+     * a bundle.
+     */
+    private static final String SHOW_DIVIDERS_ON_SCROLL_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::showDividersOnScroll";
+
+    /**
+     * The name of the extra, which is used to store the color of the dividers, within a bundle.
+     */
+    private static final String DIVIDER_COLOR_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::dividerColor";
+
+    /**
+     * The name of the extra, which is used to store the margin of dividers, within a bundle.
+     */
+    private static final String DIVIDER_MARGIN_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::dividerMargin";
 
     /**
      * The name of the extra, which is used to store the color of the title of the dialog within a
@@ -335,6 +357,22 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * The scrollable area of the dialog.
      */
     private ScrollableArea scrollableArea;
+
+    /**
+     * True, if the dividers, which are located above and below the dialog's scrollable areas, are
+     * shown, when scrolling, false otherwise
+     */
+    private boolean showDividersOnScroll;
+
+    /**
+     * The color of dividers.
+     */
+    private int dividerColor;
+
+    /**
+     * The left and right margin of dividers.
+     */
+    private int dividerMargin;
 
     /**
      * The title of the dialog.
@@ -720,6 +758,28 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
         if (dialogRootView != null) {
             dialogRootView.setScrollableArea(scrollableArea);
+        }
+    }
+
+    /**
+     * Adapts the color of dividers.
+     */
+    private void adaptDividerColor() {
+        DialogRootView dialogRootView = getRootView();
+
+        if (dialogRootView != null) {
+            dialogRootView.setDividerColor(dividerColor);
+        }
+    }
+
+    /**
+     * Adapts the left and right margin of dividers.
+     */
+    private void adaptDividerMargin() {
+        DialogRootView dialogRootView = getRootView();
+
+        if (dialogRootView != null) {
+            dialogRootView.setDividerMargin(dividerMargin);
         }
     }
 
@@ -1155,6 +1215,48 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     @Override
+    public final boolean areDividersShownOnScroll() {
+        return showDividersOnScroll;
+    }
+
+    @Override
+    public final void showDividersOnScroll(final boolean show) {
+        this.showDividersOnScroll = show;
+
+        // TODO
+        /*
+        if (!show && buttonBarDivider != null && contentDivider != null) {
+            buttonBarDivider.setVisibility(
+                    getDialog().isButtonBarDividerShown() ? View.VISIBLE : View.GONE);
+            contentDivider.setVisibility(View.GONE);
+        }
+        */
+    }
+
+    @Override
+    public final int getDividerColor() {
+        return dividerColor;
+    }
+
+    @Override
+    public final void setDividerColor(@ColorInt final int color) {
+        this.dividerColor = color;
+        adaptDividerColor();
+    }
+
+    @Override
+    public final int getDividerMargin() {
+        return dividerMargin;
+    }
+
+    @Override
+    public final void setDividerMargin(final int margin) {
+        ensureAtLeast(margin, 0, "The margin must be at least 0");
+        this.dividerMargin = margin;
+        adaptDividerMargin();
+    }
+
+    @Override
     public final Drawable getIcon() {
         return icon;
     }
@@ -1372,6 +1474,9 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         outState.putSerializable(TOP_SCROLLABLE_AREA_EXTRA, scrollableArea.getTopScrollableArea());
         outState.putSerializable(BOTTOM_SCROLLABLE_AREA_EXTRA,
                 scrollableArea.getBottomScrollableArea());
+        outState.putBoolean(SHOW_DIVIDERS_ON_SCROLL_EXTRA, areDividersShownOnScroll());
+        outState.putInt(DIVIDER_COLOR_EXTRA, getDividerColor());
+        outState.putInt(DIVIDER_MARGIN_EXTRA, getDividerMargin());
         outState.putInt(TITLE_COLOR_EXTRA, getTitleColor());
         outState.putInt(MESSAGE_COLOR_EXTRA, getMessageColor());
         outState.putCharSequence(TITLE_EXTRA, getTitle());
@@ -1414,6 +1519,9 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
                 savedInstanceState.getInt(BOTTOM_PADDING_EXTRA));
         setScrollableArea((Area) savedInstanceState.getSerializable(TOP_SCROLLABLE_AREA_EXTRA),
                 (Area) savedInstanceState.getSerializable(BOTTOM_SCROLLABLE_AREA_EXTRA));
+        showDividersOnScroll(savedInstanceState.getBoolean(SHOW_DIVIDERS_ON_SCROLL_EXTRA));
+        setDividerColor(savedInstanceState.getInt(DIVIDER_COLOR_EXTRA));
+        setDividerMargin(savedInstanceState.getInt(DIVIDER_MARGIN_EXTRA));
         setTitleColor(savedInstanceState.getInt(TITLE_COLOR_EXTRA));
         setMessageColor(savedInstanceState.getInt(MESSAGE_COLOR_EXTRA));
         setTitle(savedInstanceState.getCharSequence(TITLE_EXTRA));
@@ -1438,9 +1546,10 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @NonNull
     @Override
-    protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
-                                             @NonNull final Map<Area, View> areas,
-                                             final Void param) {
+    protected final Map<ViewType, View> onAttach(@NonNull final Window window,
+                                                 @NonNull final View view,
+                                                 @NonNull final Map<ViewType, View> areas,
+                                                 final Void param) {
         ViewCompat.setOnApplyWindowInsetsListener(view, createWindowInsetsListener());
         View titleView = inflateTitleView();
         View messageView = inflateMessageView();
@@ -1456,10 +1565,10 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             adaptMessage();
             adaptMessageColor();
             adaptBackground(null);
-            Map<Area, View> result = new HashMap<>();
-            result.put(Area.TITLE, titleContainer);
-            result.put(Area.MESSAGE, messageContainer);
-            result.put(Area.CONTENT, contentContainer);
+            Map<ViewType, View> result = new HashMap<>();
+            result.put(new AreaViewType(Area.TITLE), titleContainer);
+            result.put(new AreaViewType(Area.MESSAGE), messageContainer);
+            result.put(new AreaViewType(Area.CONTENT), contentContainer);
             return result;
         }
 

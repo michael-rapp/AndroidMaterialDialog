@@ -28,8 +28,8 @@ import java.util.Map;
 
 import de.mrapp.android.dialog.ProgressDialog.ProgressBarPosition;
 import de.mrapp.android.dialog.R;
-import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.model.ButtonBarDialog;
+import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 import de.mrapp.android.view.CircularProgressBar;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
@@ -270,9 +270,10 @@ public class ProgressDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
 
     @NonNull
     @Override
-    protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
-                                             @NonNull final Map<Area, View> areas,
-                                             final Void param) {
+    protected final Map<ViewType, View> onAttach(@NonNull final Window window,
+                                                 @NonNull final View view,
+                                                 @NonNull final Map<ViewType, View> areas,
+                                                 final Void param) {
         adaptProgressBar();
         return Collections.emptyMap();
     }

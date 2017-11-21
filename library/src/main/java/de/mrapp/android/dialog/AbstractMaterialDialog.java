@@ -45,6 +45,7 @@ import de.mrapp.android.dialog.decorator.AbstractDecorator;
 import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
 import de.mrapp.android.dialog.model.MaterialDialog;
 import de.mrapp.android.dialog.view.DialogRootView;
+import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 
 /**
  * An abstract base class for all dialogs, which are designed according to Android 5's Material
@@ -112,13 +113,13 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
      *         The view of the dialog as an instance of the class {@link View}. The view may not be
      *         null
      * @return A map, which contains the views, which have been inflated by the decorators, mapped
-     * to the areas they correspond to, as an instance of the type {@link Map} or null, if the
-     * decorator has not inflated any views
+     * to their view types, as an instance of the type {@link Map} or null, if the decorator has not
+     * inflated any views
      */
-    private Map<Area, View> attachDecorators(@NonNull final Window window,
-                                             @NonNull final DialogRootView rootView,
-                                             @NonNull final View view) {
-        Map<Area, View> result = new HashMap<>();
+    private Map<ViewType, View> attachDecorators(@NonNull final Window window,
+                                                 @NonNull final DialogRootView rootView,
+                                                 @NonNull final View view) {
+        Map<ViewType, View> result = new HashMap<>();
 
         for (AbstractDecorator<?, ?> decorator : decorators) {
             result.putAll(decorator.attach(window, view, result, null));
@@ -370,6 +371,36 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     }
 
     @Override
+    public final boolean areDividersShownOnScroll() {
+        return decorator.areDividersShownOnScroll();
+    }
+
+    @Override
+    public final void showDividersOnScroll(final boolean show) {
+        decorator.showDividersOnScroll(show);
+    }
+
+    @Override
+    public final int getDividerColor() {
+        return decorator.getDividerColor();
+    }
+
+    @Override
+    public final void setDividerColor(@ColorInt final int color) {
+        decorator.setDividerColor(color);
+    }
+
+    @Override
+    public final int getDividerMargin() {
+        return decorator.getDividerMargin();
+    }
+
+    @Override
+    public final void setDividerMargin(final int margin) {
+        decorator.setDividerMargin(margin);
+    }
+
+    @Override
     public final Drawable getIcon() {
         return decorator.getIcon();
     }
@@ -529,7 +560,7 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         rootView = view.findViewById(R.id.dialog_root_view);
         assert rootView != null;
-        Map<Area, View> areas = attachDecorators(window, rootView, view);
+        Map<ViewType, View> areas = attachDecorators(window, rootView, view);
         rootView.addAreas(areas);
     }
 

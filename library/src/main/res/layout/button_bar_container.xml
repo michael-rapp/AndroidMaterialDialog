@@ -19,13 +19,13 @@ License.
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:visibility="gone">
+    android:visibility="invisible">
 
-    <View
+    <de.mrapp.android.dialog.view.Divider
         android:id="@+id/button_bar_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/button_bar_divider_color_light"
-        android:visibility="gone"/>
+        android:background="@color/divider_color_light"
+        android:visibility="invisible"/>
 
 </LinearLayout>

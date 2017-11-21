@@ -51,6 +51,7 @@ import de.mrapp.android.dialog.decorator.AbstractDialogFragmentDecorator;
 import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
 import de.mrapp.android.dialog.model.MaterialDialog;
 import de.mrapp.android.dialog.view.DialogRootView;
+import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -149,14 +150,14 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
      *         The fragment manager, which is used to show the dialog, as an instance of the class
      *         {@link FragmentManager}. The fragment manager may not be null
      * @return A map, which contains the views, which have been inflated by the decorators, mapped
-     * to the areas they correspond to, as an instance of the type {@link Map} or null, if the
-     * decorator has not inflated any views
+     * to their view types, as an instance of the type {@link Map} or null, if the decorator has not
+     * inflated any views
      */
-    private Map<Area, View> applyDecorators(@NonNull final Window window,
-                                            @NonNull final DialogRootView rootView,
-                                            @NonNull final View view,
-                                            @NonNull final FragmentManager fragmentManager) {
-        Map<Area, View> result = new HashMap<>();
+    private Map<ViewType, View> applyDecorators(@NonNull final Window window,
+                                                @NonNull final DialogRootView rootView,
+                                                @NonNull final View view,
+                                                @NonNull final FragmentManager fragmentManager) {
+        Map<ViewType, View> result = new HashMap<>();
 
         for (AbstractDecorator<?, ?> decorator : decorators) {
             if (decorator instanceof AbstractDialogDecorator) {
@@ -460,6 +461,36 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     }
 
     @Override
+    public final boolean areDividersShownOnScroll() {
+        return decorator.areDividersShownOnScroll();
+    }
+
+    @Override
+    public final void showDividersOnScroll(final boolean show) {
+        decorator.showDividersOnScroll(show);
+    }
+
+    @Override
+    public final int getDividerColor() {
+        return decorator.getDividerColor();
+    }
+
+    @Override
+    public final void setDividerColor(@ColorInt final int color) {
+        decorator.setDividerColor(color);
+    }
+
+    @Override
+    public final int getDividerMargin() {
+        return decorator.getDividerMargin();
+    }
+
+    @Override
+    public final void setDividerMargin(final int margin) {
+        decorator.setDividerMargin(margin);
+    }
+
+    @Override
     public final Drawable getIcon() {
         return decorator.getIcon();
     }
@@ -653,7 +684,8 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
         assert window != null;
         rootView = view.findViewById(R.id.dialog_root_view);
         assert rootView != null;
-        Map<Area, View> areas = applyDecorators(window, rootView, view, getChildFragmentManager());
+        Map<ViewType, View> areas =
+                applyDecorators(window, rootView, view, getChildFragmentManager());
         rootView.addAreas(areas);
         return view;
     }

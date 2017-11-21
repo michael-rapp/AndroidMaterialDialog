@@ -25,9 +25,9 @@ import java.util.Collections;
 import java.util.Map;
 
 import de.mrapp.android.dialog.R;
-import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.model.ButtonBarDialog;
 import de.mrapp.android.dialog.model.ListDialog;
+import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -39,14 +39,6 @@ import de.mrapp.android.dialog.model.ListDialog;
  */
 public class ScrollableDialogDecorator extends AbstractDialogDecorator<ListDialog>
         implements de.mrapp.android.dialog.model.ScrollableDialogDecorator, OnScrollListener {
-
-    /**
-     * The name of the extra, which is used to store, whether the dividers, which are located above
-     * and below the dialog's content, should be shown, when the content is scrolled, or not, within
-     * a bundle.
-     */
-    private static final String SHOW_DIVIDERS_ON_SCROLL_EXTRA =
-            ScrollableDialogDecorator.class.getSimpleName() + "::showDividersOnScroll";
 
     /**
      * The divider, which is located above the dialog's content.
@@ -62,12 +54,6 @@ public class ScrollableDialogDecorator extends AbstractDialogDecorator<ListDialo
      * The dialog's scrollable view.
      */
     private AbsListView scrollView;
-
-    /**
-     * True, if the dividers, which are located above and below the dialog's content, are shown,
-     * when the content is scrolled, false otherwise
-     */
-    private boolean showDividersOnScroll;
 
     /**
      * Searches for a scrollable view in the dialog's view hierarchy and registers a scroll
@@ -153,22 +139,6 @@ public class ScrollableDialogDecorator extends AbstractDialogDecorator<ListDialo
     }
 
     @Override
-    public final boolean areDividersShownOnScroll() {
-        return showDividersOnScroll;
-    }
-
-    @Override
-    public final void showDividersOnScroll(final boolean show) {
-        this.showDividersOnScroll = show;
-
-        if (!show && buttonBarDivider != null && contentDivider != null) {
-            buttonBarDivider.setVisibility(
-                    getDialog().isButtonBarDividerShown() ? View.VISIBLE : View.GONE);
-            contentDivider.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
     public final void onScrollStateChanged(final AbsListView view, final int scrollState) {
 
     }
@@ -176,28 +146,32 @@ public class ScrollableDialogDecorator extends AbstractDialogDecorator<ListDialo
     @Override
     public final void onScroll(final AbsListView view, final int firstVisibleItem,
                                final int visibleItemCount, final int totalItemCount) {
+        // TODO
+        /*
         if (showDividersOnScroll) {
             contentDivider.setVisibility(isFirstItemFullyVisible(view) ? View.GONE : View.VISIBLE);
             buttonBarDivider.setVisibility(getDialog().isButtonBarDividerShown() ? View.VISIBLE :
                     (isLastItemFullyVisible(view) ? View.GONE : View.VISIBLE));
         }
+        */
     }
 
     @Override
     public final void onSaveInstanceState(@NonNull final Bundle outState) {
-        outState.putBoolean(SHOW_DIVIDERS_ON_SCROLL_EXTRA, areDividersShownOnScroll());
+
     }
 
     @Override
     public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
-        showDividersOnScroll(savedInstanceState.getBoolean(SHOW_DIVIDERS_ON_SCROLL_EXTRA));
+
     }
 
     @NonNull
     @Override
-    protected final Map<Area, View> onAttach(@NonNull final Window window, @NonNull final View view,
-                                             @NonNull final Map<Area, View> areas,
-                                             final Void param) {
+    protected final Map<ViewType, View> onAttach(@NonNull final Window window,
+                                                 @NonNull final View view,
+                                                 @NonNull final Map<ViewType, View> areas,
+                                                 final Void param) {
         // TODO contentDivider = view.findViewById(R.id.content_divider);
         buttonBarDivider = view.findViewById(R.id.button_bar_divider);
         View contentContainer = view.findViewById(R.id.content_container);
