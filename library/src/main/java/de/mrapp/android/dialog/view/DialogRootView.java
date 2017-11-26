@@ -35,6 +35,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.LinearLayout;
 
@@ -51,6 +52,7 @@ import de.mrapp.android.dialog.ScrollableArea;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.listener.AreaListener;
 import de.mrapp.android.dialog.view.ScrollView.ScrollListener;
+import de.mrapp.android.util.ViewUtil;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
 import static de.mrapp.android.util.Condition.ensureNotNull;
@@ -368,6 +370,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
                     ViewGroup scrollContainer =
                             scrollView.getChildCount() > 0 ? (ViewGroup) scrollView.getChildAt(0) :
                                     scrollView;
+                    view.getViewTreeObserver()
+                            .addOnGlobalLayoutListener(createScrollViewChildLayoutListener());
                     scrollContainer.addView(view);
                 } else {
                     if (bottomDivider == null && previousArea != null && area != Area.BUTTON_BAR &&
@@ -617,6 +621,38 @@ public class DialogRootView extends LinearLayout implements AreaListener {
 
             addView(scrollView);
         }
+    }
+
+    /**
+     * Creates and returns a listener, which allows to observe, when the child of the dialog's
+     * scroll view has been layouted. If the scroll view's height is greater than necessary, its
+     * height is reduced to match the height of its child.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * ViewTreeObserver.OnGlobalLayoutListener}. The listener may not be null
+     */
+    @NonNull
+    private ViewTreeObserver.OnGlobalLayoutListener createScrollViewChildLayoutListener() {
+        return new ViewTreeObserver.OnGlobalLayoutListener() {
+
+            @Override
+            public void onGlobalLayout() {
+                View child = scrollView.getChildAt(0);
+                int childHeight = child.getHeight();
+                int containerHeight = scrollView.getHeight();
+
+                if (containerHeight > childHeight) {
+                    LinearLayout.LayoutParams layoutParams =
+                            (LinearLayout.LayoutParams) scrollView.getLayoutParams();
+                    layoutParams.height = childHeight;
+                    layoutParams.weight = 0;
+                    scrollView.requestLayout();
+                }
+
+                ViewUtil.removeOnGlobalLayoutListener(child.getViewTreeObserver(), this);
+            }
+
+        };
     }
 
     /**
