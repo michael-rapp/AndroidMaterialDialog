@@ -355,13 +355,14 @@ public class DialogRootView extends LinearLayout implements AreaListener {
             topDivider = null;
             bottomDivider = null;
             Area previousArea = null;
+            boolean canAddTopDivider = false;
 
             for (Map.Entry<Area, View> entry : areas.entrySet()) {
                 Area area = entry.getKey();
                 View view = entry.getValue();
 
                 if (scrollableArea.isScrollable(area)) {
-                    if (topDivider == null && previousArea != null && previousArea != Area.HEADER &&
+                    if (topDivider == null && canAddTopDivider &&
                             !scrollableArea.isScrollable(previousArea)) {
                         topDivider = addDivider();
                     }
@@ -374,17 +375,17 @@ public class DialogRootView extends LinearLayout implements AreaListener {
                             .addOnGlobalLayoutListener(createScrollViewChildLayoutListener());
                     scrollContainer.addView(view);
                 } else {
-                    if (bottomDivider == null && previousArea != null && area != Area.BUTTON_BAR &&
-                            !scrollableArea.isScrollable(previousArea) &&
-                            (scrollableArea.getBottomScrollableArea() == null ||
-                                    scrollableArea.getBottomScrollableArea().getIndex() <
-                                            area.getIndex())) {
+                    if (bottomDivider == null && previousArea != null &&
+                            scrollableArea.getBottomScrollableArea() != null &&
+                            scrollableArea.getBottomScrollableArea().getIndex() < area.getIndex() &&
+                            view.getVisibility() == View.VISIBLE && area != Area.BUTTON_BAR) {
                         bottomDivider = addDivider();
                     }
 
                     addView(view);
                 }
 
+                canAddTopDivider |= area != Area.HEADER && view.getVisibility() == View.VISIBLE;
                 previousArea = area;
             }
 

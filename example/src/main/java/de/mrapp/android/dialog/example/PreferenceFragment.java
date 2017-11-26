@@ -407,8 +407,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             }
 
             return new RectangleRevealAnimation.Builder(getActivity()).setWidth(view.getWidth())
-                    .setDuration(4000).setHeight(view.getHeight()).setX(viewLocation[0]).setY(y)
-                    .create();
+                    .setHeight(view.getHeight()).setX(viewLocation[0]).setY(y).create();
         }
 
         return null;
@@ -663,7 +662,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             builder.setHeaderIcon(R.drawable.dialog_header_icon);
         }
 
-        builder.setScrollableArea(ScrollableArea.Area.TITLE, ScrollableArea.Area.MESSAGE);
+        builder.setScrollableArea(ScrollableArea.Area.MESSAGE);
     }
 
     /**
