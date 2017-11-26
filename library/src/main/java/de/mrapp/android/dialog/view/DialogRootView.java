@@ -640,7 +640,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
             public void onGlobalLayout() {
                 View child = scrollView.getChildAt(0);
                 int childHeight = child.getHeight();
-                int containerHeight = scrollView.getHeight();
+                int containerHeight = scrollView.getHeight() - scrollView.getPaddingTop() -
+                        scrollView.getPaddingBottom();
 
                 if (containerHeight > childHeight) {
                     LinearLayout.LayoutParams layoutParams =
