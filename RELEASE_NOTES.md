@@ -7,6 +7,12 @@ A feature release, which introduces the following changes:
 - Updated dependency "AndroidUtil" to version 1.17.2.
 - Updated dependency "AndroidMaterialViews" to version 2.1.5.
 
+## Version 4.1.1 (Dec. 13th 2017)
+
+A bugfix release, which fixes the following issues:
+
+- https://github.com/michael-rapp/AndroidMaterialDialog/issues/19
+
 ## Version 4.1.0 (Aug. 31th 2017)
 
 A feature release, which introduces the following changes:
