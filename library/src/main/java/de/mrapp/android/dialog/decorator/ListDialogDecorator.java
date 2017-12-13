@@ -305,7 +305,11 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         this.multiChoiceListener = null;
         this.choiceMode = ListView.CHOICE_MODE_SINGLE;
         this.checkedItems = new boolean[items.length];
-        this.checkedItems[checkedItem] = true;
+
+        if (checkedItem >= 0) {
+            this.checkedItems[checkedItem] = true;
+        }
+
         inflateListView();
     }
 
@@ -329,7 +333,11 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         this.multiChoiceListener = null;
         this.choiceMode = ListView.CHOICE_MODE_SINGLE;
         this.checkedItems = new boolean[adapter.getCount()];
-        this.checkedItems[checkedItem] = true;
+
+        if (checkedItem >= 0) {
+            this.checkedItems[checkedItem] = true;
+        }
+
         inflateListView();
     }
 
