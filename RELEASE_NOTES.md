@@ -6,8 +6,8 @@ A feature release, which introduces the following changes:
 
 - A scrollable area can now be specified for dialogs.
 - The width, height, padding, margin and other properties of a `WizardDialog` are now properly restored after orientation changes.
-- Updated AppCompat v7 support library to version 27.0.1.
-- Updated Android Design support library to version 27.0.1.
+- Updated AppCompat v7 support library to version 27.0.2.
+- Updated Android Design support library to version 27.0.2.
 - Updated dependency "AndroidUtil" to version 1.18.2.
 - Updated dependency "AndroidMaterialViews" to version 2.1.8.
 
