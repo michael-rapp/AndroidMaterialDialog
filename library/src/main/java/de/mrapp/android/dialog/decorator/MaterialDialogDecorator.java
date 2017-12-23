@@ -15,6 +15,7 @@ package de.mrapp.android.dialog.decorator;
 
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -688,7 +689,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
                 }
             }
 
-            getWindow().setBackgroundDrawable(null);
+            getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             ViewUtil.setBackground(getRootView(), isFullscreen() ? null : newBackground);
             ViewUtil.setBackground(getWindow().getDecorView(),
                     isFullscreen() ? newBackground : null);
