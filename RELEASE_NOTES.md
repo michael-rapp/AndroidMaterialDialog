@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 4.1.2 (Dec. 23th 2017)
+
+A bugfix release, which fixes the following issues:
+
+- https://github.com/michael-rapp/AndroidMaterialDialog/issues/21
+
 ## Version 4.1.1 (Dec. 13th 2017)
 
 A bugfix release, which fixes the following issues:
