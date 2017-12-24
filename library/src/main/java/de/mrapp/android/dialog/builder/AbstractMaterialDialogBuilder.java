@@ -366,8 +366,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     private void obtainDividerColor(@StyleRes final int themeResourceId) {
         TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                 new int[]{R.attr.materialDialogDividerColor});
-        int defaultColor =
-                ContextCompat.getColor(getContext(), R.color.divider_color_light);
+        int defaultColor = ContextCompat.getColor(getContext(), R.color.divider_color_light);
         setDividerColor(typedArray.getColor(0, defaultColor));
     }
 
@@ -450,6 +449,26 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
                                          @StyleRes final int themeResourceId) {
         super(context);
         initialize(themeResourceId);
+    }
+
+    /**
+     * Sets the background of the window of the dialog, which is created by the builder. Preferably,
+     * it should be a 9-patch drawable. The drawable's padding is taken into account for insetting
+     * the dialog's content (see {@link MaterialDialog#getWindowInsetLeft()}, {@link
+     * MaterialDialog#getWindowInsetTop()}, {@link MaterialDialog#getWindowInsetRight()} and {@link
+     * MaterialDialog#getWindowInsetBottom()}). By using using transparency, given drawable can be
+     * used to customize the shape of the dialog as well as its shadow. The background is only
+     * shown, if the dialog is not shown fullscreen.
+     *
+     * @param resourceId
+     *         The resource id of the window background, which should be set, as an {@link Integer}
+     *         value. The resource id must correspond to a valid drawable resource
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setWindowBackground(@DrawableRes final int resourceId) {
+        getProduct().setWindowBackground(resourceId);
+        return self();
     }
 
     /**

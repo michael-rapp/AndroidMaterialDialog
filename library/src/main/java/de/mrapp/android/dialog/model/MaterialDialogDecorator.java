@@ -39,6 +39,61 @@ import de.mrapp.android.dialog.animation.BackgroundAnimation;
 public interface MaterialDialogDecorator extends Dialog {
 
     /**
+     * Returns the background of the dialog's window.
+     *
+     * @return The background of the dialog's window as an instance of the class {@link Drawable}.
+     * The window background may not be null
+     */
+    @NonNull
+    Drawable getWindowBackground();
+
+    /**
+     * Sets the background of the dialog's window. Preferably, it should be a 9-patch drawable. The
+     * drawable's padding is taken into account for insetting the dialog's content (see {@link
+     * #getWindowInsetLeft()}, {@link #getWindowInsetTop()}, {@link #getWindowInsetRight()} and
+     * {@link #getWindowInsetBottom()}). By using using transparency, given drawable can be used to
+     * customize the shape of the dialog as well as its shadow. The background is only shown, if the
+     * dialog is not shown fullscreen.
+     *
+     * @param resourceId
+     *         The resource id of the window background, which should be set, as an {@link Integer}
+     *         value. The resource id must correspond to a valid drawable resource
+     */
+    void setWindowBackground(@DrawableRes final int resourceId);
+
+    /**
+     * Returns the left inset of the dialog's content, depending on the padding of the dialog's
+     * window background. If the dialog is shown fullscreen, the inset is always 0.
+     *
+     * @return The left inset of the dialog's content in pixels as an {@link Integer} value
+     */
+    int getWindowInsetLeft();
+
+    /**
+     * Returns the top inset of the dialog's content, depending on the padding of the dialog's
+     * window background. If the dialog is shown fullscreen, the inset is always 0.
+     *
+     * @return The top inset of the dialog's content in pixels as an {@link Integer} value
+     */
+    int getWindowInsetTop();
+
+    /**
+     * Returns the right inset of the dialog's content, depending on the padding of the dialog's
+     * window background. If the dialog is shown fullscreen, the inset is always 0.
+     *
+     * @return The right inset of the dialog's content in pixels as an {@link Integer} value
+     */
+    int getWindowInsetRight();
+
+    /**
+     * Returns the bottom inset of the dialog's content, depending on the padding of the dialog's
+     * window background. If the dialog is shown fullscreen, the inset is always 0.
+     *
+     * @return The bottom inset of the dialog's content in pixels as an {@link Integer} value
+     */
+    int getWindowInsetBottom();
+
+    /**
      * Returns, whether the dialog is canceled, when touched outside the window's bounds, or not.
      *
      * @return True, if the dialog is canceled, when touched outside the window, false otherwise

@@ -290,6 +290,37 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
         decorator.setCanceledOnTouchOutside(canceledOnTouchOutside);
     }
 
+    @NonNull
+    @Override
+    public final Drawable getWindowBackground() {
+        return decorator.getWindowBackground();
+    }
+
+    @Override
+    public final void setWindowBackground(@DrawableRes final int resourceId) {
+        decorator.setWindowBackground(resourceId);
+    }
+
+    @Override
+    public final int getWindowInsetLeft() {
+        return decorator.getWindowInsetLeft();
+    }
+
+    @Override
+    public final int getWindowInsetTop() {
+        return decorator.getWindowInsetTop();
+    }
+
+    @Override
+    public final int getWindowInsetRight() {
+        return decorator.getWindowInsetRight();
+    }
+
+    @Override
+    public final int getWindowInsetBottom() {
+        return decorator.getWindowInsetBottom();
+    }
+
     @Override
     public final boolean isCancelable() {
         return decorator.isCancelable();

@@ -29,7 +29,6 @@ import android.view.Window;
 import java.util.Collections;
 import java.util.Map;
 
-import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.animation.CircleRevealAnimation;
 import de.mrapp.android.dialog.animation.DialogAnimation;
 import de.mrapp.android.dialog.animation.FadeAnimation;
@@ -152,28 +151,30 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
     private void configureShowAnimator(@NonNull final View animatedView,
                                        @NonNull final RectangleRevealAnimation animation,
                                        @NonNull final ViewPropertyAnimator animator) {
-        int shadowWidth = getDialog().isFullscreen() ? 0 :
-                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
+        int horizontalWindowInset =
+                getDialog().getWindowInsetLeft() + getDialog().getWindowInsetRight();
+        int verticalWindowInset =
+                getDialog().getWindowInsetTop() + getDialog().getWindowInsetBottom();
         float translationX = 0;
         float translationY = 0;
 
         if (animation.getX() != null) {
-            translationX = animation.getX() - animatedView.getLeft() - shadowWidth;
+            translationX = animation.getX() - animatedView.getLeft() - horizontalWindowInset;
         }
 
         if (animation.getY() != null) {
-            translationY = animation.getY() - animatedView.getTop() - shadowWidth;
+            translationY = animation.getY() - animatedView.getTop() - verticalWindowInset;
         }
 
         if (animation.getWidth() != null) {
-            int viewWidth = animatedView.getWidth() - 2 * shadowWidth;
+            int viewWidth = animatedView.getWidth() - horizontalWindowInset;
             translationX -= (float) (viewWidth - animation.getWidth()) / 2f;
             animatedView.setScaleX((float) animation.getWidth() / (float) viewWidth);
             animator.scaleX(1);
         }
 
         if (animation.getHeight() != null) {
-            int viewHeight = animatedView.getHeight() - 2 * shadowWidth;
+            int viewHeight = animatedView.getHeight() - verticalWindowInset;
             translationY -= (float) (viewHeight - animation.getHeight()) / 2f;
             animatedView.setScaleY((float) animation.getHeight() / (float) viewHeight);
             animator.scaleY(1);
@@ -211,27 +212,29 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
     private void configureHideAnimator(@NonNull final View animatedView,
                                        @NonNull final RectangleRevealAnimation animation,
                                        @NonNull final ViewPropertyAnimator animator) {
-        int shadowWidth = getDialog().isFullscreen() ? 0 :
-                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
+        int horizontalWindowInset =
+                getDialog().getWindowInsetLeft() + getDialog().getWindowInsetRight();
+        int verticalWindowInset =
+                getDialog().getWindowInsetTop() + getDialog().getWindowInsetBottom();
         float translationX = 0;
         float translationY = 0;
 
         if (animation.getX() != null) {
-            translationX = animation.getX() - animatedView.getLeft() - shadowWidth;
+            translationX = animation.getX() - animatedView.getLeft() - horizontalWindowInset;
         }
 
         if (animation.getY() != null) {
-            translationY = animation.getY() - animatedView.getTop() - shadowWidth;
+            translationY = animation.getY() - animatedView.getTop() - verticalWindowInset;
         }
 
         if (animation.getWidth() != null) {
-            int viewWidth = animatedView.getWidth() - 2 * shadowWidth;
+            int viewWidth = animatedView.getWidth() - horizontalWindowInset;
             translationX -= (float) (viewWidth - animation.getWidth()) / 2f;
             animator.scaleX((float) animation.getWidth() / (float) viewWidth);
         }
 
         if (animation.getHeight() != null) {
-            int viewHeight = animatedView.getHeight() - 2 * shadowWidth;
+            int viewHeight = animatedView.getHeight() - verticalWindowInset;
             translationY -= (float) (viewHeight - animation.getHeight()) / 2f;
             animator.scaleY((float) animation.getHeight() / (float) viewHeight);
         }

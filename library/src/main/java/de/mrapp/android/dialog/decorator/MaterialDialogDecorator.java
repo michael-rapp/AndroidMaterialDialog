@@ -74,6 +74,13 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         implements de.mrapp.android.dialog.model.MaterialDialogDecorator {
 
     /**
+     * The name of the extra, which is used to store the resource id of the dialog's window
+     * background within a bundle.
+     */
+    private static final String WINDOW_BACKGROUND_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::windowBackground";
+
+    /**
      * The name of the extra, which is used to store, whether the dialog is cancelable, or not,
      * within a bundle.
      */
@@ -305,6 +312,22 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     private ViewGroup contentContainer;
 
     /**
+     * The resource id of the dialog's window background.
+     */
+    private int windowBackgroundResourceId;
+
+    /**
+     * The background of the dialog's window.
+     */
+    private Drawable windowBackground;
+
+    /**
+     * The insets of the dialog's content, depending on the padding of the dialog's window
+     * background.
+     */
+    private Rect windowInsets;
+
+    /**
      * True, if the dialog is cancelable, false otherwise.
      */
     private boolean cancelable;
@@ -475,7 +498,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * The window insets, which have been applied to the root view of the view hierarchy, which is
      * modified by the decorator.
      */
-    private Rect windowInsets;
+    private Rect systemWindowInsets;
 
     /**
      * Creates and returns a listener, which allows to observe when window insets are applied to the
@@ -490,7 +513,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             @Override
             public WindowInsetsCompat onApplyWindowInsets(final View v,
                                                           final WindowInsetsCompat insets) {
-                windowInsets = insets.hasSystemWindowInsets() ?
+                systemWindowInsets = insets.hasSystemWindowInsets() ?
                         new Rect(insets.getSystemWindowInsetLeft(),
                                 insets.getSystemWindowInsetTop(),
                                 insets.getSystemWindowInsetRight(),
@@ -513,20 +536,20 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         Window window = getWindow();
         assert window != null;
         window.getDecorView().getWindowVisibleDisplayFrame(windowDimensions);
-        int shadowWidth = isFullscreen() ? 0 :
-                getContext().getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
-        int leftInset = isFitsSystemWindowsLeft() && isFullscreen() && windowInsets != null ?
-                windowInsets.left : 0;
-        int topInset = isFitsSystemWindowsTop() && isFullscreen() && windowInsets != null ?
-                windowInsets.top : 0;
-        int rightInset = isFitsSystemWindowsRight() && isFullscreen() && windowInsets != null ?
-                windowInsets.right : 0;
-        int bottomInset = isFitsSystemWindowsBottom() && isFullscreen() && windowInsets != null ?
-                windowInsets.bottom : 0;
-        int leftMargin = getLeftMargin() - shadowWidth + leftInset;
-        int topMargin = getTopMargin() - shadowWidth + topInset;
-        int rightMargin = getRightMargin() - shadowWidth + rightInset;
-        int bottomMargin = getBottomMargin() - shadowWidth + bottomInset;
+        int leftInset = isFitsSystemWindowsLeft() && isFullscreen() && systemWindowInsets != null ?
+                systemWindowInsets.left : 0;
+        int topInset = isFitsSystemWindowsTop() && isFullscreen() && systemWindowInsets != null ?
+                systemWindowInsets.top : 0;
+        int rightInset =
+                isFitsSystemWindowsRight() && isFullscreen() && systemWindowInsets != null ?
+                        systemWindowInsets.right : 0;
+        int bottomInset =
+                isFitsSystemWindowsBottom() && isFullscreen() && systemWindowInsets != null ?
+                        systemWindowInsets.bottom : 0;
+        int leftMargin = getLeftMargin() - getWindowInsetLeft() + leftInset;
+        int topMargin = getTopMargin() - getWindowInsetTop() + topInset;
+        int rightMargin = getRightMargin() - getWindowInsetRight() + rightInset;
+        int bottomMargin = getBottomMargin() - getWindowInsetBottom() + bottomInset;
         int width =
                 getLayoutDimension(getWidth(), leftMargin + rightMargin, windowDimensions.right);
         int height =
@@ -726,6 +749,17 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     /**
+     * Adapts the background and inset of the dialog's window.
+     */
+    private void adaptWindowBackgroundAndInset() {
+        DialogRootView rootView = getRootView();
+
+        if (rootView != null) {
+            rootView.setWindowBackgroundAndInset(windowBackground, windowInsets);
+        }
+    }
+
+    /**
      * Adapts the layout params of the dialog.
      */
     private void adaptLayoutParams() {
@@ -733,7 +767,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
         if (getWindow() != null && rootView != null) {
             rootView.setLayoutParams(createLayoutParams());
-            rootView.showShadow(!isFullscreen());
+            rootView.setFullscreen(isFullscreen());
             rootView.setMaxWidth(getMaxWidth());
             rootView.setMaxHeight(getMaxHeight());
         }
@@ -991,6 +1025,42 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     public MaterialDialogDecorator(@NonNull final Dialog dialog) {
         super(dialog);
+        setWindowBackground(android.R.drawable.dialog_holo_light_frame);
+    }
+
+    @NonNull
+    @Override
+    public final Drawable getWindowBackground() {
+        return windowBackground;
+    }
+
+    @Override
+    public final void setWindowBackground(@DrawableRes final int resourceId) {
+        this.windowBackgroundResourceId = resourceId;
+        this.windowBackground = ContextCompat.getDrawable(getContext(), resourceId);
+        this.windowInsets = new Rect();
+        this.windowBackground.getPadding(this.windowInsets);
+        adaptWindowBackgroundAndInset();
+    }
+
+    @Override
+    public final int getWindowInsetLeft() {
+        return isFullscreen() ? 0 : windowInsets.left;
+    }
+
+    @Override
+    public final int getWindowInsetTop() {
+        return isFullscreen() ? 0 : windowInsets.top;
+    }
+
+    @Override
+    public final int getWindowInsetRight() {
+        return isFullscreen() ? 0 : windowInsets.right;
+    }
+
+    @Override
+    public final int getWindowInsetBottom() {
+        return isFullscreen() ? 0 : windowInsets.bottom;
     }
 
     @Override
@@ -1456,6 +1526,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void onSaveInstanceState(@NonNull final Bundle outState) {
+        outState.putInt(WINDOW_BACKGROUND_EXTRA, this.windowBackgroundResourceId);
         outState.putBoolean(CANCELABLE_EXTRA, isCancelable());
         outState.putBoolean(CANCEL_ON_TOUCH_OUTSIDE_EXTRA, isCanceledOnTouchOutside());
         outState.putBoolean(FULLSCREEN_EXTRA, isFullscreen());
@@ -1502,6 +1573,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+        setWindowBackground(savedInstanceState.getInt(WINDOW_BACKGROUND_EXTRA));
         setCancelable(savedInstanceState.getBoolean(CANCELABLE_EXTRA));
         setCanceledOnTouchOutside(savedInstanceState.getBoolean(CANCEL_ON_TOUCH_OUTSIDE_EXTRA));
         setFullscreen(savedInstanceState.getBoolean(FULLSCREEN_EXTRA));
@@ -1557,6 +1629,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         View contentView = inflateContentView();
 
         if (titleView != null && messageView != null && contentView != null) {
+            adaptWindowBackgroundAndInset();
             adaptLayoutParams();
             adaptPadding();
             adaptScrollableArea();

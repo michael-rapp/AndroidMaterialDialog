@@ -22,6 +22,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.AttrRes;
@@ -238,14 +239,9 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     }
 
     /**
-     * The width of the dialog's shadow.
+     * True, if the dialog is shown fullscreen, false otherwise.
      */
-    private int shadowWidth;
-
-    /**
-     * True, if the view's shadow is shown, false otherwise.
-     */
-    private boolean showShadow = true;
+    private boolean fullscreen = false;
 
     /**
      * The maximum width of the view.
@@ -258,9 +254,15 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     private int maxHeight = -1;
 
     /**
-     * The drawable, which is shown as the view's background.
+     * The drawable, which is shown as the dialog's window background.
      */
-    private Drawable background;
+    private Drawable windowBackground;
+
+    /**
+     * The left, top, right and bottom insets of the dialog. The insets correspond to the paddings
+     * of the window background drawable.
+     */
+    private Rect windowInsets;
 
     /**
      * The paint, which is used to draw the view's background.
@@ -273,7 +275,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     private Bitmap backingBitmap;
 
     /**
-     * The canvas, whic his used to draw the view's background.
+     * The canvas, which his used to draw the view's background.
      */
     private Canvas backingCanvas;
 
@@ -337,12 +339,17 @@ public class DialogRootView extends LinearLayout implements AreaListener {
         dividerColor = ContextCompat.getColor(getContext(), R.color.divider_color_light);
         dividerMargin = 0;
         dialogPadding = new int[]{0, 0, 0, 0};
-        shadowWidth = getResources().getDimensionPixelSize(R.dimen.dialog_shadow_width);
-        background =
-                ContextCompat.getDrawable(getContext(), android.R.drawable.dialog_holo_light_frame);
         paint = new Paint();
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY));
         setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+    }
+
+    /**
+     * Adapts the background and insets of the dialog's window.
+     */
+    private void adaptWindowBackgroundAndInsets() {
+        super.setPadding(getLeftInset(), getTopInset(), getRightInset(), getBottomInset());
+        invalidate();
     }
 
     /**
@@ -743,12 +750,69 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     }
 
     /**
-     * Returns the inset of the view, depending on whether the dialog's shadow is shown, or not.
+     * Returns the background of the dialog's window or throws an {@link IllegalStateException} if
+     * no window background has been set yet.
      *
-     * @return The inset of the view in pixels as an {@link Integer} value
+     * @return The background of the dialog's window as an instance of the class {@link Drawable}.
+     * The drawable may not be null
      */
-    private int getInset() {
-        return isShadowShown() ? shadowWidth : 0;
+    @NonNull
+    private Drawable getWindowBackgroundOrThrowException() {
+        ensureNotNull(windowBackground, "No window background set", IllegalStateException.class);
+        return windowBackground;
+    }
+
+    /**
+     * Returns the insets of the dialog's window or throws an {@link IllegalStateException} if no
+     * insets have been set yet.
+     *
+     * @return The insets of the dialog's window as an instance of the class {@link Rect}. The
+     * insets may not be null
+     */
+    @NonNull
+    private Rect getWindowInsetsOrThrowException() {
+        ensureNotNull(windowInsets, "No window insets set", IllegalStateException.class);
+        return windowInsets;
+    }
+
+    /**
+     * Returns the left inset of the dialog, depending on whether the dialog is shown fullscreen, or
+     * not.
+     *
+     * @return The left inset of the dialog in pixels as an {@link Integer} value
+     */
+    private int getLeftInset() {
+        return fullscreen ? 0 : getWindowInsetsOrThrowException().left;
+    }
+
+    /**
+     * Returns the top inset of the dialog, depending on whether the dialog is shown fullscreen, or
+     * not.
+     *
+     * @return The top inset of the dialog in pixels as an {@link Integer} value
+     */
+    private int getTopInset() {
+        return fullscreen ? 0 : getWindowInsetsOrThrowException().top;
+    }
+
+    /**
+     * Returns the right inset of the dialog, depending on whether the dialog is shown fullscreen,
+     * or not.
+     *
+     * @return The right inset of the dialog in pixels as an {@link Integer} value
+     */
+    private int getRightInset() {
+        return fullscreen ? 0 : getWindowInsetsOrThrowException().right;
+    }
+
+    /**
+     * Returns the bottom inset of the dialog, depending on whether the dialog is shown fullscreen,
+     * or not.
+     *
+     * @return The bottom inset of the dialog in pixels as an {@link Integer} value
+     */
+    private int getBottomInset() {
+        return fullscreen ? 0 : getWindowInsetsOrThrowException().bottom;
     }
 
     /**
@@ -829,34 +893,33 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     }
 
     /**
-     * Returns, whether the view's shadow is shown, or not.
+     * Sets the background and inset of the dialog's window.
      *
-     * @return True, if the view's shadow is shown, false otherwise
+     * @param windowBackground
+     *         The background, which should be set, as an instance of the class {@link Drawable}.
+     *         The drawable may not be null
+     * @param windowInsets
+     *         The insets of the dialog's window as an instance of the class {@link Rect}. The
+     *         insets may not be null
      */
-    public final boolean isShadowShown() {
-        return showShadow;
+    public final void setWindowBackgroundAndInset(@NonNull final Drawable windowBackground,
+                                                  @NonNull final Rect windowInsets) {
+        ensureNotNull(windowBackground, "The window background may not be null");
+        ensureNotNull(windowInsets, "The window insets may not be null");
+        this.windowBackground = windowBackground;
+        this.windowInsets = windowInsets;
+        adaptWindowBackgroundAndInsets();
     }
 
     /**
-     * Sets, whether the view's shadow should be shown, or not.
+     * Sets, whether the dialog is shown fullscreen, or not.
      *
-     * @param showShadow
-     *         True, if the shadow should be shown, false otherwise
+     * @param fullscreen
+     *         True, if the dialog is shown fullscreen, false otherwise
      */
-    public final void showShadow(final boolean showShadow) {
-        this.showShadow = showShadow;
-        super.setPadding(getInset(), getInset(), getInset(), getInset());
-        invalidate();
-    }
-
-    /**
-     * Returns the maximum width of the view.
-     *
-     * @return The maximum width of the view in pixels as an {@link Integer} value or -1, if no
-     * maximum width is set
-     */
-    public final int getMaxWidth() {
-        return maxWidth;
+    public final void setFullscreen(final boolean fullscreen) {
+        this.fullscreen = fullscreen;
+        adaptWindowBackgroundAndInsets();
     }
 
     /**
@@ -873,16 +936,6 @@ public class DialogRootView extends LinearLayout implements AreaListener {
 
         this.maxWidth = maxWidth;
         requestLayout();
-    }
-
-    /**
-     * Returns the maximum height of the view.
-     *
-     * @return The maximum height of the view in pixels as an {@link Integer} value or -1, if no
-     * maximum height is set
-     */
-    public final int getMaxHeight() {
-        return maxHeight;
     }
 
     /**
@@ -1022,23 +1075,25 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     public final void draw(final Canvas canvas) {
         super.draw(canvas);
 
-        if (isShadowShown()) {
+        if (!fullscreen) {
             int width = getWidth();
             int height = getHeight();
-            background.setBounds(0, 0, width, height);
+            Drawable windowBackground = getWindowBackgroundOrThrowException();
+            windowBackground.setBounds(0, 0, width, height);
             backingBitmap.eraseColor(Color.TRANSPARENT);
-            background.draw(backingCanvas);
+            windowBackground.draw(backingCanvas);
             canvas.drawBitmap(backingBitmap, 0, 0, paint);
         }
     }
 
     @Override
     protected final void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-        int maxWidthMeasureSpec = getMaxWidth() != -1 ?
-                MeasureSpec.makeMeasureSpec(getMaxWidth() + (getInset() * 2), MeasureSpec.AT_MOST) :
+        int maxWidthMeasureSpec = maxWidth != -1 ? MeasureSpec
+                .makeMeasureSpec(maxWidth + getLeftInset() + getRightInset(), MeasureSpec.AT_MOST) :
                 -1;
-        int maxHeightMeasureSpec = getMaxHeight() != -1 ? MeasureSpec
-                .makeMeasureSpec(getMaxHeight() + (getInset() * 2), MeasureSpec.AT_MOST) : -1;
+        int maxHeightMeasureSpec = maxHeight != -1 ? MeasureSpec
+                .makeMeasureSpec(maxHeight + getLeftInset() + getRightInset(),
+                        MeasureSpec.AT_MOST) : -1;
         super.onMeasure(maxWidthMeasureSpec != -1 ? maxWidthMeasureSpec : widthMeasureSpec,
                 maxHeightMeasureSpec != -1 ? maxHeightMeasureSpec : heightMeasureSpec);
     }
