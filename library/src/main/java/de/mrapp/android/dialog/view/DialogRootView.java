@@ -454,7 +454,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
         for (Map.Entry<DividerLocation, Divider> entry : dividers.entrySet()) {
             if (entry.getKey() == DividerLocation.BOTTOM && bottomDivider == null) {
                 bottomDivider = entry.getValue();
-            } else if (entry.getKey() == DividerLocation.TOP && topDivider == null) {
+            } else if (entry.getKey() == DividerLocation.TOP && topDivider == null &&
+                    !scrollableArea.isScrollable(Area.CONTENT)) {
                 topDivider = entry.getValue();
             }
         }
