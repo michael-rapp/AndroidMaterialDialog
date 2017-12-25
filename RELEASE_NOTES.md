@@ -1,6 +1,6 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
-## Version 4.2.0 (Sep. 20th 2017)
+## Version 4.2.0 (Dec. 26th 2017)
 
 A feature release, which introduces the following changes:
 
