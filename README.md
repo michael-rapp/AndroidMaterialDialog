@@ -145,6 +145,32 @@ The picture below shows a dialog, which contains a header with a background imag
 
 ![](doc/images/example-header-dialog.png)
 
+### Specifying scrollable areas
+
+If the content of a dialog takes to much vertical space, it cannot completely be displayed on the screen anymore. This can especially be a problem in landscape mode, where only limited vertical space is available. To overcome this problem, the library allows to specify which areas of a dialog should be (vertically) scrollable. For example, to specify that the message of a dialog should be scrollable, the following code can be used:
+
+```java
+dialogBuilder.setScrollableArea(ScrollableArea.Area.MESSAGE);
+```
+
+Each dialog consists of several areas, which are represented by the values of the enum `ScrollableArea.Area`. A dialog may consist of the following areas from top to bottom:
+
+* `HEADER`
+* `TITLE`
+* `MESSSAGE`
+* `CONTENT`
+* `BUTTON_BAR`
+
+If multiple areas of a dialog should be scrollable, this can be achieved as shown below:
+
+```java
+dialogBuilder.setScrollableArea(ScrollableArea.Area.TITLE, 	
+                                ScrollableArea.Area.CONTENT);
+```
+
+The first area, which is provided to the method corresponds to the top area, which should be scrollable (inclusive). The second method parameter specifies the bottom area, which should be scrollable (also inclusive). Both specified areas, as well as all areas, which are located between them, are made scrollable by wrapping them in a single `ScrollView`.
+
+
 ### Using themes
 
 The library comes with pre-defined dark and light theme variants. Furthermore three different fullscreen themes are available per variant. The following table shows the IDs of all themes. They can be referenced in XML using the syntax `@style/MaterialDialog.Light`. In Java code the syntax `R.id.MaterialDialog_Light` can be used respectively. When using a fullscreen theme, dialogs take the whole available space by default. By using the `CenterInside` variants, the dialogs' width and height are restricted to take only as much space as necessary, while the backround is still displayed across the whole screen. The `Translucent` variants use a translucent status and navigation bar (only on devices with API level 21 or greater).
