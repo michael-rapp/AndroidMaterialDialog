@@ -164,11 +164,13 @@ Each dialog consists of several areas, which are represented by the values of th
 If multiple areas of a dialog should be scrollable, this can be achieved as shown below:
 
 ```java
-dialogBuilder.setScrollableArea(ScrollableArea.Area.TITLE, 	
+dialogBuilder.setScrollableArea(ScrollableArea.Area.HEADER, 	
                                 ScrollableArea.Area.CONTENT);
 ```
 
-The first area, which is provided to the method corresponds to the top area, which should be scrollable (inclusive). The second method parameter specifies the bottom area, which should be scrollable (also inclusive). Both specified areas, as well as all areas, which are located between them, are made scrollable by wrapping them in a single `ScrollView`.
+The first area, which is provided to the method corresponds to the top area, which should be scrollable (inclusive). The second method parameter specifies the bottom area, which should be scrollable (also inclusive). Both specified areas, as well as all areas, which are located between them, are made scrollable by wrapping them in a single `ScrollView`. The scrolling behavior of a dialog, which has been configured using the above method call, can be seen below:
+ 
+![](doc/images/example-scrolling.gif) 
 
 
 ### Using themes
