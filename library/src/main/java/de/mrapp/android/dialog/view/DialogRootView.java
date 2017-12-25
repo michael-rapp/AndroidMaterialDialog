@@ -38,6 +38,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnScrollChangedListener;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
 
 import java.io.Serializable;
@@ -285,6 +286,11 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     private ScrollView scrollView;
 
     /**
+     * The list view, which is contained by the dialog.
+     */
+    private AbsListView listView;
+
+    /**
      * The divider, which is shown above the scrollable areas of the dialog.
      */
     private Divider topDivider;
@@ -397,7 +403,48 @@ public class DialogRootView extends LinearLayout implements AreaListener {
             }
 
             adaptAreaPadding();
+            findListView();
         }
+    }
+
+    /**
+     * Searches for the list view, which is contained by the dialog, in order to register a scroll
+     * listener.
+     */
+    private void findListView() {
+        if (scrollView == null) {
+            View contentContainer = findViewById(R.id.content_container);
+
+            if (contentContainer != null) {
+                findListView(contentContainer);
+            }
+        }
+    }
+
+    /**
+     * Searches for the list view, which is contained by the dialog, in order to register a scroll
+     * listener.
+     *
+     * @param view
+     *         The view, which should be searched, as an instance of the class {@link ViewGroup}.
+     *         The view may not be null
+     */
+    private boolean findListView(@NonNull final View view) {
+        if (view instanceof AbsListView) {
+            this.listView = (AbsListView) view;
+            this.listView.setOnScrollListener(createListViewScrollListener());
+            return true;
+        } else if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                if (findListView(viewGroup.getChildAt(i))) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -407,6 +454,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
         for (Map.Entry<DividerLocation, Divider> entry : dividers.entrySet()) {
             if (entry.getKey() == DividerLocation.BOTTOM && bottomDivider == null) {
                 bottomDivider = entry.getValue();
+            } else if (entry.getKey() == DividerLocation.TOP && topDivider == null) {
+                topDivider = entry.getValue();
             }
         }
     }
@@ -491,6 +540,9 @@ public class DialogRootView extends LinearLayout implements AreaListener {
         if (scrollView != null) {
             adaptDividerVisibility(scrollView.isScrolledToTop(), scrollView.isScrolledToBottom(),
                     false);
+        } else if (listView != null) {
+            adaptDividerVisibility(isListViewScrolledToTop(listView),
+                    isListViewScrolledToBottom(listView), false);
         }
     }
 
@@ -518,6 +570,48 @@ public class DialogRootView extends LinearLayout implements AreaListener {
                     scrolledToBottom || !showDividersOnScroll ? View.INVISIBLE : View.VISIBLE,
                     animate);
         }
+    }
+
+    /**
+     * Returns, whether a specific list view is scrolled to the bottom, or not.
+     *
+     * @param scrollView
+     *         The list view as an instance of the class {@link AbsListView}. The list view may not
+     *         be null
+     * @return True, if the given list view is scrolled to the bottom, false otherwise
+     */
+    private boolean isListViewScrolledToBottom(@NonNull final AbsListView scrollView) {
+        if (scrollView.getCount() > 0 && scrollView.getChildCount() > 0) {
+            if (scrollView.getLastVisiblePosition() == scrollView.getCount() - 1) {
+                View child = scrollView.getChildAt(scrollView.getChildCount() - 1);
+                return child == null || child.getBottom() <= scrollView.getHeight();
+            }
+        } else {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns, whether a specific list view is scrolled to the top, or not.
+     *
+     * @param listView
+     *         The list view as an instance of the class {@link AbsListView}. The list view may not
+     *         be null
+     * @return True, if the given list view is scrolled to the top, false otherwise
+     */
+    private boolean isListViewScrolledToTop(@NonNull final AbsListView listView) {
+        if (listView.getFirstVisiblePosition() == 0) {
+            if (listView.getChildCount() == 0) {
+                return true;
+            } else {
+                View child = listView.getChildAt(0);
+                return child == null || child.getTop() == 0;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -654,7 +748,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             scrollView = (ScrollView) layoutInflater
                     .inflate(R.layout.material_dialog_scroll_view, this, false);
-            scrollView.addScrollListener(createScrollListener());
+            scrollView.addScrollListener(createScrollViewScrollListener());
 
             if (scrollableArea.getBottomScrollableArea().getIndex() -
                     scrollableArea.getTopScrollableArea().getIndex() > 0) {
@@ -709,12 +803,38 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * OnScrollChangedListener}. The listener may not be null
      */
     @NonNull
-    private ScrollListener createScrollListener() {
+    private ScrollListener createScrollViewScrollListener() {
         return new ScrollListener() {
 
             @Override
             public void onScrolled(final boolean scrolledToTop, final boolean scrolledToBottom) {
                 adaptDividerVisibility(scrolledToTop, scrolledToBottom, true);
+            }
+
+        };
+    }
+
+    /**
+     * Creates and returns a listener, which allows to observe the list view, which is contained by
+     * the dialog, is scrolled.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * android.widget.AbsListView.OnScrollListener}. The listener may not be null
+     */
+    @NonNull
+    private AbsListView.OnScrollListener createListViewScrollListener() {
+        return new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(final AbsListView view, final int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(final AbsListView view, final int firstVisibleItem,
+                                 final int visibleItemCount, final int totalItemCount) {
+                adaptDividerVisibility(isListViewScrolledToTop(view),
+                        isListViewScrolledToBottom(view), true);
             }
 
         };

@@ -66,19 +66,7 @@ public class ScrollableDialogDecorator extends AbstractDialogDecorator<ListDialo
      * @return True, if a scroll listener has been registered, false otherwise
      */
     private boolean registerScrollListener(@NonNull final View view) {
-        if (view instanceof AbsListView) {
-            scrollView = (AbsListView) view;
-            scrollView.setOnScrollListener(this);
-            return true;
-        } else if (view instanceof ViewGroup) {
-            ViewGroup viewGroup = (ViewGroup) view;
 
-            for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                if (registerScrollListener(viewGroup.getChildAt(i))) {
-                    return true;
-                }
-            }
-        }
 
         return false;
     }
@@ -173,9 +161,9 @@ public class ScrollableDialogDecorator extends AbstractDialogDecorator<ListDialo
                                                  @NonNull final Map<ViewType, View> areas,
                                                  final Void param) {
         // TODO contentDivider = view.findViewById(R.id.content_divider);
-        buttonBarDivider = view.findViewById(R.id.button_bar_divider);
-        View contentContainer = view.findViewById(R.id.content_container);
-        registerScrollListener(contentContainer);
+//        buttonBarDivider = view.findViewById(R.id.button_bar_divider);
+//        View contentContainer = view.findViewById(R.id.content_container);
+//        registerScrollListener(contentContainer);
         return Collections.emptyMap();
     }
 

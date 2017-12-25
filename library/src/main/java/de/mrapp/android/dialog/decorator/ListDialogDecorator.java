@@ -28,6 +28,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import de.mrapp.android.dialog.R;
@@ -37,7 +38,10 @@ import de.mrapp.android.dialog.listener.OnItemClickListenerWrapper;
 import de.mrapp.android.dialog.listener.OnMultiChoiceClickListenerWrapper;
 import de.mrapp.android.dialog.model.ButtonBarDialog;
 import de.mrapp.android.dialog.view.DialogRootView.AreaViewType;
+import de.mrapp.android.dialog.view.DialogRootView.DividerLocation;
+import de.mrapp.android.dialog.view.DialogRootView.DividerViewType;
 import de.mrapp.android.dialog.view.DialogRootView.ViewType;
+import de.mrapp.android.dialog.view.Divider;
 import de.mrapp.android.util.ArrayUtil;
 
 /**
@@ -87,6 +91,11 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
      * The list view, which is used to show the dialog's list items.
      */
     private ListView listView;
+
+    /**
+     * The divider, which is shown above the list view.
+     */
+    private Divider listDivider;
 
     /**
      * True, if the custom view of the dialog has been inflated by the decorator itself, false
@@ -161,16 +170,20 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
 
         if (this.listView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+            View view = layoutInflater
+                    .inflate(R.layout.material_dialog_list_view, contentContainer, false);
             de.mrapp.android.dialog.view.ListView inflatedListView =
-                    (de.mrapp.android.dialog.view.ListView) layoutInflater
-                            .inflate(R.layout.material_dialog_list_view, contentContainer, false);
+                    view.findViewById(android.R.id.list);
             inflatedListView.setDialog(getDialog());
             this.listView = inflatedListView;
-            getDialog().setView(this.listView);
+            getDialog().setView(view);
             this.inflatedCustomView = true;
         } else {
             this.inflatedCustomView = false;
         }
+
+        View divider = contentContainer.findViewById(R.id.list_divider);
+        this.listDivider = divider instanceof Divider ? (Divider) divider : null;
     }
 
     /**
@@ -480,6 +493,12 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         if (contentView instanceof ViewGroup) {
             inflateListView((ViewGroup) contentView);
             attachAdapter();
+        }
+
+        if (listDivider != null) {
+            Map<ViewType, View> result = new HashMap<>();
+            result.put(new DividerViewType(DividerLocation.TOP), listDivider);
+            return result;
         }
 
         return Collections.emptyMap();
