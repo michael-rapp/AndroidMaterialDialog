@@ -484,6 +484,36 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     }
 
     /**
+     * Adapts the visibility of the top and bottom divider, depending on the state of the dialog's
+     * scroll view.
+     */
+    private void adaptDividerVisibility() {
+        if (scrollView != null) {
+            adaptDividerVisibility(scrollView.isScrolledToTop(), scrollView.isScrolledToBottom());
+        }
+    }
+
+    /**
+     * Adapts the visibility of the top and bottom divider, depending on whether the scrollable area
+     * is scrolled to the top/bottom, or not.
+     *
+     * @param scrolledToTop
+     *         True, if the scrollable area is scrolled to the top, false otherwise
+     * @param scrolledToBottom
+     *         True, if the scrollable area is scrolled to the bottom, false otherwise
+     */
+    private void adaptDividerVisibility(final boolean scrolledToTop,
+                                        final boolean scrolledToBottom) {
+        if (topDivider != null && !topDivider.isVisibleByDefault()) {
+            topDivider.setVisibility(scrolledToTop ? View.INVISIBLE : View.VISIBLE, true);
+        }
+
+        if (bottomDivider != null && !bottomDivider.isVisibleByDefault()) {
+            bottomDivider.setVisibility(scrolledToBottom ? View.INVISIBLE : View.VISIBLE, true);
+        }
+    }
+
+    /**
      * Applies the dialog's left padding to the view of a specific area.
      *
      * @param area
@@ -677,14 +707,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
 
             @Override
             public void onScrolled(final boolean scrolledToTop, final boolean scrolledToBottom) {
-                if (topDivider != null && !topDivider.isVisibleByDefault()) {
-                    topDivider.setVisibility(scrolledToTop ? View.INVISIBLE : View.VISIBLE, true);
-                }
-
-                if (bottomDivider != null && !bottomDivider.isVisibleByDefault()) {
-                    bottomDivider
-                            .setVisibility(scrolledToBottom ? View.INVISIBLE : View.VISIBLE, true);
-                }
+                adaptDividerVisibility(scrolledToTop, scrolledToBottom);
             }
 
         };
@@ -1041,6 +1064,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
 
         addAreas();
         addDividers();
+        adaptDividerVisibility();
     }
 
     @Override

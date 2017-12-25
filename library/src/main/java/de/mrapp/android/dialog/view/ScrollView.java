@@ -177,23 +177,38 @@ public class ScrollView extends android.widget.ScrollView {
         this.scrollListeners.remove(listener);
     }
 
-    @Override
-    protected final void onScrollChanged(final int l, final int t, final int oldl, final int oldt) {
-        super.onScrollChanged(l, t, oldl, oldt);
-        boolean scrolledToTop = false;
-        boolean scrolledToBottom = false;
+    /**
+     * Returns, whether the scroll view is scrolled to the top, or not.
+     *
+     * @return True, if the scroll view is scrolled to the top, false otherwise
+     */
+    public final boolean isScrolledToTop() {
+        return getScrollY() == 0;
+    }
 
-        if (t == 0) {
-            scrolledToTop = true;
-        } else {
+    /**
+     * Returns, whether the scroll view is scrolled to the bottom, or not.
+     *
+     * @return True, if the scroll view is scrolled to the bottom, false otherwise
+     */
+    public final boolean isScrolledToBottom() {
+        int y = getScrollY();
+
+        if (y > 0) {
             View view = getChildAt(0);
 
-            if ((view.getBottom() - t) == getHeight()) {
-                scrolledToBottom = true;
+            if ((view.getBottom() - y) == getHeight()) {
+                return true;
             }
         }
 
-        notifyOnScrolled(scrolledToTop, scrolledToBottom);
+        return false;
+    }
+
+    @Override
+    protected final void onScrollChanged(final int l, final int t, final int oldl, final int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        notifyOnScrolled(isScrolledToTop(), isScrolledToBottom());
     }
 
 }
