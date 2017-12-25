@@ -193,16 +193,8 @@ public class ScrollView extends android.widget.ScrollView {
      */
     public final boolean isScrolledToBottom() {
         int y = getScrollY();
-
-        if (y > 0) {
-            View view = getChildAt(0);
-
-            if ((view.getBottom() - y) == getHeight()) {
-                return true;
-            }
-        }
-
-        return false;
+        View view = getChildAt(0);
+        return (view.getBottom() - y) == getHeight();
     }
 
     @Override

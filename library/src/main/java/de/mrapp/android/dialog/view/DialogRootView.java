@@ -36,7 +36,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
@@ -534,15 +534,52 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     }
 
     /**
+     * Registers an {@link OnGlobalLayoutListener} at the dialog's scroll view or list view, if
+     * present, in order to be able to adjust the initial visibilities of the dividers as soon as
+     * the respective view has been layouted.
+     */
+    private void registerScrollLayoutListener() {
+        if (scrollView != null) {
+            scrollView.getViewTreeObserver()
+                    .addOnGlobalLayoutListener(createScrollViewLayoutListener(scrollView));
+        } else if (listView != null) {
+            listView.getViewTreeObserver()
+                    .addOnGlobalLayoutListener(createScrollViewLayoutListener(listView));
+        }
+    }
+
+    /**
+     * Creates and returns a {@link OnGlobalLayoutListener}, which allows to adjust the initial
+     * visibility of the dividers, when a view has been layouted.
+     *
+     * @param view
+     *         The observed view as an instance of the class {@link View}. The view may not be null
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnGlobalLayoutListener}. The listener may not be null
+     */
+    @NonNull
+    private OnGlobalLayoutListener createScrollViewLayoutListener(@NonNull final View view) {
+        return new OnGlobalLayoutListener() {
+
+            @Override
+            public void onGlobalLayout() {
+                ViewUtil.removeOnGlobalLayoutListener(view.getViewTreeObserver(), this);
+                adaptDividerVisibilities();
+            }
+
+        };
+    }
+
+    /**
      * Adapts the visibility of the top and bottom divider, depending on the state of the dialog's
      * scroll view.
      */
-    private void adaptDividerVisibility() {
+    private void adaptDividerVisibilities() {
         if (scrollView != null) {
-            adaptDividerVisibility(scrollView.isScrolledToTop(), scrollView.isScrolledToBottom(),
+            adaptDividerVisibilities(scrollView.isScrolledToTop(), scrollView.isScrolledToBottom(),
                     false);
         } else if (listView != null) {
-            adaptDividerVisibility(isListViewScrolledToTop(listView),
+            adaptDividerVisibilities(isListViewScrolledToTop(listView),
                     isListViewScrolledToBottom(listView), false);
         }
     }
@@ -558,8 +595,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * @param animate
      *         True, if the visibility should be changed in an animated manner, false otherwise
      */
-    private void adaptDividerVisibility(final boolean scrolledToTop, final boolean scrolledToBottom,
-                                        final boolean animate) {
+    private void adaptDividerVisibilities(final boolean scrolledToTop,
+                                          final boolean scrolledToBottom, final boolean animate) {
         if (topDivider != null && !topDivider.isVisibleByDefault()) {
             topDivider.setVisibility(
                     scrolledToTop || !showDividersOnScroll ? View.INVISIBLE : View.VISIBLE,
@@ -769,11 +806,11 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * height is reduced to match the height of its child.
      *
      * @return The listener, which has been created, as an instance of the type {@link
-     * ViewTreeObserver.OnGlobalLayoutListener}. The listener may not be null
+     * OnGlobalLayoutListener}. The listener may not be null
      */
     @NonNull
-    private ViewTreeObserver.OnGlobalLayoutListener createScrollViewChildLayoutListener() {
-        return new ViewTreeObserver.OnGlobalLayoutListener() {
+    private OnGlobalLayoutListener createScrollViewChildLayoutListener() {
+        return new OnGlobalLayoutListener() {
 
             @Override
             public void onGlobalLayout() {
@@ -809,7 +846,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
 
             @Override
             public void onScrolled(final boolean scrolledToTop, final boolean scrolledToBottom) {
-                adaptDividerVisibility(scrolledToTop, scrolledToBottom, true);
+                adaptDividerVisibilities(scrolledToTop, scrolledToBottom, true);
             }
 
         };
@@ -834,7 +871,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
             @Override
             public void onScroll(final AbsListView view, final int firstVisibleItem,
                                  final int visibleItemCount, final int totalItemCount) {
-                adaptDividerVisibility(isListViewScrolledToTop(view),
+                adaptDividerVisibilities(isListViewScrolledToTop(view),
                         isListViewScrolledToBottom(view), true);
             }
 
@@ -1112,7 +1149,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      */
     public final void showDividersOnScroll(final boolean show) {
         this.showDividersOnScroll = show;
-        adaptDividerVisibility();
+        adaptDividerVisibilities();
     }
 
     /**
@@ -1164,7 +1201,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
 
         addAreas();
         addDividers();
-        adaptDividerVisibility();
+        registerScrollLayoutListener();
     }
 
     @Override
