@@ -265,6 +265,23 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     }
 
     /**
+     * Obtains the window background from a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the window background should be obtained from, as an
+     *         {@link Integer} value
+     */
+    private void obtainWindowBackground(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.materialDialogWindowBackground});
+        int resourceId = typedArray.getResourceId(0, 0);
+
+        if (resourceId != 0) {
+            setWindowBackground(resourceId);
+        }
+    }
+
+    /**
      * Obtains the background from a specific theme.
      *
      * @param themeResourceId
@@ -401,6 +418,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         obtainMargin(themeResourceId);
         obtainPadding(themeResourceId);
         obtainFitsSystemWindows(themeResourceId);
+        obtainWindowBackground(themeResourceId);
         obtainBackground(themeResourceId);
         obtainMessageColor(themeResourceId);
         obtainTitleColor(themeResourceId);
