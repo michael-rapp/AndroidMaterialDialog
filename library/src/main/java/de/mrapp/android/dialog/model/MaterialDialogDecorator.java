@@ -48,12 +48,11 @@ public interface MaterialDialogDecorator extends Dialog {
     Drawable getWindowBackground();
 
     /**
-     * Sets the background of the dialog's window. Preferably, it should be a 9-patch drawable. The
-     * drawable's padding is taken into account for insetting the dialog's content (see {@link
-     * #getWindowInsetLeft()}, {@link #getWindowInsetTop()}, {@link #getWindowInsetRight()} and
-     * {@link #getWindowInsetBottom()}). By using using transparency, given drawable can be used to
-     * customize the shape of the dialog as well as its shadow. The background is only shown, if the
-     * dialog is not shown fullscreen.
+     * Sets the background of the dialog's window. Preferably, it should be a 9-patch drawable using
+     * the color white for visible areas and transparency for invisible ones. This allows to
+     * customize the shape of the dialog as well as its shadow. The drawable's padding is taken into
+     * account for insetting the dialog's content (see {@link #getWindowInsetLeft()}, {@link
+     * #getWindowInsetTop()}, {@link #getWindowInsetRight()} and {@link #getWindowInsetBottom()}).
      *
      * @param resourceId
      *         The resource id of the window background, which should be set, as an {@link Integer}
