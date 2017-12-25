@@ -34,7 +34,6 @@ import android.widget.Toast;
 
 import de.mrapp.android.dialog.MaterialDialog;
 import de.mrapp.android.dialog.ProgressDialog;
-import de.mrapp.android.dialog.ScrollableArea;
 import de.mrapp.android.dialog.WizardDialog;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 import de.mrapp.android.dialog.animation.CircleRevealAnimation;
@@ -661,8 +660,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
             builder.setHeaderBackground(R.drawable.dialog_header_background);
             builder.setHeaderIcon(R.drawable.dialog_header_icon);
         }
-
-        builder.setScrollableArea(ScrollableArea.Area.MESSAGE);
     }
 
     /**
