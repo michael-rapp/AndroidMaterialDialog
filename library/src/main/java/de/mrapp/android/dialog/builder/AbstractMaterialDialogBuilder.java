@@ -278,6 +278,8 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
 
         if (resourceId != 0) {
             setWindowBackground(resourceId);
+        } else {
+            setWindowBackground(android.R.drawable.dialog_holo_light_frame);
         }
     }
 
@@ -473,7 +475,8 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * Sets the background of the window of the dialog, which is created by the builder. Preferably,
      * it should be a 9-patch drawable using the color white for visible areas and transparency for
      * invisible ones. This allows to customize the shape of the dialog as well as its shadow. The
-     * drawable's padding is taken into account for insetting the dialog's content (see {@link
+     * window background is only used if the dialog is not shown fullscreen. The drawable's padding
+     * is taken into account for insetting the dialog's content (see {@link
      * MaterialDialog#getWindowInsetLeft()}, {@link MaterialDialog#getWindowInsetTop()}, {@link
      * MaterialDialog#getWindowInsetRight()} and {@link MaterialDialog#getWindowInsetBottom()}).
      *
@@ -485,6 +488,24 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      */
     public final BuilderType setWindowBackground(@DrawableRes final int resourceId) {
         getProduct().setWindowBackground(resourceId);
+        return self();
+    }
+
+    /**
+     * Sets the background of the window of the dialog, which is created by the builder. The given
+     * bitmap is stretched to fit the dialog's width and height. Therefore, if the width and height
+     * is not explicitly given, the method {@link #setWindowBackground(int)} should be preferred. If
+     * the given bitmap is null, a rectangle, which matches the width and height of the dialog, is
+     * used as the window background.
+     *
+     * @param windowBackground
+     *         The window background, which should be set, as an instance of the class {@link
+     *         Bitmap} or null, if no window background should be set
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setWindowBackground(@Nullable final Bitmap windowBackground) {
+        getProduct().setWindowBackground(windowBackground);
         return self();
     }
 

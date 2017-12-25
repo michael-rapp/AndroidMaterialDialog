@@ -202,7 +202,6 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         decorator.setCanceledOnTouchOutside(canceledOnTouchOutside);
     }
 
-    @NonNull
     @Override
     public final Drawable getWindowBackground() {
         return decorator.getWindowBackground();
@@ -211,6 +210,11 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     @Override
     public final void setWindowBackground(@DrawableRes final int resourceId) {
         decorator.setWindowBackground(resourceId);
+    }
+
+    @Override
+    public final void setWindowBackground(@Nullable final Bitmap windowBackground) {
+        decorator.setWindowBackground(windowBackground);
     }
 
     @Override

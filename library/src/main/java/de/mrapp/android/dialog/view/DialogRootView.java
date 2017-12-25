@@ -780,39 +780,13 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     }
 
     /**
-     * Returns the background of the dialog's window or throws an {@link IllegalStateException} if
-     * no window background has been set yet.
-     *
-     * @return The background of the dialog's window as an instance of the class {@link Drawable}.
-     * The drawable may not be null
-     */
-    @NonNull
-    private Drawable getWindowBackgroundOrThrowException() {
-        ensureNotNull(windowBackground, "No window background set", IllegalStateException.class);
-        return windowBackground;
-    }
-
-    /**
-     * Returns the insets of the dialog's window or throws an {@link IllegalStateException} if no
-     * insets have been set yet.
-     *
-     * @return The insets of the dialog's window as an instance of the class {@link Rect}. The
-     * insets may not be null
-     */
-    @NonNull
-    private Rect getWindowInsetsOrThrowException() {
-        ensureNotNull(windowInsets, "No window insets set", IllegalStateException.class);
-        return windowInsets;
-    }
-
-    /**
      * Returns the left inset of the dialog, depending on whether the dialog is shown fullscreen, or
      * not.
      *
      * @return The left inset of the dialog in pixels as an {@link Integer} value
      */
     private int getLeftInset() {
-        return fullscreen ? 0 : getWindowInsetsOrThrowException().left;
+        return fullscreen || windowInsets == null ? 0 : windowInsets.left;
     }
 
     /**
@@ -822,7 +796,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * @return The top inset of the dialog in pixels as an {@link Integer} value
      */
     private int getTopInset() {
-        return fullscreen ? 0 : getWindowInsetsOrThrowException().top;
+        return fullscreen || windowInsets == null ? 0 : windowInsets.top;
     }
 
     /**
@@ -832,7 +806,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * @return The right inset of the dialog in pixels as an {@link Integer} value
      */
     private int getRightInset() {
-        return fullscreen ? 0 : getWindowInsetsOrThrowException().right;
+        return fullscreen || windowInsets == null ? 0 : windowInsets.right;
     }
 
     /**
@@ -842,7 +816,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * @return The bottom inset of the dialog in pixels as an {@link Integer} value
      */
     private int getBottomInset() {
-        return fullscreen ? 0 : getWindowInsetsOrThrowException().bottom;
+        return fullscreen || windowInsets == null ? 0 : windowInsets.bottom;
     }
 
     /**
@@ -926,16 +900,14 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * Sets the background and inset of the dialog's window.
      *
      * @param windowBackground
-     *         The background, which should be set, as an instance of the class {@link Drawable}.
-     *         The drawable may not be null
+     *         The background, which should be set, as an instance of the class {@link Drawable} or
+     *         null, if no window background is set
      * @param windowInsets
-     *         The insets of the dialog's window as an instance of the class {@link Rect}. The
-     *         insets may not be null
+     *         The insets of the dialog's window as an instance of the class {@link Rect} or null,
+     *         if no window background is set
      */
-    public final void setWindowBackgroundAndInset(@NonNull final Drawable windowBackground,
-                                                  @NonNull final Rect windowInsets) {
-        ensureNotNull(windowBackground, "The window background may not be null");
-        ensureNotNull(windowInsets, "The window insets may not be null");
+    public final void setWindowBackgroundAndInset(@Nullable final Drawable windowBackground,
+                                                  @Nullable final Rect windowInsets) {
         this.windowBackground = windowBackground;
         this.windowInsets = windowInsets;
         adaptWindowBackgroundAndInsets();
@@ -1106,10 +1078,9 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     public final void draw(final Canvas canvas) {
         super.draw(canvas);
 
-        if (!fullscreen) {
+        if (!fullscreen && windowBackground != null) {
             int width = getWidth();
             int height = getHeight();
-            Drawable windowBackground = getWindowBackgroundOrThrowException();
             windowBackground.setBounds(0, 0, width, height);
             backingBitmap.eraseColor(Color.TRANSPARENT);
             windowBackground.draw(backingCanvas);

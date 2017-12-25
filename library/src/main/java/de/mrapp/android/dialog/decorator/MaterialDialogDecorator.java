@@ -77,8 +77,15 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * The name of the extra, which is used to store the resource id of the dialog's window
      * background within a bundle.
      */
-    private static final String WINDOW_BACKGROUND_EXTRA =
-            MaterialDialogDecorator.class.getSimpleName() + "::windowBackground";
+    private static final String WINDOW_BACKGROUND_ID_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::windowBackgroundId";
+
+    /**
+     * The name of the extra, which is used to store the bitmap of the dialog's window
+     * background within a bundle.
+     */
+    private static final String WINDOW_BACKGROUND_BITMAP_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::windowBackgroundBitmap";
 
     /**
      * The name of the extra, which is used to store, whether the dialog is cancelable, or not,
@@ -314,7 +321,12 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     /**
      * The resource id of the dialog's window background.
      */
-    private int windowBackgroundResourceId;
+    private int windowBackgroundId = -1;
+
+    /**
+     * The bitmap of the dialog's window background.
+     */
+    private Bitmap windowBackgroundBitmap;
 
     /**
      * The background of the dialog's window.
@@ -1036,10 +1048,8 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     public MaterialDialogDecorator(@NonNull final Dialog dialog) {
         super(dialog);
-        setWindowBackground(android.R.drawable.dialog_holo_light_frame);
     }
 
-    @NonNull
     @Override
     public final Drawable getWindowBackground() {
         return windowBackground;
@@ -1047,7 +1057,8 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void setWindowBackground(@DrawableRes final int resourceId) {
-        this.windowBackgroundResourceId = resourceId;
+        this.windowBackgroundId = resourceId;
+        this.windowBackgroundBitmap = null;
         this.windowBackground = ContextCompat.getDrawable(getContext(), resourceId);
         this.windowInsets = new Rect();
         this.windowBackground.getPadding(this.windowInsets);
@@ -1055,23 +1066,38 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     @Override
+    public final void setWindowBackground(@Nullable final Bitmap windowBackground) {
+        this.windowBackgroundId = -1;
+        this.windowBackgroundBitmap = windowBackground;
+        this.windowBackground =
+                windowBackground != null ? new BitmapDrawable(windowBackground) : null;
+        this.windowInsets = new Rect();
+
+        if (this.windowBackground != null) {
+            this.windowBackground.getPadding(this.windowInsets);
+        }
+
+        adaptWindowBackgroundAndInset();
+    }
+
+    @Override
     public final int getWindowInsetLeft() {
-        return isFullscreen() ? 0 : windowInsets.left;
+        return isFullscreen() || windowInsets == null ? 0 : windowInsets.left;
     }
 
     @Override
     public final int getWindowInsetTop() {
-        return isFullscreen() ? 0 : windowInsets.top;
+        return isFullscreen() || windowInsets == null ? 0 : windowInsets.top;
     }
 
     @Override
     public final int getWindowInsetRight() {
-        return isFullscreen() ? 0 : windowInsets.right;
+        return isFullscreen() || windowInsets == null ? 0 : windowInsets.right;
     }
 
     @Override
     public final int getWindowInsetBottom() {
-        return isFullscreen() ? 0 : windowInsets.bottom;
+        return isFullscreen() || windowInsets == null ? 0 : windowInsets.bottom;
     }
 
     @Override
@@ -1529,7 +1555,6 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void onSaveInstanceState(@NonNull final Bundle outState) {
-        outState.putInt(WINDOW_BACKGROUND_EXTRA, this.windowBackgroundResourceId);
         outState.putBoolean(CANCELABLE_EXTRA, isCancelable());
         outState.putBoolean(CANCEL_ON_TOUCH_OUTSIDE_EXTRA, isCanceledOnTouchOutside());
         outState.putBoolean(FULLSCREEN_EXTRA, isFullscreen());
@@ -1557,6 +1582,12 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         outState.putCharSequence(TITLE_EXTRA, getTitle());
         outState.putCharSequence(MESSAGE_EXTRA, getMessage());
 
+        if (windowBackgroundBitmap != null) {
+            outState.putParcelable(WINDOW_BACKGROUND_BITMAP_EXTRA, windowBackgroundBitmap);
+        } else if (windowBackgroundId != -1) {
+            outState.putInt(WINDOW_BACKGROUND_ID_EXTRA, windowBackgroundId);
+        }
+
         if (iconBitmap != null) {
             outState.putParcelable(ICON_BITMAP_EXTRA, iconBitmap);
         } else if (iconId != -1) {
@@ -1576,7 +1607,6 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
-        setWindowBackground(savedInstanceState.getInt(WINDOW_BACKGROUND_EXTRA));
         setCancelable(savedInstanceState.getBoolean(CANCELABLE_EXTRA));
         setCanceledOnTouchOutside(savedInstanceState.getBoolean(CANCEL_ON_TOUCH_OUTSIDE_EXTRA));
         setFullscreen(savedInstanceState.getBoolean(FULLSCREEN_EXTRA));
@@ -1602,6 +1632,13 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         setMessageColor(savedInstanceState.getInt(MESSAGE_COLOR_EXTRA));
         setTitle(savedInstanceState.getCharSequence(TITLE_EXTRA));
         setMessage(savedInstanceState.getCharSequence(MESSAGE_EXTRA));
+
+        if (savedInstanceState.containsKey(WINDOW_BACKGROUND_BITMAP_EXTRA)) {
+            setWindowBackground(
+                    (Bitmap) savedInstanceState.getParcelable(WINDOW_BACKGROUND_BITMAP_EXTRA));
+        } else if (savedInstanceState.containsKey(WINDOW_BACKGROUND_ID_EXTRA)) {
+            setWindowBackground(savedInstanceState.getInt(WINDOW_BACKGROUND_ID_EXTRA));
+        }
 
         if (savedInstanceState.containsKey(ICON_BITMAP_EXTRA)) {
             setIcon((Bitmap) savedInstanceState.getParcelable(ICON_BITMAP_EXTRA));

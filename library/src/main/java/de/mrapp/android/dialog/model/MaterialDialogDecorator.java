@@ -41,17 +41,17 @@ public interface MaterialDialogDecorator extends Dialog {
     /**
      * Returns the background of the dialog's window.
      *
-     * @return The background of the dialog's window as an instance of the class {@link Drawable}.
-     * The window background may not be null
+     * @return The background of the dialog's window as an instance of the class {@link Drawable} or
+     * null, if no window background is set
      */
-    @NonNull
     Drawable getWindowBackground();
 
     /**
      * Sets the background of the dialog's window. Preferably, it should be a 9-patch drawable using
      * the color white for visible areas and transparency for invisible ones. This allows to
-     * customize the shape of the dialog as well as its shadow. The drawable's padding is taken into
-     * account for insetting the dialog's content (see {@link #getWindowInsetLeft()}, {@link
+     * customize the shape of the dialog as well as its shadow. The window background is only used
+     * if the dialog is not shown fullscreen. The drawable's padding is taken into account for
+     * insetting the dialog's content (see {@link #getWindowInsetLeft()}, {@link
      * #getWindowInsetTop()}, {@link #getWindowInsetRight()} and {@link #getWindowInsetBottom()}).
      *
      * @param resourceId
@@ -59,6 +59,19 @@ public interface MaterialDialogDecorator extends Dialog {
      *         value. The resource id must correspond to a valid drawable resource
      */
     void setWindowBackground(@DrawableRes final int resourceId);
+
+    /**
+     * Sets the background of the dialog's window. The given bitmap is stretched to fit the dialog's
+     * width and height. Therefore, if the width and height is not explicitly given, the method
+     * {@link #setWindowBackground(int)} should be preferred. If the given bitmap is null, a
+     * rectangle, which matches the width and height of the dialog, is used as the window
+     * background.
+     *
+     * @param windowBackground
+     *         The window background, which should be set, as an instance of the class {@link
+     *         Bitmap} or null, if no window background should be set
+     */
+    void setWindowBackground(@Nullable final Bitmap windowBackground);
 
     /**
      * Returns the left inset of the dialog's content, depending on the padding of the dialog's

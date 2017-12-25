@@ -290,7 +290,6 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
         decorator.setCanceledOnTouchOutside(canceledOnTouchOutside);
     }
 
-    @NonNull
     @Override
     public final Drawable getWindowBackground() {
         return decorator.getWindowBackground();
@@ -299,6 +298,11 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     @Override
     public final void setWindowBackground(@DrawableRes final int resourceId) {
         decorator.setWindowBackground(resourceId);
+    }
+
+    @Override
+    public final void setWindowBackground(@Nullable final Bitmap windowBackground) {
+        decorator.setWindowBackground(windowBackground);
     }
 
     @Override
