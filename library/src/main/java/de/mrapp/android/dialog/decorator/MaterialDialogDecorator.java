@@ -797,6 +797,17 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     /**
+     * Adapts the visibility of dividers.
+     */
+    private void adaptDividerVisibility() {
+        DialogRootView dialogRootView = getRootView();
+
+        if (dialogRootView != null) {
+            dialogRootView.showDividersOnScroll(showDividersOnScroll);
+        }
+    }
+
+    /**
      * Adapts the color of dividers.
      */
     private void adaptDividerColor() {
@@ -1293,15 +1304,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     @Override
     public final void showDividersOnScroll(final boolean show) {
         this.showDividersOnScroll = show;
-
-        // TODO
-        /*
-        if (!show && buttonBarDivider != null && contentDivider != null) {
-            buttonBarDivider.setVisibility(
-                    getDialog().isButtonBarDividerShown() ? View.VISIBLE : View.GONE);
-            contentDivider.setVisibility(View.GONE);
-        }
-        */
+        adaptDividerVisibility();
     }
 
     @Override
@@ -1633,6 +1636,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             adaptLayoutParams();
             adaptPadding();
             adaptScrollableArea();
+            adaptDividerVisibility();
             adaptTitle();
             adaptTitleColor();
             adaptIcon();
