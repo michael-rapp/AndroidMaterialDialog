@@ -9,6 +9,7 @@ A feature release, which introduces the following changes:
 - The maximum height of a dialog's icon is now adjusted to the title height (https://github.com/michael-rapp/AndroidMaterialDialog/issues/16).
 - The width, height, padding, margin and other properties of a `WizardDialog` are now properly restored after orientation changes.
 - Dividers are now faded in/out when scrolling instead of simply toggling the visibility.
+- The `setButtonBarDividerMargin`- and `setButtonBarDividerColor`-methods have been replaced with `setDividerMargin`- and `setDividerColor`-methods.
 - Updated AppCompat v7 support library to version 27.0.2.
 - Updated Android Design support library to version 27.0.2.
 - Updated dependency "AndroidUtil" to version 1.18.2.
