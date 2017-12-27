@@ -399,7 +399,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     private void obtainDividerMargin(@StyleRes final int themeResourceId) {
         TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
                 new int[]{R.attr.materialDialogDividerMargin});
-        setButtonBarDividerMargin(typedArray.getDimensionPixelSize(0, 0));
+        setDividerMargin(typedArray.getDimensionPixelSize(0, 0));
     }
 
     /**
