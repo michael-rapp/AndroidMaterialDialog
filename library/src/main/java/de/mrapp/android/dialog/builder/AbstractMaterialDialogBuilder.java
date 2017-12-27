@@ -1087,7 +1087,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      * @return The builder, the method has been called upon, as an instance of the generic type
      * BuilderType
      */
-    public final BuilderType setButtonBarDividerMargin(final int margin) {
+    public final BuilderType setDividerMargin(final int margin) {
         getProduct().setDividerMargin(margin);
         return self();
     }
