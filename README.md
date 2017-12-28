@@ -42,7 +42,7 @@ Before version 2.0.0 this project was hosted on [Sourceforge](https://sourceforg
 
 ## Examples
 
-In the following a few examples, which illustrate the use of the library's most important features, are given. However, this project contains a more detailed documentation as a HTML document. 
+In the following a few examples, which illustrate the use of the library's most important features, are given. Moreover, this project contains the source code of an example app, which implements use cases of the library for demonstration purposes, as well as a more detailed documentation in the Wiki and auto-generated javadoc files. 
 
 ### Creating a typical alert dialog
 
@@ -145,7 +145,7 @@ The picture below shows a dialog, which contains a header with a background imag
 
 ![](doc/images/example-header-dialog.png)
 
-### Specifying scrollable areas
+f### Specifying scrollable areas
 
 If the content of a dialog takes to much vertical space, it cannot completely be displayed on the screen anymore. This can especially be a problem in landscape mode, where only limited vertical space is available. To overcome this problem, the library allows to specify which areas of a dialog should be (vertically) scrollable. For example, to specify that the message of a dialog should be scrollable, the following code can be used:
 
