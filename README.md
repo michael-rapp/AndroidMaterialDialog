@@ -145,7 +145,7 @@ The picture below shows a dialog, which contains a header with a background imag
 
 ![](doc/images/example-header-dialog.png)
 
-f### Specifying scrollable areas
+### Specifying scrollable areas
 
 If the content of a dialog takes to much vertical space, it cannot completely be displayed on the screen anymore. This can especially be a problem in landscape mode, where only limited vertical space is available. To overcome this problem, the library allows to specify which areas of a dialog should be (vertically) scrollable. For example, to specify that the message of a dialog should be scrollable, the following code can be used:
 
