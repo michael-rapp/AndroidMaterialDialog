@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 4.2.1 (Dec. 28th 2017)
+
+A bugfix release, which fixes the following issues:
+
+- Fixed an issue, which prevented custom content views from being shown.
+
 ## Version 4.2.0 (Dec. 28th 2017)
 
 A feature release, which introduces the following changes:
