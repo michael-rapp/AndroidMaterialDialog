@@ -34,6 +34,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -347,7 +348,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
         dialogPadding = new int[]{0, 0, 0, 0};
         paint = new Paint();
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY));
-        setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        //        setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
     }
 
     /**
@@ -787,6 +788,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
             scrollView = (ScrollView) layoutInflater
                     .inflate(R.layout.material_dialog_scroll_view, this, false);
             scrollView.addScrollListener(createScrollViewScrollListener());
+            scrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+            scrollView.setFocusableInTouchMode(true);
 
             if (scrollableArea.getBottomScrollableArea().getIndex() -
                     scrollableArea.getTopScrollableArea().getIndex() > 0) {
