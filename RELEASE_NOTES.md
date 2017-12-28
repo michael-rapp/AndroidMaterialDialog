@@ -1,5 +1,12 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 4.2.2 (Dec. 28th 2017)
+
+A bugfix release, which fixes the following issues:
+
+- Fixed an issue, which prevented custom content views such as `EditText` widgets from being selected.
+- The divider above the button bar is now prevented from being shown when scrolling, if the button bar is scrollable itself.
+
 ## Version 4.2.1 (Dec. 28th 2017)
 
 A bugfix release, which fixes the following issues:
