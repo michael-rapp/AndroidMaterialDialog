@@ -1,5 +1,13 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 4.2.3 (Jan. 26th 2018)
+
+A minor release, which introduces the following changes:
+
+- Updated `targetSdkVersion` to API level 27 (Android 8.1).
+- Updated dependency "AndroidUtil" to version 1.19.0.
+- The data structure `ListenerList` is now used for managing event listeners.
+
 ## Version 4.2.2 (Dec. 28th 2017)
 
 A bugfix release, which fixes the following issues:
