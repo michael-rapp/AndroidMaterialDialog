@@ -35,10 +35,8 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.ScrollableArea.Area;
@@ -47,10 +45,10 @@ import de.mrapp.android.dialog.WizardDialog.TabPosition;
 import de.mrapp.android.dialog.WizardDialog.WizardListener;
 import de.mrapp.android.dialog.adapter.ViewPagerAdapter;
 import de.mrapp.android.dialog.datastructure.ViewPagerItem;
-import de.mrapp.android.dialog.view.DialogRootView;
 import de.mrapp.android.dialog.view.DialogRootView.AreaViewType;
 import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 import de.mrapp.android.dialog.view.ViewPager;
+import de.mrapp.android.util.datastructure.ListenerList;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
 import static de.mrapp.android.util.Condition.ensureNotEmpty;
@@ -194,13 +192,13 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     /**
      * The listeners, which should be notified, when the user navigates within the dialog.
      */
-    private final Set<WizardListener> wizardListeners;
+    private final ListenerList<WizardListener> wizardListeners;
 
     /**
      * The listeners, which should be notified, when the page of the dialog's view pager has been
      * changed.
      */
-    private final Set<OnPageChangeListener> onPageChangeListeners;
+    private final ListenerList<OnPageChangeListener> onPageChangeListeners;
 
     /**
      * The adapter, which is used to manage the dialog's fragments.
@@ -711,8 +709,8 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     public WizardDialogDecorator(@NonNull final WizardDialog dialog) {
         super(dialog);
         this.viewPagerItems = new ArrayList<>();
-        this.wizardListeners = new LinkedHashSet<>();
-        this.onPageChangeListeners = new LinkedHashSet<>();
+        this.wizardListeners = new ListenerList<>();
+        this.onPageChangeListeners = new ListenerList<>();
     }
 
     @Override

@@ -19,9 +19,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.Window;
 
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.ScrollableArea.Area;
@@ -30,6 +28,7 @@ import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.dialog.model.DialogDecorator;
 import de.mrapp.android.dialog.view.DialogRootView;
 import de.mrapp.android.dialog.view.DialogRootView.ViewType;
+import de.mrapp.android.util.datastructure.ListenerList;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -50,7 +49,7 @@ public abstract class AbstractDecorator<DialogType extends Dialog, ParamType>
     /**
      * The listeners, which are notified, when an area has been modified by the decorator.
      */
-    private final Set<AreaListener> areaListeners;
+    private final ListenerList<AreaListener> areaListeners;
 
     /**
      * The window of the dialog, whose view hierarchy is modified by the decorator.
@@ -108,7 +107,7 @@ public abstract class AbstractDecorator<DialogType extends Dialog, ParamType>
     public AbstractDecorator(@NonNull final DialogType dialog) {
         ensureNotNull(dialog, "The dialog may not be null");
         this.dialog = dialog;
-        this.areaListeners = new LinkedHashSet<>();
+        this.areaListeners = new ListenerList<>();
         this.window = null;
         this.view = null;
         this.dialogRootView = null;

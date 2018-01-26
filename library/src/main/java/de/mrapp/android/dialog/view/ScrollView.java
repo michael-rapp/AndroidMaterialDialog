@@ -23,8 +23,7 @@ import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.view.View;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import de.mrapp.android.util.datastructure.ListenerList;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -58,13 +57,13 @@ public class ScrollView extends android.widget.ScrollView {
      * A set, which contains the listeners, which should be notified, when the scroll view is
      * scrolled.
      */
-    private Set<ScrollListener> scrollListeners;
+    private ListenerList<ScrollListener> scrollListeners;
 
     /**
      * Initializes the view.
      */
     private void initialize() {
-        this.scrollListeners = new LinkedHashSet<>();
+        this.scrollListeners = new ListenerList<>();
     }
 
     /**
