@@ -4,6 +4,7 @@
 
 A bugfix release, which fixes the following issues:
 
+- Fixed a possible exception when using vector drawables on pre-Lollipop devices.
 - Updated dependency "AndroidMaterialViews" to version 2.1.10.
 - Updated dependency "AndroidUtil" to version 1.20.1.
 
