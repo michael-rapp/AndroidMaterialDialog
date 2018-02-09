@@ -1,5 +1,12 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 4.3.0 (Feb. 9th 2018)
+
+A feature release, which introduces the following changes:
+
+- Vector drawables can now be used as the icon and header icon of dialogs even on pre-Lollipop devices.
+- The icon and header icon of dialogs can now be tinted (also even on pre-Lollipop devices).
+
 ## Version 4.2.3 (Jan. 26th 2018)
 
 A minor release, which introduces the following changes:
