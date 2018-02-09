@@ -72,6 +72,7 @@ License.
     <attr name="materialDialogDividerColor" format="color"/>
     <attr name="materialDialogDividerMargin" format="dimension"/>
     <attr name="materialDialogItemColor" format="color"/>
+    <attr name="materialDialogIconTint" format="color"/>
     <attr name="materialDialogMessageColor" format="color"/>
     <attr name="materialDialogTitleColor" format="color"/>
     <attr name="materialDialogShowHeader" format="boolean"/>

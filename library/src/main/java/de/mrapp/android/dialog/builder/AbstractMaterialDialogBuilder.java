@@ -336,6 +336,20 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     }
 
     /**
+     * Obtains the color state list, which is used to tint the icon of the dialog, from a specific
+     * theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the color state list should be obtained from, as an
+     *         {@link Integer} value
+     */
+    private void obtainIconTintList(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme()
+                .obtainStyledAttributes(themeResourceId, new int[]{R.attr.materialDialogIconTint});
+        setIconTintList(typedArray.getColorStateList(0));
+    }
+
+    /**
      * Obtains the scrollable area from a specific theme.
      *
      * @param themeResourceId
@@ -426,6 +440,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         obtainBackground(themeResourceId);
         obtainMessageColor(themeResourceId);
         obtainTitleColor(themeResourceId);
+        obtainIconTintList(themeResourceId);
         obtainScrollableArea(themeResourceId);
         obtainShowDividersOnScroll(themeResourceId);
         obtainDividerColor(themeResourceId);
