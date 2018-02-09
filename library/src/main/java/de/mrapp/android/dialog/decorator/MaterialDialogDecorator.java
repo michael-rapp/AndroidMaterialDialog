@@ -36,6 +36,7 @@ import android.support.v4.view.OnApplyWindowInsetsListener;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
 import android.support.v4.widget.ImageViewCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -1406,7 +1407,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         this.iconBitmap = null;
         this.iconId = resourceId;
         this.iconAttributeId = -1;
-        this.icon = ContextCompat.getDrawable(getContext(), resourceId);
+        this.icon = AppCompatResources.getDrawable(getContext(), resourceId);
         adaptIcon();
     }
 
