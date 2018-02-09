@@ -18,6 +18,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -47,7 +48,6 @@ import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
 import de.mrapp.android.dialog.animation.ScaleTransitionAnimation;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
-import de.mrapp.android.util.ThemeUtil;
 
 /**
  * A preference fragment, which contains the example app's settings.
@@ -654,14 +654,15 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         }
 
         if (shouldIconBeShown()) {
-            builder.setIcon(R.drawable.ic_info_24dp);
+            builder.setIcon(R.drawable.ic_info_72dp);
             builder.setIconTint(ContextCompat.getColor(getActivity(), R.color.color_accent));
         }
 
         if (shouldHeaderBeShown()) {
             builder.showHeader(true);
             builder.setHeaderBackground(R.drawable.dialog_header_background);
-            builder.setHeaderIcon(R.drawable.dialog_header_icon);
+            builder.setHeaderIcon(R.drawable.ic_message_alert_72dp);
+            builder.setHeaderIconTint(Color.WHITE);
         }
     }
 

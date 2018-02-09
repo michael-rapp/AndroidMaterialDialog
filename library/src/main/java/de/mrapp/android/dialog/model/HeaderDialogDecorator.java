@@ -13,11 +13,14 @@
  */
 package de.mrapp.android.dialog.model;
 
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
@@ -207,6 +210,49 @@ public interface HeaderDialogDecorator extends Dialog {
      *         {@link DrawableAnimation} or null, if no animation should be used
      */
     void setHeaderIcon(@DrawableRes int resourceId, @Nullable DrawableAnimation animation);
+
+    /**
+     * Returns the color state list, which is used to tint the header icon of the dialog.
+     *
+     * @return The color state list, which is used to tint the header icon of the dialog, as an
+     * instance of the class {@link ColorStateList} or null, if no color state list has been set
+     */
+    ColorStateList getHeaderIconTintList();
+
+    /**
+     * Sets the color, which should be used to tint the header icon of the dialog.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    void setHeaderIconTint(@ColorInt int color);
+
+    /**
+     * Sets the color state list, which should be used to tint the header icon of the dialog.
+     *
+     * @param tintList
+     *         The color state list, which should be set, as an instance of the class {@link
+     *         ColorStateList} or null, if no color state list should be set
+     */
+    void setHeaderIconTintList(@Nullable ColorStateList tintList);
+
+    /**
+     * Returns the mode, which is used to tint the icon of the dialog.
+     *
+     * @return The mode, which is used to tint the icon of the dialog, as a value of the enum {@link
+     * PorterDuff.Mode}. The mode may not be null
+     */
+    @NonNull
+    PorterDuff.Mode getHeaderIconTintMode();
+
+    /**
+     * Sets the mode, which should be used to tint the icon of the dialog.
+     *
+     * @param mode
+     *         The mode, which should be set, as a value of the enum {@link PorterDuff.Mode}. The
+     *         mode may not be null
+     */
+    void setHeaderIconTintMode(@NonNull PorterDuff.Mode mode);
 
     /**
      * Returns the color of the divider of the dialog's header.

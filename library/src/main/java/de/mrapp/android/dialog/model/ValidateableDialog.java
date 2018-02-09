@@ -14,7 +14,6 @@
 package de.mrapp.android.dialog.model;
 
 /**
- * Defines the interface, a dialog, which is designed according to Android 5's Material design
  * guidelines even on pre-Lollipop devices and can be validated, must implement.
  *
  * @author Michael Rapp

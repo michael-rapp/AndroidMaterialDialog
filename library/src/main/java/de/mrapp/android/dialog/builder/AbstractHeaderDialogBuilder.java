@@ -14,8 +14,10 @@
 package de.mrapp.android.dialog.builder;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -108,6 +110,20 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
         if (resourceId != 0) {
             setHeaderIcon(resourceId);
         }
+    }
+
+    /**
+     * Obtains the color state list, which is used to tint the header icon of the dialog, from a
+     * specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the color state list should be obtained from, as an
+     *         {@link Integer} value
+     */
+    private void obtainHeaderIconTintList(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.materialDialogHeaderIconTint});
+        setHeaderIconTintList(typedArray.getColorStateList(0));
     }
 
     /**
@@ -296,6 +312,50 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
     }
 
     /**
+     * Sets the color, which should be used to tint the header icon of the dialog, which is created
+     * by the builder.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setHeaderIconTint(@ColorInt final int color) {
+        getProduct().setHeaderIconTint(color);
+        return self();
+    }
+
+    /**
+     * Sets the color state list, which should be used to tint the header icon of the dialog, which
+     * is created by the builder.
+     *
+     * @param tintList
+     *         The color state list, which should be set, as an instance of the class {@link
+     *         ColorStateList} or null, if no color state list should be set
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setHeaderIconTintList(@Nullable final ColorStateList tintList) {
+        getProduct().setHeaderIconTintList(tintList);
+        return self();
+    }
+
+    /**
+     * Sets the mode, which should be used to tint the icon of the dialog, which is created by the
+     * builder.
+     *
+     * @param mode
+     *         The mode, which should be set, as a value of the enum {@link PorterDuff.Mode}. The
+     *         mode may not be null
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setHeaderIconTintMode(@NonNull final PorterDuff.Mode mode) {
+        getProduct().setHeaderIconTintMode(mode);
+        return self();
+    }
+
+    /**
      * Sets the color of the divider of the header of the dialog, which is created by the builder.
      *
      * @param color
@@ -330,6 +390,7 @@ public abstract class AbstractHeaderDialogBuilder<DialogType extends HeaderDialo
         obtainHeaderHeight(themeResourceId);
         obtainHeaderBackground(themeResourceId);
         obtainHeaderIcon(themeResourceId);
+        obtainHeaderIconTintList(themeResourceId);
         obtainHeaderDividerColor(themeResourceId);
         obtainShowHeaderDivider(themeResourceId);
     }

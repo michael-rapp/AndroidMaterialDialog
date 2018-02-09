@@ -13,7 +13,9 @@
  */
 package de.mrapp.android.dialog;
 
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -152,6 +154,32 @@ public abstract class AbstractHeaderDialogFragment extends AbstractMaterialDialo
     public final void setHeaderIcon(@Nullable final Bitmap icon,
                                     @Nullable final DrawableAnimation animation) {
         decorator.setHeaderIcon(icon, animation);
+    }
+
+    @Override
+    public final ColorStateList getHeaderIconTintList() {
+        return decorator.getHeaderIconTintList();
+    }
+
+    @Override
+    public final void setHeaderIconTint(@ColorInt final int color) {
+        decorator.setHeaderIconTint(color);
+    }
+
+    @Override
+    public final void setHeaderIconTintList(@Nullable final ColorStateList tintList) {
+        decorator.setHeaderIconTintList(tintList);
+    }
+
+    @NonNull
+    @Override
+    public final PorterDuff.Mode getHeaderIconTintMode() {
+        return decorator.getHeaderIconTintMode();
+    }
+
+    @Override
+    public final void setHeaderIconTintMode(@NonNull final PorterDuff.Mode mode) {
+        decorator.setHeaderIconTintMode(mode);
     }
 
     @Override

@@ -28,9 +28,9 @@ License.
     </array>
 
     <array name="wizard_dialog_header_icons">
-        <item>@drawable/dialog_header_icon</item>
-        <item>@drawable/dialog_header_icon_2</item>
-        <item>@drawable/dialog_header_icon_3</item>
+        <item>@drawable/ic_message_alert_72dp</item>
+        <item>@drawable/ic_info_72dp</item>
+        <item>@drawable/ic_warning_72dp</item>
     </array>
 
 </resources>

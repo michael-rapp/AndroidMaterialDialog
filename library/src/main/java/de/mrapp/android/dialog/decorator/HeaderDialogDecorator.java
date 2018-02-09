@@ -13,7 +13,9 @@
  */
 package de.mrapp.android.dialog.decorator;
 
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -24,6 +26,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.ImageViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,6 +128,20 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
             HeaderDialogDecorator.class.getSimpleName() + "::headerIconId";
 
     /**
+     * The name of the extra, which is used to store the color state list, which is used to tint the
+     * header icon, within a bundle.
+     */
+    private static final String HEADER_ICON_TINT_LIST_EXTRA =
+            HeaderDialogDecorator.class.getSimpleName() + "::headerIconTintList";
+
+    /**
+     * The name of the extra, which is used to store the mode, which is used to tint the header
+     * icon, within a bundle.
+     */
+    private static final String HEADER_ICON_TINT_MODE_EXTRA =
+            HeaderDialogDecorator.class.getSimpleName() + "::headerIconTintMode";
+
+    /**
      * The view group, which contains all views of the dialog's header.
      */
     private ViewGroup header;
@@ -203,6 +220,16 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
      * The resource id of the icon of the dialog's header.
      */
     private int headerIconId = -1;
+
+    /**
+     * The color state list, which is used to tint the header icon.
+     */
+    private ColorStateList headerIconTintList;
+
+    /**
+     * The mode, which is used to tint the header icon.
+     */
+    private PorterDuff.Mode headerIconTintMode = PorterDuff.Mode.SRC_ATOP;
 
     /**
      * True, if the divider of the dialog's header is shown, false otherwise.
@@ -354,6 +381,8 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
      */
     private void adaptHeaderIcon(@Nullable final DrawableAnimation animation) {
         if (headerIconImageView != null) {
+            ImageViewCompat.setImageTintList(headerIconImageView, headerIconTintList);
+            ImageViewCompat.setImageTintMode(headerIconImageView, headerIconTintMode);
             Drawable newIcon = headerIcon;
 
             if (animation != null && newIcon != null) {
@@ -556,12 +585,40 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
     }
 
     @Override
-    public void setHeaderIcon(@DrawableRes final int resourceId,
-                              @Nullable final DrawableAnimation animation) {
+    public final void setHeaderIcon(@DrawableRes final int resourceId,
+                                    @Nullable final DrawableAnimation animation) {
         this.headerIconBitmap = null;
         this.headerIconId = resourceId;
         this.headerIcon = ContextCompat.getDrawable(getContext(), resourceId);
         adaptHeaderIcon(animation);
+    }
+
+    @Override
+    public final ColorStateList getHeaderIconTintList() {
+        return headerIconTintList;
+    }
+
+    @Override
+    public final void setHeaderIconTint(@ColorInt final int color) {
+        setHeaderIconTintList(ColorStateList.valueOf(color));
+    }
+
+    @Override
+    public final void setHeaderIconTintList(@Nullable final ColorStateList tintList) {
+        this.headerIconTintList = tintList;
+        adaptHeaderIcon(null);
+    }
+
+    @NonNull
+    @Override
+    public final PorterDuff.Mode getHeaderIconTintMode() {
+        return headerIconTintMode;
+    }
+
+    @Override
+    public final void setHeaderIconTintMode(@NonNull final PorterDuff.Mode mode) {
+        this.headerIconTintMode = mode;
+        adaptHeaderIcon(null);
     }
 
     @Override
@@ -592,6 +649,8 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
         outState.putInt(HEADER_HEIGHT_EXTRA, getHeaderHeight());
         outState.putBoolean(SHOW_HEADER_DIVIDER_EXTRA, isHeaderDividerShown());
         outState.putInt(HEADER_DIVIDER_COLOR_EXTRA, getHeaderDividerColor());
+        outState.putParcelable(HEADER_ICON_TINT_LIST_EXTRA, getHeaderIconTintList());
+        outState.putSerializable(HEADER_ICON_TINT_MODE_EXTRA, getHeaderIconTintMode());
 
         if (headerBackgroundBitmap != null) {
             outState.putParcelable(HEADER_BACKGROUND_BITMAP_EXTRA, headerBackgroundBitmap);
@@ -614,6 +673,14 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
         setHeaderHeight(savedInstanceState.getInt(HEADER_HEIGHT_EXTRA));
         showHeaderDivider(savedInstanceState.getBoolean(SHOW_HEADER_DIVIDER_EXTRA));
         setHeaderDividerColor(savedInstanceState.getInt(HEADER_DIVIDER_COLOR_EXTRA));
+        setHeaderIconTintList(
+                (ColorStateList) savedInstanceState.getParcelable(HEADER_ICON_TINT_LIST_EXTRA));
+        PorterDuff.Mode headerIconTintMode =
+                (PorterDuff.Mode) savedInstanceState.getSerializable(HEADER_ICON_TINT_MODE_EXTRA);
+
+        if (headerIconTintMode != null) {
+            setHeaderIconTintMode(headerIconTintMode);
+        }
 
         if (savedInstanceState.containsKey(HEADER_BACKGROUND_BITMAP_EXTRA)) {
             setHeaderBackground(

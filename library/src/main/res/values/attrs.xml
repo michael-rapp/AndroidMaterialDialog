@@ -79,6 +79,7 @@ License.
     <attr name="materialDialogHeaderHeight" format="dimension"/>
     <attr name="materialDialogHeaderBackground" format="color|reference"/>
     <attr name="materialDialogHeaderIcon" format="reference"/>
+    <attr name="materialDialogHeaderIconTint" format="color"/>
     <attr name="materialDialogHeaderDividerColor" format="reference"/>
     <attr name="materialDialogShowHeaderDivider" format="boolean"/>
     <attr name="materialDialogProgressBarColor" format="color"/>
