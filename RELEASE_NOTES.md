@@ -1,5 +1,12 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 4.3.1 (Feb. 9th 2018)
+
+A bugfix release, which fixes the following issues:
+
+- Updated dependency "AndroidMaterialViews" to version 2.1.10.
+- Updated dependency "AndroidUtil" to version 1.20.1.
+
 ## Version 4.3.0 (Feb. 9th 2018)
 
 A feature release, which introduces the following changes:
