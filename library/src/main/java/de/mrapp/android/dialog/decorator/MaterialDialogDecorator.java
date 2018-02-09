@@ -927,11 +927,8 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private void adaptIcon() {
         if (iconImageView != null) {
-            if (icon != null) {
-                ImageViewCompat.setImageTintList(iconImageView, iconTintList);
-                ImageViewCompat.setImageTintMode(iconImageView, iconTintMode);
-            }
-
+            ImageViewCompat.setImageTintList(iconImageView, iconTintList);
+            ImageViewCompat.setImageTintMode(iconImageView, iconTintMode);
             iconImageView.setImageDrawable(icon);
             iconImageView.setVisibility(icon != null ? View.VISIBLE : View.GONE);
         }
