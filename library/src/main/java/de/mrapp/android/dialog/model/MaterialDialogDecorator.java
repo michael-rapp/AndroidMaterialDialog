@@ -13,7 +13,9 @@
  */
 package de.mrapp.android.dialog.model;
 
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
@@ -506,6 +508,49 @@ public interface MaterialDialogDecorator extends Dialog {
      *         {@link Integer} value. The id must point to a valid drawable resource
      */
     void setIconAttribute(@AttrRes int attributeId);
+
+    /**
+     * Returns the color state list, which is used to tint the icon of the dialog.
+     *
+     * @return The color state list, which is used to tint the icon of the dialog, as an instance of
+     * the class {@link ColorStateList} or null, if no color state list has been set
+     */
+    ColorStateList getIconTintList();
+
+    /**
+     * Sets the color, which should be used to tint the icon of the dialog.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    void setIconTint(@ColorInt int color);
+
+    /**
+     * Sets the color state list, which should be used to tint the icon of the dialog.
+     *
+     * @param tintList
+     *         The color state list, which should be set, as an instance of the class {@link
+     *         ColorStateList} or null, if no color state list should be set
+     */
+    void setIconTintList(@Nullable ColorStateList tintList);
+
+    /**
+     * Returns the mode, which is used to tint the icon of the dialog.
+     *
+     * @return The mode, which is used to tint the icon of the dialog, as a value of the enum {@link
+     * PorterDuff.Mode}. The mode may not be null
+     */
+    @NonNull
+    PorterDuff.Mode getIconTintMode();
+
+    /**
+     * Sets the mode, which should be used to tint the icon of the dialog.
+     *
+     * @param mode
+     *         The mode, which should be set, as a value of the enum {@link PorterDuff.Mode}. The
+     *         mode may not be null
+     */
+    void setIconTintMode(@NonNull PorterDuff.Mode mode);
 
     /**
      * Returns the color of the title of the dialog.

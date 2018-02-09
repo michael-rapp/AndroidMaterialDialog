@@ -13,9 +13,11 @@
  */
 package de.mrapp.android.dialog.decorator;
 
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -29,9 +31,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.OnApplyWindowInsetsListener;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
+import android.support.v4.widget.ImageViewCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +66,7 @@ import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 import de.mrapp.android.util.ViewUtil;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
+import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -268,6 +273,20 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             MaterialDialogDecorator.class.getSimpleName() + "::iconAttribute";
 
     /**
+     * The name of the extra, which is used to store the color state list, which is used to tint the
+     * icon of the dialog, within a bundle.
+     */
+    private static final String ICON_TINT_LIST_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::iconTintList";
+
+    /**
+     * The name of the extra, which is used to store the mode, which is used to tint the icon of the
+     * dialog, within a bundle.
+     */
+    private static final String ICON_TINT_MODE_EXTRA =
+            MaterialDialogDecorator.class.getSimpleName() + "::iconTintMode";
+
+    /**
      * The name of the extra, which is used to store the bitmap of the dialog's background within a
      * bundle.
      */
@@ -439,6 +458,16 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      * The bitmap of the dialog's icon.
      */
     private Bitmap iconBitmap;
+
+    /**
+     * The color state list, which is used to tint the icon of the dialog.
+     */
+    private ColorStateList iconTintList;
+
+    /**
+     * The mode, which is used to tint the icon of the dialog.
+     */
+    private PorterDuff.Mode iconTintMode = PorterDuff.Mode.SRC_ATOP;
 
     /**
      * The color of the title of the dialog.
@@ -898,6 +927,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
      */
     private void adaptIcon() {
         if (iconImageView != null) {
+            if (icon != null) {
+                ImageViewCompat.setImageTintList(iconImageView, iconTintList);
+                ImageViewCompat.setImageTintMode(iconImageView, iconTintMode);
+            }
+
             iconImageView.setImageDrawable(icon);
             iconImageView.setVisibility(icon != null ? View.VISIBLE : View.GONE);
         }
@@ -1391,6 +1425,35 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     @Override
+    public final ColorStateList getIconTintList() {
+        return iconTintList;
+    }
+
+    @Override
+    public final void setIconTint(final int color) {
+        setIconTintList(ColorStateList.valueOf(color));
+    }
+
+    @Override
+    public final void setIconTintList(@Nullable final ColorStateList tintList) {
+        this.iconTintList = tintList;
+        adaptIcon();
+    }
+
+    @NonNull
+    @Override
+    public final PorterDuff.Mode getIconTintMode() {
+        return iconTintMode;
+    }
+
+    @Override
+    public final void setIconTintMode(@NonNull final PorterDuff.Mode mode) {
+        ensureNotNull(mode, "The icon tint mode may not be null");
+        this.iconTintMode = mode;
+        adaptIcon();
+    }
+
+    @Override
     public final int getTitleColor() {
         return titleColor;
     }
@@ -1581,6 +1644,8 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         outState.putInt(MESSAGE_COLOR_EXTRA, getMessageColor());
         outState.putCharSequence(TITLE_EXTRA, getTitle());
         outState.putCharSequence(MESSAGE_EXTRA, getMessage());
+        outState.putParcelable(ICON_TINT_LIST_EXTRA, getIconTintList());
+        outState.putSerializable(ICON_TINT_MODE_EXTRA, getIconTintMode());
 
         if (windowBackgroundBitmap != null) {
             outState.putParcelable(WINDOW_BACKGROUND_BITMAP_EXTRA, windowBackgroundBitmap);
@@ -1632,6 +1697,13 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         setMessageColor(savedInstanceState.getInt(MESSAGE_COLOR_EXTRA));
         setTitle(savedInstanceState.getCharSequence(TITLE_EXTRA));
         setMessage(savedInstanceState.getCharSequence(MESSAGE_EXTRA));
+        setIconTintList((ColorStateList) savedInstanceState.getParcelable(ICON_TINT_LIST_EXTRA));
+        PorterDuff.Mode iconTintMode =
+                (PorterDuff.Mode) savedInstanceState.getSerializable(ICON_TINT_MODE_EXTRA);
+
+        if (iconTintMode != null) {
+            setIconTintMode(iconTintMode);
+        }
 
         if (savedInstanceState.containsKey(WINDOW_BACKGROUND_BITMAP_EXTRA)) {
             setWindowBackground(

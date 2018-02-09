@@ -25,6 +25,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -46,6 +47,7 @@ import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
 import de.mrapp.android.dialog.animation.ScaleTransitionAnimation;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
+import de.mrapp.android.util.ThemeUtil;
 
 /**
  * A preference fragment, which contains the example app's settings.
@@ -652,7 +654,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
         }
 
         if (shouldIconBeShown()) {
-            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.setIcon(R.drawable.ic_info_24dp);
+            builder.setIconTint(ContextCompat.getColor(getActivity(), R.color.color_accent));
         }
 
         if (shouldHeaderBeShown()) {

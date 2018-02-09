@@ -15,9 +15,11 @@ package de.mrapp.android.dialog.builder;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.support.annotation.AttrRes;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
@@ -554,7 +556,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     /**
      * Sets the listener, which should be notified, when the dialog, which is created by the
      * builder, is canceled.
-     *
+     * <p>
      * Even in a cancelable dialog, the dialog may be dismissed for reasons other than being
      * canceled or one of the supplied choices being selected. If you are interested in listening
      * for all cases where the dialog is dismissed and not just when it is canceled, see {@link
@@ -924,6 +926,50 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      */
     public final BuilderType setIconAttribute(@AttrRes final int attributeId) {
         getProduct().setIconAttribute(attributeId);
+        return self();
+    }
+
+    /**
+     * Sets the color, which should be used to tint the icon of the dialog, which is created by the
+     * builder.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setIconTint(@ColorInt final int color) {
+        getProduct().setIconTint(color);
+        return self();
+    }
+
+    /**
+     * Sets the color state list, which should be used to tint the icon of the dialog, which is
+     * created by the builder.
+     *
+     * @param tintList
+     *         The color state list, which should be set, as an instance of the class {@link
+     *         ColorStateList} or null, if no color state list should be set
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setIconTintList(@Nullable final ColorStateList tintList) {
+        getProduct().setIconTintList(tintList);
+        return self();
+    }
+
+    /**
+     * Sets the mode, which should be used to tint the icon of the dialog, which is created by the
+     * builder.
+     *
+     * @param mode
+     *         The mode, which should be set, as a value of the enum {@link PorterDuff.Mode}. The
+     *         mode may not be null
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setIconTintMode(@NonNull final PorterDuff.Mode mode) {
+        getProduct().setIconTintMode(mode);
         return self();
     }
 

@@ -16,7 +16,9 @@ package de.mrapp.android.dialog;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.AttrRes;
@@ -46,6 +48,8 @@ import de.mrapp.android.dialog.decorator.MaterialDialogDecorator;
 import de.mrapp.android.dialog.model.MaterialDialog;
 import de.mrapp.android.dialog.view.DialogRootView;
 import de.mrapp.android.dialog.view.DialogRootView.ViewType;
+
+import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * An abstract base class for all dialogs, which are designed according to Android 5's Material
@@ -453,6 +457,32 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     @Override
     public final void setIconAttribute(@AttrRes final int attributeId) {
         decorator.setIconAttribute(attributeId);
+    }
+
+    @Override
+    public final ColorStateList getIconTintList() {
+        return decorator.getIconTintList();
+    }
+
+    @Override
+    public final void setIconTint(final int color) {
+        decorator.setIconTint(color);
+    }
+
+    @Override
+    public final void setIconTintList(@Nullable final ColorStateList tintList) {
+        decorator.setIconTintList(tintList);
+    }
+
+    @NonNull
+    @Override
+    public final PorterDuff.Mode getIconTintMode() {
+        return decorator.getIconTintMode();
+    }
+
+    @Override
+    public final void setIconTintMode(@NonNull final PorterDuff.Mode mode) {
+        decorator.setIconTintMode(mode);
     }
 
     @Override
