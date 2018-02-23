@@ -4,7 +4,7 @@
 
 A bugfix release, which fixes the following issues:
 
-- Previously set button listeners are not set to `null` anymore when calling da dialog's `onRestoreInstanceState`-method.
+- Previously set button listeners are not set to `null` anymore when calling a dialog's `onRestoreInstanceState`-method.
 
 ## Version 4.3.1 (Feb. 9th 2018)
 
