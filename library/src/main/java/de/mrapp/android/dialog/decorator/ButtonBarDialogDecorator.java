@@ -500,9 +500,12 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
         setButtonTextColor(savedInstanceState.getInt(BUTTON_TEXT_COLOR_EXTRA));
         setDisabledButtonTextColor(savedInstanceState.getInt(DISABLED_BUTTON_TEXT_COLOR_EXTRA));
         showButtonBarDivider(savedInstanceState.getBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA));
-        setPositiveButton(savedInstanceState.getCharSequence(POSITIVE_BUTTON_TEXT_EXTRA), null);
-        setNeutralButton(savedInstanceState.getCharSequence(NEUTRAL_BUTTON_TEXT_EXTRA), null);
-        setNegativeButton(savedInstanceState.getCharSequence(NEGATIVE_BUTTON_TEXT_EXTRA), null);
+        setPositiveButton(savedInstanceState.getCharSequence(POSITIVE_BUTTON_TEXT_EXTRA),
+                positiveButtonListener);
+        setNeutralButton(savedInstanceState.getCharSequence(NEUTRAL_BUTTON_TEXT_EXTRA),
+                neutralButtonListener);
+        setNegativeButton(savedInstanceState.getCharSequence(NEGATIVE_BUTTON_TEXT_EXTRA),
+                negativeButtonListener);
     }
 
     @NonNull
