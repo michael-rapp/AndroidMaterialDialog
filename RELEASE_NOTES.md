@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 4.3.3 (Feb. 28th 2018)
+
+A bugfix release, which fixes the following issues:
+
+- Fixed possible crashes when showing the same dialog multiple times.
+
 ## Version 4.3.2 (Feb. 23th 2018)
 
 A bugfix release, which fixes the following issues:
