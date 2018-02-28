@@ -682,7 +682,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      *         The view may not be null
      */
     private boolean applyDialogPaddingTop(@NonNull final Area area, @NonNull final View view) {
-        if (area != Area.HEADER && area != Area.BUTTON_BAR &&
+        if (area != Area.HEADER && area != Area.CONTENT && area != Area.BUTTON_BAR &&
                 view.getVisibility() == View.VISIBLE) {
             view.setPadding(view.getPaddingLeft(), dialogPadding[1], view.getPaddingRight(),
                     view.getPaddingBottom());
