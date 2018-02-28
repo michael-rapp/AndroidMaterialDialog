@@ -31,7 +31,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.OnApplyWindowInsetsListener;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
@@ -1762,11 +1761,23 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     protected final void onDetach() {
-        titleContainer = null;
-        messageContainer = null;
+        if (titleContainer != null) {
+            titleContainer.removeAllViews();
+            titleContainer = null;
+        }
+
+        if (messageContainer != null) {
+            messageContainer.removeAllViews();
+            messageContainer = null;
+        }
+
+        if (contentContainer != null) {
+            contentContainer.removeAllViews();
+            contentContainer = null;
+        }
+
         titleTextView = null;
         messageTextView = null;
-        contentContainer = null;
     }
 
 }

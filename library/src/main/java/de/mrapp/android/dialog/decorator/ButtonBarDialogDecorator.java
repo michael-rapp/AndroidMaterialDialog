@@ -533,7 +533,11 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
 
     @Override
     protected final void onDetach() {
-        buttonBarContainer = null;
+        if (buttonBarContainer != null) {
+            buttonBarContainer.removeAllViews();
+            buttonBarContainer = null;
+        }
+
         positiveButton = null;
         negativeButton = null;
         neutralButton = null;

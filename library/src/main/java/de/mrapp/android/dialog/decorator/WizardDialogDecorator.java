@@ -1182,10 +1182,14 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
 
     @Override
     protected final void onDetach() {
+        if (buttonBarContainer != null) {
+            buttonBarContainer.removeAllViews();
+            buttonBarContainer = null;
+        }
+
         tabLayout = null;
         viewPager = null;
         viewPagerAdapter = null;
-        buttonBarContainer = null;
         backButton = null;
         nextButton = null;
         finishButton = null;

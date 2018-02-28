@@ -724,8 +724,12 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
 
     @Override
     protected final void onDetach() {
+        if (headerContentContainer != null) {
+            headerContentContainer.removeAllViews();
+            headerContentContainer = null;
+        }
+
         header = null;
-        headerContentContainer = null;
         headerBackgroundImageView = null;
         headerIconImageView = null;
         headerDivider = null;
