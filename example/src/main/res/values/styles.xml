@@ -20,6 +20,7 @@ License.
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
         <item name="materialDialogTheme">@style/LightDialogTheme</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="LightFullscreenTheme" parent="LightTheme">
@@ -31,6 +32,7 @@ License.
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
         <item name="materialDialogTheme">@style/DarkDialogTheme</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="DarkFullscreenTheme" parent="@style/DarkTheme">

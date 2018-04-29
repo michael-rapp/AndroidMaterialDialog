@@ -20,9 +20,6 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,6 +27,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.Preference.OnPreferenceChangeListener;
+import android.support.v7.preference.Preference.OnPreferenceClickListener;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -54,7 +55,7 @@ import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
  *
  * @author Michael Rapp
  */
-public class PreferenceFragment extends android.preference.PreferenceFragment {
+public class PreferenceFragment extends PreferenceFragmentCompat {
 
     /**
      * The name of the extra, which is used to store the state of the alert dialog within a bundle.
@@ -996,7 +997,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeDialogs();
-        addPreferencesFromResource(R.xml.preferences);
         initializeThemePreference();
         initializeFullscreenPreference();
         initializeShowAlertDialogPreference();
@@ -1041,6 +1041,11 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
                 progressDialog.onRestoreInstanceState(progressDialogState);
             }
         }
+    }
+
+    @Override
+    public final void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+        addPreferencesFromResource(R.xml.preferences);
     }
 
     @Override

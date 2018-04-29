@@ -13,13 +13,13 @@
  */
 package de.mrapp.android.dialog.example;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initializeFloatingActionButton() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            floatingActionButton = (FloatingActionButton) findViewById(R.id.floating_action_button);
+            floatingActionButton = findViewById(R.id.floating_action_button);
             floatingActionButton.setVisibility(View.VISIBLE);
             floatingActionButton.setOnClickListener(createFloatingActionButtonListener());
         }
@@ -144,10 +144,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (getFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
+        if (getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
             fragment = (PreferenceFragment) Fragment
                     .instantiate(this, PreferenceFragment.class.getName());
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment, fragment, FRAGMENT_TAG);
             transaction.commit();
         }
@@ -158,10 +158,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected final void onResume() {
         super.onResume();
-        fragment = (PreferenceFragment) getFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+        fragment = (PreferenceFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ListView listView = (ListView) findViewById(android.R.id.list);
+            ListView listView = findViewById(android.R.id.list);
             listView.setOnScrollListener(createScrollListener());
         }
     }
