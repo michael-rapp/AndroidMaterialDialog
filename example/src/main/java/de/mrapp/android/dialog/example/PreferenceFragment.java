@@ -418,7 +418,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 y -= (rootViewLocation[1] - (toolbar != null ? toolbar.getHeight() : 0));
             }
 
-            return new RectangleRevealAnimation.Builder(getActivity()).setWidth(view.getWidth()).setDuration(3000)
+            return new RectangleRevealAnimation.Builder(getActivity()).setWidth(view.getWidth())
                     .setHeight(view.getHeight()).setX(viewLocation[0]).setY(y).create();
         }
 
