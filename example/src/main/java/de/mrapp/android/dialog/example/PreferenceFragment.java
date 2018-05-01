@@ -149,38 +149,32 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
      * Initializes the alert dialog.
      */
     private void initializeAlertDialog() {
-        if (alertDialog == null) {
-            MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-            configureHeaderDialogBuilder(builder);
-            configureButtonBarDialogBuilder(builder);
-            alertDialog = builder.create();
-        }
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+        configureHeaderDialogBuilder(builder);
+        configureButtonBarDialogBuilder(builder);
+        alertDialog = builder.create();
     }
 
     /**
      * Initializes the list dialog.
      */
     private void initializeListDialog() {
-        if (listDialog == null) {
-            MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-            configureHeaderDialogBuilder(builder);
-            configureButtonBarDialogBuilder(builder);
-            builder.setItems(R.array.list_items, createSingleChoiceListener());
-            listDialog = builder.create();
-        }
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+        configureHeaderDialogBuilder(builder);
+        configureButtonBarDialogBuilder(builder);
+        builder.setItems(R.array.list_items, createSingleChoiceListener());
+        listDialog = builder.create();
     }
 
     /**
      * Initializes the single choice list dialog.
      */
     private void initializeSingleChoiceListDialog() {
-        if (singleChoiceListDialog == null) {
-            MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-            configureHeaderDialogBuilder(builder);
-            configureButtonBarDialogBuilder(builder);
-            builder.setSingleChoiceItems(R.array.list_items, 0, createSingleChoiceListener());
-            singleChoiceListDialog = builder.create();
-        }
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+        configureHeaderDialogBuilder(builder);
+        configureButtonBarDialogBuilder(builder);
+        builder.setSingleChoiceItems(R.array.list_items, 0, createSingleChoiceListener());
+        singleChoiceListDialog = builder.create();
     }
 
     /**
@@ -199,29 +193,25 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
      * Initializes the custom dialog.
      */
     private void initializeCustomDialog() {
-        if (customDialog == null) {
-            MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-            configureHeaderDialogBuilder(builder);
-            configureButtonBarDialogBuilder(builder);
-            builder.setView(R.layout.custom_dialog_content);
-            builder.setCustomTitle(R.layout.custom_dialog_title);
-            builder.setCustomMessage(R.layout.custom_dialog_message);
-            builder.setCustomButtonBar(R.layout.custom_dialog_button_bar);
-            builder.setCustomHeader(R.layout.custom_dialog_header);
-            customDialog = builder.create();
-        }
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+        configureHeaderDialogBuilder(builder);
+        configureButtonBarDialogBuilder(builder);
+        builder.setView(R.layout.custom_dialog_content);
+        builder.setCustomTitle(R.layout.custom_dialog_title);
+        builder.setCustomMessage(R.layout.custom_dialog_message);
+        builder.setCustomButtonBar(R.layout.custom_dialog_button_bar);
+        builder.setCustomHeader(R.layout.custom_dialog_header);
+        customDialog = builder.create();
     }
 
     /**
      * Initializes the progress dialog.
      */
     private void initializeProgressDialog() {
-        if (progressDialog == null) {
-            ProgressDialog.Builder builder = new ProgressDialog.Builder(getActivity());
-            configureHeaderDialogBuilder(builder);
-            configureButtonBarDialogBuilder(builder);
-            progressDialog = builder.create();
-        }
+        ProgressDialog.Builder builder = new ProgressDialog.Builder(getActivity());
+        configureHeaderDialogBuilder(builder);
+        configureButtonBarDialogBuilder(builder);
+        progressDialog = builder.create();
     }
 
     /**
@@ -655,6 +645,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
      *         AbstractHeaderDialogBuilder}
      */
     private void configureHeaderDialogBuilder(@NonNull final AbstractHeaderDialogBuilder builder) {
+        builder.setFullscreen(shouldUseFullscreen());
+
         if (shouldTitleBeShown()) {
             builder.setTitle(getDialogTitle());
         }
