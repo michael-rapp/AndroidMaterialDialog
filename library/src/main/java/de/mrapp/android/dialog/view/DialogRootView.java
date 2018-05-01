@@ -348,7 +348,6 @@ public class DialogRootView extends LinearLayout implements AreaListener {
         dialogPadding = new int[]{0, 0, 0, 0};
         paint = new Paint();
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY));
-        //        setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
     }
 
     /**
