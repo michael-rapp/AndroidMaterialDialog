@@ -31,8 +31,8 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
 import android.support.v7.preference.Preference.OnPreferenceClickListener;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import de.mrapp.android.dialog.MaterialDialog;
@@ -404,8 +404,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
      */
     private DialogAnimation createRectangularRevealAnimation(@NonNull final Preference preference) {
         if (shouldUseAnimations()) {
-            ListView listView = getActivity().findViewById(android.R.id.list);
-            View view = listView.getChildAt(preference.getOrder() + 1);
+            RecyclerView recyclerView = getListView();
+            View view = recyclerView.getChildAt(preference.getOrder() + 1);
             int[] viewLocation = new int[2];
             view.getLocationOnScreen(viewLocation);
             View rootView = getActivity().findViewById(android.R.id.content);
@@ -418,7 +418,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 y -= (rootViewLocation[1] - (toolbar != null ? toolbar.getHeight() : 0));
             }
 
-            return new RectangleRevealAnimation.Builder(getActivity()).setWidth(view.getWidth())
+            return new RectangleRevealAnimation.Builder(getActivity()).setWidth(view.getWidth()).setDuration(3000)
                     .setHeight(view.getHeight()).setX(viewLocation[0]).setY(y).create();
         }
 
@@ -526,8 +526,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                             createWizardDialogPageChangeListener(wizardDialog));
                 }
 
-                wizardDialog.show(getActivity().getSupportFragmentManager(),
-                        null);
+                wizardDialog.show(getActivity().getSupportFragmentManager(), null);
                 return true;
             }
 
