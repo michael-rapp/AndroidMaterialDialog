@@ -526,7 +526,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                             createWizardDialogPageChangeListener(wizardDialog));
                 }
 
-                wizardDialog.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(),
+                wizardDialog.show(getActivity().getSupportFragmentManager(),
                         null);
                 return true;
             }
