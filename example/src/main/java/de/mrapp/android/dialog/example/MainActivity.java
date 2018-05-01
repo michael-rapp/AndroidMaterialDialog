@@ -21,11 +21,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.ListView;
 
 /**
  * The main activity of the example app.
@@ -84,15 +82,10 @@ public class MainActivity extends AppCompatActivity {
      * button, when the preferences, which are shown by the activity's fragment, are scrolled.
      *
      * @return The listener, which has been created, as an instance of the type {@link
-     * OnScrollListener}
+     * RecyclerView.OnScrollListener}
      */
-    private OnScrollListener createScrollListener() {
-        return new OnScrollListener() {
-
-            /**
-             * The index of the first visible item.
-             */
-            private int firstVisibleItem = 0;
+    private RecyclerView.OnScrollListener createScrollListener() {
+        return new RecyclerView.OnScrollListener() {
 
             /**
              * True, if the view is currently scrolling up, false otherwise.
@@ -100,22 +93,23 @@ public class MainActivity extends AppCompatActivity {
             private boolean scrollingUp;
 
             @Override
-            public void onScrollStateChanged(final AbsListView view, final int scrollState) {
+            public void onScrollStateChanged(final RecyclerView recyclerView, final int newState) {
 
             }
 
             @Override
-            public void onScroll(final AbsListView view, final int firstVisibleItem,
-                                 final int visibleItemCount, final int totalItemCount) {
-                if (firstVisibleItem < this.firstVisibleItem && !scrollingUp) {
-                    scrollingUp = true;
-                    floatingActionButton.show();
-                } else if (firstVisibleItem > this.firstVisibleItem && scrollingUp) {
-                    floatingActionButton.hide();
-                    scrollingUp = false;
-                }
+            public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
+                boolean isScrollingUp = dy < 0;
 
-                this.firstVisibleItem = firstVisibleItem;
+                if (scrollingUp != isScrollingUp) {
+                    scrollingUp = isScrollingUp;
+
+                    if (scrollingUp) {
+                        floatingActionButton.show();
+                    } else {
+                        floatingActionButton.hide();
+                    }
+                }
             }
 
         };
@@ -161,8 +155,8 @@ public class MainActivity extends AppCompatActivity {
         fragment = (PreferenceFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ListView listView = findViewById(android.R.id.list);
-            listView.setOnScrollListener(createScrollListener());
+            RecyclerView recyclerView = fragment.getListView();
+            recyclerView.addOnScrollListener(createScrollListener());
         }
     }
 
