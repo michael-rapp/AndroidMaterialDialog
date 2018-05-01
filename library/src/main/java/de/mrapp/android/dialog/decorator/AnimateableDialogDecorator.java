@@ -410,9 +410,8 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
      * @param listener
      *         The listener, which should be notified about the animation's events, as an instance
      *         of the type {@link AnimatorListener} or null, if no listener should be notified
-     * @return True, if the dialog has been shown in an animated manner, false otherwise
      */
-    public final boolean showAnimated(@Nullable final DialogAnimation animation,
+    public final void showAnimated(@Nullable final DialogAnimation animation,
                                       @Nullable final AnimatorListener listener) {
         hidden = false;
 
@@ -430,7 +429,6 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
 
                     if (animator != null) {
                         animator.start();
-                        return true;
                     }
                 } else if (animation instanceof RectangleRevealAnimation) {
                     RectangleRevealAnimation rectangleRevealAnimation =
@@ -441,7 +439,6 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
                     if (animator != null) {
                         configureShowAnimator(animatedView, rectangleRevealAnimation, animator);
                         animator.start();
-                        return true;
                     }
                 } else if (animation instanceof CircleRevealAnimation) {
                     CircleRevealAnimation circleRevealAnimation = (CircleRevealAnimation) animation;
@@ -450,7 +447,6 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
 
                     if (animator != null) {
                         animator.start();
-                        return true;
                     }
                 } else {
                     throw new RuntimeException(
@@ -458,8 +454,6 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
                 }
             }
         }
-
-        return false;
     }
 
     /**
@@ -471,9 +465,8 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
      * @param listener
      *         The listener, which should be notified about the animation's events, as an instance
      *         of the type {@link AnimatorListener} or null, if no listener should be notified
-     * @return True, if the dialog has been hidden in an animated manner, false otherwise
      */
-    public final boolean hideAnimated(@Nullable final DialogAnimation animation,
+    public final void hideAnimated(@Nullable final DialogAnimation animation,
                                       @Nullable final AnimatorListener listener) {
         if (!hidden) {
             hidden = true;
@@ -492,7 +485,6 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
 
                         if (animator != null) {
                             animator.start();
-                            return true;
                         }
                     } else if (animation instanceof RectangleRevealAnimation) {
                         RectangleRevealAnimation rectangleRevealAnimation =
@@ -504,7 +496,6 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
                         if (animator != null) {
                             configureHideAnimator(animatedView, rectangleRevealAnimation, animator);
                             animator.start();
-                            return true;
                         }
                     } else if (animation instanceof CircleRevealAnimation) {
                         CircleRevealAnimation circleRevealAnimation =
@@ -514,7 +505,6 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
 
                         if (animator != null) {
                             animator.start();
-                            return true;
                         }
                     } else {
                         throw new RuntimeException("Unknown type of animation: " +
@@ -523,8 +513,6 @@ public class AnimateableDialogDecorator extends AbstractDialogDecorator<HeaderDi
                 }
             }
         }
-
-        return false;
     }
 
     @Override
