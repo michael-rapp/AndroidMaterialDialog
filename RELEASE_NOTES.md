@@ -1,5 +1,16 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 4.3.4 (May 2nd 2018)
+
+A minor release, which introduces the following changes:
+
+- Migrated the example app to use the Preference support library.
+- Fixed options in the example app not being applied immediately.
+- Updated AppCompat v7 support library to version 27.1.1.
+- Updated Android Design support library to version 27.1.1.
+- Updated dependency "AndroidMaterialViews" to version 2.1.11.
+- Updated dependency "AndroidUtil" to version 1.20.2.
+
 ## Version 4.3.3 (Feb. 28th 2018)
 
 A bugfix release, which fixes the following issues:
