@@ -23,5 +23,5 @@ android {
 
 dependencies {
     api project(':library')
-    api 'com.android.support:preference-v14:27.0.2'
+    api 'com.android.support:preference-v14:27.1.1'
 }
