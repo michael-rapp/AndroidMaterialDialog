@@ -15,7 +15,7 @@ License.
 -->
 <resources>
 
-    <style name="LightTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="LightTheme" parent="@style/Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
@@ -27,7 +27,7 @@ License.
         <item name="materialDialogTheme">@style/LightFullscreenDialogTheme</item>
     </style>
 
-    <style name="DarkTheme" parent="@style/Theme.AppCompat">
+    <style name="DarkTheme" parent="@style/Theme.MaterialComponents">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
