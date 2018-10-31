@@ -15,6 +15,6 @@ License.
 -->
 <resources>
 
-    <item name="floating_action_button_margin" type="dimen">16dp</item>
+    <dimen name="floating_action_button_margin">16dp</dimen>
 
 </resources>

@@ -15,6 +15,6 @@ License.
 -->
 <resources>
 
-    <item name="dialog_max_height" type="dimen">-1</item>
+    <dimen name="dialog_max_height">-1</dimen>
 
 </resources>
