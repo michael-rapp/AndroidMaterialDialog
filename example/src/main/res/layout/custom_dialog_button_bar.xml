@@ -26,6 +26,7 @@ License.
 
     <Button
         android:id="@android:id/button3"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -43,23 +44,23 @@ License.
 
         <Button
             android:id="@android:id/button2"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dialog_button_horizontal_padding"
+            android:paddingRight="@dimen/dialog_button_horizontal_padding"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@android:id/button1"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dialog_button_bar_spacing"
             android:layout_marginStart="@dimen/dialog_button_bar_spacing"
             android:paddingLeft="@dimen/dialog_button_horizontal_padding"
             android:paddingRight="@dimen/dialog_button_horizontal_padding"
-            android:visibility="gone"
-            tools:ignore="ButtonStyle"/>
-
-        <Button
-            android:id="@android:id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/dialog_button_horizontal_padding"
-            android:paddingRight="@dimen/dialog_button_horizontal_padding"
-            android:visibility="gone"
-            tools:ignore="ButtonStyle"/>
+            android:visibility="gone"/>
 
     </LinearLayout>
 </RelativeLayout>
