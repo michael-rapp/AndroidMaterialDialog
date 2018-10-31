@@ -20,7 +20,6 @@ android {
 }
 
 dependencies {
-    api 'androidx.appcompat:appcompat:1.0.0'
     api 'com.google.android.material:material:1.0.0'
     api 'com.github.michael-rapp:android-util:2.0.0'
     api 'com.github.michael-rapp:android-material-views:3.0.0'
