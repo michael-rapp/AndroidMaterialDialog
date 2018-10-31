@@ -30,7 +30,6 @@ License.
     <item name="dialog_button_min_width" type="dimen">64dp</item>
     <item name="dialog_button_min_height" type="dimen">44dp</item>
     <item name="dialog_stacked_button_min_height" type="dimen">64dp</item>
-    <item name="dialog_button_text_size" type="dimen">14sp</item>
     <item name="dialog_button_horizontal_padding" type="dimen">16dp</item>
     <item name="dialog_title_text_size" type="dimen">20sp</item>
     <item name="dialog_title_bottom_padding" type="dimen">20dp</item>

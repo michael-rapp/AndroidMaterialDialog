@@ -43,12 +43,4 @@ License.
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
-    <style name="MaterialDialog.Button" parent="Base.Widget.AppCompat.Button.Borderless">
-        <item name="android:minHeight">@dimen/dialog_button_min_height</item>
-        <item name="android:minWidth">@dimen/dialog_button_min_width</item>
-        <item name="android:textColor">?attr/colorAccent</item>
-        <item name="android:textSize">@dimen/dialog_button_text_size</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-    </style>
-
 </resources>
