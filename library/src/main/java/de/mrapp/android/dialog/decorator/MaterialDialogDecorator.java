@@ -23,19 +23,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.AttrRes;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.OnApplyWindowInsetsListener;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.WindowInsetsCompat;
-import android.support.v4.widget.ImageViewCompat;
-import android.support.v7.content.res.AppCompatResources;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +37,19 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.widget.ImageViewCompat;
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.ScrollableArea;
 import de.mrapp.android.dialog.ScrollableArea.Area;
@@ -64,9 +64,7 @@ import de.mrapp.android.dialog.view.DialogRootView;
 import de.mrapp.android.dialog.view.DialogRootView.AreaViewType;
 import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 import de.mrapp.android.util.ViewUtil;
-
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -86,8 +84,8 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             MaterialDialogDecorator.class.getSimpleName() + "::windowBackgroundId";
 
     /**
-     * The name of the extra, which is used to store the bitmap of the dialog's window
-     * background within a bundle.
+     * The name of the extra, which is used to store the bitmap of the dialog's window background
+     * within a bundle.
      */
     private static final String WINDOW_BACKGROUND_BITMAP_EXTRA =
             MaterialDialogDecorator.class.getSimpleName() + "::windowBackgroundBitmap";
@@ -207,8 +205,8 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     /**
      * The name of the extra, which is used to store, whether the dividers, which are located above
-     * and below the dialog's scrollable areas, should be shown when scrolling, or not, within
-     * a bundle.
+     * and below the dialog's scrollable areas, should be shown when scrolling, or not, within a
+     * bundle.
      */
     private static final String SHOW_DIVIDERS_ON_SCROLL_EXTRA =
             MaterialDialogDecorator.class.getSimpleName() + "::showDividersOnScroll";
@@ -1190,7 +1188,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     @Override
     public final void setWidth(final int width) {
         if (width != Dialog.MATCH_PARENT && width != Dialog.WRAP_CONTENT) {
-            ensureAtLeast(width, 1, "The width must be at least 1");
+            Condition.INSTANCE.ensureAtLeast(width, 1, "The width must be at least 1");
         }
 
         this.width = width;
@@ -1205,7 +1203,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     @Override
     public final void setHeight(final int height) {
         if (height != Dialog.MATCH_PARENT && height != Dialog.WRAP_CONTENT) {
-            ensureAtLeast(height, 1, "The height must be at least 1");
+            Condition.INSTANCE.ensureAtLeast(height, 1, "The height must be at least 1");
         }
 
         this.height = height;
@@ -1220,7 +1218,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     @Override
     public final void setMaxWidth(final int maxWidth) {
         if (maxWidth != -1) {
-            ensureAtLeast(maxWidth, 1, "The maximum width must be at least 1");
+            Condition.INSTANCE.ensureAtLeast(maxWidth, 1, "The maximum width must be at least 1");
         }
 
         this.maxWidth = maxWidth;
@@ -1235,7 +1233,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     @Override
     public final void setMaxHeight(final int maxHeight) {
         if (maxHeight != -1) {
-            ensureAtLeast(maxHeight, 1, "The maximum height must be at least 1");
+            Condition.INSTANCE.ensureAtLeast(maxHeight, 1, "The maximum height must be at least 1");
         }
 
         this.maxHeight = maxHeight;
@@ -1264,10 +1262,10 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void setMargin(final int left, final int top, final int right, final int bottom) {
-        ensureAtLeast(left, 0, "The left margin must be at least 0");
-        ensureAtLeast(top, 0, "The top margin must be at least 0");
-        ensureAtLeast(right, 0, "The right margin must be at least 0");
-        ensureAtLeast(bottom, 0, "The bottom margin must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(left, 0, "The left margin must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(top, 0, "The top margin must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(right, 0, "The right margin must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(bottom, 0, "The bottom margin must be at least 0");
         this.margin = new int[]{left, top, right, bottom};
         adaptLayoutParams();
     }
@@ -1294,10 +1292,10 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void setPadding(final int left, final int top, final int right, final int bottom) {
-        ensureAtLeast(left, 0, "The left padding must be at least 0");
-        ensureAtLeast(top, 0, "The top padding must be at least 0");
-        ensureAtLeast(right, 0, "The right padding must be at least 0");
-        ensureAtLeast(bottom, 0, "The bottom padding must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(left, 0, "The left padding must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(top, 0, "The top padding must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(right, 0, "The right padding must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(bottom, 0, "The bottom padding must be at least 0");
         this.padding = new int[]{left, top, right, bottom};
         adaptPadding();
     }
@@ -1382,7 +1380,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void setDividerMargin(final int margin) {
-        ensureAtLeast(margin, 0, "The margin must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(margin, 0, "The margin must be at least 0");
         this.dividerMargin = margin;
         adaptDividerMargin();
     }
@@ -1445,7 +1443,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void setIconTintMode(@NonNull final PorterDuff.Mode mode) {
-        ensureNotNull(mode, "The icon tint mode may not be null");
+        Condition.INSTANCE.ensureNotNull(mode, "The icon tint mode may not be null");
         this.iconTintMode = mode;
         adaptIcon();
     }

@@ -14,9 +14,9 @@
 package de.mrapp.android.dialog.animation;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 
-import static de.mrapp.android.util.Condition.ensureAtLeast;
+import androidx.annotation.NonNull;
+import de.mrapp.util.Condition;
 
 /**
  * An animation, which can be used to change backgrounds by animating the new background as a
@@ -121,7 +121,7 @@ public class CircleTransitionAnimation extends BackgroundAnimation {
      *         The horizontal position must be at least 0
      */
     protected final void setX(final int x) {
-        ensureAtLeast(x, 0, "The horizontal position must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(x, 0, "The horizontal position must be at least 0");
         this.x = x;
     }
 
@@ -133,7 +133,7 @@ public class CircleTransitionAnimation extends BackgroundAnimation {
      *         The vertical position must be at least 0
      */
     protected final void setY(final int y) {
-        ensureAtLeast(y, 0, "The vertical position must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(y, 0, "The vertical position must be at least 0");
         this.y = y;
     }
 
@@ -145,7 +145,7 @@ public class CircleTransitionAnimation extends BackgroundAnimation {
      *         must be at least 0
      */
     protected final void setRadius(final int radius) {
-        ensureAtLeast(radius, 0, "The radius must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(radius, 0, "The radius must be at least 0");
         this.radius = radius;
     }
 

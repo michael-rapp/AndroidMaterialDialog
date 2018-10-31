@@ -16,16 +16,15 @@ package de.mrapp.android.dialog.view;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.model.MaterialDialog;
-
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
 
 /**
  * A custom list view, which allows to expand its height to its content.
@@ -116,7 +115,7 @@ public class ListView extends android.widget.ListView {
      *         The dialog may not be null
      */
     public final void setDialog(@NonNull final MaterialDialog dialog) {
-        ensureNotNull(dialog, "The dialog may not be null");
+        Condition.INSTANCE.ensureNotNull(dialog, "The dialog may not be null");
         this.dialog = dialog;
     }
 

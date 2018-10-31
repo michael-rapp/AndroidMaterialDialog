@@ -14,7 +14,6 @@
 package de.mrapp.android.dialog.decorator;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.Window;
 
@@ -24,11 +23,11 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
 import de.mrapp.android.dialog.DialogValidator;
 import de.mrapp.android.dialog.model.AnimateableDialog;
 import de.mrapp.android.dialog.view.DialogRootView.ViewType;
-
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -66,25 +65,25 @@ public class ValidateableDialogDecorator extends AbstractDialogDecorator<Animate
 
     @Override
     public final void addValidator(@NonNull final DialogValidator validator) {
-        ensureNotNull(validator, "The validator may not be null");
+        Condition.INSTANCE.ensureNotNull(validator, "The validator may not be null");
         validators.add(validator);
     }
 
     @Override
     public final void addAllValidators(@NonNull final Collection<DialogValidator> validators) {
-        ensureNotNull(validators, "The collection may not be null");
+        Condition.INSTANCE.ensureNotNull(validators, "The collection may not be null");
         this.validators.addAll(validators);
     }
 
     @Override
     public final void removeValidator(@NonNull final DialogValidator validator) {
-        ensureNotNull(validator, "The validator may not be null");
+        Condition.INSTANCE.ensureNotNull(validator, "The validator may not be null");
         validators.remove(validator);
     }
 
     @Override
     public final void removeAllValidators(@NonNull final Collection<DialogValidator> validators) {
-        ensureNotNull(validators, "The collection may not be null");
+        Condition.INSTANCE.ensureNotNull(validators, "The collection may not be null");
         this.validators.removeAll(validators);
     }
 

@@ -14,11 +14,10 @@
 package de.mrapp.android.dialog.listener;
 
 import android.app.AlertDialog;
-import android.support.annotation.NonNull;
 
+import androidx.annotation.NonNull;
 import de.mrapp.android.dialog.model.ValidateableDialog;
-
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
 
 /**
  * An abstract base class for all wrappers, which implement a specific listener interface of a
@@ -94,7 +93,7 @@ public abstract class AbstractListenerWrapper {
      *         value
      */
     public AbstractListenerWrapper(@NonNull final ValidateableDialog dialog, final int buttonType) {
-        ensureNotNull(dialog, "The dialog may not be null");
+        Condition.INSTANCE.ensureNotNull(dialog, "The dialog may not be null");
         this.dialog = dialog;
         this.buttonType = buttonType;
     }

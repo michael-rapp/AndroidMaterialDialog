@@ -15,17 +15,16 @@ package de.mrapp.android.dialog.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import de.mrapp.android.dialog.datastructure.ViewPagerItem;
-
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
 
 /**
  * An adapter, which allows to manage the fragments of a view pager.
@@ -62,9 +61,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
                             @NonNull final FragmentManager fragmentManager,
                             @NonNull final List<ViewPagerItem> items) {
         super(fragmentManager);
-        ensureNotNull(context, "The context may not be null");
-        ensureNotNull(fragmentManager, "The fragment manager may not be null");
-        ensureNotNull(items, "The list may not be null");
+        Condition.INSTANCE.ensureNotNull(context, "The context may not be null");
+        Condition.INSTANCE.ensureNotNull(fragmentManager, "The fragment manager may not be null");
+        Condition.INSTANCE.ensureNotNull(items, "The list may not be null");
         this.context = context;
         this.items = items;
     }
@@ -85,7 +84,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public final void addItem(@Nullable final CharSequence title,
                               @NonNull final Class<? extends Fragment> fragmentClass,
                               @Nullable final Bundle arguments) {
-        ensureNotNull(fragmentClass, "The fragment class may not be null");
+        Condition.INSTANCE.ensureNotNull(fragmentClass, "The fragment class may not be null");
         items.add(new ViewPagerItem(title, fragmentClass, arguments));
         notifyDataSetChanged();
     }

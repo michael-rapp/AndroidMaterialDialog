@@ -20,9 +20,9 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 
-import static de.mrapp.android.util.Condition.ensureAtLeast;
+import androidx.annotation.NonNull;
+import de.mrapp.util.Condition;
 
 /**
  * A layer drawable, which allows to translate between the first and second layer by animating the
@@ -121,7 +121,7 @@ public class CircleTransitionDrawable extends AbstractTransitionDrawable {
      *         The horizontal position, which should be set, in pixels as an {@link Integer} value
      */
     public final void setX(final int x) {
-        ensureAtLeast(x, 0, "The horizontal position must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(x, 0, "The horizontal position must be at least 0");
         this.x = x;
     }
 
@@ -142,7 +142,7 @@ public class CircleTransitionDrawable extends AbstractTransitionDrawable {
      *         The vertical position, which should be set, in pixels as an {@link Integer} value
      */
     public final void setY(final int y) {
-        ensureAtLeast(y, 0, "The vertical position must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(y, 0, "The vertical position must be at least 0");
         this.y = y;
     }
 
@@ -162,7 +162,7 @@ public class CircleTransitionDrawable extends AbstractTransitionDrawable {
      *         The radius, which should be set, in pixels as an {@link Integer} value
      */
     public final void setRadius(final int radius) {
-        ensureAtLeast(radius, 0, "The radius must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(radius, 0, "The radius must be at least 0");
         this.radius = radius;
     }
 

@@ -20,14 +20,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.ImageViewCompat;
-import android.support.v7.content.res.AppCompatResources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +30,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
@@ -52,8 +52,7 @@ import de.mrapp.android.dialog.drawable.ScaleTransitionDrawable;
 import de.mrapp.android.dialog.model.MaterialDialog;
 import de.mrapp.android.dialog.view.DialogRootView.AreaViewType;
 import de.mrapp.android.dialog.view.DialogRootView.ViewType;
-
-import static de.mrapp.android.util.Condition.ensureAtLeast;
+import de.mrapp.util.Condition;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -506,7 +505,7 @@ public class HeaderDialogDecorator extends AbstractDialogDecorator<MaterialDialo
 
     @Override
     public final void setHeaderHeight(final int height) {
-        ensureAtLeast(height, 0, "The height must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(height, 0, "The height must be at least 0");
         this.headerHeight = height;
         adaptHeaderHeight();
     }

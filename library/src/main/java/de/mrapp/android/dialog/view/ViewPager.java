@@ -14,15 +14,14 @@
 package de.mrapp.android.dialog.view;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import de.mrapp.android.dialog.ScrollableArea;
 import de.mrapp.android.dialog.model.MaterialDialog;
-
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
 
 /**
  * A custom view pager, which allows to disable switching between fragments using swipe gestures.
@@ -30,7 +29,7 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @author Michael Rapp
  * @since 3.2.0
  */
-public class ViewPager extends android.support.v4.view.ViewPager {
+public class ViewPager extends androidx.viewpager.widget.ViewPager {
 
     /**
      * The dialog, which contains the view pager.
@@ -77,7 +76,7 @@ public class ViewPager extends android.support.v4.view.ViewPager {
      *         The dialog may not be null
      */
     public final void setDialog(@NonNull final MaterialDialog dialog) {
-        ensureNotNull(dialog, "The dialog may not be null");
+        Condition.INSTANCE.ensureNotNull(dialog, "The dialog may not be null");
         this.dialog = dialog;
     }
 

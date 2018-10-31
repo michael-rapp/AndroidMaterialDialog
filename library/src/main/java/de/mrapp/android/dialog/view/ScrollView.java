@@ -16,16 +16,15 @@ package de.mrapp.android.dialog.view;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.view.View;
 
-import de.mrapp.android.util.datastructure.ListenerList;
-
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+import de.mrapp.util.Condition;
+import de.mrapp.util.datastructure.ListenerList;
 
 /**
  * A custom scroll view, which allows listeners to be notified when scrolling.
@@ -159,7 +158,7 @@ public class ScrollView extends android.widget.ScrollView {
      *         ScrollListener}. The listener may not be null
      */
     public void addScrollListener(@NonNull final ScrollListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         this.scrollListeners.add(listener);
     }
 
@@ -172,7 +171,7 @@ public class ScrollView extends android.widget.ScrollView {
      *         ScrollListener}. The listener may not be null
      */
     public void removeScrollListener(@NonNull final ScrollListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         this.scrollListeners.remove(listener);
     }
 

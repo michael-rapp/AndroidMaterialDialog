@@ -14,15 +14,14 @@
 package de.mrapp.android.dialog.builder;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.StyleRes;
 
 import java.util.Collection;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
 import de.mrapp.android.dialog.DialogValidator;
 import de.mrapp.android.dialog.model.ValidateableDialog;
-
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
 
 /**
  * An abstract base class for all builders, which allow to create and show dialogs, which are
@@ -80,7 +79,7 @@ public abstract class AbstractValidateableDialogBuilder<DialogType extends Valid
      * BuilderType
      */
     public final BuilderType addValidator(@NonNull final DialogValidator validator) {
-        ensureNotNull(validator, "The validator may not be null");
+        Condition.INSTANCE.ensureNotNull(validator, "The validator may not be null");
         getProduct().addValidator(validator);
         return self();
     }
@@ -97,7 +96,7 @@ public abstract class AbstractValidateableDialogBuilder<DialogType extends Valid
      */
     public final BuilderType addAllValidators(
             @NonNull final Collection<DialogValidator> validators) {
-        ensureNotNull(validators, "The collection may not be null");
+        Condition.INSTANCE.ensureNotNull(validators, "The collection may not be null");
         getProduct().addAllValidators(validators);
         return self();
     }

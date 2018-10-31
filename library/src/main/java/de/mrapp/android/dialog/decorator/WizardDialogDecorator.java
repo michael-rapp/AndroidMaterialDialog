@@ -14,14 +14,6 @@
 package de.mrapp.android.dialog.decorator;
 
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,12 +24,21 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.google.android.material.tabs.TabLayout;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.WizardDialog;
@@ -48,11 +49,8 @@ import de.mrapp.android.dialog.datastructure.ViewPagerItem;
 import de.mrapp.android.dialog.view.DialogRootView.AreaViewType;
 import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 import de.mrapp.android.dialog.view.ViewPager;
-import de.mrapp.android.util.datastructure.ListenerList;
-
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureNotEmpty;
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
+import de.mrapp.util.datastructure.ListenerList;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -772,7 +770,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
     public final void addFragment(@Nullable final CharSequence title,
                                   @NonNull final Class<? extends Fragment> fragmentClass,
                                   @Nullable final Bundle arguments) {
-        ensureNotNull(fragmentClass, "The fragment class may not be null");
+        Condition.INSTANCE.ensureNotNull(fragmentClass, "The fragment class may not be null");
         viewPagerItems.add(new ViewPagerItem(title, fragmentClass, arguments));
 
         if (viewPagerAdapter != null) {
@@ -800,7 +798,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
 
     @Override
     public final int indexOfFragment(@NonNull final Class<? extends Fragment> fragmentClass) {
-        ensureNotNull(fragmentClass, "The fragment class may not be null");
+        Condition.INSTANCE.ensureNotNull(fragmentClass, "The fragment class may not be null");
 
         for (int i = 0; i < viewPagerItems.size(); i++) {
             ViewPagerItem item = viewPagerItems.get(i);
@@ -825,7 +823,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
 
     @Override
     public final void setTabPosition(@NonNull final TabPosition tabPosition) {
-        ensureNotNull(tabPosition, "The tab position may not be null");
+        Condition.INSTANCE.ensureNotNull(tabPosition, "The tab position may not be null");
         this.tabPosition = tabPosition;
         reInflateTabLayout();
         adaptTabLayout();
@@ -860,7 +858,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
 
     @Override
     public final void setTabIndicatorHeight(final int height) {
-        ensureAtLeast(height, 1, "The height must be at least 1");
+        Condition.INSTANCE.ensureAtLeast(height, 1, "The height must be at least 1");
         this.tabIndicatorHeight = height;
         adaptTabIndicatorHeight();
     }
@@ -960,7 +958,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
 
     @Override
     public final void setButtonBarDividerMargin(final int margin) {
-        ensureAtLeast(margin, 0, "The margin must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(margin, 0, "The margin must be at least 0");
         this.buttonBarDividerMargin = margin;
         adaptButtonBarDividerMargin();
     }
@@ -977,8 +975,8 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
 
     @Override
     public final void setBackButtonText(@NonNull final CharSequence text) {
-        ensureNotNull(text, "The text may not be null");
-        ensureNotEmpty(text, "The text may not be empty");
+        Condition.INSTANCE.ensureNotNull(text, "The text may not be null");
+        Condition.INSTANCE.ensureNotEmpty(text, "The text may not be empty");
         this.backButtonText = text;
         adaptBackButton();
     }
@@ -995,8 +993,8 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
 
     @Override
     public final void setNextButtonText(@NonNull final CharSequence text) {
-        ensureNotNull(text, "The text may not be null");
-        ensureNotEmpty(text, "The text may not be empty");
+        Condition.INSTANCE.ensureNotNull(text, "The text may not be null");
+        Condition.INSTANCE.ensureNotEmpty(text, "The text may not be empty");
         this.nextButtonText = text;
         adaptNextButton();
     }
@@ -1013,27 +1011,27 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
 
     @Override
     public final void setFinishButtonText(@NonNull final CharSequence text) {
-        ensureNotNull(text, "The text may not be null");
-        ensureNotEmpty(text, "The text may not be empty");
+        Condition.INSTANCE.ensureNotNull(text, "The text may not be null");
+        Condition.INSTANCE.ensureNotEmpty(text, "The text may not be empty");
         this.finishButtonText = text;
         adaptFinishButton();
     }
 
     @Override
     public final void addWizardListener(@NonNull final WizardListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         wizardListeners.add(listener);
     }
 
     @Override
     public final void removeWizardListener(@NonNull final WizardListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         wizardListeners.remove(listener);
     }
 
     @Override
     public final void addOnPageChangeListener(@NonNull final OnPageChangeListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         onPageChangeListeners.add(listener);
 
         if (viewPager != null) {
@@ -1043,7 +1041,7 @@ public class WizardDialogDecorator extends AbstractDialogFragmentDecorator<Wizar
 
     @Override
     public final void removeOnPageChangeListener(@NonNull final OnPageChangeListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         onPageChangeListeners.remove(listener);
 
         if (viewPager != null) {

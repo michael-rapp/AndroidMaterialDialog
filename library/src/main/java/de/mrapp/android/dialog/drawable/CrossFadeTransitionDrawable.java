@@ -15,7 +15,7 @@ package de.mrapp.android.dialog.drawable;
 
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * A layer drawable, which allows to cross-fade between the first and second layer.

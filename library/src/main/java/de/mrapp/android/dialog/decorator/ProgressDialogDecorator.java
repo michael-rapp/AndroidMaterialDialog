@@ -14,8 +14,6 @@
 package de.mrapp.android.dialog.decorator;
 
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
@@ -26,14 +24,14 @@ import android.widget.TextView;
 import java.util.Collections;
 import java.util.Map;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import de.mrapp.android.dialog.ProgressDialog.ProgressBarPosition;
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.ButtonBarDialog;
 import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 import de.mrapp.android.view.CircularProgressBar;
-
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -222,7 +220,7 @@ public class ProgressDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
 
     @Override
     public final void setProgressBarSize(final int size) {
-        ensureAtLeast(size, 0, "The size must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(size, 0, "The size must be at least 0");
         this.progressBarSize = size;
         adaptProgressBarSize();
     }
@@ -234,7 +232,7 @@ public class ProgressDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
 
     @Override
     public final void setProgressBarThickness(final int thickness) {
-        ensureAtLeast(thickness, 1, "The thickness must be at least 1");
+        Condition.INSTANCE.ensureAtLeast(thickness, 1, "The thickness must be at least 1");
         this.progressBarThickness = thickness;
         adaptProgressBarThickness();
     }
@@ -246,7 +244,7 @@ public class ProgressDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
 
     @Override
     public final void setProgressBarPosition(@NonNull final ProgressBarPosition position) {
-        ensureNotNull(position, "The position may not be null");
+        Condition.INSTANCE.ensureNotNull(position, "The position may not be null");
         this.progressBarPosition = position;
         adaptProgressBar();
     }

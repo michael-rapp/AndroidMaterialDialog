@@ -14,10 +14,10 @@
 package de.mrapp.android.dialog.animation;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import static de.mrapp.android.util.Condition.ensureAtLeast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import de.mrapp.util.Condition;
 
 /**
  * An animation, which can be used to show or hide a dialog by animating its position and size.
@@ -160,7 +160,7 @@ public class RectangleRevealAnimation extends DialogAnimation {
      *         be at least 0
      */
     protected final void setWidth(final int width) {
-        ensureAtLeast(width, 0, "The width must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(width, 0, "The width must be at least 0");
         this.width = width;
     }
 
@@ -172,7 +172,7 @@ public class RectangleRevealAnimation extends DialogAnimation {
      *         must be at least 0
      */
     protected final void setHeight(final int height) {
-        ensureAtLeast(height, 0, "The height must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(height, 0, "The height must be at least 0");
         this.height = height;
     }
 

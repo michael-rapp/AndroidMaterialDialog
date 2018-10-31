@@ -16,14 +16,14 @@ package de.mrapp.android.dialog.datastructure;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
 import java.io.Serializable;
 
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import de.mrapp.util.Condition;
 
 /**
  * Represents one item of a view pager.
@@ -100,7 +100,7 @@ public class ViewPagerItem implements Serializable, Parcelable {
     public ViewPagerItem(@Nullable final CharSequence title,
                          @NonNull final Class<? extends Fragment> fragmentClass,
                          @Nullable final Bundle arguments) {
-        ensureNotNull(fragmentClass, "The fragmentClass class may not be null");
+        Condition.INSTANCE.ensureNotNull(fragmentClass, "The fragmentClass class may not be null");
         this.title = title;
         this.fragmentClass = fragmentClass;
         this.arguments = arguments;

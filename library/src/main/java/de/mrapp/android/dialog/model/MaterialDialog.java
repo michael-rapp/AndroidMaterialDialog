@@ -14,12 +14,9 @@
 package de.mrapp.android.dialog.model;
 
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.widget.ScrollView;
-
-import de.mrapp.android.dialog.ScrollableArea;
-import de.mrapp.android.dialog.ScrollableArea.Area;
 
 /**
  * Defines the interface, a dialog, which is designed according to Android 5's Material Design

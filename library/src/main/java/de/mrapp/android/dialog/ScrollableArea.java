@@ -15,14 +15,12 @@ package de.mrapp.android.dialog;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import java.io.Serializable;
 
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureNotNull;
-import static de.mrapp.android.util.Condition.ensureTrue;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import de.mrapp.util.Condition;
 
 /**
  * Represents the scrollable area(s) of a dialog.
@@ -33,7 +31,8 @@ import static de.mrapp.android.util.Condition.ensureTrue;
 public final class ScrollableArea implements Serializable, Parcelable {
 
     /**
-     * A creator, which allows to create instances of the class {@link ScrollableArea} from parcels.
+     * A creator, which allows to create instances of the class {@link ScrollableArea} from
+     * parcels.
      */
     public static final Creator<ScrollableArea> CREATOR = new Creator<ScrollableArea>() {
 
@@ -120,6 +119,11 @@ public final class ScrollableArea implements Serializable, Parcelable {
     }
 
     /**
+     * The constant serial version UID.
+     */
+    private static final long serialVersionUID = 7263368519326351364L;
+
+    /**
      * The top-most scrollable area.
      */
     private final Area topScrollableArea;
@@ -142,12 +146,12 @@ public final class ScrollableArea implements Serializable, Parcelable {
      */
     private ScrollableArea(final Area top, final Area bottom) {
         if (top != null) {
-            ensureNotNull(bottom,
+            Condition.INSTANCE.ensureNotNull(bottom,
                     "If the top-most area is not null, the bottom-most area may neither be null");
-            ensureAtLeast(bottom.getIndex(), top.getIndex(),
+            Condition.INSTANCE.ensureAtLeast(bottom.getIndex(), top.getIndex(),
                     "The index of the bottom-most area must be at least the index of the top-most area");
         } else {
-            ensureTrue(bottom == null,
+            Condition.INSTANCE.ensureTrue(bottom == null,
                     "If the top-most area is null, the bottom-most area must be null as well");
         }
 

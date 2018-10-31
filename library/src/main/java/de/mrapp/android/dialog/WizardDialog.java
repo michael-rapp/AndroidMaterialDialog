@@ -16,32 +16,31 @@ package de.mrapp.android.dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.annotation.StyleRes;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.widget.Button;
 
+import com.google.android.material.tabs.TabLayout;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.annotation.StyleRes;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
 import de.mrapp.android.dialog.model.WizardDialogDecorator;
 import de.mrapp.android.util.ThemeUtil;
-
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
 
 /**
  * A dialog, which is designed according to Android 5's Material Design guidelines even on
  * pre-Lollipop devices and provides a navigation for switching between multiple fragments.
- *
+ * <p>
  * For creating or showing such dialogs, the methods <code>WizardDialog#create()</code> or
  * <code>WizardDialog#show()</code> of the builder {@link WizardDialog.Builder} can be used.
  *
@@ -521,7 +520,8 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          *
          * @param tabPosition
          *         The position, which should be set, as a value of the enum {@link TabPosition}.
-         *         The position may either be <code>USE_HEADER</code>, <code>PREFER_HEADER</code> or
+         *         The position may either be <code>USE_HEADER</code>, <code>PREFER_HEADER</code>
+         *         or
          *         <code>NO_HEADER</code>
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}
@@ -755,7 +755,7 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
         /**
          * Adds a new listener, which should be notified, when the user navigates within the dialog,
          * which is created by the builder.
-         *
+         * <p>
          * Note, that the attached listeners are not stored using a dialog's
          * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
          * method must be called again after configuration changes, e.g when the orientation of the
@@ -802,7 +802,8 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          */
         public final WizardDialog show(@NonNull final FragmentManager fragmentManager,
                                        @Nullable final String tag) {
-            ensureNotNull(fragmentManager, "The fragment manager may not be null");
+            Condition.INSTANCE
+                    .ensureNotNull(fragmentManager, "The fragment manager may not be null");
             WizardDialog dialog = create();
             dialog.show(fragmentManager, tag);
             return dialog;
@@ -823,7 +824,8 @@ public class WizardDialog extends AbstractHeaderDialogFragment implements Wizard
          */
         public final WizardDialog show(@NonNull final FragmentTransaction fragmentTransaction,
                                        @Nullable final String tag) {
-            ensureNotNull(fragmentTransaction, "The fragment transaction may not be null");
+            Condition.INSTANCE
+                    .ensureNotNull(fragmentTransaction, "The fragment transaction may not be null");
             WizardDialog dialog = create();
             dialog.show(fragmentTransaction, tag);
             return dialog;

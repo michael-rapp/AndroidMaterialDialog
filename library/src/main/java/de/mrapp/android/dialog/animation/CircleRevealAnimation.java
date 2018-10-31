@@ -16,9 +16,9 @@ package de.mrapp.android.dialog.animation;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
 
-import static de.mrapp.android.util.Condition.ensureAtLeast;
+import androidx.annotation.NonNull;
+import de.mrapp.util.Condition;
 
 /**
  * An animation, which can be used to show or hide a dialog by animating its position and size as a
@@ -144,7 +144,7 @@ public class CircleRevealAnimation extends DialogAnimation {
      *         be at least 0
      */
     protected final void setRadius(final float radius) {
-        ensureAtLeast(radius, 0, "The radius must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(radius, 0, "The radius must be at least 0");
         this.radius = radius;
     }
 

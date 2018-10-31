@@ -14,7 +14,7 @@
 package de.mrapp.android.dialog.animation;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * An abstract base class for all animations, which can be used to change drawables using a resize

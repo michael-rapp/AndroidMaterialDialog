@@ -14,8 +14,8 @@
 package de.mrapp.android.dialog.listener;
 
 import android.content.DialogInterface.OnClickListener;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;

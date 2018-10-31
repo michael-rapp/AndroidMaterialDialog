@@ -14,9 +14,9 @@
 package de.mrapp.android.dialog.builder;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import androidx.annotation.NonNull;
+import de.mrapp.util.Condition;
 
 /**
  * An abstract base class for all builders.
@@ -72,7 +72,7 @@ public abstract class AbstractBuilder<Type, BuilderType extends AbstractBuilder<
      *         context may not be null
      */
     protected final void setContext(@NonNull final Context context) {
-        ensureNotNull(context, "The context may not be null");
+        Condition.INSTANCE.ensureNotNull(context, "The context may not be null");
         this.context = context;
     }
 

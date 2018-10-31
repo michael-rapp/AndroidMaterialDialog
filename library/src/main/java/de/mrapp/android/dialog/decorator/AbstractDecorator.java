@@ -14,13 +14,13 @@
 package de.mrapp.android.dialog.decorator;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.Window;
 
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.listener.AreaListener;
@@ -28,9 +28,8 @@ import de.mrapp.android.dialog.model.Dialog;
 import de.mrapp.android.dialog.model.DialogDecorator;
 import de.mrapp.android.dialog.view.DialogRootView;
 import de.mrapp.android.dialog.view.DialogRootView.ViewType;
-import de.mrapp.android.util.datastructure.ListenerList;
-
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
+import de.mrapp.util.datastructure.ListenerList;
 
 /**
  * An abstract base class for all decorators, which allow to modify the view hierarchy of a dialog.
@@ -105,7 +104,7 @@ public abstract class AbstractDecorator<DialogType extends Dialog, ParamType>
      *         of the generic type DialogType. The dialog may not be null
      */
     public AbstractDecorator(@NonNull final DialogType dialog) {
-        ensureNotNull(dialog, "The dialog may not be null");
+        Condition.INSTANCE.ensureNotNull(dialog, "The dialog may not be null");
         this.dialog = dialog;
         this.areaListeners = new ListenerList<>();
         this.window = null;
@@ -138,8 +137,8 @@ public abstract class AbstractDecorator<DialogType extends Dialog, ParamType>
     public final Map<ViewType, View> attach(@NonNull final Window window, @NonNull final View view,
                                             @NonNull final Map<ViewType, View> areas,
                                             final ParamType param) {
-        ensureNotNull(window, "The window may not be null");
-        ensureNotNull(view, "The view may not be null");
+        Condition.INSTANCE.ensureNotNull(window, "The window may not be null");
+        Condition.INSTANCE.ensureNotNull(view, "The view may not be null");
         this.window = window;
         this.view = view;
         this.dialogRootView = view.findViewById(R.id.dialog_root_view);
@@ -165,7 +164,7 @@ public abstract class AbstractDecorator<DialogType extends Dialog, ParamType>
      *         The listener may not be null
      */
     public final void addAreaListener(@NonNull final AreaListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         this.areaListeners.add(listener);
     }
 
@@ -178,7 +177,7 @@ public abstract class AbstractDecorator<DialogType extends Dialog, ParamType>
      *         The listener may not be null
      */
     public final void removeAreaListener(@NonNull final AreaListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         this.areaListeners.remove(listener);
     }
 

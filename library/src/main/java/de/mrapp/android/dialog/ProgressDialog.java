@@ -16,15 +16,10 @@ package de.mrapp.android.dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.StyleRes;
-import android.view.View;
-import android.view.Window;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
 
-import java.util.Map;
-
-import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.model.ProgressDialogDecorator;
 import de.mrapp.android.util.ThemeUtil;

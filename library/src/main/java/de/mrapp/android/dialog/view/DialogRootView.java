@@ -25,16 +25,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.AttrRes;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.util.Pair;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -50,15 +42,21 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+import androidx.core.content.ContextCompat;
+import androidx.core.util.Pair;
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.ScrollableArea;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.listener.AreaListener;
 import de.mrapp.android.dialog.view.ScrollView.ScrollListener;
 import de.mrapp.android.util.ViewUtil;
+import de.mrapp.util.Condition;
 
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureNotNull;
 import static de.mrapp.android.util.DisplayUtil.dpToPixels;
 
 /**
@@ -101,7 +99,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
          *         may not be null
          */
         public AreaViewType(final Area area) {
-            ensureNotNull(area, "The area may not be null");
+            Condition.INSTANCE.ensureNotNull(area, "The area may not be null");
             this.area = area;
         }
 
@@ -166,7 +164,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
          *         location may not be null
          */
         public DividerViewType(@NonNull final DividerLocation location) {
-            ensureNotNull(location, "The location may not be null");
+            Condition.INSTANCE.ensureNotNull(location, "The location may not be null");
             this.location = location;
         }
 
@@ -1094,7 +1092,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      */
     public final void setMaxWidth(final int maxWidth) {
         if (maxWidth != -1) {
-            ensureAtLeast(maxWidth, 1, "The maximum width must be at least 1");
+            Condition.INSTANCE.ensureAtLeast(maxWidth, 1, "The maximum width must be at least 1");
         }
 
         this.maxWidth = maxWidth;
@@ -1110,7 +1108,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      */
     public final void setMaxHeight(final int maxHeight) {
         if (maxHeight != -1) {
-            ensureAtLeast(maxHeight, 1, "The maximum height must be at least 1");
+            Condition.INSTANCE.ensureAtLeast(maxHeight, 1, "The maximum height must be at least 1");
         }
 
         this.maxHeight = maxHeight;
@@ -1137,7 +1135,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      *         ScrollableArea}. The scrollable area may not be null
      */
     public final void setScrollableArea(@NonNull final ScrollableArea scrollableArea) {
-        ensureNotNull(scrollableArea, "The scrollable area may not be null");
+        Condition.INSTANCE.ensureNotNull(scrollableArea, "The scrollable area may not be null");
         this.scrollableArea = scrollableArea;
         addAreas();
     }
@@ -1174,7 +1172,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      *         value. The margin must be at least 0
      */
     public final void setDividerMargin(final int margin) {
-        ensureAtLeast(margin, 0, "The margin must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(margin, 0, "The margin must be at least 0");
         this.dividerMargin = margin;
         adaptDividerMargin();
     }

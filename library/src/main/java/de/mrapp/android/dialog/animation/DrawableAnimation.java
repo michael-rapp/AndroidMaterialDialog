@@ -14,13 +14,11 @@
 package de.mrapp.android.dialog.animation;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import de.mrapp.android.dialog.builder.AbstractBuilder;
-
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
 
 /**
  * An abstract base class for all animations, which can be used to change drawables.
@@ -121,7 +119,7 @@ public abstract class DrawableAnimation {
      *         duration must be at least 1
      */
     protected final void setDuration(final int duration) {
-        ensureAtLeast(duration, 1, "The duration must be at least 1");
+        Condition.INSTANCE.ensureAtLeast(duration, 1, "The duration must be at least 1");
         this.duration = duration;
     }
 
@@ -144,7 +142,7 @@ public abstract class DrawableAnimation {
      *         {@link Context}. The context may not be null
      */
     protected DrawableAnimation(@NonNull final Context context) {
-        ensureNotNull(context, "The context may not be null");
+        Condition.INSTANCE.ensureNotNull(context, "The context may not be null");
         this.duration = context.getResources().getInteger(android.R.integer.config_longAnimTime);
         this.listener = null;
     }

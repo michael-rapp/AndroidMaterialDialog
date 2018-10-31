@@ -14,15 +14,12 @@
 package de.mrapp.android.dialog.animation;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import androidx.annotation.NonNull;
 import de.mrapp.android.dialog.builder.AbstractBuilder;
-
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureAtMaximum;
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
 
 /**
  * An abstract base class for all animations, which can be used to show or hide a dialog.
@@ -143,7 +140,7 @@ public abstract class DialogAnimation {
      *         Interpolator}. The interpolator may not be null
      */
     protected final void setInterpolator(@NonNull final Interpolator interpolator) {
-        ensureNotNull(interpolator, "The interpolator may not be null");
+        Condition.INSTANCE.ensureNotNull(interpolator, "The interpolator may not be null");
         this.interpolator = interpolator;
     }
 
@@ -155,7 +152,7 @@ public abstract class DialogAnimation {
      *         duration must be at least 1
      */
     protected final void setDuration(final long duration) {
-        ensureAtLeast(duration, 1, "The duration must be at least 1");
+        Condition.INSTANCE.ensureAtLeast(duration, 1, "The duration must be at least 1");
         this.duration = duration;
     }
 
@@ -167,7 +164,7 @@ public abstract class DialogAnimation {
      *         must be at least 0
      */
     protected final void setStartDelay(final long startDelay) {
-        ensureAtLeast(startDelay, 0, "The start delay must be at least 0");
+        Condition.INSTANCE.ensureAtLeast(startDelay, 0, "The start delay must be at least 0");
         this.startDelay = startDelay;
     }
 
@@ -179,8 +176,8 @@ public abstract class DialogAnimation {
      *         0 and at maximum 1
      */
     protected final void setAlpha(final float alpha) {
-        ensureAtLeast(alpha, 0, "The alpha must be at least 0");
-        ensureAtMaximum(alpha, 1, "The alpha must be at maximum 1");
+        Condition.INSTANCE.ensureAtLeast(alpha, 0, "The alpha must be at least 0");
+        Condition.INSTANCE.ensureAtMaximum(alpha, 1, "The alpha must be at maximum 1");
         this.alpha = alpha;
     }
 
@@ -192,7 +189,7 @@ public abstract class DialogAnimation {
      *         {@link Context}. The context may not be null
      */
     protected DialogAnimation(@NonNull final Context context) {
-        ensureNotNull(context, "The context may not be null");
+        Condition.INSTANCE.ensureNotNull(context, "The context may not be null");
         this.interpolator = new AccelerateDecelerateInterpolator();
         this.duration = context.getResources().getInteger(android.R.integer.config_shortAnimTime);
         this.startDelay = 0;
