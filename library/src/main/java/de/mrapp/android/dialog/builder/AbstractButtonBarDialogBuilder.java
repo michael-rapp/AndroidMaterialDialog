@@ -16,6 +16,9 @@ package de.mrapp.android.dialog.builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
+import android.view.View;
+
 import androidx.annotation.CallSuper;
 import androidx.annotation.ColorInt;
 import androidx.annotation.LayoutRes;
@@ -24,8 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.core.content.ContextCompat;
-import android.view.View;
-
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.ButtonBarDialog;
 import de.mrapp.android.util.ThemeUtil;
@@ -132,6 +133,20 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
     }
 
     /**
+     * Sets the typeface of the buttons of the dialog, which is created by the builder.
+     *
+     * @param typeface
+     *         The typeface, which should be set, as an instance of the class {@link Typeface}. The
+     *         typeface may not be null
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setButtonTypeface(@NonNull final Typeface typeface) {
+        getProduct().setButtonTypeface(typeface);
+        return self();
+    }
+
+    /**
      * Sets the text color of the buttons of the dialog, which is created by the builder, when
      * disabled.
      *
@@ -162,7 +177,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
 
     /**
      * Sets the text of the negative button of the dialog, which is created by the builder.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -186,7 +201,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
 
     /**
      * Sets the text of the negative button of the dialog, which is created by the builder.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -210,7 +225,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
 
     /**
      * Sets the text of the positive button of the dialog, which is created by the builder.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -234,7 +249,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
 
     /**
      * Sets the text of the positive button of the dialog, which is created by the builder.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -258,7 +273,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
 
     /**
      * Sets the text of the neutral button of the dialog, which is created by the builder.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -282,7 +297,7 @@ public abstract class AbstractButtonBarDialogBuilder<DialogType extends ButtonBa
 
     /**
      * Sets the text of the neutral button of the dialog, which is created by the builder.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
