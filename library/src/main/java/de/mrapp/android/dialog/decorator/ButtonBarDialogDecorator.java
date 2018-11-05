@@ -469,6 +469,12 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
         adaptButtonTextColor();
     }
 
+    @Nullable
+    @Override
+    public final Typeface getButtonTypeface() {
+        return buttonTypeface;
+    }
+
     @Override
     public final void setButtonTypeface(@NonNull final Typeface typeface) {
         Condition.INSTANCE.ensureNotNull(typeface, "The typeface may not be null");

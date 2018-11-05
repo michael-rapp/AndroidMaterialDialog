@@ -1490,6 +1490,12 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         adaptTitleColor();
     }
 
+    @Nullable
+    @Override
+    public final Typeface getTitleTypeface() {
+        return titleTypeface;
+    }
+
     @Override
     public final void setTitleTypeface(@NonNull final Typeface typeface) {
         Condition.INSTANCE.ensureNotNull(typeface, "The typeface may not be null");
@@ -1508,8 +1514,14 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
         adaptMessageColor();
     }
 
+    @Nullable
     @Override
-    public void setMessageTypeface(@NonNull final Typeface typeface) {
+    public final Typeface getMessageTypeface() {
+        return messageTypeface;
+    }
+
+    @Override
+    public final void setMessageTypeface(@NonNull final Typeface typeface) {
         Condition.INSTANCE.ensureNotNull(typeface, "The typeface may not be null");
         messageTypeface = typeface;
         adaptMessageTypeface();

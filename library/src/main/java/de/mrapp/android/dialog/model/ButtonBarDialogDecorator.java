@@ -192,6 +192,15 @@ public interface ButtonBarDialogDecorator extends Dialog {
     void setButtonTextColor(@ColorInt int color);
 
     /**
+     * Returns the typeface of the dialog's buttons.
+     *
+     * @return The typeface of the dialog's buttons as an instance of the class {@link Typeface} or
+     * null, if the default typeface is used
+     */
+    @Nullable
+    Typeface getButtonTypeface();
+
+    /**
      * Sets the typeface of the dialog's buttons.
      * <p>
      * Note, that the typeface is not stored using a dialog's <code>onSaveInstanceState</code>-method,

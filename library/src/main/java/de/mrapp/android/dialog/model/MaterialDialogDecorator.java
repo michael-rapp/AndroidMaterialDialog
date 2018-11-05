@@ -569,6 +569,15 @@ public interface MaterialDialogDecorator extends Dialog {
     void setTitleColor(@ColorInt int color);
 
     /**
+     * Returns the typeface of the title of the dialog.
+     *
+     * @return The typeface of the title of the dialog as an instance of the class {@link Typeface}
+     * or null, if the default typeface is used
+     */
+    @Nullable
+    Typeface getTitleTypeface();
+
+    /**
      * Sets the typeface of the title of the dialog.
      * <p>
      * Note, that the typeface is not stored using a dialog's <code>onSaveInstanceState</code>-method,
@@ -596,6 +605,15 @@ public interface MaterialDialogDecorator extends Dialog {
      *         The color, which should be set, as an {@link Integer} value
      */
     void setMessageColor(@ColorInt int color);
+
+    /**
+     * Returns the typeface of the message of the dialog.
+     *
+     * @return The typeface of the message of the dialog as an instance of the class {@link
+     * Typeface} or null, if the default typeface is used
+     */
+    @Nullable
+    Typeface getMessageTypeface();
 
     /**
      * Sets the typeface of the message of the dialog.
