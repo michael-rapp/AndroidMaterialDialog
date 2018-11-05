@@ -14,9 +14,11 @@
 package de.mrapp.android.dialog.model;
 
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,8 +65,31 @@ public interface ListDialogDecorator extends Dialog {
     void setItemColor(@ColorInt int color);
 
     /**
-     * Sets the items, which should be shown by the dialog.
+     * Sets the typeface of the list items of the dialog.
+     * <p>
+     * Note, that the typeface is not stored using a dialog's <code>onSaveInstanceState</code>-method,
+     * because it is not serializable. Therefore this method must be called again after
+     * configuration changes, e.g when the orientation of the device has changed, in order to re-set
+     * the typeface.
      *
+     * @param typeface
+     *         The typeface, which should be set, as an instance of the class {@link Typeface}. The
+     *         typeface may not be null
+     */
+    void setItemTypeface(@NonNull Typeface typeface);
+
+    /**
+     * Returns the typeface of the list items of the dialog.
+     *
+     * @return The typeface of the list items of the dialog as an instance of the class {@link
+     * Typeface} or null, if the default typeface is used
+     */
+    @Nullable
+    Typeface getItemTypeface();
+
+    /**
+     * Sets the items, which should be shown by the dialog.
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -83,7 +108,7 @@ public interface ListDialogDecorator extends Dialog {
 
     /**
      * Sets the items, which should be shown by the dialog.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -101,7 +126,7 @@ public interface ListDialogDecorator extends Dialog {
 
     /**
      * Sets the adapter, which provides the items, which should be shown by the dialog.
-     *
+     * <p>
      * Note, that the adapter and the attached listener are not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because they are not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -128,7 +153,7 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Sets the selectable items, which should be shown by the dialog. Only one of the items can be
      * selected at once.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -151,7 +176,7 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Sets the selectable items, which should be shown by the dialog. Only one of the items can be
      * selected at once.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -174,7 +199,7 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Sets the adapter, which provides the selectable items, which should be shown by the dialog.
      * Only one of the items can be selected at once.
-     *
+     * <p>
      * Note, that the adapter and the attached listener are not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because they are not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -205,7 +230,7 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Sets the selectable items, which should be shown by the dialog. Multiple items can be
      * selected at once.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -229,7 +254,7 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Sets the selectable items, which should be shown by the dialog. Multiple items can be
      * selected at once.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -253,7 +278,7 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Sets the adapter, which provides the selectable items, which should be shown by the dialog.
      * Multiple items can be selected at once.
-     *
+     * <p>
      * Note, that the adapter and the attached listener are not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because they are not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -285,7 +310,7 @@ public interface ListDialogDecorator extends Dialog {
     /**
      * Sets the listener, which should be notified, when an item, which is shown by the dialog is
      * selected.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the

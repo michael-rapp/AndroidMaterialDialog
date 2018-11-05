@@ -16,6 +16,7 @@ package de.mrapp.android.dialog.builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.widget.ListAdapter;
 
 import androidx.annotation.ArrayRes;
@@ -104,8 +105,22 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     }
 
     /**
-     * Sets the items, which should be shown by the dialog, which is created by the builder.
+     * Sets the typeface of the list items of the dialog, which is created by the builder.
      *
+     * @param typeface
+     *         The typeface, which should be set, as an instance of the class {@link Typeface}. The
+     *         typeface may not be null
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setItemTypeface(@NonNull final Typeface typeface) {
+        getProduct().setItemTypeface(typeface);
+        return self();
+    }
+
+    /**
+     * Sets the items, which should be shown by the dialog, which is created by the builder.
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -129,7 +144,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
 
     /**
      * Sets the items, which should be shown by the dialog, which is created by the builder.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -154,7 +169,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     /**
      * Sets the adapter, which provides the items, which should be shown by the dialog, which is
      * created by the builder.
-     *
+     * <p>
      * Note, that the adapter and the attached listener are not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because they are not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -181,7 +196,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     /**
      * Sets the selectable items, which should be shown by the dialog, which is created by the
      * builder. Only one of the items can be selected at once.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -210,7 +225,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     /**
      * Sets the selectable items, which should be shown by the dialog, which is created by the
      * builder. Only one of the items can be selected at once.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -239,7 +254,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     /**
      * Sets the adapter, which provides the selectable items, which should be shown by the dialog,
      * which is created by the builder. Only one of the items can be selected at once.
-     *
+     * <p>
      * Note, that the adapter and the attached listener are not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because they are not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -269,7 +284,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     /**
      * Sets the selectable items, which should be shown by the dialog, which is created by the
      * builder. Multiple items can be selected at once.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -299,7 +314,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     /**
      * Sets the selectable items, which should be shown by the dialog, which is created by the
      * builder. Multiple items can be selected at once.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -329,7 +344,7 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     /**
      * Sets the adapter, which provides the selectable items, which should be shown by the dialog,
      * which is created by the builder. Multiple items can be selected at once.
-     *
+     * <p>
      * Note, that the adapter and the attached listener are not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because they are not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the

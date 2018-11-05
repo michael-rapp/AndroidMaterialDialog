@@ -14,6 +14,7 @@
 package de.mrapp.android.dialog.decorator;
 
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,7 @@ import de.mrapp.android.dialog.view.DialogRootView.DividerViewType;
 import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 import de.mrapp.android.dialog.view.Divider;
 import de.mrapp.android.util.ArrayUtil;
+import de.mrapp.util.Condition;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -112,6 +114,11 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
      * The color of the list items of the dialog.
      */
     private int itemColor;
+
+    /**
+     * The typeface of the list items of the dialog.
+     */
+    private Typeface itemTypeface;
 
     /**
      * The adapter, which is used to manage the list items of the dialog.
@@ -202,6 +209,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
                 initializeSelectionListener();
                 initializeCheckedItems();
                 adaptItemColor();
+                adaptItemTypeface();
             } else {
                 if (inflatedCustomView) {
                     getDialog().setView(null);
@@ -277,6 +285,19 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     }
 
     /**
+     * Adapts the typeface of the dialog's list items.
+     */
+    private void adaptItemTypeface() {
+        if (adapter != null) {
+            RecyclerView.Adapter<?> wrappedAdapter = adapter.getWrappedAdapter();
+
+            if (wrappedAdapter instanceof ArrayRecyclerViewAdapter) {
+                ((ArrayRecyclerViewAdapter) wrappedAdapter).setItemTypeface(itemTypeface);
+            }
+        }
+    }
+
+    /**
      * Creates a new decorator, which allows to modify the view hierarchy of a dialog, which is
      * designed according to Android 5's Material Design guidelines even on pre-Lollipop devices and
      * may contain list items.
@@ -308,6 +329,19 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     public final void setItemColor(@ColorInt final int color) {
         itemColor = color;
         adaptItemColor();
+    }
+
+    @Override
+    public final void setItemTypeface(@NonNull final Typeface typeface) {
+        Condition.INSTANCE.ensureNotNull(typeface, "The typeface may not be null");
+        itemTypeface = typeface;
+        adaptItemTypeface();
+    }
+
+    @Nullable
+    @Override
+    public final Typeface getItemTypeface() {
+        return itemTypeface;
     }
 
     @Override
@@ -389,7 +423,8 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         this.singleChoiceItems = null;
         this.multiChoiceItems = null;
         this.adapter = adapter != null ?
-                new RecyclerViewAdapterWrapper<>(getContext(), adapter, new SingleChoiceMode()) : null;
+                new RecyclerViewAdapterWrapper<>(getContext(), adapter, new SingleChoiceMode()) :
+                null;
         this.layoutManager = adapter != null ?
                 (layoutManager != null ? layoutManager : new LinearLayoutManager(getContext())) :
                 null;
@@ -439,7 +474,8 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         this.singleChoiceItems = null;
         this.multiChoiceItems = null;
         this.adapter = adapter != null ?
-                new RecyclerViewAdapterWrapper<>(getContext(), adapter, new MultipleChoiceMode()) : null;
+                new RecyclerViewAdapterWrapper<>(getContext(), adapter, new MultipleChoiceMode()) :
+                null;
         this.layoutManager = adapter != null ?
                 (layoutManager != null ? layoutManager : new LinearLayoutManager(getContext())) :
                 null;

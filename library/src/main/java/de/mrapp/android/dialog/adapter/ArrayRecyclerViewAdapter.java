@@ -15,6 +15,7 @@ package de.mrapp.android.dialog.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mrapp.android.dialog.R;
 import de.mrapp.util.Condition;
@@ -79,6 +81,11 @@ public class ArrayRecyclerViewAdapter
     private int itemColor;
 
     /**
+     * The typeface of the adapter's list items.
+     */
+    private Typeface itemTypeface;
+
+    /**
      * Creates a new recycler view adapter, which displays list items that correspond to the texts
      * that are contained in an array.
      *
@@ -95,6 +102,7 @@ public class ArrayRecyclerViewAdapter
         this.layoutResourceId = layoutResourceId;
         this.items = items;
         this.itemColor = -1;
+        this.itemTypeface = null;
     }
 
     /**
@@ -116,6 +124,30 @@ public class ArrayRecyclerViewAdapter
      */
     public final void setItemColor(@ColorInt final int color) {
         this.itemColor = color;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Returns the typeface of the adapter's items.
+     *
+     * @return The typeface of the adapter's items, as an instance of the class {@link Typeface} or
+     * null, if the default typeface is used
+     */
+    @Nullable
+    public final Typeface getItemTypeface() {
+        return itemTypeface;
+    }
+
+    /**
+     * Sets the typeface of the adapter's items.
+     *
+     * @param typeface
+     *         The typeface, which should be set, as an instance of the class {@link Typeface}. The
+     *         typeface may not be null
+     */
+    public void setItemTypeface(@NonNull final Typeface typeface) {
+        Condition.INSTANCE.ensureNotNull(typeface, "The typeface may not be null");
+        this.itemTypeface = typeface;
         notifyDataSetChanged();
     }
 
@@ -143,6 +175,10 @@ public class ArrayRecyclerViewAdapter
 
             if (getItemColor() != -1) {
                 textView.setTextColor(getItemColor());
+            }
+
+            if (getItemTypeface() != null) {
+                textView.setTypeface(getItemTypeface());
             }
         }
     }
