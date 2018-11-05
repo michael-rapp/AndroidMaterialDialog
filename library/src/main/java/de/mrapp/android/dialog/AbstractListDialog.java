@@ -15,17 +15,14 @@ package de.mrapp.android.dialog;
 
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.annotation.ArrayRes;
 import androidx.annotation.CallSuper;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-
+import androidx.recyclerview.widget.RecyclerView;
 import de.mrapp.android.dialog.decorator.ListDialogDecorator;
 import de.mrapp.android.dialog.model.ListDialog;
 
@@ -62,12 +59,12 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     }
 
     @Override
-    public final ListView getListView() {
+    public final RecyclerView getListView() {
         return decorator.getListView();
     }
 
     @Override
-    public final ListAdapter getListAdapter() {
+    public final RecyclerView.Adapter<?> getListAdapter() {
         return decorator.getListAdapter();
     }
 
@@ -94,9 +91,11 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     }
 
     @Override
-    public final void setAdapter(@NonNull final ListAdapter adapter,
-                                 @Nullable final OnClickListener listener) {
-        decorator.setAdapter(adapter, listener);
+    public final <VH extends RecyclerView.ViewHolder> void setAdapter(
+            @Nullable final RecyclerView.Adapter<VH> adapter,
+            @Nullable final RecyclerView.LayoutManager layoutManager,
+            @Nullable final OnClickListener listener) {
+        decorator.setAdapter(adapter, layoutManager, listener);
     }
 
     @Override
@@ -113,10 +112,11 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     }
 
     @Override
-    public final void setSingleChoiceItems(@NonNull final ListAdapter adapter,
-                                           final int checkedItem,
-                                           @Nullable final OnClickListener listener) {
-        decorator.setSingleChoiceItems(adapter, checkedItem, listener);
+    public final <VH extends RecyclerView.ViewHolder> void setSingleChoiceItems(
+            @Nullable final RecyclerView.Adapter<VH> adapter,
+            @Nullable final RecyclerView.LayoutManager layoutManager, final int checkedItem,
+            @Nullable final OnClickListener listener) {
+        decorator.setSingleChoiceItems(adapter, layoutManager, checkedItem, listener);
     }
 
     @Override
@@ -134,15 +134,17 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     }
 
     @Override
-    public final void setMultiChoiceItems(@NonNull final ListAdapter adapter,
-                                          @Nullable final boolean[] checkedItems,
-                                          @Nullable final OnMultiChoiceClickListener listener) {
-        decorator.setMultiChoiceItems(adapter, checkedItems, listener);
+    public final <VH extends RecyclerView.ViewHolder> void setMultiChoiceItems(
+            @Nullable final RecyclerView.Adapter<VH> adapter,
+            @Nullable final RecyclerView.LayoutManager layoutManager,
+            @Nullable final boolean[] checkedItems,
+            @Nullable final OnMultiChoiceClickListener listener) {
+        decorator.setMultiChoiceItems(adapter, layoutManager, checkedItems, listener);
     }
 
     @Override
     public final void setOnItemSelectedListener(
-            @Nullable final AdapterView.OnItemSelectedListener listener) {
+            @Nullable final ListDialog.OnItemSelectedListener listener) {
         decorator.setOnItemSelectedListener(listener);
     }
 

@@ -25,12 +25,10 @@ License.
         android:background="@color/divider_color_light"
         android:visibility="invisible"/>
 
-    <de.mrapp.android.dialog.view.ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@null"
-        android:dividerHeight="0dp"
         android:visibility="gone"/>
 
 </LinearLayout>

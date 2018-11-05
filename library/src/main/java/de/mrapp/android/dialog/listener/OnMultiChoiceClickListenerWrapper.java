@@ -14,13 +14,11 @@
 package de.mrapp.android.dialog.listener;
 
 import android.content.DialogInterface.OnMultiChoiceClickListener;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
-
+import de.mrapp.android.dialog.adapter.RecyclerViewAdapterWrapper;
+import de.mrapp.android.dialog.adapter.RecyclerViewAdapterWrapper.OnItemClickListener;
 import de.mrapp.android.dialog.model.ValidateableDialog;
 
 /**
@@ -62,11 +60,10 @@ public class OnMultiChoiceClickListenerWrapper extends AbstractListenerWrapper
     }
 
     @Override
-    public final void onItemClick(final AdapterView<?> parent, final View view, final int position,
-                                  final long id) {
+    public final void onItemClick(@NonNull final RecyclerViewAdapterWrapper<?> adapter,
+                                  final int position) {
         if (wrappedListener != null) {
-            ListView listView = (ListView) parent;
-            wrappedListener.onClick(getDialog(), position, listView.isItemChecked(position));
+            wrappedListener.onClick(getDialog(), position, adapter.isItemChecked(position));
         }
 
         attemptCloseDialog();

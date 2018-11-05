@@ -14,12 +14,11 @@
 package de.mrapp.android.dialog.listener;
 
 import android.content.DialogInterface.OnClickListener;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-
+import de.mrapp.android.dialog.adapter.RecyclerViewAdapterWrapper;
+import de.mrapp.android.dialog.adapter.RecyclerViewAdapterWrapper.OnItemClickListener;
 import de.mrapp.android.dialog.model.ValidateableDialog;
 
 /**
@@ -59,8 +58,8 @@ public class OnItemClickListenerWrapper extends AbstractListenerWrapper
     }
 
     @Override
-    public final void onItemClick(final AdapterView<?> parent, final View view, final int position,
-                                  final long id) {
+    public final void onItemClick(@NonNull final RecyclerViewAdapterWrapper<?> adapter,
+                                  final int position) {
         if (wrappedListener != null) {
             wrappedListener.onClick(getDialog(), position);
         }

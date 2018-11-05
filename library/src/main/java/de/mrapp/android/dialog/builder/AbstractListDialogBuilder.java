@@ -16,15 +16,15 @@ package de.mrapp.android.dialog.builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
+import android.widget.ListAdapter;
+
 import androidx.annotation.ArrayRes;
 import androidx.annotation.CallSuper;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
-
+import androidx.recyclerview.widget.RecyclerView;
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.ListDialog;
 import de.mrapp.android.util.ThemeUtil;
@@ -170,9 +170,11 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      * @return The builder, the method has been called upon, as an instance of the generic type
      * BuilderType
      */
-    public final BuilderType setAdapter(@NonNull final ListAdapter adapter,
-                                        @Nullable final DialogInterface.OnClickListener listener) {
-        getProduct().setAdapter(adapter, listener);
+    public final <VH extends RecyclerView.ViewHolder> BuilderType setAdapter(
+            @Nullable final RecyclerView.Adapter<VH> adapter,
+            @Nullable final RecyclerView.LayoutManager layoutManager,
+            @Nullable final DialogInterface.OnClickListener listener) {
+        getProduct().setAdapter(adapter, layoutManager, listener);
         return self();
     }
 
@@ -256,10 +258,11 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      * @return The builder, the method has been called upon, as an instance of the generic type
      * BuilderType
      */
-    public final BuilderType setSingleChoiceItems(@NonNull final ListAdapter adapter,
-                                                  final int checkedItem,
-                                                  @Nullable final DialogInterface.OnClickListener listener) {
-        getProduct().setSingleChoiceItems(adapter, checkedItem, listener);
+    public final <VH extends RecyclerView.ViewHolder> BuilderType setSingleChoiceItems(
+            @Nullable final RecyclerView.Adapter<VH> adapter,
+            @Nullable final RecyclerView.LayoutManager layoutManager, final int checkedItem,
+            @Nullable final DialogInterface.OnClickListener listener) {
+        getProduct().setSingleChoiceItems(adapter, layoutManager, checkedItem, listener);
         return self();
     }
 
@@ -346,10 +349,12 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      * @return The builder, the method has been called upon, as an instance of the generic type
      * BuilderType
      */
-    public final BuilderType setMultiChoiceItems(@NonNull final ListAdapter adapter,
-                                                 @Nullable final boolean[] checkedItems,
-                                                 @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
-        getProduct().setMultiChoiceItems(adapter, checkedItems, listener);
+    public final <VH extends RecyclerView.ViewHolder> BuilderType setMultiChoiceItems(
+            @Nullable final RecyclerView.Adapter<VH> adapter,
+            @Nullable final RecyclerView.LayoutManager layoutManager,
+            @Nullable final boolean[] checkedItems,
+            @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
+        getProduct().setMultiChoiceItems(adapter, layoutManager, checkedItems, listener);
         return self();
     }
 
@@ -359,12 +364,12 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      *
      * @param listener
      *         The listener, which should be set, as an instance of the type {@link
-     *         AdapterView.OnItemSelectedListener} or null, if no listener should be notified
+     *         ListDialog.OnItemSelectedListener} or null, if no listener should be notified
      * @return The builder, the method has been called upon, as an instance of the generic type
      * BuilderType
      */
     public final BuilderType setOnItemSelectedListener(
-            @Nullable final AdapterView.OnItemSelectedListener listener) {
+            @Nullable final ListDialog.OnItemSelectedListener listener) {
         getProduct().setOnItemSelectedListener(listener);
         return self();
     }

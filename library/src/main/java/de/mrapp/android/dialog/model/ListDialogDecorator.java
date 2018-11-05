@@ -14,12 +14,11 @@
 package de.mrapp.android.dialog.model;
 
 import android.content.DialogInterface;
+
 import androidx.annotation.ArrayRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Defines the interface, a decorator, which allows to modify the view hierarchy of a dialog, which
@@ -32,20 +31,21 @@ import android.widget.ListView;
 public interface ListDialogDecorator extends Dialog {
 
     /**
-     * Returns the list view, which is contained by the dialog.
+     * Returns the recycler view, which is contained by the dialog.
      *
-     * @return The list view, which is contained by the dialog, as an instance of the class {@link
-     * ListView} or null, if the dialog does not show any list items or has not been shown yet
+     * @return The recycler view, which is contained by the dialog, as an instance of the class
+     * {@link RecyclerView} or null, if the dialog does not show any list items or has not been
+     * shown yet
      */
-    ListView getListView();
+    RecyclerView getListView();
 
     /**
-     * Returns the adapter of the list view, which is contained by the dialog.
+     * Returns the adapter of the recycler view, which is contained by the dialog.
      *
-     * @return The adapter of the list view, which is contained by the dialog, as an instance of the
-     * type {@link ListAdapter} or null, if the dialog does not show any list items
+     * @return The adapter of the recycler view, which is contained by the dialog, as an instance of
+     * the type {@link RecyclerView.Adapter} or null, if the dialog does not show any list items
      */
-    ListAdapter getListAdapter();
+    RecyclerView.Adapter<?> getListAdapter();
 
     /**
      * Returns the color of the list items of the dialog.
@@ -107,16 +107,23 @@ public interface ListDialogDecorator extends Dialog {
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-set the adapter and re-register the listener.
      *
+     * @param <VH>
+     *         The type of the adapter's view holder
      * @param adapter
-     *         The adapter, which should be set, as an instance of the type {@link ListAdapter} or
-     *         null, if no items should be shown by the dialog
+     *         The adapter, which should be set, as an instance of the type {@link
+     *         RecyclerView.Adapter} or null, if no items should be shown by the dialog
+     * @param layoutManager
+     *         The layout manager, which should be used to layout the items, as an instance of the
+     *         class {@link RecyclerView.LayoutManager} or null, if the default layout manager
+     *         should be used
      * @param listener
      *         The listener, which should be notified, when an item is clicked, as an instance of
      *         the type {@link DialogInterface.OnClickListener} or null, if no listener should be
      *         notified
      */
-    void setAdapter(@Nullable ListAdapter adapter,
-                    @Nullable DialogInterface.OnClickListener listener);
+    <VH extends RecyclerView.ViewHolder> void setAdapter(@Nullable RecyclerView.Adapter<VH> adapter,
+                                                         @Nullable RecyclerView.LayoutManager layoutManager,
+                                                         @Nullable DialogInterface.OnClickListener listener);
 
     /**
      * Sets the selectable items, which should be shown by the dialog. Only one of the items can be
@@ -173,9 +180,15 @@ public interface ListDialogDecorator extends Dialog {
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-set the adapter and re-register the listener.
      *
+     * @param <VH>
+     *         The type of the adapter's view holder
      * @param adapter
-     *         The adapter, which should be set, as an instance of the type {@link ListAdapter} or
-     *         null, if no items should be shown by the dialog
+     *         The adapter, which should be set, as an instance of the type {@link
+     *         RecyclerView.Adapter} or null, if no items should be shown by the dialog
+     * @param layoutManager
+     *         The layout manager, which should be used to layout the items, as an instance of the
+     *         class {@link RecyclerView.LayoutManager} or null, if the default layout manager
+     *         should be used
      * @param checkedItem
      *         The index of the item, which should be selected by default, as an {@link Integer}
      *         value or -1, if no item should be selected by default
@@ -184,8 +197,10 @@ public interface ListDialogDecorator extends Dialog {
      *         the type {@link DialogInterface.OnClickListener} or null, if no listener should be
      *         notified
      */
-    void setSingleChoiceItems(@Nullable ListAdapter adapter, int checkedItem,
-                              @Nullable DialogInterface.OnClickListener listener);
+    <VH extends RecyclerView.ViewHolder> void setSingleChoiceItems(
+            @Nullable RecyclerView.Adapter<VH> adapter,
+            @Nullable RecyclerView.LayoutManager layoutManager, int checkedItem,
+            @Nullable DialogInterface.OnClickListener listener);
 
     /**
      * Sets the selectable items, which should be shown by the dialog. Multiple items can be
@@ -244,9 +259,15 @@ public interface ListDialogDecorator extends Dialog {
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-set the adapter and re-register the listener.
      *
+     * @param <VH>
+     *         The type of the adapter's view holder
      * @param adapter
-     *         The adapter, which should be set, as an instance of the type {@link ListAdapter} or
-     *         null, if no items should be shown by the dialog
+     *         The adapter, which should be set, as an instance of the type {@link
+     *         RecyclerView.Adapter} or null, if no items should be shown by the dialog
+     * @param layoutManager
+     *         The layout manager, which should be used to layout the items, as an instance of the
+     *         class {@link RecyclerView.LayoutManager} or null, if the default layout manager
+     *         should be used
      * @param checkedItems
      *         An array, which contains, whether the items, which correspond to the corresponding
      *         indices, should be selected by default, or not, as a {@link Boolean} array or null,
@@ -256,8 +277,10 @@ public interface ListDialogDecorator extends Dialog {
      *         the type {@link DialogInterface.OnMultiChoiceClickListener} or null, if no listener
      *         should be notified
      */
-    void setMultiChoiceItems(@Nullable ListAdapter adapter, @Nullable boolean[] checkedItems,
-                             @Nullable DialogInterface.OnMultiChoiceClickListener listener);
+    <VH extends RecyclerView.ViewHolder> void setMultiChoiceItems(
+            @Nullable RecyclerView.Adapter<VH> adapter,
+            @Nullable RecyclerView.LayoutManager layoutManager, @Nullable boolean[] checkedItems,
+            @Nullable DialogInterface.OnMultiChoiceClickListener listener);
 
     /**
      * Sets the listener, which should be notified, when an item, which is shown by the dialog is
@@ -270,8 +293,8 @@ public interface ListDialogDecorator extends Dialog {
      *
      * @param listener
      *         The listener, which should be set, as an instance of the type {@link
-     *         AdapterView.OnItemSelectedListener} or null, if no listener should be notified
+     *         ListDialog.OnItemSelectedListener} or null, if no listener should be notified
      */
-    void setOnItemSelectedListener(@Nullable AdapterView.OnItemSelectedListener listener);
+    void setOnItemSelectedListener(@Nullable ListDialog.OnItemSelectedListener listener);
 
 }

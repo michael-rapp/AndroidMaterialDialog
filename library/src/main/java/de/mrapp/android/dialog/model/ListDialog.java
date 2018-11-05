@@ -22,4 +22,21 @@ package de.mrapp.android.dialog.model;
  */
 public interface ListDialog extends ButtonBarDialog, ListDialogDecorator {
 
+    /**
+     * Defines the interface, a class that should be notified when a list item of a {@link
+     * ListDialog} has been selected, must implemented.
+     */
+    interface OnItemSelectedListener {
+
+        /**
+         * The method, which is invoked when a list item has been selected.
+         *
+         * @param position
+         *         The position of the list item, which has been selected, as an {@link Integer}
+         *         value
+         */
+        void onItemSelected(int position);
+
+    }
+
 }
