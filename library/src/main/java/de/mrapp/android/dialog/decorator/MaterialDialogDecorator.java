@@ -1492,6 +1492,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public final void setTitleTypeface(@NonNull final Typeface typeface) {
+        Condition.INSTANCE.ensureNotNull(typeface, "The typeface may not be null");
         titleTypeface = typeface;
         adaptTitleTypeface();
     }
@@ -1509,6 +1510,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
 
     @Override
     public void setMessageTypeface(@NonNull final Typeface typeface) {
+        Condition.INSTANCE.ensureNotNull(typeface, "The typeface may not be null");
         messageTypeface = typeface;
         adaptMessageTypeface();
     }
