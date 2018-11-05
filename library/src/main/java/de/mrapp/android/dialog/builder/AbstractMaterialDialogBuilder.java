@@ -20,6 +20,11 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
+import android.util.TypedValue;
+import android.view.ContextThemeWrapper;
+import android.view.View;
+
 import androidx.annotation.AttrRes;
 import androidx.annotation.CallSuper;
 import androidx.annotation.ColorInt;
@@ -30,10 +35,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.core.content.ContextCompat;
-import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
-import android.view.View;
-
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.model.Dialog;
@@ -791,6 +792,20 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
     }
 
     /**
+     * Sets the typeface of the title of the dialog, which is created by the builder.
+     *
+     * @param typeface
+     *         The typeface, which should be set, as an instance of the class {@link Typeface}. The
+     *         typeface may not be null
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setTitleTypeface(@NonNull final Typeface typeface) {
+        getProduct().setTitleTypeface(typeface);
+        return self();
+    }
+
+    /**
      * Sets the color of the message of the dialog, which is created by the builder.
      *
      * @param color
@@ -801,6 +816,20 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
      */
     public final BuilderType setMessageColor(@ColorInt final int color) {
         getProduct().setMessageColor(color);
+        return self();
+    }
+
+    /**
+     * Sets the typeface of the message of the dialog, which is created by the builder.
+     *
+     * @param typeface
+     *         The typeface, which should be set, as an instance of the class {@link Typeface}. The
+     *         typeface may not be null
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setMessageTypeface(@NonNull final Typeface typeface) {
+        getProduct().setMessageTypeface(typeface);
         return self();
     }
 
