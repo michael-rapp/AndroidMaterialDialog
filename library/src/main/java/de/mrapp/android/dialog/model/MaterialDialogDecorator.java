@@ -16,7 +16,11 @@ package de.mrapp.android.dialog.model;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.view.KeyEvent;
+import android.view.View;
+
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
@@ -24,9 +28,6 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import android.view.KeyEvent;
-import android.view.View;
-
 import de.mrapp.android.dialog.ScrollableArea;
 import de.mrapp.android.dialog.animation.BackgroundAnimation;
 
@@ -568,6 +569,20 @@ public interface MaterialDialogDecorator extends Dialog {
     void setTitleColor(@ColorInt int color);
 
     /**
+     * Sets the typeface of the title of the dialog.
+     * <p>
+     * Note, that the typeface is not stored using a dialog's <code>onSaveInstanceState</code>-method,
+     * because it is not serializable. Therefore this method must be called again after
+     * configuration changes, e.g when the orientation of the device has changed, in order to re-set
+     * the typeface.
+     *
+     * @param typeface
+     *         The typeface, which should be set, as an instance of the class {@link Typeface}. The
+     *         typeface may not be null
+     */
+    void setTitleTypeface(@NonNull Typeface typeface);
+
+    /**
      * Returns the color of the message of the dialog.
      *
      * @return The color of the message of the dialog as an {@link Integer} value
@@ -581,6 +596,20 @@ public interface MaterialDialogDecorator extends Dialog {
      *         The color, which should be set, as an {@link Integer} value
      */
     void setMessageColor(@ColorInt int color);
+
+    /**
+     * Sets the typeface of the message of the dialog.
+     * <p>
+     * Note, that the typeface is not stored using a dialog's <code>onSaveInstanceState</code>-method,
+     * because it is not serializable. Therefore this method must be called again after
+     * configuration changes, e.g when the orientation of the device has changed, in order to re-set
+     * the typeface.
+     *
+     * @param typeface
+     *         The typeface, which should be set, as an instance of the class {@link Typeface}. The
+     *         typeface may not be null
+     */
+    void setMessageTypeface(@NonNull Typeface typeface);
 
     /**
      * Returns the background of the dialog.

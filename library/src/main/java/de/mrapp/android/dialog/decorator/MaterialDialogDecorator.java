@@ -19,6 +19,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -473,9 +474,19 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     private int titleColor;
 
     /**
+     * The typeface of the title of the dialog.
+     */
+    private Typeface titleTypeface;
+
+    /**
      * The color of the message of the dialog.
      */
     private int messageColor;
+
+    /**
+     * The typeface of the message of the dialog.
+     */
+    private Typeface messageTypeface;
 
     /**
      * The background of the dialog.
@@ -885,6 +896,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             inflateTitleView();
             adaptTitle();
             adaptTitleColor();
+            adaptTitleTypeface();
             adaptIcon();
         }
     }
@@ -897,6 +909,7 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             inflateMessageView();
             adaptMessage();
             adaptMessageColor();
+            adaptMessageTypeface();
         }
     }
 
@@ -906,6 +919,15 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     private void adaptTitleColor() {
         if (titleTextView != null) {
             titleTextView.setTextColor(titleColor);
+        }
+    }
+
+    /**
+     * Adapts the typeface of the dialog's title.
+     */
+    private void adaptTitleTypeface() {
+        if (titleTextView != null && titleTypeface != null) {
+            titleTextView.setTypeface(titleTypeface);
         }
     }
 
@@ -971,6 +993,15 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     private void adaptMessageColor() {
         if (messageTextView != null) {
             messageTextView.setTextColor(messageColor);
+        }
+    }
+
+    /**
+     * Adapts the typeface of the dialog's message.
+     */
+    private void adaptMessageTypeface() {
+        if (messageTextView != null && messageTypeface != null) {
+            messageTextView.setTypeface(messageTypeface);
         }
     }
 
@@ -1460,6 +1491,12 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     }
 
     @Override
+    public final void setTitleTypeface(@NonNull final Typeface typeface) {
+        titleTypeface = typeface;
+        adaptTitleTypeface();
+    }
+
+    @Override
     public final int getMessageColor() {
         return messageColor;
     }
@@ -1468,6 +1505,12 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
     public final void setMessageColor(@ColorInt final int color) {
         messageColor = color;
         adaptMessageColor();
+    }
+
+    @Override
+    public void setMessageTypeface(@NonNull final Typeface typeface) {
+        messageTypeface = typeface;
+        adaptMessageTypeface();
     }
 
     @Override
@@ -1743,9 +1786,11 @@ public class MaterialDialogDecorator extends AbstractDialogDecorator<Dialog>
             adaptDividerVisibility();
             adaptTitle();
             adaptTitleColor();
+            adaptTitleTypeface();
             adaptIcon();
             adaptMessage();
             adaptMessageColor();
+            adaptMessageTypeface();
             adaptBackground(null);
             Map<ViewType, View> result = new HashMap<>();
             result.put(new AreaViewType(Area.TITLE), titleContainer);
