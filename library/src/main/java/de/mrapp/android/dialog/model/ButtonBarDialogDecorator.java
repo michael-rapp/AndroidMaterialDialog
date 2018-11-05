@@ -14,10 +14,14 @@
 package de.mrapp.android.dialog.model;
 
 import android.content.DialogInterface;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+
+import android.graphics.Typeface;
 import android.view.View;
 import android.widget.Button;
 
@@ -45,7 +49,7 @@ public interface ButtonBarDialogDecorator extends Dialog {
 
     /**
      * Sets the text of the positive button of the dialog.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -64,7 +68,7 @@ public interface ButtonBarDialogDecorator extends Dialog {
 
     /**
      * Sets the text of the positive button of the dialog.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -83,7 +87,7 @@ public interface ButtonBarDialogDecorator extends Dialog {
 
     /**
      * Sets the text of the negative button of the dialog.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -102,7 +106,7 @@ public interface ButtonBarDialogDecorator extends Dialog {
 
     /**
      * Sets the text of the negative button of the dialog.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -121,7 +125,7 @@ public interface ButtonBarDialogDecorator extends Dialog {
 
     /**
      * Sets the text of the neutral button of the dialog.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -140,7 +144,7 @@ public interface ButtonBarDialogDecorator extends Dialog {
 
     /**
      * Sets the text of the neutral button of the dialog.
-     *
+     * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
      * method must be called again after configuration changes, e.g when the orientation of the
@@ -186,6 +190,20 @@ public interface ButtonBarDialogDecorator extends Dialog {
      *         The color, which should be set, as an {@link Integer} value
      */
     void setButtonTextColor(@ColorInt int color);
+
+    /**
+     * Sets the typeface of the dialog's buttons.
+     * <p>
+     * Note, that the typeface is not stored using a dialog's <code>onSaveInstanceState</code>-method,
+     * because it is not serializable. Therefore this method must be called again after
+     * configuration changes, e.g when the orientation of the device has changed, in order to re-set
+     * the typeface.
+     *
+     * @param typeface
+     *         The typeface, which should be set, as an instance of the class {@link Typeface}. The
+     *         typeface may not be null
+     */
+    void setButtonTypeface(@NonNull Typeface typeface);
 
     /**
      * Returns the text color the dialog's buttons when disabled.

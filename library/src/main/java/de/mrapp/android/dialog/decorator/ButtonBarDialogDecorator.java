@@ -15,12 +15,8 @@ package de.mrapp.android.dialog.decorator;
 
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.annotation.ColorInt;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +29,11 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.listener.OnClickListenerWrapper;
@@ -42,6 +43,7 @@ import de.mrapp.android.dialog.view.DialogRootView.DividerLocation;
 import de.mrapp.android.dialog.view.DialogRootView.DividerViewType;
 import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 import de.mrapp.android.dialog.view.Divider;
+import de.mrapp.util.Condition;
 
 /**
  * A decorator, which allows to modify the view hierarchy of a dialog, which is designed according
@@ -132,6 +134,11 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
      * The text color of the dialog's buttons.
      */
     private int buttonTextColor;
+
+    /**
+     * The typeface of the dialog's buttons.
+     */
+    private Typeface buttonTypeface;
 
     /**
      * The text color of the dialog's buttons when disabled.
@@ -247,6 +254,7 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
             adaptNegativeButton();
             adaptNeutralButton();
             adaptButtonTextColor();
+            adaptButtonTypeface();
             adaptButtonBarContainerVisibility();
             adaptButtonBarDividerVisibility();
         }
@@ -270,6 +278,25 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
 
         if (negativeButton != null) {
             negativeButton.setTextColor(colorStateList);
+        }
+    }
+
+    /**
+     * Adapts the typeface of the dialog's buttons.
+     */
+    private void adaptButtonTypeface() {
+        if (buttonTypeface != null) {
+            if (positiveButton != null) {
+                positiveButton.setTypeface(buttonTypeface);
+            }
+
+            if (neutralButton != null) {
+                neutralButton.setTypeface(buttonTypeface);
+            }
+
+            if (negativeButton != null) {
+                negativeButton.setTypeface(buttonTypeface);
+            }
         }
     }
 
@@ -443,6 +470,13 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     }
 
     @Override
+    public final void setButtonTypeface(@NonNull final Typeface typeface) {
+        Condition.INSTANCE.ensureNotNull(typeface, "The typeface may not be null");
+        buttonTypeface = typeface;
+        adaptButtonTypeface();
+    }
+
+    @Override
     public final int getDisabledButtonTextColor() {
         return disabledButtonTextColor;
     }
@@ -518,6 +552,7 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
 
         if (inflatedView != null) {
             adaptButtonTextColor();
+            adaptButtonTypeface();
             adaptPositiveButton();
             adaptNeutralButton();
             adaptNegativeButton();
