@@ -17,11 +17,14 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -52,10 +55,13 @@ public class MainActivity extends AppCompatActivity {
      * reveal animation.
      */
     private void initializeFloatingActionButton() {
+        floatingActionButton = findViewById(R.id.floating_action_button);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            floatingActionButton = findViewById(R.id.floating_action_button);
-            floatingActionButton.setVisibility(View.VISIBLE);
+            floatingActionButton.show();
             floatingActionButton.setOnClickListener(createFloatingActionButtonListener());
+        } else {
+            floatingActionButton.hide();
         }
     }
 
