@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -493,6 +494,17 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
         decorator.setTitleColor(color);
     }
 
+    @Nullable
+    @Override
+    public final Typeface getTitleTypeface() {
+        return decorator.getTitleTypeface();
+    }
+
+    @Override
+    public final void setTitleTypeface(@NonNull final Typeface typeface) {
+        decorator.setTitleTypeface(typeface);
+    }
+
     @Override
     public final int getMessageColor() {
         return decorator.getMessageColor();
@@ -501,6 +513,17 @@ public abstract class AbstractMaterialDialog extends Dialog implements MaterialD
     @Override
     public final void setMessageColor(@ColorInt final int color) {
         decorator.setMessageColor(color);
+    }
+
+    @Nullable
+    @Override
+    public final Typeface getMessageTypeface() {
+        return decorator.getMessageTypeface();
+    }
+
+    @Override
+    public final void setMessageTypeface(@NonNull final Typeface typeface) {
+        decorator.setMessageTypeface(typeface);
     }
 
     @Override

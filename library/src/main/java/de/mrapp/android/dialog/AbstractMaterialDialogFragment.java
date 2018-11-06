@@ -20,6 +20,7 @@ import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -582,6 +583,17 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
         decorator.setTitleColor(color);
     }
 
+    @Nullable
+    @Override
+    public final Typeface getTitleTypeface() {
+        return decorator.getTitleTypeface();
+    }
+
+    @Override
+    public final void setTitleTypeface(@NonNull final Typeface typeface) {
+        decorator.setTitleTypeface(typeface);
+    }
+
     @Override
     public final int getMessageColor() {
         return decorator.getMessageColor();
@@ -590,6 +602,17 @@ public abstract class AbstractMaterialDialogFragment extends DialogFragment
     @Override
     public final void setMessageColor(@ColorInt final int color) {
         decorator.setMessageColor(color);
+    }
+
+    @Nullable
+    @Override
+    public final Typeface getMessageTypeface() {
+        return decorator.getMessageTypeface();
+    }
+
+    @Override
+    public final void setMessageTypeface(@NonNull final Typeface typeface) {
+        decorator.setMessageTypeface(typeface);
     }
 
     @Override

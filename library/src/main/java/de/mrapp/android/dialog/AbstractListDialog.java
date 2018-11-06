@@ -14,6 +14,7 @@
 package de.mrapp.android.dialog;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.ArrayRes;
@@ -76,6 +77,17 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     @Override
     public final void setItemColor(@ColorInt final int color) {
         decorator.setItemColor(color);
+    }
+
+    @Nullable
+    @Override
+    public final Typeface getItemTypeface() {
+        return decorator.getItemTypeface();
+    }
+
+    @Override
+    public final void setItemTypeface(@NonNull final Typeface typeface) {
+        decorator.setItemTypeface(typeface);
     }
 
     @Override

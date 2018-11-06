@@ -14,7 +14,9 @@
 package de.mrapp.android.dialog;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
+
 import androidx.annotation.CallSuper;
 import androidx.annotation.ColorInt;
 import androidx.annotation.LayoutRes;
@@ -22,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
+
 import android.view.View;
 import android.widget.Button;
 
@@ -130,6 +133,17 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
     @Override
     public final void setDisabledButtonTextColor(@ColorInt final int color) {
         decorator.setDisabledButtonTextColor(color);
+    }
+
+    @Nullable
+    @Override
+    public final Typeface getButtonTypeface() {
+        return decorator.getButtonTypeface();
+    }
+
+    @Override
+    public final void setButtonTypeface(@NonNull final Typeface typeface) {
+        decorator.setButtonTypeface(typeface);
     }
 
     @Override
