@@ -282,7 +282,7 @@ public abstract class AbstractMaterialDialogBuilder<DialogType extends MaterialD
         if (resourceId != 0) {
             setWindowBackground(resourceId);
         } else {
-            setWindowBackground(android.R.drawable.dialog_holo_light_frame);
+            setWindowBackground(R.drawable.material_dialog_background);
         }
     }
 
