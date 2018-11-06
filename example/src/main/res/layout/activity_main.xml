@@ -32,7 +32,6 @@ License.
         android:layout_margin="@dimen/floating_action_button_margin"
         android:contentDescription="@string/floating_action_button_content_description"
         android:tint="@android:color/white"
-        android:visibility="gone"
         app:srcCompat="@drawable/ic_plus_24dp"/>
 
 </FrameLayout>
