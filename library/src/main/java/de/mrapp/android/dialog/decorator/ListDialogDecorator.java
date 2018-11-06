@@ -288,7 +288,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
      * Adapts the typeface of the dialog's list items.
      */
     private void adaptItemTypeface() {
-        if (adapter != null) {
+        if (adapter != null && itemTypeface != null) {
             RecyclerView.Adapter<?> wrappedAdapter = adapter.getWrappedAdapter();
 
             if (wrappedAdapter instanceof ArrayRecyclerViewAdapter) {
