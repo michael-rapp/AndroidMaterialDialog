@@ -1,6 +1,5 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
-
 ## Version 5.0.0 (Nov. 6th 2018)
 
 A major release, which introduces the following changes:
