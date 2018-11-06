@@ -1,5 +1,18 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+
+## Version 5.0.0 (Nov. 6th 2018)
+
+A major release, which introduces the following changes:
+
+- Added methods for setting the typeface of a dialog's title, message, items and buttons (see https://github.com/michael-rapp/AndroidMaterialDialog/issues/27)
+- The background of dialogs is now styled according to the Material Design 2 guidelines.
+- Migrated the library to Android X.
+- Replaced AppCompat themes with MaterialComponent themes.
+- Updated dependency "AndroidUtil" to version 2.0.0.
+- Updated dependency "AndroidMaterialViews" to version 3.0.0.
+- Updated targetSdkVersion to 28.
+
 ## Version 4.3.4 (May 2nd 2018)
 
 A minor release, which introduces the following changes:
