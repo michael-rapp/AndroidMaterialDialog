@@ -288,8 +288,8 @@ public class RecyclerViewAdapterWrapper<VH extends RecyclerView.ViewHolder>
      *         The context, which should be used by the wrapper, as an instance of the class {@link
      *         Context}. The context may not be null
      * @param wrappedAdapter
-     *         The encapsulated recycler view adapter as an instance of the class {@link
-     *         RecyclerView.Adapter}. The adapter may not be null
+     *         The encapsulated recycler view adapter as an instance of the class
+     *         RecyclerView.Adapter. The adapter may not be null
      * @param choiceMode
      *         The choice mode, which should be used by the adapter, as an instance of the type
      *         {@link ChoiceMode}. The choice mode may not be null
@@ -341,8 +341,8 @@ public class RecyclerViewAdapterWrapper<VH extends RecyclerView.ViewHolder>
     /**
      * Returns the encapsulated adapter.
      *
-     * @return The encapsulated adapter as an instance of the class {@link RecyclerView.Adapter}.
-     * The adapter may not be null
+     * @return The encapsulated adapter as an instance of the class RecyclerView.Adapter. The
+     * adapter may not be null
      */
     @NonNull
     public final RecyclerView.Adapter<VH> getWrappedAdapter() {

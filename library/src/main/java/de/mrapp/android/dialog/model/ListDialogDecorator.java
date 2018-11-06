@@ -36,8 +36,7 @@ public interface ListDialogDecorator extends Dialog {
      * Returns the recycler view, which is contained by the dialog.
      *
      * @return The recycler view, which is contained by the dialog, as an instance of the class
-     * {@link RecyclerView} or null, if the dialog does not show any list items or has not been
-     * shown yet
+     * RecyclerView or null, if the dialog does not show any list items or has not been shown yet
      */
     RecyclerView getListView();
 
@@ -45,7 +44,7 @@ public interface ListDialogDecorator extends Dialog {
      * Returns the adapter of the recycler view, which is contained by the dialog.
      *
      * @return The adapter of the recycler view, which is contained by the dialog, as an instance of
-     * the type {@link RecyclerView.Adapter} or null, if the dialog does not show any list items
+     * the type RecyclerView.Adapter or null, if the dialog does not show any list items
      */
     RecyclerView.Adapter<?> getListAdapter();
 
@@ -135,12 +134,12 @@ public interface ListDialogDecorator extends Dialog {
      * @param <VH>
      *         The type of the adapter's view holder
      * @param adapter
-     *         The adapter, which should be set, as an instance of the type {@link
-     *         RecyclerView.Adapter} or null, if no items should be shown by the dialog
+     *         The adapter, which should be set, as an instance of the type RecyclerView.Adapter or
+     *         null, if no items should be shown by the dialog
      * @param layoutManager
      *         The layout manager, which should be used to layout the items, as an instance of the
-     *         class {@link RecyclerView.LayoutManager} or null, if the default layout manager
-     *         should be used
+     *         class RecyclerView.LayoutManager or null, if the default layout manager should be
+     *         used
      * @param listener
      *         The listener, which should be notified, when an item is clicked, as an instance of
      *         the type {@link DialogInterface.OnClickListener} or null, if no listener should be
@@ -208,12 +207,12 @@ public interface ListDialogDecorator extends Dialog {
      * @param <VH>
      *         The type of the adapter's view holder
      * @param adapter
-     *         The adapter, which should be set, as an instance of the type {@link
-     *         RecyclerView.Adapter} or null, if no items should be shown by the dialog
+     *         The adapter, which should be set, as an instance of the type RecyclerView.Adapter or
+     *         null, if no items should be shown by the dialog
      * @param layoutManager
      *         The layout manager, which should be used to layout the items, as an instance of the
-     *         class {@link RecyclerView.LayoutManager} or null, if the default layout manager
-     *         should be used
+     *         class RecyclerView.LayoutManager or null, if the default layout manager should be
+     *         used
      * @param checkedItem
      *         The index of the item, which should be selected by default, as an {@link Integer}
      *         value or -1, if no item should be selected by default
@@ -287,12 +286,12 @@ public interface ListDialogDecorator extends Dialog {
      * @param <VH>
      *         The type of the adapter's view holder
      * @param adapter
-     *         The adapter, which should be set, as an instance of the type {@link
-     *         RecyclerView.Adapter} or null, if no items should be shown by the dialog
+     *         The adapter, which should be set, as an instance of the type RecyclerView.Adapter or
+     *         null, if no items should be shown by the dialog
      * @param layoutManager
      *         The layout manager, which should be used to layout the items, as an instance of the
-     *         class {@link RecyclerView.LayoutManager} or null, if the default layout manager
-     *         should be used
+     *         class RecyclerView.LayoutManager or null, if the default layout manager should be
+     *         used
      * @param checkedItems
      *         An array, which contains, whether the items, which correspond to the corresponding
      *         indices, should be selected by default, or not, as a {@link Boolean} array or null,
