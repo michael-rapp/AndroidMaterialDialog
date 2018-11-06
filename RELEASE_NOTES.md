@@ -6,6 +6,7 @@ A major release, which introduces the following changes:
 
 - Added methods for setting the typeface of a dialog's title, message, items and buttons (see https://github.com/michael-rapp/AndroidMaterialDialog/issues/27)
 - The background of dialogs is now styled according to the Material Design 2 guidelines.
+- `RecyclerView`s are now used instead of `ListView`s to display the list items of dialogs.
 - Migrated the library to Android X.
 - Replaced AppCompat themes with MaterialComponent themes.
 - Updated dependency "AndroidUtil" to version 2.0.0.
