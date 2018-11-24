@@ -14,8 +14,11 @@
 package de.mrapp.android.dialog;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.ColorInt;
@@ -24,10 +27,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
-
-import android.view.View;
-import android.widget.Button;
-
 import de.mrapp.android.dialog.decorator.ButtonBarDialogDecorator;
 import de.mrapp.android.dialog.model.ButtonBarDialog;
 
@@ -115,8 +114,9 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
         decorator.stackButtons(stackButtons);
     }
 
+    @Nullable
     @Override
-    public final int getButtonTextColor() {
+    public final ColorStateList getButtonTextColor() {
         return decorator.getButtonTextColor();
     }
 
@@ -126,13 +126,8 @@ public abstract class AbstractButtonBarDialog extends AbstractValidateableDialog
     }
 
     @Override
-    public final int getDisabledButtonTextColor() {
-        return decorator.getDisabledButtonTextColor();
-    }
-
-    @Override
-    public final void setDisabledButtonTextColor(@ColorInt final int color) {
-        decorator.setDisabledButtonTextColor(color);
+    public final void setButtonTextColor(@NonNull final ColorStateList colorStateList) {
+        decorator.setButtonTextColor(colorStateList);
     }
 
     @Nullable

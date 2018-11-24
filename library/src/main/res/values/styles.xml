@@ -18,9 +18,6 @@ License.
     <style name="MaterialDialog.Light" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="materialDialogBackground">@color/dialog_background_light</item>
         <item name="materialDialogDividerColor">@color/divider_color_light</item>
-        <item name="materialDialogDisabledButtonTextColor">
-            @color/dialog_button_disabled_text_color_light
-        </item>
     </style>
 
     <style name="MaterialDialog.Light.Fullscreen.CenterInside" parent="MaterialDialog.Light">
@@ -46,9 +43,6 @@ License.
     <style name="MaterialDialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="materialDialogBackground">@color/dialog_background_dark</item>
         <item name="materialDialogDividerColor">@color/divider_color_dark</item>
-        <item name="materialDialogDisabledButtonTextColor">
-            @color/dialog_button_disabled_text_color_dark
-        </item>
     </style>
 
     <style name="MaterialDialog.Fullscreen.CenterInside" parent="MaterialDialog">

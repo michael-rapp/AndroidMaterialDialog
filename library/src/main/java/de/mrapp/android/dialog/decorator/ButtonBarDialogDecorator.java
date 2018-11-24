@@ -71,13 +71,6 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
             ButtonBarDialogDecorator.class.getSimpleName() + "::buttonTextColor";
 
     /**
-     * The name of the extra, which is used to store the disabled text color of the dialog's buttons
-     * within a bundle.
-     */
-    private static final String DISABLED_BUTTON_TEXT_COLOR_EXTRA =
-            ButtonBarDialogDecorator.class.getSimpleName() + "::disabledButtonTextColor";
-
-    /**
      * The name of the extra, which is used to store, whether the divider, which is shown above the
      * dialog's buttons, should be shown, or not, within a bundle.
      */
@@ -133,17 +126,12 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     /**
      * The text color of the dialog's buttons.
      */
-    private int buttonTextColor;
+    private ColorStateList buttonTextColor;
 
     /**
      * The typeface of the dialog's buttons.
      */
     private Typeface buttonTypeface;
-
-    /**
-     * The text color of the dialog's buttons when disabled.
-     */
-    private int disabledButtonTextColor;
 
     /**
      * True, if the buttons of the dialog are aligned vertically, false otherwise.
@@ -264,20 +252,18 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
      * Adapts the text color of the dialog's buttons.
      */
     private void adaptButtonTextColor() {
-        int[][] states = new int[][]{new int[]{-android.R.attr.state_enabled}, new int[]{}};
-        int[] colors = new int[]{disabledButtonTextColor, buttonTextColor};
-        ColorStateList colorStateList = new ColorStateList(states, colors);
+        if (buttonTextColor != null) {
+            if (positiveButton != null) {
+                positiveButton.setTextColor(buttonTextColor);
+            }
 
-        if (positiveButton != null) {
-            positiveButton.setTextColor(colorStateList);
-        }
+            if (neutralButton != null) {
+                neutralButton.setTextColor(buttonTextColor);
+            }
 
-        if (neutralButton != null) {
-            neutralButton.setTextColor(colorStateList);
-        }
-
-        if (negativeButton != null) {
-            negativeButton.setTextColor(colorStateList);
+            if (negativeButton != null) {
+                negativeButton.setTextColor(buttonTextColor);
+            }
         }
     }
 
@@ -458,14 +444,21 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
         adaptButtonBar();
     }
 
+    @Nullable
     @Override
-    public final int getButtonTextColor() {
+    public final ColorStateList getButtonTextColor() {
         return buttonTextColor;
     }
 
     @Override
     public final void setButtonTextColor(@ColorInt final int color) {
-        buttonTextColor = color;
+        setButtonTextColor(ColorStateList.valueOf(color));
+    }
+
+    @Override
+    public final void setButtonTextColor(@NonNull final ColorStateList colorStateList) {
+        Condition.INSTANCE.ensureNotNull(colorStateList, "The color state list may not be null");
+        buttonTextColor = colorStateList;
         adaptButtonTextColor();
     }
 
@@ -480,17 +473,6 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
         Condition.INSTANCE.ensureNotNull(typeface, "The typeface may not be null");
         buttonTypeface = typeface;
         adaptButtonTypeface();
-    }
-
-    @Override
-    public final int getDisabledButtonTextColor() {
-        return disabledButtonTextColor;
-    }
-
-    @Override
-    public final void setDisabledButtonTextColor(@ColorInt final int color) {
-        disabledButtonTextColor = color;
-        adaptButtonTextColor();
     }
 
     @Override
@@ -526,8 +508,7 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     @Override
     public final void onSaveInstanceState(@NonNull final Bundle outState) {
         outState.putBoolean(STACK_BUTTONS_EXTRA, areButtonsStacked());
-        outState.putInt(BUTTON_TEXT_COLOR_EXTRA, getButtonTextColor());
-        outState.putInt(DISABLED_BUTTON_TEXT_COLOR_EXTRA, getDisabledButtonTextColor());
+        outState.putParcelable(BUTTON_TEXT_COLOR_EXTRA, getButtonTextColor());
         outState.putBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA, isButtonBarDividerShown());
         outState.putCharSequence(POSITIVE_BUTTON_TEXT_EXTRA, positiveButtonText);
         outState.putCharSequence(NEUTRAL_BUTTON_TEXT_EXTRA, neutralButtonText);
@@ -537,8 +518,8 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     @Override
     public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         stackButtons(savedInstanceState.getBoolean(STACK_BUTTONS_EXTRA));
-        setButtonTextColor(savedInstanceState.getInt(BUTTON_TEXT_COLOR_EXTRA));
-        setDisabledButtonTextColor(savedInstanceState.getInt(DISABLED_BUTTON_TEXT_COLOR_EXTRA));
+        setButtonTextColor(
+                (ColorStateList) savedInstanceState.getParcelable(BUTTON_TEXT_COLOR_EXTRA));
         showButtonBarDivider(savedInstanceState.getBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA));
         setPositiveButton(savedInstanceState.getCharSequence(POSITIVE_BUTTON_TEXT_EXTRA),
                 positiveButtonListener);

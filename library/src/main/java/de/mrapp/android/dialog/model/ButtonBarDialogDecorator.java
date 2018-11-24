@@ -14,16 +14,16 @@
 package de.mrapp.android.dialog.model;
 
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.Typeface;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-
-import android.graphics.Typeface;
-import android.view.View;
-import android.widget.Button;
 
 /**
  * Defines the interface, a decorator, which allows to modify the view hierarchy of a dialog, which
@@ -179,9 +179,11 @@ public interface ButtonBarDialogDecorator extends Dialog {
     /**
      * Returns the text color of the dialog's buttons.
      *
-     * @return The text color of dialog's buttons as an {@link Integer} value
+     * @return The text color of dialog's buttons as an instance of the class {@link ColorStateList}
+     * or null, if the default text color is used
      */
-    int getButtonTextColor();
+    @Nullable
+    ColorStateList getButtonTextColor();
 
     /**
      * Sets the text color of the dialog's buttons.
@@ -190,6 +192,15 @@ public interface ButtonBarDialogDecorator extends Dialog {
      *         The color, which should be set, as an {@link Integer} value
      */
     void setButtonTextColor(@ColorInt int color);
+
+    /**
+     * Sets the text color of the dialog's buttons.
+     *
+     * @param colorStateList
+     *         The color, which should be set, as an instance of the class {@link ColorStateList}.
+     *         The color state list may not be null
+     */
+    void setButtonTextColor(@NonNull final ColorStateList colorStateList);
 
     /**
      * Returns the typeface of the dialog's buttons.
@@ -213,21 +224,6 @@ public interface ButtonBarDialogDecorator extends Dialog {
      *         typeface may not be null
      */
     void setButtonTypeface(@NonNull Typeface typeface);
-
-    /**
-     * Returns the text color the dialog's buttons when disabled.
-     *
-     * @return The text color of the dialog's buttons when disabled as an {@link Integer} value
-     */
-    int getDisabledButtonTextColor();
-
-    /**
-     * Sets the text color of the dialog's buttons when disabled.
-     *
-     * @param color
-     *         The color, which should be set, as an {@link Integer} value
-     */
-    void setDisabledButtonTextColor(@ColorInt int color);
 
     /**
      * Returns, whether the divider, which is located above the dialog's buttons, is shown, or not.
