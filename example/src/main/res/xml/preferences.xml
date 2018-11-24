@@ -35,6 +35,9 @@ License.
             android:key="@string/show_progress_dialog_preference_key"
             android:title="@string/show_progress_dialog_preference_title"/>
         <Preference
+            android:key="@string/show_edit_text_dialog_preference_key"
+            android:title="@string/show_edit_text_dialog_preference_title"/>
+        <Preference
             android:key="@string/show_wizard_dialog_preference_key"
             android:title="@string/show_wizard_dialog_preference_title"/>
     </PreferenceCategory>

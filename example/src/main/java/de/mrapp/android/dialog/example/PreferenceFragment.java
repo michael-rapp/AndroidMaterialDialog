@@ -21,20 +21,21 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.Preference.OnPreferenceClickListener;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
-import android.widget.Toast;
-
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
+import de.mrapp.android.dialog.EditTextDialog;
 import de.mrapp.android.dialog.MaterialDialog;
 import de.mrapp.android.dialog.ProgressDialog;
 import de.mrapp.android.dialog.WizardDialog;
@@ -98,6 +99,13 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             PreferenceFragment.class.getSimpleName() + "::progressDialogState";
 
     /**
+     * The name of the extra, which is used to store the state of the edit text dialog within a
+     * bundle.
+     */
+    private static final String EDIT_TEXT_DIALOG_STATE_EXTRA =
+            PreferenceFragment.class.getSimpleName() + "::editTextDialogState";
+
+    /**
      * The alert dialog.
      */
     private MaterialDialog alertDialog;
@@ -128,6 +136,11 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     private ProgressDialog progressDialog;
 
     /**
+     * The edit text dialog.
+     */
+    private EditTextDialog editTextDialog;
+
+    /**
      * The toast, which is used to indicate, when a dialog's list item has been selected or
      * unselected.
      */
@@ -143,6 +156,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         initializeMultipleChoiceListDialog();
         initializeCustomDialog();
         initializeProgressDialog();
+        initializeEditTextDialog();
     }
 
     /**
@@ -212,6 +226,16 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         configureHeaderDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
         progressDialog = builder.create();
+    }
+
+    /**
+     * Initializes the edit text dialog.
+     */
+    private void initializeEditTextDialog() {
+        EditTextDialog.Builder builder = new EditTextDialog.Builder(getActivity());
+        configureHeaderDialogBuilder(builder);
+        configureButtonBarDialogBuilder(builder);
+        editTextDialog = builder.create();
     }
 
     /**
@@ -376,6 +400,27 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 progressDialog.setDismissAnimation(createRectangularRevealAnimation(preference));
                 progressDialog.setCancelAnimation(createRectangularRevealAnimation(preference));
                 progressDialog.show();
+                return true;
+            }
+
+        });
+    }
+
+    /**
+     * Initializes the preference, which allows to show the edit text dialog.
+     */
+    private void initializeShowEditTextDialogPreference() {
+        Preference preference =
+                findPreference(getString(R.string.show_edit_text_dialog_preference_key));
+        preference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(final Preference preference) {
+                initializeEditTextDialog();
+                editTextDialog.setShowAnimation(createRectangularRevealAnimation(preference));
+                editTextDialog.setDismissAnimation(createRectangularRevealAnimation(preference));
+                editTextDialog.setCancelAnimation(createRectangularRevealAnimation(preference));
+                editTextDialog.show();
                 return true;
             }
 
@@ -996,6 +1041,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         initializeShowMultipleChoiceListDialogPreference();
         initializeShowCustomDialogPreference();
         initializeShowProgressDialogPreference();
+        initializeShowEditTextDialogPreference();
         initializeShowWizardDialogPreference();
 
         if (savedInstanceState != null) {
@@ -1007,6 +1053,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     savedInstanceState.getBundle(MULTIPLE_CHOICE_LIST_DIALOG_STATE_EXTRA);
             Bundle customDialogState = savedInstanceState.getBundle(CUSTOM_DIALOG_STATE_EXTRA);
             Bundle progressDialogState = savedInstanceState.getBundle(PROGRESS_DIALOG_STATE_EXTRA);
+            Bundle editTextDialogState = savedInstanceState.getBundle(EDIT_TEXT_DIALOG_STATE_EXTRA);
 
             if (alertDialogState != null) {
                 alertDialog.onRestoreInstanceState(alertDialogState);
@@ -1031,6 +1078,10 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             if (progressDialogState != null) {
                 progressDialog.onRestoreInstanceState(progressDialogState);
             }
+
+            if (editTextDialogState != null) {
+                editTextDialog.onRestoreInstanceState(editTextDialogState);
+            }
         }
     }
 
@@ -1050,6 +1101,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 multipleChoiceListDialog.onSaveInstanceState());
         outState.putBundle(CUSTOM_DIALOG_STATE_EXTRA, customDialog.onSaveInstanceState());
         outState.putBundle(PROGRESS_DIALOG_STATE_EXTRA, progressDialog.onSaveInstanceState());
+        outState.putBundle(EDIT_TEXT_DIALOG_STATE_EXTRA, editTextDialog.onSaveInstanceState());
     }
 
 }
