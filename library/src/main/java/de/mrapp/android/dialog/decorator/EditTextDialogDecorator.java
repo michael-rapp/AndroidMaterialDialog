@@ -239,6 +239,24 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
     }
 
     /**
+     * Shows an error text.
+     */
+    private void showErrorText(@Nullable final CharSequence errorText) {
+        if (textInputLayout != null) {
+            if (TextUtils.isEmpty(errorText)) {
+                textInputLayout.setError(null);
+                textInputLayout.setErrorEnabled(false);
+                adaptHelperTextColor();
+            } else {
+                textInputLayout.setHelperText(null);
+                textInputLayout.setHelperTextEnabled(false);
+                textInputLayout.setError(errorText);
+                textInputLayout.setErrorEnabled(true);
+            }
+        }
+    }
+
+    /**
      * Adapts the listener, which allows to observe when the text of the the dialog's edit text has
      * changed.
      */
@@ -491,11 +509,13 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
     public final boolean validate() {
         for (Validator<CharSequence> validator : validators) {
             if (!validator.validate(getText())) {
+                showErrorText(validator.getErrorMessage());
                 notifyOnValidationFailure(validator);
                 return false;
             }
         }
 
+        showErrorText(null);
         notifyOnValidationSuccess();
         return true;
     }
@@ -541,7 +561,6 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
         outState.putInt(HELPER_TEXT_COLOR_EXTRA, getHelperTextColor());
         outState.putBoolean(VALIDATE_ON_VALUE_CHANGE_EXTRA, isValidatedOnValueChange());
         outState.putBoolean(VALIDATE_ON_FOCUS_LOST_EXTRA, isValidatedOnFocusLost());
-
     }
 
     @Override
