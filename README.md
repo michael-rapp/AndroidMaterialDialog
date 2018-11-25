@@ -12,6 +12,7 @@ The library provides the following main features:
 
 - The builder `MaterialDialog.Builder` allows to create dialogs, which may contain a title, an icon, a message, up to three buttons and optional list items.
 - By using the builder `ProgressDialog.Builder` it is possible to create dialogs, which show a circular progress bar.
+- The builder `EditTextDialog.Builder` allows to create dialogs that contain an `EditTextWidget`.
 - Dialogs, which are created using the builder `WizardDialog.Builder`, contain a `ViewPager` for switching between multiple fragments.
 - The library comes with a light and dark theme. For both themes a fullscreen variant is available as well.
 - All dialogs may contain a header, which consists of a background image or color and an optional icon.
