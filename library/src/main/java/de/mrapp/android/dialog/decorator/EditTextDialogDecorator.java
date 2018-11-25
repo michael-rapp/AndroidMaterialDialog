@@ -572,6 +572,7 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
         setHelperTextColor(savedInstanceState.getInt(HELPER_TEXT_COLOR_EXTRA));
         validateOnValueChange(savedInstanceState.getBoolean(VALIDATE_ON_VALUE_CHANGE_EXTRA));
         validateOnFocusLost(savedInstanceState.getBoolean(VALIDATE_ON_FOCUS_LOST_EXTRA));
+        validate();
     }
 
     @NonNull
