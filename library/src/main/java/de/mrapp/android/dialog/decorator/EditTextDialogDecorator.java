@@ -13,6 +13,7 @@
  */
 package de.mrapp.android.dialog.decorator;
 
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
@@ -21,6 +22,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -253,6 +255,20 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
                 textInputLayout.setError(errorText);
                 textInputLayout.setErrorEnabled(true);
             }
+        }
+    }
+
+    /**
+     * Adapts the enable state of the dialog's positive button.
+     *
+     * @param enabled
+     *         True, if the button should be enabled, false otherwise
+     */
+    private void adaptPositiveButtonEnableState(final boolean enabled) {
+        Button button = getDialog().getButton(DialogInterface.BUTTON_POSITIVE);
+
+        if (button != null) {
+            button.setEnabled(enabled);
         }
     }
 
@@ -520,12 +536,14 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
         for (Validator<CharSequence> validator : validators) {
             if (!validator.validate(getText())) {
                 showErrorText(validator.getErrorMessage());
+                adaptPositiveButtonEnableState(false);
                 notifyOnValidationFailure(validator);
                 return false;
             }
         }
 
         showErrorText(null);
+        adaptPositiveButtonEnableState(true);
         notifyOnValidationSuccess();
         return true;
     }
