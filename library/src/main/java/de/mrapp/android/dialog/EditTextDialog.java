@@ -322,12 +322,6 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
             return new EditTextDialog(getContext(), getThemeResourceId());
         }
 
-        @Override
-        protected final void obtainStyledAttributes(@StyleRes final int themeResourceId) {
-            super.obtainStyledAttributes(themeResourceId);
-            // TODO
-        }
-
     }
 
     /**
