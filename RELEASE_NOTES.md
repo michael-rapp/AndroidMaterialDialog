@@ -1,5 +1,13 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 5.1.0 (Nov. 26th 2018)
+
+A feature release, which introduces the following changes:
+
+- Added the dialog `EditTextDialog`.
+- Removed the functionality to set the text color of a dialog's buttons when disabled. As an alternative the text color can now be specified as a `ColorStateList`.
+- Added the library "AndroidMaterialValidation" as a dependency.
+
 ## Version 5.0.0 (Nov. 6th 2018)
 
 A major release, which introduces the following changes:
