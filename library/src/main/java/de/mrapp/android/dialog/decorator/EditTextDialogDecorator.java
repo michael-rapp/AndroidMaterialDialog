@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -167,23 +168,22 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
      * Inflates the dialog's edit text widget.
      */
     private void inflateEditText() {
-        getDialog().setView(R.layout.edit_text_dialog);
-
-        if (getRootView() != null) {
-            View textInputLayoutView = getRootView().findViewById(R.id.text_input_layout);
-            textInputLayout = textInputLayoutView instanceof TextInputLayout ?
-                    (TextInputLayout) textInputLayoutView : null;
-            View editTextView = getRootView().findViewById(R.id.edit_text);
-            editText = editTextView instanceof EditText ? (EditText) editTextView : null;
-            adaptHint();
-            adaptErrorColor();
-            adaptHelperTextColor();
-            adaptHelperText();
-            adaptText();
-            validate();
-            adaptTextChangedListener();
-            adaptFocusChangeListener();
-        }
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View view = inflater.inflate(R.layout.edit_text_dialog, getRootView(), false);
+        getDialog().setView(view);
+        View textInputLayoutView = view.findViewById(R.id.text_input_layout);
+        textInputLayout = textInputLayoutView instanceof TextInputLayout ?
+                (TextInputLayout) textInputLayoutView : null;
+        View editTextView = view.findViewById(R.id.edit_text);
+        editText = editTextView instanceof EditText ? (EditText) editTextView : null;
+        adaptHint();
+        adaptErrorColor();
+        adaptHelperTextColor();
+        adaptHelperText();
+        adaptText();
+        validate();
+        adaptTextChangedListener();
+        adaptFocusChangeListener();
     }
 
     /**

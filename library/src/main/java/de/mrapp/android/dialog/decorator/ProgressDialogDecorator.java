@@ -16,6 +16,7 @@ package de.mrapp.android.dialog.decorator;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -123,17 +124,17 @@ public class ProgressDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
      * Adapts the dialog's progress bar.
      */
     private void adaptProgressBar() {
-        getDialog().setCustomMessage(getCustomMessageId());
-
-        if (getRootView() != null) {
-            View progressView = getRootView().findViewById(R.id.progress_bar);
-            progressBar = progressView instanceof CircularProgressBar ?
-                    (CircularProgressBar) progressView : null;
-            adaptProgressBarColor();
-            adaptProgressBarSize();
-            adaptProgressBarThickness();
-            adaptMessageTextSize();
-        }
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View view = inflater.inflate(getCustomMessageId(), getRootView(), false);
+        getDialog().setCustomMessage(view);
+        View progressView = view.findViewById(R.id.progress_bar);
+        progressBar =
+                progressView instanceof CircularProgressBar ? (CircularProgressBar) progressView :
+                        null;
+        adaptProgressBarColor();
+        adaptProgressBarSize();
+        adaptProgressBarThickness();
+        adaptMessageTextSize();
     }
 
     /**
