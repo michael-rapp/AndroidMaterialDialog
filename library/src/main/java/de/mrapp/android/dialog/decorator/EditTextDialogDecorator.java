@@ -133,26 +133,24 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
     /**
      * The error color of the dialog's edit text widget.
      */
-    @ColorInt
-    private int errorColor;
+    private ColorStateList errorColor;
 
     /**
      * The helper text color of the dialog's edit text widget.
      */
-    @ColorInt
-    private int helperTextColor;
+    private ColorStateList helperTextColor;
 
     /**
      * True, if the dialog's edit text widget is validated when its text has been changed, false
      * otherwise.
      */
-    private boolean validateOnValueChange;
+    private boolean validateOnValueChange = true;
 
     /**
      * True, if the dialog's edit text widget is validated when its focus got lost, false
      * otherwise.
      */
-    private boolean validateOnFocusLost;
+    private boolean validateOnFocusLost = true;
 
     /**
      * The dialog's text input layout.
@@ -214,8 +212,8 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
      * Adapts the error color of the dialog's edit text widget.
      */
     private void adaptErrorColor() {
-        if (textInputLayout != null) {
-            textInputLayout.setErrorTextColor(ColorStateList.valueOf(errorColor));
+        if (textInputLayout != null && errorColor != null) {
+            textInputLayout.setErrorTextColor(errorColor);
         }
     }
 
@@ -223,8 +221,8 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
      * Adapts the helper text color of the dialog's edit text widget.
      */
     private void adaptHelperTextColor() {
-        if (textInputLayout != null) {
-            textInputLayout.setHelperTextColor(ColorStateList.valueOf(helperTextColor));
+        if (textInputLayout != null && helperTextColor != null) {
+            textInputLayout.setHelperTextColor(helperTextColor);
         }
     }
 
@@ -419,27 +417,37 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
         setHelperText(getContext().getString(resourceId));
     }
 
-    @ColorInt
     @Override
-    public final int getErrorColor() {
+    public final ColorStateList getErrorColor() {
         return errorColor;
     }
 
     @Override
     public final void setErrorColor(@ColorInt final int color) {
-        this.errorColor = color;
+        setErrorColor(ColorStateList.valueOf(color));
+    }
+
+    @Override
+    public final void setErrorColor(@NonNull final ColorStateList colorStateList) {
+        Condition.INSTANCE.ensureNotNull(colorStateList, "The color state list may not be null");
+        this.errorColor = colorStateList;
         adaptErrorColor();
     }
 
-    @ColorInt
     @Override
-    public final int getHelperTextColor() {
+    public final ColorStateList getHelperTextColor() {
         return helperTextColor;
     }
 
     @Override
     public final void setHelperTextColor(@ColorInt final int color) {
-        this.helperTextColor = color;
+        setHelperTextColor(ColorStateList.valueOf(color));
+    }
+
+    @Override
+    public final void setHelperTextColor(@NonNull final ColorStateList colorStateList) {
+        Condition.INSTANCE.ensureNotNull(colorStateList, "The color state list may not be null");
+        this.helperTextColor = colorStateList;
         adaptHelperTextColor();
     }
 
@@ -557,8 +565,8 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
         outState.putCharSequence(TEXT_EXTRA, getText());
         outState.putCharSequence(HINT_EXTRA, getHint());
         outState.putCharSequence(HELPER_TEXT_EXTRA, getHelperText());
-        outState.putInt(ERROR_COLOR_EXTRA, getErrorColor());
-        outState.putInt(HELPER_TEXT_COLOR_EXTRA, getHelperTextColor());
+        outState.putParcelable(ERROR_COLOR_EXTRA, getErrorColor());
+        outState.putParcelable(HELPER_TEXT_COLOR_EXTRA, getHelperTextColor());
         outState.putBoolean(VALIDATE_ON_VALUE_CHANGE_EXTRA, isValidatedOnValueChange());
         outState.putBoolean(VALIDATE_ON_FOCUS_LOST_EXTRA, isValidatedOnFocusLost());
     }
@@ -568,10 +576,19 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
         setText(savedInstanceState.getCharSequence(TEXT_EXTRA));
         setHint(savedInstanceState.getCharSequence(HINT_EXTRA));
         setHelperText(savedInstanceState.getCharSequence(HELPER_TEXT_EXTRA));
-        setErrorColor(savedInstanceState.getInt(ERROR_COLOR_EXTRA));
-        setHelperTextColor(savedInstanceState.getInt(HELPER_TEXT_COLOR_EXTRA));
         validateOnValueChange(savedInstanceState.getBoolean(VALIDATE_ON_VALUE_CHANGE_EXTRA));
         validateOnFocusLost(savedInstanceState.getBoolean(VALIDATE_ON_FOCUS_LOST_EXTRA));
+        ColorStateList errorColor = savedInstanceState.getParcelable(ERROR_COLOR_EXTRA);
+        ColorStateList helperTextColor = savedInstanceState.getParcelable(HELPER_TEXT_COLOR_EXTRA);
+
+        if (errorColor != null) {
+            setErrorColor(errorColor);
+        }
+
+        if (helperTextColor != null) {
+            setHelperTextColor(helperTextColor);
+        }
+
         validate();
     }
 

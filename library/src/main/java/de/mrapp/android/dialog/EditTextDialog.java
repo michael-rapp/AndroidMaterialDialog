@@ -14,6 +14,7 @@
 package de.mrapp.android.dialog;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.widget.EditText;
 
@@ -261,6 +262,21 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
         }
 
         /**
+         * Sets the color, which should be used to indicate validation errors by the dialog, which
+         * is created by the builder.
+         *
+         * @param colorStateList
+         *         The color, which should be set, as an instance of the class {@link
+         *         ColorStateList}. The color state list may not be null
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}. The builder may not be null
+         */
+        public final Builder setErrorColor(@NonNull final ColorStateList colorStateList) {
+            getProduct().setErrorColor(colorStateList);
+            return this;
+        }
+
+        /**
          * Sets the color of the helper text of the dialog, which is created by the builder.
          *
          * @param color
@@ -270,6 +286,20 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
          */
         public final Builder setHelperTextColor(@ColorInt final int color) {
             getProduct().setHelperTextColor(color);
+            return this;
+        }
+
+        /**
+         * Sets the color of the helper text of the dialog, which is created by the builder.
+         *
+         * @param colorStateList
+         *         The color, which should be set, as an instance of the class {@link
+         *         ColorStateList}. The color state list may not be null
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}. The builder may not be null
+         */
+        public final Builder setHelperTextColor(@NonNull final ColorStateList colorStateList) {
+            getProduct().setHelperTextColor(colorStateList);
             return this;
         }
 
@@ -374,7 +404,7 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
     }
 
     @Override
-    public final int getErrorColor() {
+    public final ColorStateList getErrorColor() {
         return decorator.getErrorColor();
     }
 
@@ -383,15 +413,24 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
         decorator.setErrorColor(color);
     }
 
-    @ColorInt
     @Override
-    public final int getHelperTextColor() {
+    public final void setErrorColor(@NonNull final ColorStateList colorStateList) {
+        decorator.setErrorColor(colorStateList);
+    }
+
+    @Override
+    public final ColorStateList getHelperTextColor() {
         return decorator.getHelperTextColor();
     }
 
     @Override
     public final void setHelperTextColor(@ColorInt final int color) {
         decorator.setHelperTextColor(color);
+    }
+
+    @Override
+    public final void setHelperTextColor(@NonNull final ColorStateList colorStateList) {
+        decorator.setHelperTextColor(colorStateList);
     }
 
     @Override

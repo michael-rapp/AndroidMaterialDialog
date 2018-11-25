@@ -13,11 +13,13 @@
  */
 package de.mrapp.android.dialog.model;
 
+import android.content.res.ColorStateList;
 import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import de.mrapp.android.validation.Validateable;
@@ -121,9 +123,10 @@ public interface EditTextDialogDecorator extends Dialog, Validateable<CharSequen
     /**
      * Returns the color, which is used to indicate validation errors.
      *
-     * @return The color, which is used to indicate validation errors, as an {@link Integer} value
+     * @return The color, which is used to indicate validation errors, as an instance of the class
+     * {@link ColorStateList} or null, if the default color is used
      */
-    int getErrorColor();
+    ColorStateList getErrorColor();
 
     /**
      * Sets the color, which should be used to indicate validation errors.
@@ -134,13 +137,22 @@ public interface EditTextDialogDecorator extends Dialog, Validateable<CharSequen
     void setErrorColor(@ColorInt int color);
 
     /**
+     * Sets the color, which should be used to indicate validation errors.
+     *
+     * @param colorStateList
+     *         The color, which should be set, as an instance of the class {@link ColorStateList}.
+     *         The color state list may not be null
+     */
+    void setErrorColor(@NonNull ColorStateList colorStateList);
+
+    /**
      * Returns the color of the helper text of the edit text widget, which is contained by the
      * dialog.
      *
-     * @return The color of the helper text as an {@link Integer} value
+     * @return The color of the helper text as an instance of the class {@link ColorStateList} or
+     * null, if the default color is used
      */
-    @ColorInt
-    int getHelperTextColor();
+    ColorStateList getHelperTextColor();
 
     /**
      * Sets the color of the helper text of the edit text widget, which is contained by the dialog.
@@ -149,5 +161,14 @@ public interface EditTextDialogDecorator extends Dialog, Validateable<CharSequen
      *         The color, which should be set, as an {@link Integer} value
      */
     void setHelperTextColor(@ColorInt int color);
+
+    /**
+     * Sets the color of the helper text of the edit text widget, which is contained by the dialog.
+     *
+     * @param colorStateList
+     *         The color, which should be set, as an instance of the class {@link ColorStateList}.
+     *         The color state list may not be null
+     */
+    void setHelperTextColor(@NonNull ColorStateList colorStateList);
 
 }
