@@ -35,8 +35,10 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import de.mrapp.android.dialog.DialogValidator;
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.model.ButtonBarDialog;
+import de.mrapp.android.dialog.model.ValidateableDialog;
 import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 import de.mrapp.android.validation.ValidationListener;
 import de.mrapp.android.validation.Validator;
@@ -52,7 +54,7 @@ import de.mrapp.util.datastructure.ListenerList;
  * @since 5.1.0
  */
 public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog>
-        implements de.mrapp.android.dialog.model.EditTextDialogDecorator {
+        implements de.mrapp.android.dialog.model.EditTextDialogDecorator, DialogValidator {
 
     /**
      * The name of the extra, which is used to store the text of the dialog's edit text widget
@@ -599,13 +601,20 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
                                                  @NonNull final Map<ViewType, View> areas,
                                                  final Void param) {
         inflateEditText();
+        getDialog().addDialogValidator(this);
         return Collections.emptyMap();
     }
 
     @Override
     protected final void onDetach() {
+        getDialog().removeDialogValidator(this);
         editText = null;
         textInputLayout = null;
+    }
+
+    @Override
+    public boolean validate(@NonNull final ValidateableDialog dialog) {
+        return validate();
     }
 
 }
