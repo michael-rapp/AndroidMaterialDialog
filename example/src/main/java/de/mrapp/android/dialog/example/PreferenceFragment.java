@@ -50,6 +50,7 @@ import de.mrapp.android.dialog.animation.RectangleRevealAnimation;
 import de.mrapp.android.dialog.animation.ScaleTransitionAnimation;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.builder.AbstractHeaderDialogBuilder;
+import de.mrapp.android.validation.Validators;
 
 /**
  * A preference fragment, which contains the example app's settings.
@@ -232,7 +233,10 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
      * Initializes the edit text dialog.
      */
     private void initializeEditTextDialog() {
-        EditTextDialog.Builder builder = new EditTextDialog.Builder(getActivity());
+        EditTextDialog.Builder builder =
+                new EditTextDialog.Builder(getActivity()).setHint(R.string.edit_text_dialog_hint)
+                        .setText(getContext().getString(R.string.edit_text_dialog_text))
+                        .addValidator(Validators.notEmpty(getContext()));
         configureHeaderDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
         editTextDialog = builder.create();

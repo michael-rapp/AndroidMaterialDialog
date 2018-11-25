@@ -31,6 +31,8 @@ License.
     <string name="show_progress_dialog_preference_title">Show progress dialog</string>
     <string name="show_edit_text_dialog_preference_key">show_edit_text_dialog_preference_key</string>
     <string name="show_edit_text_dialog_preference_title">Show edit text dialog</string>
+    <string name="edit_text_dialog_hint">Hint</string>
+    <string name="edit_text_dialog_text">Text</string>
     <string name="show_wizard_dialog_preference_key">show_wizard_dialog_preference_key</string>
     <string name="show_wizard_dialog_preference_title">Show wizard dialog</string>
     <string name="dialog_title_preference_category_title">Title and icon</string>
