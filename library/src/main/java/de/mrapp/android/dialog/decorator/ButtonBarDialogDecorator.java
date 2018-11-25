@@ -518,8 +518,6 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
     @Override
     public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
         stackButtons(savedInstanceState.getBoolean(STACK_BUTTONS_EXTRA));
-        setButtonTextColor(
-                (ColorStateList) savedInstanceState.getParcelable(BUTTON_TEXT_COLOR_EXTRA));
         showButtonBarDivider(savedInstanceState.getBoolean(SHOW_BUTTON_BAR_DIVIDER_EXTRA));
         setPositiveButton(savedInstanceState.getCharSequence(POSITIVE_BUTTON_TEXT_EXTRA),
                 positiveButtonListener);
@@ -527,6 +525,11 @@ public class ButtonBarDialogDecorator extends AbstractDialogDecorator<Validateab
                 neutralButtonListener);
         setNegativeButton(savedInstanceState.getCharSequence(NEGATIVE_BUTTON_TEXT_EXTRA),
                 negativeButtonListener);
+        ColorStateList buttonTextColor = savedInstanceState.getParcelable(BUTTON_TEXT_COLOR_EXTRA);
+
+        if (buttonTextColor != null) {
+            setButtonTextColor(buttonTextColor);
+        }
     }
 
     @NonNull
