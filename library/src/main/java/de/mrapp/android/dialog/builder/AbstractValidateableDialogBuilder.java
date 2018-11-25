@@ -78,7 +78,7 @@ public abstract class AbstractValidateableDialogBuilder<DialogType extends Valid
      * @return The builder, the method has been called upon, as an instance of the generic type
      * BuilderType
      */
-    public final BuilderType addValidator(@NonNull final DialogValidator validator) {
+    public final BuilderType addDialogValidator(@NonNull final DialogValidator validator) {
         Condition.INSTANCE.ensureNotNull(validator, "The validator may not be null");
         getProduct().addDialogValidator(validator);
         return self();
@@ -94,7 +94,7 @@ public abstract class AbstractValidateableDialogBuilder<DialogType extends Valid
      * @return The builder, the method has been called upon, as an instance of the generic type
      * BuilderType
      */
-    public final BuilderType addAllValidators(
+    public final BuilderType addAllDialogValidators(
             @NonNull final Collection<DialogValidator> validators) {
         Condition.INSTANCE.ensureNotNull(validators, "The collection may not be null");
         getProduct().addAllDialogValidators(validators);

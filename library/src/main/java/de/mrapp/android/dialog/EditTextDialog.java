@@ -82,6 +82,99 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
         }
 
         /**
+         * Adds a new validator to the dialog, which is created by the builder.
+         *
+         * @param validator
+         *         The validator, which should be added, as an instance of the type {@link
+         *         Validator}. The validator may not be null
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}. The builder may not be null
+         */
+        public final Builder addValidator(@NonNull final Validator<String> validator) {
+            getProduct().addValidator(validator);
+            return this;
+        }
+
+        /**
+         * Adds all validators, which are contained by a specific collection, to the dialog, which
+         * is created by the builder.
+         *
+         * @param validators
+         *         A collection, which contains the validators, which should be added, as an
+         *         instance of the type {@link Collection} or an empty collection, if no validators
+         *         should be added
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}. The builder may not be null
+         */
+        public final Builder addAllValidators(
+                @NonNull final Collection<Validator<String>> validators) {
+            getProduct().addAllValidators(validators);
+            return this;
+        }
+
+        /**
+         * Adds all validators, which are contained by a specific array to the dialog, which is
+         * created by the builder.
+         *
+         * @param validators
+         *         An array, which contains the validators, which should be added, as an array of
+         *         the type {@link Validator} or an empty array, if no validators should be added
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}. The builder may not be null
+         */
+        @SuppressWarnings("unchecked")
+        public final Builder addAllValidators(@NonNull final Validator<String>... validators) {
+            getProduct().addAllValidators(validators);
+            return this;
+        }
+
+        /**
+         * Sets, whether the dialog, which is created by the builder, should automatically be
+         * validated, when its text has been changed, or not.
+         *
+         * @param validateOnValueChange
+         *         True, if the value of the view should automatically be validated, when its value
+         *         has been changed, false otherwise
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}. The builder may not be null
+         */
+        public final Builder validateOnValueChange(boolean validateOnValueChange) {
+            getProduct().validateOnValueChange(validateOnValueChange);
+            return this;
+        }
+
+        /**
+         * Sets, whether the dialog, which is created by the builder, should automatically be
+         * validated, when its edit text widget lost its focus, or not.
+         *
+         * @param validateOnFocusLost
+         *         True, if the value of the view should automatically be validated, when the view
+         *         loses its focus, false otherwise
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}. The builder may not be null
+         */
+        public final Builder validateOnFocusLost(final boolean validateOnFocusLost) {
+            getProduct().validateOnFocusLost(validateOnFocusLost);
+            return this;
+        }
+
+        /**
+         * Adds a new listener, which should be notified, when the dialog, which is created by the
+         * builder, has been validated.
+         *
+         * @param listener
+         *         The listener, which should be added, as an instance of the type {@link
+         *         ValidationListener}. The listener may not be null
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}. The builder may not be null
+         */
+        public final Builder addValidationListener(
+                @NonNull final ValidationListener<String> listener) {
+            getProduct().addValidationListener(listener);
+            return this;
+        }
+
+        /**
          * Sets the text of the dialog, which is created by the builder.
          *
          * @param text
