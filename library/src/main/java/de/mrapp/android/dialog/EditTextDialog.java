@@ -82,6 +82,104 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
         }
 
         /**
+         * Sets the text of the dialog, which is created by the builder.
+         *
+         * @param text
+         *         The text, which should be set, as a {@link String} or null, if no text should be
+         *         set
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}. The builder may not be null
+         */
+        public final Builder setText(@Nullable final String text) {
+            getProduct().setText(text);
+            return this;
+        }
+
+        /**
+         * Sets the hint of the dialog, which is created by the builder.
+         *
+         * @param hint
+         *         The hint, which should be set, as an instance of the type {@link CharSequence} or
+         *         null, if no hint should be set
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}. The builder may not be null
+         */
+        public final Builder setHint(@Nullable final CharSequence hint) {
+            getProduct().setHint(hint);
+            return this;
+        }
+
+        /**
+         * Sets the hint of the dialog, which is created by the builder.
+         *
+         * @param resourceId
+         *         The resource id of the hint, which should be set, as an {@link Integer} value.
+         *         The resource id must correspond to a valid string resource
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}. The builder may not be null
+         */
+        public final Builder setHint(@StringRes int resourceId) {
+            getProduct().setHint(resourceId);
+            return this;
+        }
+
+        /**
+         * Sets the helper text of the dialog, which is created by the builder.
+         *
+         * @param helperText
+         *         The helper text, which should be set, as an instance of the type {@link
+         *         CharSequence} or null, if no helper text should be shown
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}. The builder may not be null
+         */
+        public final Builder setHelperText(@Nullable final CharSequence helperText) {
+            getProduct().setHelperText(helperText);
+            return this;
+        }
+
+        /**
+         * Sets the helper text of the dialog, which is created by the builder.
+         *
+         * @param resourceId
+         *         The resource ID of the string resource, which contains the helper text, which
+         *         should be set, as an {@link Integer} value. The resource ID must correspond to a
+         *         valid string resource
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}. The builder may not be null
+         */
+        public final Builder setHelperText(@StringRes final int resourceId) {
+            getProduct().setHelperText(resourceId);
+            return this;
+        }
+
+        /**
+         * Sets the color, which should be used to indicate validation errors by the dialog, which
+         * is created by the builder.
+         *
+         * @param color
+         *         The color, which should be set, as an {@link Integer} value
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}. The builder may not be null
+         */
+        public final Builder setErrorColor(@ColorInt final int color) {
+            getProduct().setErrorColor(color);
+            return this;
+        }
+
+        /**
+         * Sets the color of the helper text of the dialog, which is created by the builder.
+         *
+         * @param color
+         *         The color, which should be set, as an {@link Integer} value
+         * @return The builder, the method has been called upon, as an instance of the class {@link
+         * Builder}. The builder may not be null
+         */
+        public final Builder setHelperTextColor(@ColorInt final int color) {
+            getProduct().setHelperTextColor(color);
+            return this;
+        }
+
+        /**
          * Creates a dialog with the arguments, which have been supplied to the builder and
          * immediately displays it.
          *
