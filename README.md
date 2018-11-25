@@ -103,9 +103,26 @@ ProgressDialog dialog = dialogBuilder.create();
 dialog.show();
 ```
 
-The screenshot below shows the appearance of a `ProgressDialog`, which has been created using the given sample code:
+The screenshot below shows the appearance of a `ProgressDialog`, which has been created using the given sample code. Such as a regular `MaterialDialog`, such a dialog can contain a title, a message and up to three buttons.
+
+```java
+EditTextDialog.Builder dialogBuilder = new EditTextDialog.Builder(this);
+dialogBuilder.setTitle(R.string.dialog_title);
+dialogBuilder.setMessage(R.string.dialog_message);
+dialogBuilder.setPositiveButton(android.R.string.ok, null);
+dialogBuilder.setNegativeButton(android.R.string.cancel, null);
+dialogBuilder.setText("Text");
+EditTextDialog dialog = dialogBuilder.create();
+dialog.show();
+```
+
+It is possible to add one or several `Validator`s to an `EditTextDialog` in order to validate the entered text.
 
 ![](doc/images/example-progress-dialog.png)
+
+### Creating an edit text dialog
+
+The following code illustrates how a dialog that contains an `EditText` widget can be created.
 
 ### Creating a wizard dialog
 
