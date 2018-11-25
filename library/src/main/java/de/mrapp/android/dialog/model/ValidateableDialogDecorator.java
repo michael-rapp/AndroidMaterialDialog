@@ -13,11 +13,10 @@
  */
 package de.mrapp.android.dialog.model;
 
-import androidx.annotation.NonNull;
-
 import java.util.Collection;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
 import de.mrapp.android.dialog.DialogValidator;
 
 /**
@@ -38,7 +37,7 @@ public interface ValidateableDialogDecorator extends Dialog {
      * the dialog is clicked, as an instance of the type {@link Set} or an empty set, if no
      * validators are executed
      */
-    Set<DialogValidator> getValidators();
+    Set<DialogValidator> getDialogValidators();
 
     /**
      * Adds a new validator, which should be executed when the positive button of the dialog is
@@ -48,7 +47,7 @@ public interface ValidateableDialogDecorator extends Dialog {
      *         The validator, which should be added, as an instance of the type {@link
      *         DialogValidator}. The validator may not be null
      */
-    void addValidator(@NonNull DialogValidator validator);
+    void addDialogValidator(@NonNull DialogValidator validator);
 
     /**
      * Adds all validators, which are contained by a specific collection and should be executed when
@@ -58,7 +57,7 @@ public interface ValidateableDialogDecorator extends Dialog {
      *         A collection, which contains all validators, which should be added, as an instance of
      *         the type {@link Collection} or an empty collection, if no validators should be added
      */
-    void addAllValidators(@NonNull Collection<DialogValidator> validators);
+    void addAllDialogValidators(@NonNull Collection<DialogValidator> validators);
 
     /**
      * Removes a specific validator, which should not be executed, when the positive button of the
@@ -68,7 +67,7 @@ public interface ValidateableDialogDecorator extends Dialog {
      *         The validator, which should be removed, as an instance of the type {@link
      *         DialogValidator}. The validator may not be null
      */
-    void removeValidator(@NonNull DialogValidator validator);
+    void removeDialogValidator(@NonNull DialogValidator validator);
 
     /**
      * Removes all validators, which are contained by a specific collection and should not be
@@ -79,6 +78,6 @@ public interface ValidateableDialogDecorator extends Dialog {
      *         of the type {@link Collection} or an empty collection, if no validators should be
      *         removed
      */
-    void removeAllValidators(@NonNull Collection<DialogValidator> validators);
+    void removeAllDialogValidators(@NonNull Collection<DialogValidator> validators);
 
 }

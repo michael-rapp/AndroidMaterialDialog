@@ -15,6 +15,13 @@ package de.mrapp.android.dialog.model;
 
 import android.widget.EditText;
 
+import com.google.android.material.textfield.TextInputLayout;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import de.mrapp.android.validation.Validateable;
+
 /**
  * Defines the interface, a decorator, which allows to modify the view hierarchy of a dialog, which
  * is designed according to Android 5's Material Design guidelines even on pre-Lollipop devices and
@@ -23,6 +30,123 @@ import android.widget.EditText;
  * @author Michael Rapp
  * @since 5.1.0
  */
-public interface EditTextDialogDecorator extends Dialog {
+public interface EditTextDialogDecorator extends Dialog, Validateable<String> {
+
+    /**
+     * Returns the text input layout, which is contained by the dialog.
+     *
+     * @return The text input layout, which is contained by the dialog, as an instance of the class
+     * {@link TextInputLayout} or null, if the dialog has not been shown yet
+     */
+    TextInputLayout getTextInputLayout();
+
+    /**
+     * Returns the edit text widget, which is contained by the dialog.
+     *
+     * @return The edit text widget, which is contained by the dialog, as an instance of the class
+     * {@link EditText} or null, if the dialog has not been shown yet
+     */
+    EditText getEditText();
+
+    /**
+     * Returns the text of the edit text widget, which is contained by the dialog.
+     *
+     * @return The text of the edit text widget, which is contained by the dialog, as a {@link
+     * String}
+     */
+    String getText();
+
+    /**
+     * Sets the text of the edit text widget, which is contained by the dialog.
+     *
+     * @param text
+     *         The text, which should be set, as a {@link String} or null, if no text should be set
+     */
+    void setText(@Nullable String text);
+
+    /**
+     * Returns the hint of the edit text widget, which is contained by the dialog.
+     *
+     * @return The hint of the edit text widget, which is contained by the dialog, as an instance of
+     * the type {@link CharSequence} or null, if no hint is set
+     */
+    CharSequence getHint();
+
+    /**
+     * Sets the hint of the edit text widget, which is contained by the dialog.
+     *
+     * @param hint
+     *         The hint, which should be set, as an instance of the type {@link CharSequence} or
+     *         null, if no hint should be set
+     */
+    void setHint(@Nullable CharSequence hint);
+
+    /**
+     * Sets the hint of the edit text widget, which is contained by the dialog.
+     *
+     * @param resourceId
+     *         The resource id of the hint, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid string resource
+     */
+    void setHint(@StringRes int resourceId);
+
+    /**
+     * Returns the helper text of the edit text widget, which is contained by the dialog.
+     *
+     * @return The helper text of the edit text widget, which is contained by the dialog, as an
+     * instance of the type {@link CharSequence} or null, if no helper text is shown
+     */
+    CharSequence getHelperText();
+
+    /**
+     * Sets the helper text of the edit text widget, which is contained by the dialog.
+     *
+     * @param helperText
+     *         The helper text, which should be set, as an instance of the type {@link CharSequence}
+     *         or null, if no helper text should be shown
+     */
+    void setHelperText(@Nullable CharSequence helperText);
+
+    /**
+     * Sets the helper text of the edit text widget, which is contained by the dialog.
+     *
+     * @param resourceId
+     *         The resource ID of the string resource, which contains the helper text, which should
+     *         be set, as an {@link Integer} value. The resource ID must correspond to a valid
+     *         string resource
+     */
+    void setHelperText(@StringRes int resourceId);
+
+    /**
+     * Returns the color, which is used to indicate validation errors.
+     *
+     * @return The color, which is used to indicate validation errors, as an {@link Integer} value
+     */
+    int getErrorColor();
+
+    /**
+     * Sets the color, which should be used to indicate validation errors.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    void setErrorColor(@ColorInt int color);
+
+    /**
+     * Returns the color of the helper text of the edit text widget, which is contained by the
+     * dialog.
+     *
+     * @return The color of the helper text as an {@link Integer} value
+     */
+    @ColorInt
+    int getHelperTextColor();
+
+    /**
+     * Sets the color of the helper text of the edit text widget, which is contained by the dialog.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    void setHelperTextColor(@ColorInt int color);
 
 }

@@ -70,7 +70,7 @@ public class OnClickListenerWrapper extends AbstractListenerWrapper
     @Override
     public final void onClick(final View v) {
         if (validate) {
-            for (DialogValidator validator : getDialog().getValidators()) {
+            for (DialogValidator validator : getDialog().getDialogValidators()) {
                 if (!validator.validate(getDialog())) {
                     return;
                 }

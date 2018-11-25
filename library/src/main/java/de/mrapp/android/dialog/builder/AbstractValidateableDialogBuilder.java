@@ -80,7 +80,7 @@ public abstract class AbstractValidateableDialogBuilder<DialogType extends Valid
      */
     public final BuilderType addValidator(@NonNull final DialogValidator validator) {
         Condition.INSTANCE.ensureNotNull(validator, "The validator may not be null");
-        getProduct().addValidator(validator);
+        getProduct().addDialogValidator(validator);
         return self();
     }
 
@@ -97,7 +97,7 @@ public abstract class AbstractValidateableDialogBuilder<DialogType extends Valid
     public final BuilderType addAllValidators(
             @NonNull final Collection<DialogValidator> validators) {
         Condition.INSTANCE.ensureNotNull(validators, "The collection may not be null");
-        getProduct().addAllValidators(validators);
+        getProduct().addAllDialogValidators(validators);
         return self();
     }
 

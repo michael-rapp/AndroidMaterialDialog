@@ -17,10 +17,19 @@ import android.content.Context;
 import android.os.Bundle;
 import android.widget.EditText;
 
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Collection;
+
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.model.EditTextDialogDecorator;
+import de.mrapp.android.validation.ValidationListener;
+import de.mrapp.android.validation.Validator;
 
 /**
  * A dialog, which is designed according to Android 5's Material Design guidelines even on
@@ -120,6 +129,154 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
         decorator = new de.mrapp.android.dialog.decorator.EditTextDialogDecorator(this);
         addDecorator(decorator);
         setCancelable(false);
+    }
+
+    @Override
+    public final TextInputLayout getTextInputLayout() {
+        return decorator.getTextInputLayout();
+    }
+
+    @Override
+    public final EditText getEditText() {
+        return decorator.getEditText();
+    }
+
+    @Override
+    public final void setText(@Nullable final String text) {
+        decorator.setText(text);
+    }
+
+    @Override
+    public final String getText() {
+        return decorator.getText();
+    }
+
+    @Override
+    public final CharSequence getHint() {
+        return decorator.getHint();
+    }
+
+    @Override
+    public final void setHint(@Nullable final CharSequence hint) {
+        decorator.setHint(hint);
+    }
+
+    @Override
+    public final void setHint(@StringRes final int resourceId) {
+        decorator.setHint(resourceId);
+    }
+
+    @Override
+    public final CharSequence getHelperText() {
+        return decorator.getHelperText();
+    }
+
+    @Override
+    public final void setHelperText(@Nullable final CharSequence helperText) {
+        decorator.setHelperText(helperText);
+    }
+
+    @Override
+    public final void setHelperText(@StringRes final int resourceId) {
+        decorator.setHelperText(resourceId);
+    }
+
+    @Override
+    public final int getErrorColor() {
+        return decorator.getErrorColor();
+    }
+
+    @Override
+    public final void setErrorColor(@ColorInt final int color) {
+        decorator.setErrorColor(color);
+    }
+
+    @ColorInt
+    @Override
+    public final int getHelperTextColor() {
+        return decorator.getHelperTextColor();
+    }
+
+    @Override
+    public final void setHelperTextColor(@ColorInt final int color) {
+        decorator.setHelperTextColor(color);
+    }
+
+    @Override
+    public final Collection<Validator<String>> getValidators() {
+        return decorator.getValidators();
+    }
+
+    @Override
+    public final void addValidator(@NonNull final Validator<String> validator) {
+        decorator.addValidator(validator);
+    }
+
+    @Override
+    public final void addAllValidators(@NonNull final Collection<Validator<String>> validators) {
+        decorator.addAllValidators(validators);
+    }
+
+    @SafeVarargs
+    @Override
+    public final void addAllValidators(@NonNull final Validator<String>... validators) {
+        decorator.addAllValidators(validators);
+    }
+
+    @Override
+    public final void removeValidator(@NonNull final Validator<String> validator) {
+        decorator.removeValidator(validator);
+    }
+
+    @Override
+    public final void removeAllValidators(@NonNull final Collection<Validator<String>> validators) {
+        decorator.removeAllValidators(validators);
+    }
+
+    @SafeVarargs
+    @Override
+    public final void removeAllValidators(@NonNull final Validator<String>... validators) {
+        decorator.removeAllValidators();
+    }
+
+    @Override
+    public final void removeAllValidators() {
+        decorator.removeAllValidators();
+    }
+
+    @Override
+    public final boolean validate() {
+        return decorator.validate();
+    }
+
+    @Override
+    public final boolean isValidatedOnValueChange() {
+        return decorator.isValidatedOnValueChange();
+    }
+
+    @Override
+    public final void validateOnValueChange(final boolean validateOnValueChange) {
+        decorator.validateOnValueChange(validateOnValueChange);
+    }
+
+    @Override
+    public final boolean isValidatedOnFocusLost() {
+        return decorator.isValidatedOnFocusLost();
+    }
+
+    @Override
+    public final void validateOnFocusLost(final boolean validateOnFocusLost) {
+        decorator.validateOnFocusLost(validateOnFocusLost);
+    }
+
+    @Override
+    public final void addValidationListener(@NonNull final ValidationListener<String> listener) {
+        decorator.addValidationListener(listener);
+    }
+
+    @Override
+    public final void removeValidationListener(@NonNull final ValidationListener<String> listener) {
+        decorator.removeValidationListener(listener);
     }
 
     @NonNull

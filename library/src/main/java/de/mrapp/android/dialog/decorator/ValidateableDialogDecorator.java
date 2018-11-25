@@ -59,30 +59,30 @@ public class ValidateableDialogDecorator extends AbstractDialogDecorator<Animate
     }
 
     @Override
-    public final Set<DialogValidator> getValidators() {
+    public final Set<DialogValidator> getDialogValidators() {
         return validators;
     }
 
     @Override
-    public final void addValidator(@NonNull final DialogValidator validator) {
+    public final void addDialogValidator(@NonNull final DialogValidator validator) {
         Condition.INSTANCE.ensureNotNull(validator, "The validator may not be null");
         validators.add(validator);
     }
 
     @Override
-    public final void addAllValidators(@NonNull final Collection<DialogValidator> validators) {
+    public final void addAllDialogValidators(@NonNull final Collection<DialogValidator> validators) {
         Condition.INSTANCE.ensureNotNull(validators, "The collection may not be null");
         this.validators.addAll(validators);
     }
 
     @Override
-    public final void removeValidator(@NonNull final DialogValidator validator) {
+    public final void removeDialogValidator(@NonNull final DialogValidator validator) {
         Condition.INSTANCE.ensureNotNull(validator, "The validator may not be null");
         validators.remove(validator);
     }
 
     @Override
-    public final void removeAllValidators(@NonNull final Collection<DialogValidator> validators) {
+    public final void removeAllDialogValidators(@NonNull final Collection<DialogValidator> validators) {
         Condition.INSTANCE.ensureNotNull(validators, "The collection may not be null");
         this.validators.removeAll(validators);
     }

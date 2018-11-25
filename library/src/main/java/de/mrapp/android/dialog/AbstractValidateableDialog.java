@@ -59,28 +59,28 @@ public abstract class AbstractValidateableDialog extends AbstractAnimateableDial
     }
 
     @Override
-    public final Set<DialogValidator> getValidators() {
-        return decorator.getValidators();
+    public final Set<DialogValidator> getDialogValidators() {
+        return decorator.getDialogValidators();
     }
 
     @Override
-    public final void addValidator(@NonNull final DialogValidator validator) {
-        decorator.addValidator(validator);
+    public final void addDialogValidator(@NonNull final DialogValidator validator) {
+        decorator.addDialogValidator(validator);
     }
 
     @Override
-    public final void addAllValidators(@NonNull final Collection<DialogValidator> validators) {
-        decorator.addAllValidators(validators);
+    public final void addAllDialogValidators(@NonNull final Collection<DialogValidator> validators) {
+        decorator.addAllDialogValidators(validators);
     }
 
     @Override
-    public final void removeValidator(@NonNull final DialogValidator validator) {
-        decorator.removeValidator(validator);
+    public final void removeDialogValidator(@NonNull final DialogValidator validator) {
+        decorator.removeDialogValidator(validator);
     }
 
     @Override
-    public final void removeAllValidators(@NonNull final Collection<DialogValidator> validators) {
-        decorator.removeAllValidators(validators);
+    public final void removeAllDialogValidators(@NonNull final Collection<DialogValidator> validators) {
+        decorator.removeAllDialogValidators(validators);
     }
 
     @NonNull
