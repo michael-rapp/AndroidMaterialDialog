@@ -121,5 +121,7 @@ License.
         <enum name="content" value="3"/>
         <enum name="button_bar" value="4"/>
     </attr>
+    <attr name="materialDialogErrorColor" format="color"/>
+    <attr name="materialDialogHelperTextColor" format="color"/>
 
 </resources>

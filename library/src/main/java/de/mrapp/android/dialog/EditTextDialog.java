@@ -15,6 +15,7 @@ package de.mrapp.android.dialog;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.widget.EditText;
 
@@ -29,6 +30,7 @@ import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import de.mrapp.android.dialog.builder.AbstractButtonBarDialogBuilder;
 import de.mrapp.android.dialog.model.EditTextDialogDecorator;
+import de.mrapp.android.util.ThemeUtil;
 import de.mrapp.android.validation.ValidationListener;
 import de.mrapp.android.validation.Validator;
 
@@ -52,6 +54,40 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
      * Optionally, up to three buttons can be shown.
      */
     public static class Builder extends AbstractButtonBarDialogBuilder<EditTextDialog, Builder> {
+
+        /**
+         * Obtains the error color from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the color should be obtained from, as an {@link
+         *         Integer} value
+         */
+        private void obtainErrorColor(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogErrorColor});
+            ColorStateList colorStateList = typedArray.getColorStateList(0);
+
+            if (colorStateList != null) {
+                setErrorColor(colorStateList);
+            }
+        }
+
+        /**
+         * Obtains the helper text color from a specific theme.
+         *
+         * @param themeResourceId
+         *         The resource id of the theme, the color should be obtained from, as an {@link
+         *         Integer} value
+         */
+        private void obtainHelperTextColor(@StyleRes final int themeResourceId) {
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(themeResourceId,
+                    new int[]{R.attr.materialDialogHelperTextColor});
+            ColorStateList colorStateList = typedArray.getColorStateList(0);
+
+            if (colorStateList != null) {
+                setHelperTextColor(colorStateList);
+            }
+        }
 
         /**
          * Creates a new builder, which allows to create dialogs, which are designed according to
@@ -320,6 +356,13 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
         @Override
         protected final EditTextDialog onCreateProduct() {
             return new EditTextDialog(getContext(), getThemeResourceId());
+        }
+
+        @Override
+        protected final void obtainStyledAttributes(@StyleRes final int themeResourceId) {
+            super.obtainStyledAttributes(themeResourceId);
+            obtainErrorColor(themeResourceId);
+            obtainHelperTextColor(themeResourceId);
         }
 
     }
