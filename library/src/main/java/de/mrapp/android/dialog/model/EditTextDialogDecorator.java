@@ -30,7 +30,7 @@ import de.mrapp.android.validation.Validateable;
  * @author Michael Rapp
  * @since 5.1.0
  */
-public interface EditTextDialogDecorator extends Dialog, Validateable<String> {
+public interface EditTextDialogDecorator extends Dialog, Validateable<CharSequence> {
 
     /**
      * Returns the text input layout, which is contained by the dialog.
@@ -51,18 +51,19 @@ public interface EditTextDialogDecorator extends Dialog, Validateable<String> {
     /**
      * Returns the text of the edit text widget, which is contained by the dialog.
      *
-     * @return The text of the edit text widget, which is contained by the dialog, as a {@link
-     * String}
+     * @return The text of the edit text widget, which is contained by the dialog, as an instance of
+     * the type {@link CharSequence}
      */
-    String getText();
+    CharSequence getText();
 
     /**
      * Sets the text of the edit text widget, which is contained by the dialog.
      *
      * @param text
-     *         The text, which should be set, as a {@link String} or null, if no text should be set
+     *         The text, which should be set, as an instance of the type {@link CharSequence} or
+     *         null, if no text should be set
      */
-    void setText(@Nullable String text);
+    void setText(@Nullable CharSequence text);
 
     /**
      * Returns the hint of the edit text widget, which is contained by the dialog.

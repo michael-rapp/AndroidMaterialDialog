@@ -106,19 +106,19 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
     /**
      * A set, which contains the validators of the dialog's edit text widget.
      */
-    private final Set<Validator<String>> validators = new LinkedHashSet<>();
+    private final Set<Validator<CharSequence>> validators = new LinkedHashSet<>();
 
     /**
      * Contains the listeners that should be notified when the dialog's edit text widget has been
      * validated.
      */
-    private final ListenerList<ValidationListener<String>> validationListeners =
+    private final ListenerList<ValidationListener<CharSequence>> validationListeners =
             new ListenerList<>();
 
     /**
      * The text of the dialog's edit text widget.
      */
-    private String text;
+    private CharSequence text;
 
     /**
      * The hint of the dialog's edit text widget.
@@ -273,7 +273,7 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
             @Override
             public void onTextChanged(final CharSequence text, final int start, final int before,
                                       final int count) {
-                EditTextDialogDecorator.this.text = text.toString();
+                EditTextDialogDecorator.this.text = text;
 
                 if (validateOnValueChange) {
                     validate();
@@ -320,8 +320,8 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
      *         The validator, which caused the validation to fail, as an instance of the type {@link
      *         Validator}. The validator may not be null
      */
-    private void notifyOnValidationFailure(@NonNull final Validator<String> validator) {
-        for (ValidationListener<String> validationListener : validationListeners) {
+    private void notifyOnValidationFailure(@NonNull final Validator<CharSequence> validator) {
+        for (ValidationListener<CharSequence> validationListener : validationListeners) {
             validationListener.onValidationFailure(this, validator);
         }
     }
@@ -330,7 +330,7 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
      * Notifies the listeners that the validation of the dialog's edit text widget has succeeded.
      */
     private void notifyOnValidationSuccess() {
-        for (ValidationListener<String> validationListener : validationListeners) {
+        for (ValidationListener<CharSequence> validationListener : validationListeners) {
             validationListener.onValidationSuccess(this);
         }
     }
@@ -359,12 +359,12 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
     }
 
     @Override
-    public final String getText() {
+    public final CharSequence getText() {
         return text;
     }
 
     @Override
-    public final void setText(@Nullable final String text) {
+    public final void setText(@Nullable final CharSequence text) {
         this.text = text;
         adaptText();
     }
@@ -426,56 +426,58 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
     }
 
     @Override
-    public final Collection<Validator<String>> getValidators() {
+    public final Collection<Validator<CharSequence>> getValidators() {
         return Collections.unmodifiableSet(validators);
     }
 
     @Override
-    public final void addValidator(@NonNull final Validator<String> validator) {
+    public final void addValidator(@NonNull final Validator<CharSequence> validator) {
         Condition.INSTANCE.ensureNotNull(validator, "The validator may not be null");
         this.validators.add(validator);
     }
 
     @Override
-    public final void addAllValidators(@NonNull final Collection<Validator<String>> validators) {
+    public final void addAllValidators(
+            @NonNull final Collection<Validator<CharSequence>> validators) {
         Condition.INSTANCE.ensureNotNull(validators, "The collection may not be null");
 
-        for (Validator<String> validator : validators) {
+        for (Validator<CharSequence> validator : validators) {
             addValidator(validator);
         }
     }
 
     @SafeVarargs
     @Override
-    public final void addAllValidators(@NonNull final Validator<String>... validators) {
+    public final void addAllValidators(@NonNull final Validator<CharSequence>... validators) {
         Condition.INSTANCE.ensureNotNull(validators, "The array may not be null");
 
-        for (Validator<String> validator : validators) {
+        for (Validator<CharSequence> validator : validators) {
             addValidator(validator);
         }
     }
 
     @Override
-    public final void removeValidator(@NonNull final Validator<String> validator) {
+    public final void removeValidator(@NonNull final Validator<CharSequence> validator) {
         Condition.INSTANCE.ensureNotNull(validator, "The validator may not be null");
         this.validators.remove(validator);
     }
 
     @Override
-    public final void removeAllValidators(@NonNull final Collection<Validator<String>> validators) {
+    public final void removeAllValidators(
+            @NonNull final Collection<Validator<CharSequence>> validators) {
         Condition.INSTANCE.ensureNotNull(validators, "The collection may not be null");
 
-        for (Validator<String> validator : validators) {
+        for (Validator<CharSequence> validator : validators) {
             addValidator(validator);
         }
     }
 
     @SafeVarargs
     @Override
-    public final void removeAllValidators(@NonNull final Validator<String>... validators) {
+    public final void removeAllValidators(@NonNull final Validator<CharSequence>... validators) {
         Condition.INSTANCE.ensureNotNull(validators, "The array may not be null");
 
-        for (Validator<String> validator : validators) {
+        for (Validator<CharSequence> validator : validators) {
             addValidator(validator);
         }
     }
@@ -487,17 +489,14 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
 
     @Override
     public final boolean validate() {
-        if (editText != null) {
-            for (Validator<String> validator : validators) {
-                if (!validator.validate(getText())) {
-                    notifyOnValidationFailure(validator);
-                    return false;
-                }
+        for (Validator<CharSequence> validator : validators) {
+            if (!validator.validate(getText())) {
+                notifyOnValidationFailure(validator);
+                return false;
             }
-
-            notifyOnValidationSuccess();
         }
 
+        notifyOnValidationSuccess();
         return true;
     }
 
@@ -522,18 +521,20 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
     }
 
     @Override
-    public final void addValidationListener(@NonNull final ValidationListener<String> listener) {
+    public final void addValidationListener(
+            @NonNull final ValidationListener<CharSequence> listener) {
         validationListeners.add(listener);
     }
 
     @Override
-    public final void removeValidationListener(@NonNull final ValidationListener<String> listener) {
+    public final void removeValidationListener(
+            @NonNull final ValidationListener<CharSequence> listener) {
         validationListeners.remove(listener);
     }
 
     @Override
     public final void onSaveInstanceState(@NonNull final Bundle outState) {
-        outState.putString(TEXT_EXTRA, getText());
+        outState.putCharSequence(TEXT_EXTRA, getText());
         outState.putCharSequence(HINT_EXTRA, getHint());
         outState.putCharSequence(HELPER_TEXT_EXTRA, getHelperText());
         outState.putInt(ERROR_COLOR_EXTRA, getErrorColor());
@@ -545,7 +546,7 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
 
     @Override
     public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
-        setText(savedInstanceState.getString(TEXT_EXTRA));
+        setText(savedInstanceState.getCharSequence(TEXT_EXTRA));
         setHint(savedInstanceState.getCharSequence(HINT_EXTRA));
         setHelperText(savedInstanceState.getCharSequence(HELPER_TEXT_EXTRA));
         setErrorColor(savedInstanceState.getInt(ERROR_COLOR_EXTRA));

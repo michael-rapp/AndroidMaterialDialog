@@ -90,7 +90,7 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}. The builder may not be null
          */
-        public final Builder addValidator(@NonNull final Validator<String> validator) {
+        public final Builder addValidator(@NonNull final Validator<CharSequence> validator) {
             getProduct().addValidator(validator);
             return this;
         }
@@ -107,7 +107,7 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
          * Builder}. The builder may not be null
          */
         public final Builder addAllValidators(
-                @NonNull final Collection<Validator<String>> validators) {
+                @NonNull final Collection<Validator<CharSequence>> validators) {
             getProduct().addAllValidators(validators);
             return this;
         }
@@ -123,7 +123,8 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
          * Builder}. The builder may not be null
          */
         @SuppressWarnings("unchecked")
-        public final Builder addAllValidators(@NonNull final Validator<String>... validators) {
+        public final Builder addAllValidators(
+                @NonNull final Validator<CharSequence>... validators) {
             getProduct().addAllValidators(validators);
             return this;
         }
@@ -169,7 +170,7 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
          * Builder}. The builder may not be null
          */
         public final Builder addValidationListener(
-                @NonNull final ValidationListener<String> listener) {
+                @NonNull final ValidationListener<CharSequence> listener) {
             getProduct().addValidationListener(listener);
             return this;
         }
@@ -178,12 +179,12 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
          * Sets the text of the dialog, which is created by the builder.
          *
          * @param text
-         *         The text, which should be set, as a {@link String} or null, if no text should be
-         *         set
+         *         The text, which should be set, as an instance of the type {@link CharSequence} or
+         *         null, if no text should be set
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}. The builder may not be null
          */
-        public final Builder setText(@Nullable final String text) {
+        public final Builder setText(@Nullable final CharSequence text) {
             getProduct().setText(text);
             return this;
         }
@@ -333,12 +334,12 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
     }
 
     @Override
-    public final void setText(@Nullable final String text) {
+    public final void setText(@Nullable final CharSequence text) {
         decorator.setText(text);
     }
 
     @Override
-    public final String getText() {
+    public final CharSequence getText() {
         return decorator.getText();
     }
 
@@ -394,39 +395,41 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
     }
 
     @Override
-    public final Collection<Validator<String>> getValidators() {
+    public final Collection<Validator<CharSequence>> getValidators() {
         return decorator.getValidators();
     }
 
     @Override
-    public final void addValidator(@NonNull final Validator<String> validator) {
+    public final void addValidator(@NonNull final Validator<CharSequence> validator) {
         decorator.addValidator(validator);
     }
 
     @Override
-    public final void addAllValidators(@NonNull final Collection<Validator<String>> validators) {
+    public final void addAllValidators(
+            @NonNull final Collection<Validator<CharSequence>> validators) {
         decorator.addAllValidators(validators);
     }
 
     @SafeVarargs
     @Override
-    public final void addAllValidators(@NonNull final Validator<String>... validators) {
+    public final void addAllValidators(@NonNull final Validator<CharSequence>... validators) {
         decorator.addAllValidators(validators);
     }
 
     @Override
-    public final void removeValidator(@NonNull final Validator<String> validator) {
+    public final void removeValidator(@NonNull final Validator<CharSequence> validator) {
         decorator.removeValidator(validator);
     }
 
     @Override
-    public final void removeAllValidators(@NonNull final Collection<Validator<String>> validators) {
+    public final void removeAllValidators(
+            @NonNull final Collection<Validator<CharSequence>> validators) {
         decorator.removeAllValidators(validators);
     }
 
     @SafeVarargs
     @Override
-    public final void removeAllValidators(@NonNull final Validator<String>... validators) {
+    public final void removeAllValidators(@NonNull final Validator<CharSequence>... validators) {
         decorator.removeAllValidators();
     }
 
@@ -461,12 +464,14 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
     }
 
     @Override
-    public final void addValidationListener(@NonNull final ValidationListener<String> listener) {
+    public final void addValidationListener(
+            @NonNull final ValidationListener<CharSequence> listener) {
         decorator.addValidationListener(listener);
     }
 
     @Override
-    public final void removeValidationListener(@NonNull final ValidationListener<String> listener) {
+    public final void removeValidationListener(
+            @NonNull final ValidationListener<CharSequence> listener) {
         decorator.removeValidationListener(listener);
     }
 
