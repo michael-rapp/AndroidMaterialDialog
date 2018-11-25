@@ -38,7 +38,7 @@ public interface EditTextDialogDecorator extends Dialog, Validateable<CharSequen
      * Returns the text input layout, which is contained by the dialog.
      *
      * @return The text input layout, which is contained by the dialog, as an instance of the class
-     * {@link TextInputLayout} or null, if the dialog has not been shown yet
+     * TextInputLayout or null, if the dialog has not been shown yet
      */
     TextInputLayout getTextInputLayout();
 

@@ -122,8 +122,8 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
          * Adds a new validator to the dialog, which is created by the builder.
          *
          * @param validator
-         *         The validator, which should be added, as an instance of the type {@link
-         *         Validator}. The validator may not be null
+         *         The validator, which should be added, as an instance of the type Validator. The
+         *         validator may not be null
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}. The builder may not be null
          */
@@ -155,7 +155,7 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
          *
          * @param validators
          *         An array, which contains the validators, which should be added, as an array of
-         *         the type {@link Validator} or an empty array, if no validators should be added
+         *         the type Validator or an empty array, if no validators should be added
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}. The builder may not be null
          */
@@ -201,8 +201,8 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
          * builder, has been validated.
          *
          * @param listener
-         *         The listener, which should be added, as an instance of the type {@link
-         *         ValidationListener}. The listener may not be null
+         *         The listener, which should be added, as an instance of the type
+         *         ValidationListener. The listener may not be null
          * @return The builder, the method has been called upon, as an instance of the class {@link
          * Builder}. The builder may not be null
          */
