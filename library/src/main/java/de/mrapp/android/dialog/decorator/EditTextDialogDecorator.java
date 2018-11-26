@@ -22,6 +22,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -255,6 +256,21 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
                 textInputLayout.setError(errorText);
                 textInputLayout.setErrorEnabled(true);
             }
+        }
+    }
+
+    /**
+     * Requests the focus and displays the keyboard.
+     */
+    private void requestFocus() {
+        Window window = getWindow();
+
+        if (window != null) {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+
+        if (editText != null) {
+            editText.requestFocus();
         }
     }
 
@@ -620,6 +636,7 @@ public class EditTextDialogDecorator extends AbstractDialogDecorator<ButtonBarDi
                                                  final Void param) {
         inflateEditText();
         getDialog().addDialogValidator(this);
+        requestFocus();
         return Collections.emptyMap();
     }
 
