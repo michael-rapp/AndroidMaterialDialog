@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 5.1.1 (Nov. 26th 2018)
+
+A minor release, which introduces the following changes:
+
+- The keyboard is now shown when an `EditTextDialog` is shown.
+
 ## Version 5.1.0 (Nov. 26th 2018)
 
 A feature release, which introduces the following changes:
