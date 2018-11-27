@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 5.1.2 (Nov. 27th 2018)
+
+A minor release, which introduces the following changes:
+
+- The background of an `EditTextDialog`'s `TextInputLayout` is now hidden.
+
 ## Version 5.1.1 (Nov. 26th 2018)
 
 A minor release, which introduces the following changes:
