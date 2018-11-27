@@ -16,12 +16,14 @@ License.
 <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/text_input_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/dialog_right_padding"
     android:layout_marginLeft="@dimen/dialog_left_padding"
     android:layout_marginRight="@dimen/dialog_right_padding"
-    android:layout_marginStart="@dimen/dialog_left_padding">
+    android:layout_marginStart="@dimen/dialog_left_padding"
+    app:boxBackgroundMode="none">
 
     <EditText
         android:id="@+id/edit_text"
