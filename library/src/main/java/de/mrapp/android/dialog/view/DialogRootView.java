@@ -27,6 +27,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -1245,6 +1246,32 @@ public class DialogRootView extends LinearLayout implements AreaListener {
             windowBackground.draw(backingCanvas);
             canvas.drawBitmap(backingBitmap, 0, 0, paint);
         }
+    }
+
+    @Override
+    public final boolean onTouchEvent(final MotionEvent event) {
+        if (!fullscreen) {
+            float x = event.getX();
+            float y = event.getY();
+            Rect padding = new Rect();
+
+            if (windowBackground != null) {
+                windowBackground.getPadding(padding);
+            }
+
+            if (x < padding.left || x > getWidth() - padding.right || y < padding.top ||
+                    y > getHeight() - padding.bottom) {
+                return super.onTouchEvent(event);
+            }
+        }
+
+        performClick();
+        return true;
+    }
+
+    @Override
+    public final boolean performClick() {
+        return super.performClick();
     }
 
     @Override
