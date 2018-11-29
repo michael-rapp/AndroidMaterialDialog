@@ -387,7 +387,6 @@ public class EditTextDialog extends AbstractButtonBarDialog implements EditTextD
         super(context, themeResourceId);
         decorator = new de.mrapp.android.dialog.decorator.EditTextDialogDecorator(this);
         addDecorator(decorator);
-        setCancelable(false);
     }
 
     @Override
