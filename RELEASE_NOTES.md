@@ -1,5 +1,12 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 5.1.3 (Nov. 30th 2018)
+
+A minor release, which introduces the following changes:
+
+- The `EditTextDialog` is now cancelable by default.
+- The touchable areas of dialogs are now calculated more accurately.
+
 ## Version 5.1.2 (Nov. 27th 2018)
 
 A minor release, which introduces the following changes:
