@@ -1,9 +1,15 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 5.1.4 (Jan. 11th 2019)
+
+A bugfix release, which fixes the following issues:
+
+- The appearance of dialogs on devices with xhdpi screens has been fixed (see https://github.com/michael-rapp/AndroidMaterialDialog/issues/30).
+
 ## Version 5.1.3 (Nov. 30th 2018)
 
 A minor release, which introduces the following changes:
-
+.
 - The `EditTextDialog` is now cancelable by default.
 - The touchable areas of dialogs are now calculated more accurately.
 
