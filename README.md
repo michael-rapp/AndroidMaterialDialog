@@ -45,6 +45,8 @@ Before version 2.0.0 this project was hosted on [Sourceforge](https://sourceforg
 
 In the following a few examples, which illustrate the use of the library's most important features, are given. Moreover, this project contains the source code of an example app, which implements use cases of the library for demonstration purposes, as well as a more detailed documentation in the Wiki and auto-generated javadoc files. 
 
+*Since version 5.0.0 the library requires to use [AndroidX](https://developer.android.com/jetpack/androidx/) instead of the older AppCompat support libraries. Make sure that you have [migrated](https://developer.android.com/jetpack/androidx/migrate) your app to AndroidX and that you are using one of the Material component themes instead of the AppCompat ones, e.g. `Theme.MaterialComponents.Light.DarkActionBar` instead of `Theme.AppCompat.Light.DarkActionBar`.*
+
 ### Creating a typical alert dialog
 
 The code below shows how to create and show an alert dialog by using the library's `MaterialDialog.Builder`. The dialog contains a title and message and can be closed by the user by either using a "OK" button or a "Cancel" button. The `this` parameter, which is passed to the builder's constructor in the example below, must be a `Context`, e.g. an `Activity`. The `null` parameters, which are passed to the `setPositiveButton`- and `setNegativeButton`-methods can be replaced by instances of the type `DialogInterface.OnClickListener` in order to execute some code when the user closes the dialog by clicking the corresponding button.
@@ -217,7 +219,7 @@ Moreover, it might be useful to extend the predefined themes in order to overwri
 ```xml
 <resources>
 
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="@style/Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
