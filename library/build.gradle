@@ -21,7 +21,7 @@ android {
 
 dependencies {
     api 'com.google.android.material:material:1.0.0'
-    api 'com.github.michael-rapp:android-util:2.0.0'
+    api 'com.github.michael-rapp:android-util:2.0.1'
     api 'com.github.michael-rapp:android-material-views:3.0.0'
     api 'com.github.michael-rapp:android-material-validation:3.0.0'
 }
