@@ -18,6 +18,7 @@ License.
     <style name="MaterialDialog.Light" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="materialDialogBackground">@color/dialog_background_light</item>
         <item name="materialDialogDividerColor">@color/divider_color_light</item>
+        <item name="textInputStyle">@style/MaterialDialog.TextInputLayout</item>
     </style>
 
     <style name="MaterialDialog.Light.Fullscreen.CenterInside" parent="MaterialDialog.Light">
@@ -43,6 +44,7 @@ License.
     <style name="MaterialDialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="materialDialogBackground">@color/dialog_background_dark</item>
         <item name="materialDialogDividerColor">@color/divider_color_dark</item>
+        <item name="textInputStyle">@style/MaterialDialog.TextInputLayout</item>
     </style>
 
     <style name="MaterialDialog.Fullscreen.CenterInside" parent="MaterialDialog">
@@ -77,5 +79,7 @@ License.
         <item name="android:minHeight">@dimen/dialog_button_min_height</item>
         <item name="android:minWidth">@dimen/dialog_button_min_width</item>
     </style>
+
+    <style name="MaterialDialog.TextInputLayout" parent="Widget.Design.TextInputLayout"/>
 
 </resources>
