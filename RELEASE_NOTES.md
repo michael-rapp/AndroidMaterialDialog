@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 5.1.6 (May. 1st 2019)
+
+A bugfix release, which introduces the following changes:
+
+- Fixed the style of an `EditTextDialog`'s `TextInputLayout` when using a version of the Material Design components newer than 1.0.0.
+
 ## Version 5.1.5 (Feb. 23th 2019)
 
 A minor release, which introduces the following changes:
