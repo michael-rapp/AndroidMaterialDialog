@@ -14,6 +14,7 @@
 package de.mrapp.android.dialog.adapter;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -21,11 +22,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
 import de.mrapp.android.dialog.R;
 import de.mrapp.util.Condition;
 
@@ -78,7 +79,7 @@ public class ArrayRecyclerViewAdapter
     /**
      * The text color of the adapter's list items.
      */
-    private int itemColor;
+    private ColorStateList itemColor;
 
     /**
      * The typeface of the adapter's list items.
@@ -101,29 +102,30 @@ public class ArrayRecyclerViewAdapter
         Condition.INSTANCE.ensureNotNull(items, "The array may not be null");
         this.layoutResourceId = layoutResourceId;
         this.items = items;
-        this.itemColor = -1;
+        this.itemColor = null;
         this.itemTypeface = null;
     }
 
     /**
      * Returns the text color of the adapter's items.
      *
-     * @return The text color of the adapter's items as an {@link Integer} value or -1, if no custom
-     * color has been set
+     * @return The text color of the adapter's items as an instance of the class
+     * {@link ColorStateList} or null, if no custom color has been set
      */
-    public final int getItemColor() {
+    @Nullable
+    public final ColorStateList getItemColor() {
         return itemColor;
     }
 
     /**
      * Sets the text color of the adapter's items.
      *
-     * @param color
-     *         The text color, which should be set, as an {@link Integer} value or -1, if no custom
-     *         color should be set
+     * @param colorStateList
+     *         The text color, which should be set, as an instance of the class
+     *         {@link ColorStateList} or null, if no custom color should be set
      */
-    public final void setItemColor(@ColorInt final int color) {
-        this.itemColor = color;
+    public final void setItemColor(@Nullable final ColorStateList colorStateList) {
+        this.itemColor = colorStateList;
         notifyDataSetChanged();
     }
 
@@ -173,7 +175,7 @@ public class ArrayRecyclerViewAdapter
         if (textView != null) {
             textView.setText(items[position]);
 
-            if (getItemColor() != -1) {
+            if (getItemColor() != null) {
                 textView.setTextColor(getItemColor());
             }
 

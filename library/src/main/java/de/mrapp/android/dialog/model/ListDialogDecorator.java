@@ -14,6 +14,7 @@
 package de.mrapp.android.dialog.model;
 
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 
 import androidx.annotation.ArrayRes;
@@ -49,19 +50,30 @@ public interface ListDialogDecorator extends Dialog {
     RecyclerView.Adapter<?> getListAdapter();
 
     /**
-     * Returns the color of the list items of the dialog.
+     * Returns the text color of the dialog's list items.
      *
-     * @return The color of the list items of the dialog as an {@link Integer} value
+     * @return The text color of the dialog's list items as an instance of the class
+     * {@link ColorStateList} or null, if the default text color is used
      */
-    int getItemColor();
+    @Nullable
+    ColorStateList getItemColor();
 
     /**
-     * Sets the color of the list items of the dialog.
+     * Sets the text color of the dialog's list items.
      *
      * @param color
      *         The color, which should be set, as an {@link Integer} value
      */
     void setItemColor(@ColorInt int color);
+
+    /**
+     * Sets the text color of the dialog's list items.
+     *
+     * @param colorStateList
+     *         The color, which should be set, as an instance of the class {@link ColorStateList}.
+     *         The color state list may not be null
+     */
+    void setItemColor(@NonNull ColorStateList colorStateList);
 
     /**
      * Sets the typeface of the list items of the dialog.

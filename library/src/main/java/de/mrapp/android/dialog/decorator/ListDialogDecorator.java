@@ -14,6 +14,7 @@
 package de.mrapp.android.dialog.decorator;
 
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -113,7 +114,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     /**
      * The color of the list items of the dialog.
      */
-    private int itemColor;
+    private ColorStateList itemColor;
 
     /**
      * The typeface of the list items of the dialog.
@@ -320,14 +321,21 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         return adapter;
     }
 
+    @Nullable
     @Override
-    public final int getItemColor() {
+    public final ColorStateList getItemColor() {
         return itemColor;
     }
 
     @Override
     public final void setItemColor(@ColorInt final int color) {
-        itemColor = color;
+        setItemColor(ColorStateList.valueOf(color));
+    }
+
+    @Override
+    public final void setItemColor(@NonNull final ColorStateList colorStateList) {
+        Condition.INSTANCE.ensureNotNull(colorStateList, "The color state list may not be null");
+        this.itemColor = colorStateList;
         adaptItemColor();
     }
 
@@ -497,7 +505,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
 
     @Override
     public final void onSaveInstanceState(@NonNull final Bundle outState) {
-        outState.putInt(ITEM_COLOR_EXTRA, getItemColor());
+        outState.putParcelable(ITEM_COLOR_EXTRA, getItemColor());
 
         if (items != null) {
             outState.putCharSequenceArray(ITEMS_EXTRA, items);
@@ -512,7 +520,12 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
 
     @Override
     public final void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
-        setItemColor(savedInstanceState.getInt(ITEM_COLOR_EXTRA));
+        ColorStateList itemColor = savedInstanceState.getParcelable(ITEM_COLOR_EXTRA);
+
+        if (itemColor != null) {
+            setItemColor(itemColor);
+        }
+
         CharSequence[] items = savedInstanceState.getCharSequenceArray(ITEMS_EXTRA);
 
         if (items != null) {

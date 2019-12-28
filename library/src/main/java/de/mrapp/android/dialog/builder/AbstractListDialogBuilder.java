@@ -15,6 +15,7 @@ package de.mrapp.android.dialog.builder;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.widget.ListAdapter;
@@ -101,6 +102,20 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      */
     public final BuilderType setItemColor(@ColorInt final int color) {
         getProduct().setItemColor(color);
+        return self();
+    }
+
+    /**
+     * Sets the color of the list items of the dialog, which is created by the builder.
+     *
+     * @param colorStateList
+     *          The color, which should be set, as an instance of the class {@link ColorStateList}.
+     *          The color may not be null
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setItemColor(@NonNull final ColorStateList colorStateList) {
+        getProduct().setItemColor(colorStateList);
         return self();
     }
 

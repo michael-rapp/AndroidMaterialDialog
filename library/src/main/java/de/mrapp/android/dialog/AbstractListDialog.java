@@ -14,6 +14,7 @@
 package de.mrapp.android.dialog;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -24,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.recyclerview.widget.RecyclerView;
+
 import de.mrapp.android.dialog.decorator.ListDialogDecorator;
 import de.mrapp.android.dialog.model.ListDialog;
 
@@ -45,12 +47,10 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
      * Creates a dialog, which is designed according to Android 5's Material Design guidelines even
      * on pre-Lollipop devices and may contain list items.
      *
-     * @param context
-     *         The context, which should be used by the dialog, as an instance of the class {@link
-     *         Context}. The context may not be null
-     * @param themeResourceId
-     *         The resource id of the theme, which should be used by the dialog, as an {@link
-     *         Integer} value. The resource id must correspond to a valid theme
+     * @param context         The context, which should be used by the dialog, as an instance of the class {@link
+     *                        Context}. The context may not be null
+     * @param themeResourceId The resource id of the theme, which should be used by the dialog, as an {@link
+     *                        Integer} value. The resource id must correspond to a valid theme
      */
     protected AbstractListDialog(@NonNull final Context context,
                                  @StyleRes final int themeResourceId) {
@@ -69,14 +69,20 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
         return decorator.getListAdapter();
     }
 
+    @Nullable
     @Override
-    public final int getItemColor() {
+    public final ColorStateList getItemColor() {
         return decorator.getItemColor();
     }
 
     @Override
     public final void setItemColor(@ColorInt final int color) {
         decorator.setItemColor(color);
+    }
+
+    @Override
+    public final void setItemColor(@NonNull final ColorStateList colorStateList) {
+        decorator.setItemColor(colorStateList);
     }
 
     @Nullable
@@ -91,7 +97,7 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     }
 
     @Override
-    public final void setItems(@NonNull final CharSequence[] items,
+    public final void setItems(@Nullable final CharSequence[] items,
                                @Nullable final OnClickListener listener) {
         decorator.setItems(items, listener);
     }
@@ -111,7 +117,7 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     }
 
     @Override
-    public final void setSingleChoiceItems(@NonNull final CharSequence[] items,
+    public final void setSingleChoiceItems(@Nullable final CharSequence[] items,
                                            final int checkedItem,
                                            @Nullable final OnClickListener listener) {
         decorator.setSingleChoiceItems(items, checkedItem, listener);
@@ -132,7 +138,7 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     }
 
     @Override
-    public final void setMultiChoiceItems(@NonNull final CharSequence[] items,
+    public final void setMultiChoiceItems(@Nullable final CharSequence[] items,
                                           @Nullable final boolean[] checkedItems,
                                           @Nullable final OnMultiChoiceClickListener listener) {
         decorator.setMultiChoiceItems(items, checkedItems, listener);
