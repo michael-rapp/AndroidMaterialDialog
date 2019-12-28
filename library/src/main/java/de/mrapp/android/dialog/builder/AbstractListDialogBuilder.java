@@ -56,9 +56,14 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     private void obtainItemColor(@StyleRes final int themeResourceId) {
         TypedArray typedArray = getContext().getTheme()
                 .obtainStyledAttributes(themeResourceId, new int[]{R.attr.materialDialogItemColor});
-        int defaultColor = ThemeUtil
-                .getColor(getContext(), themeResourceId, android.R.attr.textColorSecondary);
-        setItemColor(typedArray.getColor(0, defaultColor));
+        ColorStateList color = typedArray.getColorStateList(0);
+
+        if (color == null) {
+            color = ThemeUtil.getColorStateList(getContext(), themeResourceId,
+                    android.R.attr.textColorSecondary);
+        }
+
+        setItemColor(color);
     }
 
     /**
