@@ -200,7 +200,7 @@ public interface ButtonBarDialogDecorator extends Dialog {
      *         The color, which should be set, as an instance of the class {@link ColorStateList}.
      *         The color state list may not be null
      */
-    void setButtonTextColor(@NonNull final ColorStateList colorStateList);
+    void setButtonTextColor(@NonNull ColorStateList colorStateList);
 
     /**
      * Returns the typeface of the dialog's buttons.
