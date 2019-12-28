@@ -403,9 +403,8 @@ public class RecyclerViewAdapterWrapper<VH extends RecyclerView.ViewHolder>
         View view = holder.itemView;
         view.setOnClickListener(createItemClickListener(position));
 
-        if (wrappedViewHolder.itemView instanceof Checkable) {
-            handler.post(createCheckableRunnable((Checkable) wrappedViewHolder.itemView,
-                    isItemChecked(position)));
+        if (view instanceof Checkable) {
+            handler.post(createCheckableRunnable((Checkable) view, isItemChecked(position)));
         }
     }
 
