@@ -15,6 +15,7 @@ package de.mrapp.android.dialog.decorator;
 
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -112,14 +113,24 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     private boolean inflatedCustomView;
 
     /**
-     * The color of the list items of the dialog.
+     * The text color of the dialog's list items.
      */
     private ColorStateList itemColor;
 
     /**
-     * The typeface of the list items of the dialog.
+     * The typeface of the dialog's list items.
      */
     private Typeface itemTypeface;
+
+    /**
+     * The color state list, which is used to tint the icons of the dialog's list items.
+     */
+    private ColorStateList itemIconTintList;
+
+    /**
+     * The mode, which is used to tint the icons of the dialog's list items.
+     */
+    private PorterDuff.Mode itemIconTintMode = PorterDuff.Mode.SRC_ATOP;
 
     /**
      * The adapter, which is used to manage the list items of the dialog.
@@ -209,6 +220,8 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
                 initializeSelectionListener();
                 adaptItemColor();
                 adaptItemTypeface();
+                adaptItemIconTintList();
+                adaptItemIconTintMode();
             } else {
                 if (inflatedCustomView) {
                     getDialog().setView(null);
@@ -303,6 +316,32 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     }
 
     /**
+     * Adapts the color state list, which is used to tint the icons of the dialog's list items.
+     */
+    private void adaptItemIconTintList() {
+        if (adapter != null) {
+            RecyclerView.Adapter<?> wrappedAdapter = adapter.getWrappedAdapter();
+
+            if (wrappedAdapter instanceof ArrayRecyclerViewAdapter) {
+                ((ArrayRecyclerViewAdapter) wrappedAdapter).setItemIconTintList(itemIconTintList);
+            }
+        }
+    }
+
+    /**
+     * Adapts the mode, which is used to tint the icons of the dialog's list items.
+     */
+    private void adaptItemIconTintMode() {
+        if (adapter != null) {
+            RecyclerView.Adapter<?> wrappedAdapter = adapter.getWrappedAdapter();
+
+            if (wrappedAdapter instanceof ArrayRecyclerViewAdapter) {
+                ((ArrayRecyclerViewAdapter) wrappedAdapter).setItemIconTintMode(itemIconTintMode);
+            }
+        }
+    }
+
+    /**
      * Creates a new decorator, which allows to modify the view hierarchy of a dialog, which is
      * designed according to Android 5's Material Design guidelines even on pre-Lollipop devices and
      * may contain list items.
@@ -353,6 +392,36 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     @Override
     public final Typeface getItemTypeface() {
         return itemTypeface;
+    }
+
+    @Nullable
+    @Override
+    public final ColorStateList getItemIconTintList() {
+        return itemIconTintList;
+    }
+
+    @Override
+    public final void setItemIconTint(@ColorInt final  int color) {
+        setItemIconTintList(ColorStateList.valueOf(color));
+    }
+
+    @Override
+    public final void setItemIconTintList(@Nullable final ColorStateList tintList) {
+        this.itemIconTintList = tintList;
+        adaptItemIconTintList();
+    }
+
+    @NonNull
+    @Override
+    public final PorterDuff.Mode getItemIconTintMode() {
+        return itemIconTintMode;
+    }
+
+    @Override
+    public final void setItemIconTintMode(@NonNull final PorterDuff.Mode mode) {
+        Condition.INSTANCE.ensureNotNull(mode, "The tint mode may not be null");
+        this.itemIconTintMode = mode;
+        adaptItemIconTintMode();
     }
 
     @Override

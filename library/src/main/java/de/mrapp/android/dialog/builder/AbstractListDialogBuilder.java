@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.widget.ListAdapter;
 
@@ -135,6 +136,50 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      */
     public final BuilderType setItemTypeface(@NonNull final Typeface typeface) {
         getProduct().setItemTypeface(typeface);
+        return self();
+    }
+
+    /**
+     * Sets the color, which should be used to tint the icons of the list items of the dialog, which
+     * is created by the builder.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setItemIconTint(@ColorInt final int color) {
+        getProduct().setItemIconTint(color);
+        return self();
+    }
+
+    /**
+     * Sets the color state list, which should be used to tint the icons of the list items of the
+     * dialog, which is created by the builder.
+     *
+     * @param tintList
+     *         The color state list, which should be set, as an instance of the class {@link
+     *         ColorStateList} or null, if no color state list should be set
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setItemIconTintList(@Nullable final ColorStateList tintList) {
+        getProduct().setItemIconTintList(tintList);
+        return self();
+    }
+
+    /**
+     * Sets the mode, which should be used to tint the icons of the list items of the dialog, which
+     * is created by the builder.
+     *
+     * @param mode
+     *         The mode, which should be set, as a value of the enum {@link PorterDuff.Mode}. The
+     *         mode may not be null
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setItemIconTintMode(@NonNull final PorterDuff.Mode mode) {
+        getProduct().setItemIconTintMode(mode);
         return self();
     }
 

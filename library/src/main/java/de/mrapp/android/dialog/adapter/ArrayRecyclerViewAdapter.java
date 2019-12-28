@@ -16,6 +16,7 @@ package de.mrapp.android.dialog.adapter;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.mrapp.android.dialog.R;
@@ -101,6 +103,16 @@ public class ArrayRecyclerViewAdapter
     private Typeface itemTypeface;
 
     /**
+     * The color state list, which is used to tint the adapter's list items.
+     */
+    private ColorStateList itemTintList;
+
+    /**
+     * The mode, which is used to tint the adapter's list items.
+     */
+    private PorterDuff.Mode itemTintMode = PorterDuff.Mode.SRC_ATOP;
+
+    /**
      * Adapts the padding of a list item.
      *
      * @param holder The view holder as an instance of the class {@link ViewHolder}. The view holder
@@ -152,6 +164,12 @@ public class ArrayRecyclerViewAdapter
             if (imageView != null) {
                 Context context = imageView.getContext();
                 Drawable icon = ActivityCompat.getDrawable(context, iconResourceIds[position]);
+
+                if (icon != null) {
+                    DrawableCompat.setTintList(icon, itemTintList);
+                    DrawableCompat.setTintMode(icon, itemTintMode);
+                }
+
                 imageView.setImageDrawable(icon);
             }
         }
@@ -224,6 +242,29 @@ public class ArrayRecyclerViewAdapter
     public void setItemTypeface(@NonNull final Typeface typeface) {
         Condition.INSTANCE.ensureNotNull(typeface, "The typeface may not be null");
         this.itemTypeface = typeface;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Sets the color state list, which should be used to tint the adapter's items.
+     *
+     * @param colorStateList The color state list, which should be set, as an instance of the class
+     *                       {@link ColorStateList} or null, if the items should not be tinted
+     */
+    public void setItemIconTintList(@Nullable final ColorStateList colorStateList) {
+        this.itemTintList = colorStateList;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Sets the mode, which should be used to tint the adapter's items.
+     *
+     * @param mode The mode, which should be set, as a value of the enum {@link PorterDuff.Mode}.
+     *             The mode may not be null
+     */
+    public void setItemIconTintMode(@NonNull final PorterDuff.Mode mode) {
+        Condition.INSTANCE.ensureNotNull(mode, "The tint mode may not be null");
+        this.itemTintMode = mode;
         notifyDataSetChanged();
     }
 

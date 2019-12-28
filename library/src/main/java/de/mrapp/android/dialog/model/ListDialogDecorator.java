@@ -15,6 +15,7 @@ package de.mrapp.android.dialog.model;
 
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 
 import androidx.annotation.ArrayRes;
@@ -94,6 +95,50 @@ public interface ListDialogDecorator extends Dialog {
      */
     @Nullable
     Typeface getItemTypeface();
+
+    /**
+     * Returns the color state list, which is used to tint the icons of the dialog's list items.
+     *
+     * @return The color state list, which is used to tint the icons of the dialog's list items, as
+     * an instance of the class {@link ColorStateList} or null, if no color state list has been set
+     */
+    @Nullable
+    ColorStateList getItemIconTintList();
+
+    /**
+     * Sets the color, which should be used to tint the icons of the dialog's list items.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    void setItemIconTint(@ColorInt int color);
+
+    /**
+     * Sets the color state list, which should be used to tint the icons of the dialog's list items.
+     *
+     * @param tintList
+     *         The color state list, which should be set, as an instance of the class {@link
+     *         ColorStateList} or null, if no color state list should be set
+     */
+    void setItemIconTintList(@Nullable ColorStateList tintList);
+
+    /**
+     * Returns the mode, which is used to tint the icons of the dialog's list items.
+     *
+     * @return The mode, which is used to tint the icons of the dialog's list items, as a value of
+     * the enum {@link PorterDuff.Mode}. The mode may not be null
+     */
+    @NonNull
+    PorterDuff.Mode getItemIconTintMode();
+
+    /**
+     * Sets the mode, which should be used to tint the icons of the dialog's list items.
+     *
+     * @param mode
+     *         The mode, which should be set, as a value of the enum {@link PorterDuff.Mode}. The
+     *         mode may not be null
+     */
+    void setItemIconTintMode(@NonNull PorterDuff.Mode mode);
 
     /**
      * Returns the number of list items that are shown by the dialog.

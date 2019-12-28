@@ -15,6 +15,7 @@ package de.mrapp.android.dialog;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -89,6 +90,33 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     @Override
     public final Typeface getItemTypeface() {
         return decorator.getItemTypeface();
+    }
+
+    @Nullable
+    @Override
+    public final ColorStateList getItemIconTintList() {
+        return decorator.getItemIconTintList();
+    }
+
+    @Override
+    public final void setItemIconTint(final int color) {
+        decorator.setItemIconTint(color);
+    }
+
+    @Override
+    public final void setItemIconTintList(@Nullable final ColorStateList tintList) {
+        decorator.setItemIconTintList(tintList);
+    }
+
+    @NonNull
+    @Override
+    public final PorterDuff.Mode getItemIconTintMode() {
+        return decorator.getItemIconTintMode();
+    }
+
+    @Override
+    public final void setItemIconTintMode(@NonNull final PorterDuff.Mode mode) {
+        decorator.setItemIconTintMode(mode);
     }
 
     @Override
