@@ -24,18 +24,39 @@ public interface ListDialog extends ButtonBarDialog, ListDialogDecorator {
 
     /**
      * Defines the interface, a class that should be notified when a list item of a {@link
-     * ListDialog} has been selected, must implemented.
+     * ListDialog} has been selected or unselected, must implemented.
      */
     interface OnItemSelectedListener {
 
         /**
-         * The method, which is invoked when a list item has been selected.
+         * The method, which is invoked when a list item has been selected or unselected.
          *
          * @param position
          *         The position of the list item, which has been selected, as an {@link Integer}
          *         value
+         * @param selected
+         *         True, if the item has been selected, false otherwise
          */
-        void onItemSelected(int position);
+        void onItemSelectionStateChanged(int position, boolean selected);
+
+    }
+
+    /**
+     * Defines the interface, a class that should be notified when a list item of a
+     * {@link ListDialog} has been enabled or disabled, must implement.
+     */
+    interface OnItemEnabledListener {
+
+        /**
+         * The method, which is invoked when a list item has been enabled or disabled.
+         *
+         * @param position
+         *         The position of the list item, which has been enabled, as an {@link Integer}
+         *         value
+         * @param enabled
+         *         True, if the item has been enabled, false otherwise
+         */
+        void onItemEnableStateChanged(int position, boolean enabled);
 
     }
 

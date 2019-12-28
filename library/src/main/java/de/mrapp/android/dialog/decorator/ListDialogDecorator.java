@@ -144,10 +144,15 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     private DialogInterface.OnMultiChoiceClickListener multiChoiceListener;
 
     /**
-     * The listener, which is notified, when a list item of the dialog becomes selected,
-     * irrespective of the list view's choice mode.
+     * The listener, which is notified, when a list item of the dialog becomes selected or
+     * unselected, irrespective of the list view's choice mode.
      */
     private ListDialog.OnItemSelectedListener listViewItemSelectedListener;
+
+    /**
+     * The listener, which is notified, when a list item of the dialog becomes enabled or disabled.
+     */
+    private ListDialog.OnItemEnabledListener listViewItemEnabledListener;
 
     /**
      * The dialog's items.
@@ -200,6 +205,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
                 listView.setAdapter(adapter);
                 listView.setVisibility(adapter != null ? View.VISIBLE : View.GONE);
                 adapter.setOnItemSelectedListener(listViewItemSelectedListener);
+                adapter.setOnItemEnabledListener(listViewItemEnabledListener);
                 initializeSelectionListener();
                 adaptItemColor();
                 adaptItemTypeface();
@@ -369,6 +375,20 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     }
 
     @Override
+    public final boolean isItemEnabled(final int position) {
+        Condition.INSTANCE.ensureNotNull(adapter, "No list items are shown by the dialog",
+                IndexOutOfBoundsException.class);
+        return adapter.isItemEnabled(position);
+    }
+
+    @Override
+    public final void setItemEnabled(final int position, final boolean enabled) {
+        Condition.INSTANCE.ensureNotNull(adapter, "No list items are shown by the dialog",
+                IndexOutOfBoundsException.class);
+        adapter.setItemEnabled(position, enabled);
+    }
+
+    @Override
     public final void setItems(@Nullable final CharSequence[] items,
                                @Nullable final DialogInterface.OnClickListener listener) {
         this.items = items;
@@ -490,7 +510,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
             @Nullable final boolean[] checkedItems,
             @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
         Condition.INSTANCE.ensureTrue(checkedItems == null || adapter == null ||
-                adapter.getItemCount() == checkedItems.length,
+                        adapter.getItemCount() == checkedItems.length,
                 "Invalid number of checked items given");
         this.items = null;
         this.singleChoiceItems = null;
@@ -514,6 +534,16 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
 
         if (adapter != null) {
             adapter.setOnItemSelectedListener(listViewItemSelectedListener);
+        }
+    }
+
+    @Override
+    public final void setOnItemEnabledListener(
+            @Nullable final ListDialog.OnItemEnabledListener listener) {
+        listViewItemEnabledListener = listener;
+
+        if (adapter != null) {
+            adapter.setOnItemEnabledListener(listViewItemEnabledListener);
         }
     }
 

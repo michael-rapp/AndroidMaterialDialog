@@ -113,13 +113,32 @@ public interface ListDialogDecorator extends Dialog {
 
     /**
      * Sets, whether the list item at a specific position should be checked, or not. If no list
-     * items, are shown by the dialog, an {@link IndexOutOfBoundsException} will be thrown.
+     * items are shown by the dialog, an {@link IndexOutOfBoundsException} will be thrown.
      *
      * @param position The position of the list item as an {@link Integer} value
      * @param checked True, if the list item at the given position should be checked, false
      *                otherwise
      */
     void setItemChecked(int position, boolean checked);
+
+    /**
+     * Returns, whether the list item at a specific position is enabled, or not. If no list items
+     * are shown by the dialog, an {@link IndexOutOfBoundsException} will be thrown.
+     *
+     * @param position The position of the list item as an {@link Integer} value
+     * @return True, if the list item at the given position is enabled, false otherwise
+     */
+    boolean isItemEnabled(int position);
+
+    /**
+     * Sets, whether the list item at a specific position should be enabled, or not. If no list
+     * items are shown by the dialog, an {@link IndexOutOfBoundsException} will be thrown.
+     *
+     * @param position The position of the item as an {@link Integer} value
+     * @param enabled True, if the list item at the given position should be enabled, false
+     *                otherwise
+     */
+    void setItemEnabled(int position, boolean enabled);
 
     /**
      * Sets the items, which should be shown by the dialog.
@@ -313,7 +332,7 @@ public interface ListDialogDecorator extends Dialog {
 
     /**
      * Sets the listener, which should be notified, when an item, which is shown by the dialog is
-     * selected.
+     * selected or unselected.
      * <p>
      * Note, that the attached listener is not stored using a dialog's
      * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
@@ -324,5 +343,20 @@ public interface ListDialogDecorator extends Dialog {
      *                 ListDialog.OnItemSelectedListener} or null, if no listener should be notified
      */
     void setOnItemSelectedListener(@Nullable ListDialog.OnItemSelectedListener listener);
+
+
+    /**
+     * Sets the listener, which should be notified, when an item, which is shown by the dialog is
+     * enabled or disabled.
+     * <p>
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
+     * @param listener The listener, which should be set, as an instance of the type {@link
+     *                 ListDialog.OnItemSelectedListener} or null, if no listener should be notified
+     */
+    void setOnItemEnabledListener(@Nullable ListDialog.OnItemEnabledListener listener);
 
 }

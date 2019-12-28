@@ -134,6 +134,34 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     }
 
     /**
+     * Sets, whether the list item at a specific position of the dialog, which is created by the
+     * builder, should be checked, or not.
+     *
+     * @param position The position of the list item as an {@link Integer} value
+     * @param checked True, if the list item should be checked, false otherwise
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setItemChecked(final int position, final boolean checked) {
+        getProduct().setItemChecked(position, checked);
+        return self();
+    }
+
+    /**
+     * Sets, whether the list item at a specific position of the dialog, which is created by the
+     * builder, should be enabled, or not.
+     *
+     * @param position The position of the list item as an {@link Integer} value
+     * @param enabled True, if the list item should be enabled, false otherwise
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setItemEnabled(final int position, final boolean enabled) {
+        getProduct().setItemEnabled(position, enabled);
+        return self();
+    }
+
+    /**
      * Sets the items, which should be shown by the dialog, which is created by the builder.
      * <p>
      * Note, that the attached listener is not stored using a dialog's

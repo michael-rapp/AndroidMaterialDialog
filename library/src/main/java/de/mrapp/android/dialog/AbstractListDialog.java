@@ -112,6 +112,16 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     }
 
     @Override
+    public final boolean isItemEnabled(final int position) {
+        return decorator.isItemEnabled(position);
+    }
+
+    @Override
+    public final void setItemEnabled(final int position, final boolean enabled) {
+        decorator.setItemEnabled(position, enabled);
+    }
+
+    @Override
     public final void setItems(@Nullable final CharSequence[] items,
                                @Nullable final OnClickListener listener) {
         decorator.setItems(items, listener);
@@ -179,6 +189,12 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     public final void setOnItemSelectedListener(
             @Nullable final ListDialog.OnItemSelectedListener listener) {
         decorator.setOnItemSelectedListener(listener);
+    }
+
+    @Override
+    public final void setOnItemEnabledListener(
+            @Nullable final ListDialog.OnItemEnabledListener listener) {
+        decorator.setOnItemEnabledListener(listener);
     }
 
     @NonNull

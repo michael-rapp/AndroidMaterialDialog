@@ -20,14 +20,15 @@ import android.view.ViewGroup;
 import android.widget.Checkable;
 import android.widget.FrameLayout;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import de.mrapp.android.dialog.R;
+import de.mrapp.android.dialog.model.ListDialog.OnItemEnabledListener;
 import de.mrapp.android.dialog.model.ListDialog.OnItemSelectedListener;
 import de.mrapp.android.util.ThemeUtil;
 import de.mrapp.util.Condition;
@@ -239,14 +240,24 @@ public class RecyclerViewAdapterWrapper<VH extends RecyclerView.ViewHolder>
     private final Handler handler;
 
     /**
+     * A set, which contains the positions of all disabled items.
+     */
+    private Set<Integer> disabledItems;
+
+    /**
      * The listener, which is notified, when a list item has been clicked.
      */
     private OnItemClickListener itemClickListener;
 
     /**
-     * The listener, which is notified, when a list item has been selected.
+     * The listener, which is notified, when a list item has been selected or unselected.
      */
     private OnItemSelectedListener itemSelectedListener;
+
+    /**
+     * The listener, which is notified, when a list item has been enabled or disabled.
+     */
+    private OnItemEnabledListener itemEnabledListener;
 
     /**
      * Creates a listener, which allows to select a list item when it has been clicked.
@@ -295,6 +306,56 @@ public class RecyclerViewAdapterWrapper<VH extends RecyclerView.ViewHolder>
     }
 
     /**
+     * Sets, whether the list item at a specific position should be enabled, or not.
+     *
+     * @param position The position of the list item, whose enable state should be changed, as an {@link
+     *                 Integer} value
+     * @param enabled  True, if the list item should be enabled, false otherwise
+     * @return True, if the enable state of the item at the given position has changed, false
+     * otherwise
+     */
+    public final boolean setItemEnabledInternally(final int position, final boolean enabled) {
+        boolean result = false;
+
+        if (enabled) {
+            if (disabledItems != null) {
+                result = disabledItems.remove(position);
+
+                if (disabledItems.isEmpty()) {
+                    disabledItems = null;
+                }
+            }
+        } else {
+            if (disabledItems == null) {
+                disabledItems = new HashSet<>();
+            }
+
+            result = disabledItems.add(position);
+        }
+
+        return result;
+    }
+
+    /**
+     * Sets the enable state of a specific view and all of its children.
+     *
+     * @param view The view, whose enable state should be set, as an instance of the class
+     *             {@link View}. The view may not be null
+     * @param enabled True, if the view should be enabled, false otherwise
+     */
+    private void setViewEnabled(@NonNull final View view, final boolean enabled) {
+        view.setEnabled(enabled);
+
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                setViewEnabled(viewGroup.getChildAt(i), enabled);
+            }
+        }
+    }
+
+    /**
      * Creates a new wrapper that encapsulates a recycler view adapter in order to manage the
      * selection states of the adapter's list items.
      *
@@ -314,6 +375,7 @@ public class RecyclerViewAdapterWrapper<VH extends RecyclerView.ViewHolder>
         this.wrappedAdapter = wrappedAdapter;
         this.choiceMode = choiceMode;
         this.handler = new Handler(context.getMainLooper());
+        this.disabledItems = null;
     }
 
     /**
@@ -327,13 +389,24 @@ public class RecyclerViewAdapterWrapper<VH extends RecyclerView.ViewHolder>
     }
 
     /**
-     * Sets the listener, which should be notified, when a list item has been selected.
+     * Sets the listener, which should be notified, when a list item has been selected or
+     * unselected.
      *
      * @param listener The listener, which should be set, as an instance of the type {@link
      *                 OnItemSelectedListener} or null, if no listener should be notified
      */
     public final void setOnItemSelectedListener(@Nullable final OnItemSelectedListener listener) {
         this.itemSelectedListener = listener;
+    }
+
+    /**
+     * Sets the listener, which should be notified, when a list item has been enabled or disabled.
+     *
+     * @param listener The listener, which should be set, as an instance of the type
+     *                 {@link OnItemEnabledListener} or null, if no listener should be notified
+     */
+    public final void setOnItemEnabledListener(@Nullable final OnItemEnabledListener listener) {
+        this.itemEnabledListener = listener;
     }
 
     /**
@@ -380,10 +453,53 @@ public class RecyclerViewAdapterWrapper<VH extends RecyclerView.ViewHolder>
         if (choiceMode.setItemChecked(position, checked)) {
             notifyDataSetChanged();
 
-            if (checked && itemSelectedListener != null) {
-                itemSelectedListener.onItemSelected(position);
+            if (itemSelectedListener != null) {
+                itemSelectedListener.onItemSelectionStateChanged(position, checked);
             }
         }
+    }
+
+    /**
+     * Returns, whether the list item at a specific position is currently enabled, or not.
+     *
+     * @param position The position of the list item, whose enable state should be returned, as an {@link
+     *                 Integer} value
+     * @return True, if the list item is enabled, false otherwise
+     */
+    public final boolean isItemEnabled(final int position) {
+        return disabledItems == null || !disabledItems.contains(position);
+    }
+
+    /**
+     * Sets, whether the list item at a specific position should be enabled, or not.
+     *
+     * @param position The position of the list item, whose enable state should be changed, as an {@link
+     *                 Integer} value
+     * @param enabled  True, if the list item should be enabled, false otherwise
+     */
+    public final void setItemEnabled(final int position, final boolean enabled) {
+        if (setItemEnabledInternally(position, enabled)) {
+            notifyDataSetChanged();
+
+            if (itemEnabledListener != null) {
+                itemEnabledListener.onItemEnableStateChanged(position, enabled);
+            }
+        }
+    }
+
+    @Override
+    public final int getItemCount() {
+        return wrappedAdapter.getItemCount();
+    }
+
+    @Override
+    public final long getItemId(final int position) {
+        return wrappedAdapter.getItemId(position);
+    }
+
+    @Override
+    public final int getItemViewType(final int position) {
+        return wrappedAdapter.getItemViewType(position);
     }
 
     @NonNull
@@ -408,26 +524,12 @@ public class RecyclerViewAdapterWrapper<VH extends RecyclerView.ViewHolder>
         wrappedAdapter.onBindViewHolder(wrappedViewHolder, position);
         View view = holder.itemView;
         view.setOnClickListener(createItemClickListener(position));
+        setViewEnabled(view, isItemEnabled(position));
         View wrappedView = wrappedViewHolder.itemView;
 
         if (wrappedView instanceof Checkable) {
             handler.post(createCheckableRunnable((Checkable) wrappedView, isItemChecked(position)));
         }
-    }
-
-    @Override
-    public final int getItemCount() {
-        return wrappedAdapter.getItemCount();
-    }
-
-    @Override
-    public final long getItemId(final int position) {
-        return wrappedAdapter.getItemId(position);
-    }
-
-    @Override
-    public final int getItemViewType(final int position) {
-        return wrappedAdapter.getItemViewType(position);
     }
 
 }
