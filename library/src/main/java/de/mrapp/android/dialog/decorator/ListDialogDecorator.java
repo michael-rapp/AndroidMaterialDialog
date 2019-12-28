@@ -150,8 +150,8 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     private ListDialog.OnItemSelectedListener listViewItemSelectedListener;
 
     /**
-     * An array, which is used to identify the list items of the dialog, which is created by the
-     * builder, which are checked by default.
+     * An array, which is used to identify the list items of the dialog, which are checked by
+     * default.
      */
     private boolean[] checkedItems;
 
