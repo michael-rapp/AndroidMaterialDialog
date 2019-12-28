@@ -516,6 +516,7 @@ public interface MaterialDialogDecorator extends Dialog {
      * @return The color state list, which is used to tint the icon of the dialog, as an instance of
      * the class {@link ColorStateList} or null, if no color state list has been set
      */
+    @Nullable
     ColorStateList getIconTintList();
 
     /**
