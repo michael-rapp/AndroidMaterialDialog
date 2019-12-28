@@ -7,6 +7,7 @@ A feature release, which introduces the following changes:
 - A `ColorStateList` can now be used to specify the text color of a `ListDialog`'s list items.
 - Added `getItemCount`-, `isItemChecked`- and `setItemChecked`-methods to the `ListDialog`.
 - Added `isItemEnabled`- and `setItemEnabled`-methods to the `ListDialog`.
+- Added the functionality to specify icons for the list items of a `ListDialog`.
 - Updated dependency "AndroidUtil" to version 2.1.0.
 
 ## Version 5.1.6 (May. 1st 2019)
