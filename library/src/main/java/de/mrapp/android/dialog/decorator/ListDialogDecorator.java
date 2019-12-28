@@ -32,6 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.ScrollableArea.Area;
 import de.mrapp.android.dialog.adapter.ArrayRecyclerViewAdapter;
@@ -173,9 +174,8 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     /**
      * Inflates the list view, which is used to show the dialog's list items.
      *
-     * @param contentContainer
-     *         The view group, which contains the dialog's content, as an instance of the class
-     *         {@link ViewGroup}. The view group may not be null
+     * @param contentContainer The view group, which contains the dialog's content, as an instance of the class
+     *                         {@link ViewGroup}. The view group may not be null
      */
     private void inflateListView(@NonNull final ViewGroup contentContainer) {
         View listView = contentContainer.findViewById(android.R.id.list);
@@ -303,9 +303,8 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
      * designed according to Android 5's Material Design guidelines even on pre-Lollipop devices and
      * may contain list items.
      *
-     * @param dialog
-     *         The dialog, whose view hierarchy should be modified by the dialog, as an instance of
-     *         the type {@link ButtonBarDialog}. The dialog may not be null
+     * @param dialog The dialog, whose view hierarchy should be modified by the dialog, as an instance of
+     *               the type {@link ButtonBarDialog}. The dialog may not be null
      */
     public ListDialogDecorator(@NonNull final ButtonBarDialog dialog) {
         super(dialog);
@@ -350,6 +349,25 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     @Override
     public final Typeface getItemTypeface() {
         return itemTypeface;
+    }
+
+    @Override
+    public final int getItemCount() {
+        return adapter != null ? adapter.getItemCount() : 0;
+    }
+
+    @Override
+    public final boolean isItemChecked(final int position) {
+        Condition.INSTANCE.ensureNotNull(adapter, "No list items are shown by the dialog",
+                IndexOutOfBoundsException.class);
+        return adapter.isItemChecked(position);
+    }
+
+    @Override
+    public final void setItemChecked(final int position, final boolean checked) {
+        Condition.INSTANCE.ensureNotNull(adapter, "No list items are shown by the dialog",
+                IndexOutOfBoundsException.class);
+        adapter.setItemChecked(position, checked);
     }
 
     @Override

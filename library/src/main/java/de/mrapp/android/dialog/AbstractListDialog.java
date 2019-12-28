@@ -97,6 +97,21 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     }
 
     @Override
+    public final int getItemCount() {
+        return decorator.getItemCount();
+    }
+
+    @Override
+    public final boolean isItemChecked(final int position) {
+        return decorator.isItemChecked(position);
+    }
+
+    @Override
+    public final void setItemChecked(final int position, final boolean checked) {
+        decorator.setItemChecked(position, checked);
+    }
+
+    @Override
     public final void setItems(@Nullable final CharSequence[] items,
                                @Nullable final OnClickListener listener) {
         decorator.setItems(items, listener);
