@@ -33,6 +33,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.mrapp.android.dialog.R;
+import de.mrapp.android.util.ThemeUtil;
 import de.mrapp.util.Condition;
 
 /**
@@ -163,16 +164,41 @@ public class ArrayRecyclerViewAdapter
 
             if (imageView != null) {
                 Context context = imageView.getContext();
-                Drawable icon = ActivityCompat.getDrawable(context, iconResourceIds[position]);
+                imageView.setImageDrawable(getIcon(context, position));
+            } else {
+                TextView textView = holder.textView;
 
-                if (icon != null) {
-                    DrawableCompat.setTintList(icon, itemTintList);
-                    DrawableCompat.setTintMode(icon, itemTintMode);
+                if (textView != null) {
+                    Context context = textView.getContext();
+                    int drawablePadding = ThemeUtil.getDimensionPixelSize(context,
+                            android.R.attr.listPreferredItemPaddingLeft);
+                    textView.setCompoundDrawablePadding(drawablePadding);
+                    textView.setCompoundDrawablesWithIntrinsicBounds(getIcon(context, position),
+                            null, null, null);
                 }
-
-                imageView.setImageDrawable(icon);
             }
         }
+    }
+
+    /**
+     * Returns the icon of a list item.
+     *
+     * @param context  The context, which should be used, as an instance of the class
+     *                 {@link Context}. The context may not be null
+     * @param position The position of the list item as an {@link Integer} value
+     * @return The icon of the list item as an instance of the class {@link Drawable} or null, if
+     * the list item does not have an icon
+     */
+    @Nullable
+    private Drawable getIcon(@NonNull final Context context, final int position) {
+        Drawable icon = ActivityCompat.getDrawable(context, iconResourceIds[position]);
+
+        if (icon != null) {
+            DrawableCompat.setTintList(icon, itemTintList);
+            DrawableCompat.setTintMode(icon, itemTintMode);
+        }
+
+        return icon;
     }
 
     /**
