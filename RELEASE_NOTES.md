@@ -4,6 +4,7 @@
 
 A feature release, which introduces the following changes:
 
+- A `ColorStateList` can now be used to specify the text color of a `MaterialDialog`'s list items.
 - Updated dependency "AndroidUtil" to version 2.1.0.
 
 ## Version 5.1.6 (May. 1st 2019)
