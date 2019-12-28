@@ -97,16 +97,7 @@ public class RecyclerViewAdapterWrapper<VH extends RecyclerView.ViewHolder>
         /**
          * The position of the currently selected list item.
          */
-        private int checkedItem;
-
-        /**
-         * Creates a new choice mode, which allows only a single list item to be selected at once.
-         *
-         * @param checkedItem The position of the list item, which should be selected by default
-         */
-        public SingleChoiceMode(final int checkedItem) {
-            this.checkedItem = checkedItem;
-        }
+        private int checkedItem = -1;
 
         @Override
         public final boolean isItemChecked(final int position) {
@@ -134,22 +125,6 @@ public class RecyclerViewAdapterWrapper<VH extends RecyclerView.ViewHolder>
          * A set, which contains the positions of all currently selected list items.
          */
         private final Set<Integer> checkedItems = new HashSet<>();
-
-        /**
-         * Creates a new choice mode, which allows multiple list items to be selected at once.
-         *
-         * @param checkedItems A boolean array, which specifies whether the list items at a specific
-         *                     position is selected or not
-         */
-        public MultipleChoiceMode(@Nullable final boolean[] checkedItems) {
-            if (checkedItems != null) {
-                for (int i = 0; i < checkedItems.length; i++) {
-                    if (checkedItems[i]) {
-                        this.checkedItems.add(i);
-                    }
-                }
-            }
-        }
 
         @Override
         public final boolean isItemChecked(final int position) {
@@ -450,6 +425,11 @@ public class RecyclerViewAdapterWrapper<VH extends RecyclerView.ViewHolder>
      * @param checked  True, if the list item should be selected, false otherwise
      */
     public final void setItemChecked(final int position, final boolean checked) {
+        Condition.INSTANCE.ensureAtLeast(position, 0, "The position must be at least 0",
+                IndexOutOfBoundsException.class);
+        Condition.INSTANCE.ensureSmaller(position, getItemCount(), "The position must be less than "
+                + getItemCount(), IndexOutOfBoundsException.class);
+
         if (choiceMode.setItemChecked(position, checked)) {
             notifyDataSetChanged();
 
@@ -478,6 +458,10 @@ public class RecyclerViewAdapterWrapper<VH extends RecyclerView.ViewHolder>
      * @param enabled  True, if the list item should be enabled, false otherwise
      */
     public final void setItemEnabled(final int position, final boolean enabled) {
+        Condition.INSTANCE.ensureAtLeast(position, 0, "The position must be at least 0",
+                IndexOutOfBoundsException.class);
+        Condition.INSTANCE.ensureSmaller(position, getItemCount(), "The position must be less than "
+                + getItemCount(), IndexOutOfBoundsException.class);
         if (setItemEnabledInternally(position, enabled)) {
             notifyDataSetChanged();
 

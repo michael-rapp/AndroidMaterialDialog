@@ -431,19 +431,20 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     public final void setSingleChoiceItems(@Nullable final CharSequence[] items,
                                            final int checkedItem,
                                            @Nullable final DialogInterface.OnClickListener listener) {
-        Condition.INSTANCE.ensureAtLeast(checkedItem, -1, null, IndexOutOfBoundsException.class);
-        Condition.INSTANCE.ensureSmaller(checkedItem, items != null ? items.length : 0, null,
-                IndexOutOfBoundsException.class);
         this.items = null;
         this.singleChoiceItems = items;
         this.multiChoiceItems = null;
-        ChoiceMode choiceMode = new SingleChoiceMode(checkedItem);
         this.adapter = items != null ? new RecyclerViewAdapterWrapper<>(getContext(),
                 new ArrayRecyclerViewAdapter(android.R.layout.simple_list_item_single_choice,
-                        items), choiceMode) : null;
+                        items), new SingleChoiceMode()) : null;
         this.layoutManager = new LinearLayoutManager(getContext());
         this.singleChoiceListener = items != null ? listener : null;
         this.multiChoiceListener = null;
+
+        if (checkedItem != -1 && this.adapter != null) {
+            this.adapter.setItemChecked(checkedItem, true);
+        }
+
         attachAdapter();
     }
 
@@ -459,20 +460,22 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
             @Nullable final RecyclerView.Adapter<VH> adapter,
             @Nullable final RecyclerView.LayoutManager layoutManager, final int checkedItem,
             @Nullable final DialogInterface.OnClickListener listener) {
-        Condition.INSTANCE.ensureAtLeast(checkedItem, -1, null, IndexOutOfBoundsException.class);
-        Condition.INSTANCE.ensureSmaller(checkedItem, adapter != null ? adapter.getItemCount() : 0,
-                null, IndexOutOfBoundsException.class);
         this.items = null;
         this.singleChoiceItems = null;
         this.multiChoiceItems = null;
-        ChoiceMode choiceMode = new SingleChoiceMode(checkedItem);
         this.adapter = adapter != null ?
-                new RecyclerViewAdapterWrapper<>(getContext(), adapter, choiceMode) : null;
+                new RecyclerViewAdapterWrapper<>(getContext(), adapter, new SingleChoiceMode()) :
+                null;
         this.layoutManager = adapter != null ?
                 (layoutManager != null ? layoutManager : new LinearLayoutManager(getContext())) :
                 null;
         this.singleChoiceListener = adapter != null ? listener : null;
         this.multiChoiceListener = null;
+
+        if (checkedItem != -1 && this.adapter != null) {
+            this.adapter.setItemChecked(checkedItem, true);
+        }
+
         attachAdapter();
     }
 
@@ -485,13 +488,19 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         this.items = null;
         this.singleChoiceItems = null;
         this.multiChoiceItems = items;
-        ChoiceMode choiceMode = new MultipleChoiceMode(checkedItems);
         this.adapter = items != null ? new RecyclerViewAdapterWrapper<>(getContext(),
                 new ArrayRecyclerViewAdapter(android.R.layout.simple_list_item_multiple_choice,
-                        items), choiceMode) : null;
+                        items), new MultipleChoiceMode()) : null;
         this.layoutManager = new LinearLayoutManager(getContext());
         this.singleChoiceListener = null;
         this.multiChoiceListener = items != null ? listener : null;
+
+        if (this.adapter != null && checkedItems != null) {
+            for (int i = 0; i < checkedItems.length; i++) {
+                this.adapter.setItemChecked(i, checkedItems[i]);
+            }
+        }
+
         attachAdapter();
     }
 
@@ -515,15 +524,21 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         this.items = null;
         this.singleChoiceItems = null;
         this.multiChoiceItems = null;
-        ChoiceMode choiceMode = new MultipleChoiceMode(checkedItems);
         this.adapter = adapter != null ?
-                new RecyclerViewAdapterWrapper<>(getContext(), adapter, choiceMode) :
+                new RecyclerViewAdapterWrapper<>(getContext(), adapter, new MultipleChoiceMode()) :
                 null;
         this.layoutManager = adapter != null ?
                 (layoutManager != null ? layoutManager : new LinearLayoutManager(getContext())) :
                 null;
         this.singleChoiceListener = null;
         this.multiChoiceListener = adapter != null ? listener : null;
+
+        if (this.adapter != null && checkedItems != null) {
+            for (int i = 0; i < checkedItems.length; i++) {
+                this.adapter.setItemChecked(i, checkedItems[i]);
+            }
+        }
+
         attachAdapter();
     }
 
