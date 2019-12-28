@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 5.2.0 (Dec. 28th 2019)
+
+A feature release, which introduces the following changes:
+
+- Updated dependency "AndroidUtil" to version 2.1.0.
+
 ## Version 5.1.6 (May. 1st 2019)
 
 A bugfix release, which introduces the following changes:
