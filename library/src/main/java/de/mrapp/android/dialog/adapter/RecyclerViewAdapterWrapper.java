@@ -414,6 +414,10 @@ public class RecyclerViewAdapterWrapper<VH extends RecyclerView.ViewHolder>
      * @return True, if the list item is selected, false otherwise
      */
     public final boolean isItemChecked(final int position) {
+        Condition.INSTANCE.ensureAtLeast(position, 0, "The position must be at least 0",
+                IndexOutOfBoundsException.class);
+        Condition.INSTANCE.ensureSmaller(position, getItemCount(), "The position must be less than "
+                + getItemCount(), IndexOutOfBoundsException.class);
         return choiceMode.isItemChecked(position);
     }
 
@@ -447,6 +451,10 @@ public class RecyclerViewAdapterWrapper<VH extends RecyclerView.ViewHolder>
      * @return True, if the list item is enabled, false otherwise
      */
     public final boolean isItemEnabled(final int position) {
+        Condition.INSTANCE.ensureAtLeast(position, 0, "The position must be at least 0",
+                IndexOutOfBoundsException.class);
+        Condition.INSTANCE.ensureSmaller(position, getItemCount(), "The position must be less than "
+                + getItemCount(), IndexOutOfBoundsException.class);
         return disabledItems == null || !disabledItems.contains(position);
     }
 
