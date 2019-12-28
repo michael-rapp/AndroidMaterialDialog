@@ -22,16 +22,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import androidx.annotation.ArrayRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.ScrollableArea.Area;
@@ -50,7 +50,6 @@ import de.mrapp.android.dialog.view.DialogRootView.DividerLocation;
 import de.mrapp.android.dialog.view.DialogRootView.DividerViewType;
 import de.mrapp.android.dialog.view.DialogRootView.ViewType;
 import de.mrapp.android.dialog.view.Divider;
-import de.mrapp.android.util.ArrayUtil;
 import de.mrapp.util.Condition;
 
 /**
@@ -250,6 +249,23 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         } else {
             return checkedItems;
         }
+    }
+
+    /**
+     * Returns the index of the first checked item.
+     *
+     * @param checkedItems A boolean array that specifies, whether the item at an individual
+     *                     position is checked, or not
+     * @return The index of the first checked item or 0, if no item is checked
+     */
+    private int indexOfCheckedItem(final boolean[] checkedItems) {
+        for (int i = 0; i < checkedItems.length; i++) {
+            if (checkedItems[i]) {
+                return i;
+            }
+        }
+
+        return 0;
     }
 
     /**
@@ -554,7 +570,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
                     savedInstanceState.getCharSequenceArray(SINGLE_CHOICE_ITEMS_EXTRA);
 
             if (singleChoiceItems != null) {
-                int checkedItem = checkedItems != null ? ArrayUtil.indexOf(checkedItems, true) : 0;
+                int checkedItem = checkedItems != null ? indexOfCheckedItem(checkedItems) : 0;
                 setSingleChoiceItems(singleChoiceItems, checkedItem, null);
             } else {
                 CharSequence[] multiChoiceItems =
