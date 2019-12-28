@@ -391,12 +391,19 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     @Override
     public final void setItems(@Nullable final CharSequence[] items,
                                @Nullable final DialogInterface.OnClickListener listener) {
+        setItems(items, null, listener);
+    }
+
+    @Override
+    public final void setItems(@Nullable final CharSequence[] items,
+                               @Nullable final int[] iconResourceIds,
+                               @Nullable final DialogInterface.OnClickListener listener) {
         this.items = items;
         this.singleChoiceItems = null;
         this.multiChoiceItems = null;
         this.adapter = items != null ? new RecyclerViewAdapterWrapper<>(getContext(),
-                new ArrayRecyclerViewAdapter(android.R.layout.simple_list_item_1, items),
-                new NoChoiceMode()) : null;
+                new ArrayRecyclerViewAdapter(android.R.layout.simple_list_item_1, items,
+                        iconResourceIds), new NoChoiceMode()) : null;
         this.layoutManager = new LinearLayoutManager(getContext());
         this.singleChoiceListener = items != null ? listener : null;
         this.multiChoiceListener = null;
@@ -406,7 +413,13 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     @Override
     public final void setItems(@ArrayRes final int resourceId,
                                @Nullable final DialogInterface.OnClickListener listener) {
-        setItems(getContext().getResources().getTextArray(resourceId), listener);
+        setItems(resourceId, null, listener);
+    }
+
+    @Override
+    public final void setItems(final int resourceId, @Nullable final int[] iconResourceIds,
+                               @Nullable final DialogInterface.OnClickListener listener) {
+        setItems(getContext().getResources().getTextArray(resourceId), iconResourceIds, listener);
     }
 
     @Override
@@ -431,12 +444,20 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     public final void setSingleChoiceItems(@Nullable final CharSequence[] items,
                                            final int checkedItem,
                                            @Nullable final DialogInterface.OnClickListener listener) {
+        setSingleChoiceItems(items, null, checkedItem, listener);
+    }
+
+    @Override
+    public final void setSingleChoiceItems(@Nullable final CharSequence[] items,
+                                           @Nullable final int[] iconResourceIds,
+                                           final int checkedItem,
+                                           @Nullable final DialogInterface.OnClickListener listener) {
         this.items = null;
         this.singleChoiceItems = items;
         this.multiChoiceItems = null;
         this.adapter = items != null ? new RecyclerViewAdapterWrapper<>(getContext(),
                 new ArrayRecyclerViewAdapter(android.R.layout.simple_list_item_single_choice,
-                        items), new SingleChoiceMode()) : null;
+                        items, iconResourceIds), new SingleChoiceMode()) : null;
         this.layoutManager = new LinearLayoutManager(getContext());
         this.singleChoiceListener = items != null ? listener : null;
         this.multiChoiceListener = null;
@@ -451,8 +472,16 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     @Override
     public final void setSingleChoiceItems(@ArrayRes final int resourceId, final int checkedItem,
                                            @Nullable final DialogInterface.OnClickListener listener) {
-        setSingleChoiceItems(getContext().getResources().getTextArray(resourceId), checkedItem,
-                listener);
+        setSingleChoiceItems(resourceId, null, checkedItem, listener);
+    }
+
+    @Override
+    public final void setSingleChoiceItems(final int resourceId,
+                                           @Nullable final int[] iconResourceIds,
+                                           final int checkedItem,
+                                           @Nullable final DialogInterface.OnClickListener listener) {
+        setSingleChoiceItems(getContext().getResources().getTextArray(resourceId), iconResourceIds,
+                checkedItem, listener);
     }
 
     @Override
@@ -483,6 +512,14 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     public final void setMultiChoiceItems(@Nullable final CharSequence[] items,
                                           @Nullable final boolean[] checkedItems,
                                           @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
+        setMultiChoiceItems(items, null, checkedItems, listener);
+    }
+
+    @Override
+    public final void setMultiChoiceItems(@Nullable final CharSequence[] items,
+                                          @Nullable final int[] iconResourceIds,
+                                          @Nullable final boolean[] checkedItems,
+                                          @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
         Condition.INSTANCE.ensureTrue(checkedItems == null || items == null ||
                 checkedItems.length == items.length, "Invalid number of checked items given");
         this.items = null;
@@ -490,7 +527,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         this.multiChoiceItems = items;
         this.adapter = items != null ? new RecyclerViewAdapterWrapper<>(getContext(),
                 new ArrayRecyclerViewAdapter(android.R.layout.simple_list_item_multiple_choice,
-                        items), new MultipleChoiceMode()) : null;
+                        items, iconResourceIds), new MultipleChoiceMode()) : null;
         this.layoutManager = new LinearLayoutManager(getContext());
         this.singleChoiceListener = null;
         this.multiChoiceListener = items != null ? listener : null;
@@ -508,8 +545,16 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     public final void setMultiChoiceItems(@ArrayRes final int resourceId,
                                           @Nullable final boolean[] checkedItems,
                                           @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
-        setMultiChoiceItems(getContext().getResources().getTextArray(resourceId), checkedItems,
-                listener);
+        setMultiChoiceItems(resourceId, null, checkedItems, listener);
+    }
+
+    @Override
+    public final void setMultiChoiceItems(final int resourceId,
+                                          @Nullable final int[] iconResourceIds,
+                                          @Nullable final boolean[] checkedItems,
+                                          @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
+        setMultiChoiceItems(getContext().getResources().getTextArray(resourceId), iconResourceIds,
+                checkedItems, listener);
     }
 
     @Override

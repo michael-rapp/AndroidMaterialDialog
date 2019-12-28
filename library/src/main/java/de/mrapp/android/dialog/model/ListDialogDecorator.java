@@ -165,6 +165,25 @@ public interface ListDialogDecorator extends Dialog {
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
+     * @param items           The items, which should be set, as an array of the type
+     *                        {@link CharSequence} or null, if no items should be shown by the dialog
+     * @param iconResourceIds An array, which contains the resource ids of the items' icons, as an
+     *                        {@link Integer} array or null, if no icons should be displayed
+     * @param listener        The listener, which should be notified, when an item is clicked, as an
+     *                        instance of the type {@link DialogInterface.OnClickListener} or null,
+     *                        if no listener should be notified
+     */
+    void setItems(@Nullable CharSequence[] items, @Nullable int[] iconResourceIds,
+                  @Nullable DialogInterface.OnClickListener listener);
+
+    /**
+     * Sets the items, which should be shown by the dialog.
+     * <p>
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
      * @param resourceId The resource id of the items, which should be set, as an {@link Integer} value. The
      *                   resource id must correspond to a valid array resource
      * @param listener   The listener, which should be notified, when an item is clicked, as an instance of
@@ -172,6 +191,26 @@ public interface ListDialogDecorator extends Dialog {
      *                   notified
      */
     void setItems(@ArrayRes int resourceId, @Nullable DialogInterface.OnClickListener listener);
+
+    /**
+     * Sets the items, which should be shown by the dialog.
+     * <p>
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
+     * @param resourceId      The resource id of the items, which should be set, as an
+     *                        {@link Integer} value. The resource id must correspond to a valid
+     *                        array resource
+     * @param iconResourceIds An array, which contains the resource ids of the items' icons, as an
+     *                        {@link Integer} array or null, if no icons should be displayed
+     * @param listener        The listener, which should be notified, when an item is clicked, as an
+     *                        instance of the type {@link DialogInterface.OnClickListener} or null,
+     *                        if no listener should be notified
+     */
+    void setItems(@ArrayRes int resourceId, @Nullable int[] iconResourceIds,
+                  @Nullable DialogInterface.OnClickListener listener);
 
     /**
      * Sets the adapter, which provides the items, which should be shown by the dialog.
@@ -224,6 +263,29 @@ public interface ListDialogDecorator extends Dialog {
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
+     * @param items           The items, which should be set, as an array of the type
+     *                        {@link CharSequence} or null, if no items should be shown by the
+     *                        dialog
+     * @param iconResourceIds An array, which contains the resource ids of the items' icons, as an
+     *                        {@link Integer} array or null, if no icons should be displayed
+     * @param checkedItem     The index of the item, which should be selected by default, as an
+     *                        {@link Integer} value or -1, if no item should be selected by default
+     * @param listener        The listener, which should be notified, when an item is clicked, as an
+     *                        instance of the type {@link DialogInterface.OnClickListener} or null,
+     *                        if no listener should be notified
+     */
+    void setSingleChoiceItems(@Nullable CharSequence[] items, @Nullable int[] iconResourceIds,
+                              int checkedItem, @Nullable DialogInterface.OnClickListener listener);
+
+    /**
+     * Sets the selectable items, which should be shown by the dialog. Only one of the items can be
+     * selected at once.
+     * <p>
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
      * @param resourceId  The resource id of the items, which should be set, as an {@link Integer} value. The
      *                    resource id must correspond to a valid array resource
      * @param checkedItem The index of the item, which should be selected by default, as an {@link Integer}
@@ -234,6 +296,29 @@ public interface ListDialogDecorator extends Dialog {
      */
     void setSingleChoiceItems(@ArrayRes int resourceId, int checkedItem,
                               @Nullable DialogInterface.OnClickListener listener);
+
+    /**
+     * Sets the selectable items, which should be shown by the dialog. Only one of the items can be
+     * selected at once.
+     * <p>
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
+     * @param resourceId      The resource id of the items, which should be set, as an
+     *                        {@link Integer} value. The resource id must correspond to a valid
+     *                        array resource
+     * @param iconResourceIds An array, which contains the resource ids of the items' icons, as an
+     *                        {@link Integer} array or null, if no icons should be displayed
+     * @param checkedItem     The index of the item, which should be selected by default, as an
+     *                        {@link Integer} value or -1, if no item should be selected by default
+     * @param listener        The listener, which should be notified, when an item is clicked, as an
+     *                        instance of the type {@link DialogInterface.OnClickListener} or null,
+     *                        if no listener should be notified
+     */
+    void setSingleChoiceItems(@ArrayRes int resourceId, @Nullable int[] iconResourceIds,
+                              int checkedItem, @Nullable DialogInterface.OnClickListener listener);
 
     /**
      * Sets the adapter, which provides the selectable items, which should be shown by the dialog.
@@ -291,6 +376,32 @@ public interface ListDialogDecorator extends Dialog {
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
+     * @param items           The items, which should be set, as an array of the type
+     *                        {@link CharSequence} or null, if no items should be shown by the
+     *                        dialog
+     * @param iconResourceIds An array, which contains the resource ids of the items' icons, as an
+     *                        {@link Integer} array or null, if no icons should be displayed
+     * @param checkedItems    An array, which contains, whether the items, which correspond to the
+     *                        corresponding indices, should be selected by default, or not, as a
+     *                        {@link Boolean} array or null, if no items should be selected by
+     *                        default
+     * @param listener        The listener, which should be notified, when an item is clicked, as an
+     *                        instance of the type {@link DialogInterface.OnMultiChoiceClickListener}
+     *                        or null, if no listener should be notified
+     */
+    void setMultiChoiceItems(@Nullable CharSequence[] items, @Nullable int[] iconResourceIds,
+                             @Nullable boolean[] checkedItems,
+                             @Nullable DialogInterface.OnMultiChoiceClickListener listener);
+
+    /**
+     * Sets the selectable items, which should be shown by the dialog. Multiple items can be
+     * selected at once.
+     * <p>
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
      * @param resourceId   The resource id of the items, which should be set, as an {@link Integer} value. The
      *                     resource id must correspond to a valid array resource
      * @param checkedItems An array, which contains, whether the items, which correspond to the corresponding
@@ -301,6 +412,32 @@ public interface ListDialogDecorator extends Dialog {
      *                     should be notified
      */
     void setMultiChoiceItems(@ArrayRes int resourceId, @Nullable boolean[] checkedItems,
+                             @Nullable DialogInterface.OnMultiChoiceClickListener listener);
+
+    /**
+     * Sets the selectable items, which should be shown by the dialog. Multiple items can be
+     * selected at once.
+     * <p>
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
+     * @param resourceId      The resource id of the items, which should be set, as an
+     *                        {@link Integer} value. The resource id must correspond to a valid
+     *                        array resource
+     * @param iconResourceIds An array, which contains the resource ids of the items' icons, as an
+     *                        {@link Integer} array or null, if no icons should be displayed
+     * @param checkedItems    An array, which contains, whether the items, which correspond to the
+     *                        corresponding indices, should be selected by default, or not, as a
+     *                        {@link Boolean} array or null, if no items should be selected by
+     *                        default
+     * @param listener        The listener, which should be notified, when an item is clicked, as an
+     *                        instance of the type {@link DialogInterface.OnMultiChoiceClickListener}
+     *                        or null, if no listener should be notified
+     */
+    void setMultiChoiceItems(@ArrayRes int resourceId, @Nullable int[] iconResourceIds,
+                             @Nullable boolean[] checkedItems,
                              @Nullable DialogInterface.OnMultiChoiceClickListener listener);
 
     /**

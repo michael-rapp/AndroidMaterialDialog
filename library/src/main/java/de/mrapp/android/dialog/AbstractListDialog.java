@@ -128,9 +128,23 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     }
 
     @Override
+    public final void setItems(@Nullable final CharSequence[] items,
+                               @Nullable final int[] iconResourceIds,
+                               @Nullable final OnClickListener listener) {
+        decorator.setItems(items, iconResourceIds, listener);
+    }
+
+    @Override
     public final void setItems(@ArrayRes final int resourceId,
                                @Nullable final OnClickListener listener) {
         decorator.setItems(resourceId, listener);
+    }
+
+    @Override
+    public final void setItems(@ArrayRes final int resourceId,
+                               @Nullable final int[] iconResourceIds,
+                               @Nullable final OnClickListener listener) {
+        decorator.setItems(resourceId, iconResourceIds, listener);
     }
 
     @Override
@@ -149,9 +163,25 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     }
 
     @Override
+    public final void setSingleChoiceItems(@Nullable final CharSequence[] items,
+                                           @Nullable final int[] iconResourceIds,
+                                           final int checkedItem,
+                                           @Nullable final OnClickListener listener) {
+        decorator.setSingleChoiceItems(items, iconResourceIds, checkedItem, listener);
+    }
+
+    @Override
     public final void setSingleChoiceItems(@ArrayRes final int resourceId, final int checkedItem,
                                            @Nullable final OnClickListener listener) {
         decorator.setSingleChoiceItems(resourceId, checkedItem, listener);
+    }
+
+    @Override
+    public final void setSingleChoiceItems(@ArrayRes final int resourceId,
+                                           @Nullable final int[] iconResourceIds,
+                                           final int checkedItem,
+                                           @Nullable final OnClickListener listener) {
+        decorator.setSingleChoiceItems(resourceId, iconResourceIds, checkedItem, listener);
     }
 
     @Override
@@ -170,10 +200,26 @@ public abstract class AbstractListDialog extends AbstractButtonBarDialog impleme
     }
 
     @Override
+    public final void setMultiChoiceItems(@Nullable final CharSequence[] items,
+                                          @Nullable final int[] iconResourceIds,
+                                          @Nullable final boolean[] checkedItems,
+                                          @Nullable final OnMultiChoiceClickListener listener) {
+        decorator.setMultiChoiceItems(items, iconResourceIds, checkedItems, listener);
+    }
+
+    @Override
     public final void setMultiChoiceItems(@ArrayRes final int resourceId,
                                           @Nullable final boolean[] checkedItems,
                                           @Nullable final OnMultiChoiceClickListener listener) {
         decorator.setMultiChoiceItems(resourceId, checkedItems, listener);
+    }
+
+    @Override
+    public final void setMultiChoiceItems(@ArrayRes final int resourceId,
+                                          @Nullable final int[] iconResourceIds,
+                                          @Nullable final boolean[] checkedItems,
+                                          @Nullable final OnMultiChoiceClickListener listener) {
+        decorator.setMultiChoiceItems(resourceId, iconResourceIds, checkedItems, listener);
     }
 
     @Override

@@ -193,6 +193,34 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
+     * @param items
+     *         The items, which should be set, as an array of the type {@link CharSequence}. The
+     *         items may not be null
+     * @param iconResourceIds
+     *         An array, which contains the resource ids of the items' icons, as an {@link Integer}
+     *         array or null, if no icons should be displayed
+     * @param listener
+     *         The listener, which should be notified, when an item is clicked, as an instance of
+     *         the type {@link DialogInterface.OnClickListener} or null, if no listener should be
+     *         notified
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setItems(@NonNull final CharSequence[] items,
+                                      @Nullable final int[] iconResourceIds,
+                                      @Nullable final DialogInterface.OnClickListener listener) {
+        getProduct().setItems(items, iconResourceIds, listener);
+        return self();
+    }
+
+    /**
+     * Sets the items, which should be shown by the dialog, which is created by the builder.
+     * <p>
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
      * @param resourceId
      *         The resource id of the items, which should be set, as an {@link Integer} value. The
      *         resource id must correspond to a valid array resource
@@ -206,6 +234,34 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
     public final BuilderType setItems(@ArrayRes final int resourceId,
                                       @Nullable final DialogInterface.OnClickListener listener) {
         getProduct().setItems(resourceId, listener);
+        return self();
+    }
+
+    /**
+     * Sets the items, which should be shown by the dialog, which is created by the builder.
+     * <p>
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
+     * @param resourceId
+     *         The resource id of the items, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid array resource
+     * @param iconResourceIds
+     *         An array, which contains the resource ids of the items' icons, as an {@link Integer}
+     *         array or null, if no icons should be displayed
+     * @param listener
+     *         The listener, which should be notified, when an item is clicked, as an instance of
+     *         the type {@link DialogInterface.OnClickListener} or null, if no listener should be
+     *         notified
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setItems(@ArrayRes final int resourceId,
+                                      @Nullable final int[] iconResourceIds,
+                                      @Nullable final DialogInterface.OnClickListener listener) {
+        getProduct().setItems(resourceId, iconResourceIds, listener);
         return self();
     }
 
@@ -274,6 +330,39 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
+     * @param items
+     *         The items, which should be set, as an array of the type {@link CharSequence}. The
+     *         items may not be null
+     * @param iconResourceIds
+     *         An array, which contains the resource ids of the items' icons, as an {@link Integer}
+     *         array or null, if no icons should be displayed
+     * @param checkedItem
+     *         The index of the item, which should be selected by default, as an {@link Integer}
+     *         value or -1, if no item should be selected by default
+     * @param listener
+     *         The listener, which should be notified, when an item is clicked, as an instance of
+     *         the type {@link DialogInterface.OnClickListener} or null, if no listener should be
+     *         notified
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setSingleChoiceItems(@NonNull final CharSequence[] items,
+                                                  @Nullable final int[] iconResourceIds,
+                                                  final int checkedItem,
+                                                  @Nullable final DialogInterface.OnClickListener listener) {
+        getProduct().setSingleChoiceItems(items, iconResourceIds, checkedItem, listener);
+        return self();
+    }
+
+    /**
+     * Sets the selectable items, which should be shown by the dialog, which is created by the
+     * builder. Only one of the items can be selected at once.
+     * <p>
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
      * @param resourceId
      *         The resource id of the items, which should be set, as an {@link Integer} value. The
      *         resource id must correspond to a valid array resource
@@ -291,6 +380,39 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
                                                   final int checkedItem,
                                                   @Nullable final DialogInterface.OnClickListener listener) {
         getProduct().setSingleChoiceItems(resourceId, checkedItem, listener);
+        return self();
+    }
+
+    /**
+     * Sets the selectable items, which should be shown by the dialog, which is created by the
+     * builder. Only one of the items can be selected at once.
+     * <p>
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
+     * @param resourceId
+     *         The resource id of the items, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid array resource
+     * @param iconResourceIds
+     *         An array, which contains the resource ids of the items' icons, as an {@link Integer}
+     *         array or null, if no icons should be displayed
+     * @param checkedItem
+     *         The index of the item, which should be selected by default, as an {@link Integer}
+     *         value or -1, if no item should be selected by default
+     * @param listener
+     *         The listener, which should be notified, when an item is clicked, as an instance of
+     *         the type {@link DialogInterface.OnClickListener} or null, if no listener should be
+     *         notified
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setSingleChoiceItems(@ArrayRes final int resourceId,
+                                                  @Nullable final int[] iconResourceIds,
+                                                  final int checkedItem,
+                                                  @Nullable final DialogInterface.OnClickListener listener) {
+        getProduct().setSingleChoiceItems(resourceId, iconResourceIds, checkedItem, listener);
         return self();
     }
 
@@ -363,6 +485,40 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
      * method must be called again after configuration changes, e.g when the orientation of the
      * device has changed, in order to re-register the listener.
      *
+     * @param items
+     *         The items, which should be set, as an array of the type {@link CharSequence}. The
+     *         items may not be null
+     * @param iconResourceIds
+     *         An array, which contains the resource ids of the items' icons, as an {@link Integer}
+     *         array or null, if no icons should be displayed
+     * @param checkedItems
+     *         An array, which contains, whether the items, which correspond to the corresponding
+     *         indices, should be selected by default, or not, as a {@link Boolean} array or null,
+     *         if no items should be selected by default
+     * @param listener
+     *         The listener, which should be notified, when an item is clicked, as an instance of
+     *         the type {@link DialogInterface.OnClickListener} or null, if no listener should be
+     *         notified
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setMultiChoiceItems(@NonNull final CharSequence[] items,
+                                                 @Nullable final int[] iconResourceIds,
+                                                 @Nullable final boolean[] checkedItems,
+                                                 @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
+        getProduct().setMultiChoiceItems(items, iconResourceIds, checkedItems, listener);
+        return self();
+    }
+
+    /**
+     * Sets the selectable items, which should be shown by the dialog, which is created by the
+     * builder. Multiple items can be selected at once.
+     * <p>
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
      * @param resourceId
      *         The resource id of the items, which should be set, as an {@link Integer} value. The
      *         resource id must correspond to a valid array resource
@@ -381,6 +537,40 @@ public abstract class AbstractListDialogBuilder<DialogType extends ListDialog, B
                                                  @Nullable final boolean[] checkedItems,
                                                  @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
         getProduct().setMultiChoiceItems(resourceId, checkedItems, listener);
+        return self();
+    }
+
+    /**
+     * Sets the selectable items, which should be shown by the dialog, which is created by the
+     * builder. Multiple items can be selected at once.
+     * <p>
+     * Note, that the attached listener is not stored using a dialog's
+     * <code>onSaveInstanceState</code>-method, because it is not serializable. Therefore this
+     * method must be called again after configuration changes, e.g when the orientation of the
+     * device has changed, in order to re-register the listener.
+     *
+     * @param resourceId
+     *         The resource id of the items, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid array resource
+     * @param iconResourceIds
+     *         An array, which contains the resource ids of the items' icons, as an {@link Integer}
+     *         array or null, if no icons should be displayed
+     * @param checkedItems
+     *         An array, which contains, whether the items, which correspond to the corresponding
+     *         indices, should be selected by default, or not, as a {@link Boolean} array or null,
+     *         if no items should be selected by default
+     * @param listener
+     *         The listener, which should be notified, when an item is clicked, as an instance of
+     *         the type {@link DialogInterface.OnClickListener} or null, if no listener should be
+     *         notified
+     * @return The builder, the method has been called upon, as an instance of the generic type
+     * BuilderType
+     */
+    public final BuilderType setMultiChoiceItems(@ArrayRes final int resourceId,
+                                                 @Nullable final int[] iconResourceIds,
+                                                 @Nullable final boolean[] checkedItems,
+                                                 @Nullable final DialogInterface.OnMultiChoiceClickListener listener) {
+        getProduct().setMultiChoiceItems(resourceId, iconResourceIds, checkedItems, listener);
         return self();
     }
 

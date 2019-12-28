@@ -17,14 +17,17 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.mrapp.android.dialog.R;
@@ -46,22 +49,28 @@ public class ArrayRecyclerViewAdapter
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         /**
-         * The text view, which is used to display the list item's texts.
+         * The text view, which is used to display the list item's text.
          */
         private final TextView textView;
 
         /**
+         * The image view, which is used to display the list item's icon.
+         */
+        private final ImageView imageView;
+
+        /**
          * Creates a new view holder.
          *
-         * @param itemView
-         *         The view, the view holder corresponds to, as an instance of the class {@link
-         *         View}. The view may not be null
+         * @param itemView The view, the view holder corresponds to, as an instance of the class {@link
+         *                 View}. The view may not be null
          */
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);
-            View childView = itemView.findViewById(android.R.id.text1);
-            textView = childView instanceof TextView ? (TextView) childView :
+            View textView = itemView.findViewById(android.R.id.text1);
+            this.textView = textView instanceof TextView ? (TextView) textView :
                     (itemView instanceof TextView ? (TextView) itemView : null);
+            View imageView = itemView.findViewById(android.R.id.icon);
+            this.imageView = imageView instanceof ImageView ? (ImageView) imageView : null;
         }
 
     }
@@ -77,6 +86,11 @@ public class ArrayRecyclerViewAdapter
     private final CharSequence[] items;
 
     /**
+     * An array, which contains the resource ids of the list items' icons.
+     */
+    private final int[] iconResourceIds;
+
+    /**
      * The text color of the adapter's list items.
      */
     private ColorStateList itemColor;
@@ -87,21 +101,83 @@ public class ArrayRecyclerViewAdapter
     private Typeface itemTypeface;
 
     /**
+     * Adapts the padding of a list item.
+     *
+     * @param holder The view holder as an instance of the class {@link ViewHolder}. The view holder
+     *               may not be null
+     */
+    private void adaptPadding(@NonNull final ViewHolder holder) {
+        View view = holder.itemView;
+        Context context = view.getContext();
+        Resources resources = context.getResources();
+        int leftPadding = resources.getDimensionPixelSize(R.dimen.dialog_left_padding);
+        int rightPadding = resources.getDimensionPixelSize(R.dimen.dialog_right_padding);
+        view.setPadding(leftPadding, view.getPaddingTop(), rightPadding, view.getPaddingBottom());
+    }
+
+    /**
+     * Adapts the text of a list item.
+     *
+     * @param holder   The view holder as an instance of the class {@link ViewHolder}. The view
+     *                 holder may not be null
+     * @param position The position of the list item as an {@link Integer} value
+     */
+    private void adaptText(@NonNull final ViewHolder holder, final int position) {
+        TextView textView = holder.textView;
+
+        if (textView != null) {
+            textView.setText(items[position]);
+
+            if (getItemColor() != null) {
+                textView.setTextColor(getItemColor());
+            }
+
+            if (getItemTypeface() != null) {
+                textView.setTypeface(getItemTypeface());
+            }
+        }
+    }
+
+    /**
+     * Adapts the icon of a list item.
+     *
+     * @param holder   The view holder as an instance of the class {@link ViewHolder}. The view
+     *                 holder may not be null
+     * @param position The position of the list item as an {@link Integer} value
+     */
+    private void adaptIcon(@NonNull final ViewHolder holder, final int position) {
+        if (iconResourceIds != null) {
+            ImageView imageView = holder.imageView;
+
+            if (imageView != null) {
+                Context context = imageView.getContext();
+                Drawable icon = ActivityCompat.getDrawable(context, iconResourceIds[position]);
+                imageView.setImageDrawable(icon);
+            }
+        }
+    }
+
+    /**
      * Creates a new recycler view adapter, which displays list items that correspond to the texts
      * that are contained in an array.
      *
-     * @param layoutResourceId
-     *         The id of the layout resource, which should be used to display the list items, as an
-     *         {@link Integer} value. The id must correspond to a valid layout resource
-     * @param items
-     *         An array, which contains the texts of the list adapter's items, as a {@link
-     *         CharSequence} array. The array may not be null
+     * @param layoutResourceId The id of the layout resource, which should be used to display the list items, as an
+     *                         {@link Integer} value. The id must correspond to a valid layout resource
+     * @param items            An array, which contains the texts of the list adapter's items, as a {@link
+     *                         CharSequence} array. The array may not be null
+     * @param iconResourceIds  An array, which contains the resource ids of the items' icons, as an {@link Integer}
+     *                         array or null, if no icons should be displayed
      */
     public ArrayRecyclerViewAdapter(@LayoutRes final int layoutResourceId,
-                                    @NonNull final CharSequence[] items) {
+                                    @NonNull final CharSequence[] items,
+                                    @Nullable final int[] iconResourceIds) {
         Condition.INSTANCE.ensureNotNull(items, "The array may not be null");
+        Condition.INSTANCE.ensureTrue(iconResourceIds == null ||
+                        items.length == iconResourceIds.length,
+                "Invalid number of icon resource ids given");
         this.layoutResourceId = layoutResourceId;
         this.items = items;
+        this.iconResourceIds = iconResourceIds;
         this.itemColor = null;
         this.itemTypeface = null;
     }
@@ -120,9 +196,8 @@ public class ArrayRecyclerViewAdapter
     /**
      * Sets the text color of the adapter's items.
      *
-     * @param colorStateList
-     *         The text color, which should be set, as an instance of the class
-     *         {@link ColorStateList} or null, if no custom color should be set
+     * @param colorStateList The text color, which should be set, as an instance of the class
+     *                       {@link ColorStateList} or null, if no custom color should be set
      */
     public final void setItemColor(@Nullable final ColorStateList colorStateList) {
         this.itemColor = colorStateList;
@@ -143,14 +218,18 @@ public class ArrayRecyclerViewAdapter
     /**
      * Sets the typeface of the adapter's items.
      *
-     * @param typeface
-     *         The typeface, which should be set, as an instance of the class {@link Typeface}. The
-     *         typeface may not be null
+     * @param typeface The typeface, which should be set, as an instance of the class {@link Typeface}. The
+     *                 typeface may not be null
      */
     public void setItemTypeface(@NonNull final Typeface typeface) {
         Condition.INSTANCE.ensureNotNull(typeface, "The typeface may not be null");
         this.itemTypeface = typeface;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public final int getItemCount() {
+        return items.length;
     }
 
     @NonNull
@@ -164,30 +243,9 @@ public class ArrayRecyclerViewAdapter
 
     @Override
     public final void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        View view = holder.itemView;
-        Context context = view.getContext();
-        Resources resources = context.getResources();
-        int leftPadding = resources.getDimensionPixelSize(R.dimen.dialog_left_padding);
-        int rightPadding = resources.getDimensionPixelSize(R.dimen.dialog_right_padding);
-        view.setPadding(leftPadding, view.getPaddingTop(), rightPadding, view.getPaddingBottom());
-        TextView textView = holder.textView;
-
-        if (textView != null) {
-            textView.setText(items[position]);
-
-            if (getItemColor() != null) {
-                textView.setTextColor(getItemColor());
-            }
-
-            if (getItemTypeface() != null) {
-                textView.setTypeface(getItemTypeface());
-            }
-        }
-    }
-
-    @Override
-    public final int getItemCount() {
-        return items.length;
+        adaptPadding(holder);
+        adaptText(holder, position);
+        adaptIcon(holder, position);
     }
 
 }
