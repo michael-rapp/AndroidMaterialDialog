@@ -35,6 +35,7 @@ import androidx.preference.Preference.OnPreferenceClickListener;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
+
 import de.mrapp.android.dialog.EditTextDialog;
 import de.mrapp.android.dialog.MaterialDialog;
 import de.mrapp.android.dialog.ProgressDialog;
@@ -177,7 +178,16 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
-        builder.setItems(R.array.list_items, createSingleChoiceListener());
+
+        if (shouldListItemIconsBeShown()) {
+            int[] iconResourceIds = new int[]{R.drawable.ic_info_24dp, R.drawable.ic_info_24dp,
+                    R.drawable.ic_info_24dp};
+            builder.setItems(R.array.list_items, iconResourceIds, createSingleChoiceListener());
+            builder.setItemIconTint(ContextCompat.getColor(getActivity(), R.color.color_accent));
+        } else {
+            builder.setItems(R.array.list_items, createSingleChoiceListener());
+        }
+
         listDialog = builder.create();
     }
 
@@ -188,7 +198,17 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
-        builder.setSingleChoiceItems(R.array.list_items, 0, createSingleChoiceListener());
+
+        if (shouldListItemIconsBeShown()) {
+            int[] iconResourceIds = new int[]{R.drawable.ic_info_24dp, R.drawable.ic_info_24dp,
+                    R.drawable.ic_info_24dp};
+            builder.setSingleChoiceItems(R.array.list_items, iconResourceIds, 0,
+                    createSingleChoiceListener());
+            builder.setItemIconTint(ContextCompat.getColor(getActivity(), R.color.color_accent));
+        } else {
+            builder.setSingleChoiceItems(R.array.list_items, 0, createSingleChoiceListener());
+        }
+
         singleChoiceListDialog = builder.create();
     }
 
@@ -199,8 +219,18 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         configureHeaderDialogBuilder(builder);
         configureButtonBarDialogBuilder(builder);
-        builder.setMultiChoiceItems(R.array.list_items, new boolean[]{true, false, false},
-                createMultiChoiceListener());
+
+        if (shouldListItemIconsBeShown()) {
+            int[] iconResourceIds = new int[]{R.drawable.ic_info_24dp, R.drawable.ic_info_24dp,
+                    R.drawable.ic_info_24dp};
+            builder.setMultiChoiceItems(R.array.list_items, iconResourceIds,
+                    new boolean[]{true, false, false}, createMultiChoiceListener());
+            builder.setItemIconTint(ContextCompat.getColor(getActivity(), R.color.color_accent));
+        } else {
+            builder.setMultiChoiceItems(R.array.list_items, new boolean[]{true, false, false},
+                    createMultiChoiceListener());
+        }
+
         multipleChoiceListDialog = builder.create();
     }
 
@@ -435,9 +465,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
      * Creates and returns the rectangular reveal animation, which should be used to show or hide
      * dialogs.
      *
-     * @param preference
-     *         The preference, which is used to show the dialog, as an instance of the class {@link
-     *         Preference}
+     * @param preference The preference, which is used to show the dialog, as an instance of the class {@link
+     *                   Preference}
      * @return The animation, which has been created, as an instance of the type {@link
      * DialogAnimation}
      */
@@ -468,8 +497,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
      * Creates and returns the circle reveal animation, which should be used to show or hide
      * dialogs.
      *
-     * @param view
-     *         The view, which is used to show the dialog, as an instance of the class {@link View}
+     * @param view The view, which is used to show the dialog, as an instance of the class {@link View}
      * @return The animation, which has been created, as an instance of the type {@link
      * DialogAnimation}
      */
@@ -576,9 +604,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
      * Creates and returns a listener, which allows to change the background color of the wizard
      * dialog, when its view pager is scrolled.
      *
-     * @param wizardDialog
-     *         The wizard dialog as an instance of the class {@link WizardDialog}. The wizard dialog
-     *         may not be null
+     * @param wizardDialog The wizard dialog as an instance of the class {@link WizardDialog}. The wizard dialog
+     *                     may not be null
      * @return The listener, which has been created, as an instance of the type {@link
      * OnPageChangeListener}
      */
@@ -626,8 +653,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
      * Creates and returns a listener, which allows to reset a wizard dialog's header background to
      * default, when its animation is finished.
      *
-     * @param wizardDialog
-     *         The wizard dialog as an instance of the class {@link WizardDialog}
+     * @param wizardDialog The wizard dialog as an instance of the class {@link WizardDialog}
      * @return The listener, which has been created, as an instance of the type {@link
      * AnimationListener}
      */
@@ -655,11 +681,9 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     /**
      * Adds a new fragment to a builder, which allows to create wizard dialogs.
      *
-     * @param builder
-     *         The builder, the fragment should be added to, as an instance of the class {@link
-     *         WizardDialog.Builder}
-     * @param index
-     *         The index of the fragment, which should be added
+     * @param builder The builder, the fragment should be added to, as an instance of the class {@link
+     *                WizardDialog.Builder}
+     * @param index   The index of the fragment, which should be added
      */
     private void addFragment(@NonNull final WizardDialog.Builder builder, final int index) {
         Bundle arguments = new Bundle();
@@ -672,9 +696,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     /**
      * Shows a specific toast and cancels a previous one, if existing.
      *
-     * @param text
-     *         The text of the toast, which should be shown, as a {@link String}, or null, if no
-     *         toast should be shown
+     * @param text The text of the toast, which should be shown, as a {@link String}, or null, if no
+     *             toast should be shown
      */
     private void showToast(@Nullable final String text) {
         if (toast != null) {
@@ -689,9 +712,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
      * Configures a builder, which allows to create header dialogs, depending on the app's
      * settings.
      *
-     * @param builder
-     *         The builder, which should be configured, as an instance of the class {@link
-     *         AbstractHeaderDialogBuilder}
+     * @param builder The builder, which should be configured, as an instance of the class {@link
+     *                AbstractHeaderDialogBuilder}
      */
     private void configureHeaderDialogBuilder(@NonNull final AbstractHeaderDialogBuilder builder) {
         builder.setFullscreen(shouldUseFullscreen());
@@ -721,9 +743,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
      * Configures a builder, which allows to create button bar dialogs, depending on the app's
      * settings.
      *
-     * @param builder
-     *         The builder, which should be configured as an instance of the class {@link
-     *         AbstractButtonBarDialogBuilder}
+     * @param builder The builder, which should be configured as an instance of the class {@link
+     *                AbstractButtonBarDialogBuilder}
      */
     private void configureButtonBarDialogBuilder(
             @NonNull final AbstractButtonBarDialogBuilder builder) {
@@ -838,6 +859,20 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         String key = getString(R.string.show_dialog_icon_preference_key);
         boolean defaultValue =
                 getResources().getBoolean(R.bool.show_dialog_icon_preference_default_value);
+        return sharedPreferences.getBoolean(key, defaultValue);
+    }
+
+    /**
+     * Returns, whether the list items of the example dialogs should have an icon, or not.
+     *
+     * @return True, if the list items should have an icon, false otherwise
+     */
+    private boolean shouldListItemIconsBeShown() {
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String key = getString(R.string.show_list_item_icon_preference_key);
+        boolean defaultValue =
+                getResources().getBoolean(R.bool.show_list_item_icon_preference_default_value);
         return sharedPreferences.getBoolean(key, defaultValue);
     }
 
@@ -1022,8 +1057,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     /**
      * Shows an alert dialog using a circle reveal animation.
      *
-     * @param view
-     *         The view, which is used to show the dialog, as an instance of the class {@link View}
+     * @param view The view, which is used to show the dialog, as an instance of the class {@link View}
      */
     public final void showAlertDialog(@NonNull final View view) {
         initializeAlertDialog();
