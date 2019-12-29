@@ -104,6 +104,12 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
             ListDialogDecorator.class.getSimpleName() + "::checkedItems";
 
     /**
+     * The name of the extra, which is used to store the enabled items within a bundle.
+     */
+    private static final String ENABLED_ITEMS_EXTRA =
+            ListDialogDecorator.class.getSimpleName() + "::enabledItems";
+
+    /**
      * The list view, which is used to show the dialog's list items.
      */
     private RecyclerView listView;
@@ -265,6 +271,27 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     }
 
     /**
+     * Returns an array, which identifies the currently enabled list items.
+     *
+     * @return An array, which identifies the currently enabled list items, as a {@link Boolean}
+     * array
+     */
+    @Nullable
+    private boolean[] getEnabledItems() {
+        if (adapter != null) {
+            boolean[] result = new boolean[adapter.getItemCount()];
+
+            for (int i = 0; i < result.length; i++) {
+                result[i] = adapter.isItemEnabled(i);
+            }
+
+            return result;
+        }
+
+        return null;
+    }
+
+    /**
      * Returns the index of the first checked item.
      *
      * @param checkedItems A boolean array that specifies, whether the item at an individual
@@ -349,6 +376,19 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
 
             if (wrappedAdapter instanceof ArrayRecyclerViewAdapter) {
                 ((ArrayRecyclerViewAdapter) wrappedAdapter).setItemIconTintMode(itemIconTintMode);
+            }
+        }
+    }
+
+    /**
+     * Adapts the enabled items.
+     *
+     * @param enabledItems An array, which indicates the enabled items, as a {@link Boolean} array
+     */
+    private void adaptEnabledItems(@Nullable final boolean[] enabledItems) {
+        if (enabledItems != null && adapter != null) {
+            for (int i = 0; i < enabledItems.length; i++) {
+                adapter.setItemEnabled(i, enabledItems[i]);
             }
         }
     }
@@ -701,12 +741,15 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
 
         if (items != null) {
             outState.putCharSequenceArray(ITEMS_EXTRA, items);
+            outState.putBooleanArray(ENABLED_ITEMS_EXTRA, getEnabledItems());
         } else if (singleChoiceItems != null) {
             outState.putCharSequenceArray(SINGLE_CHOICE_ITEMS_EXTRA, singleChoiceItems);
             outState.putBooleanArray(CHECKED_ITEMS_EXTRA, getCheckedItems());
+            outState.putBooleanArray(ENABLED_ITEMS_EXTRA, getEnabledItems());
         } else if (multiChoiceItems != null) {
             outState.putCharSequenceArray(MULTI_CHOICE_ITEMS_EXTRA, multiChoiceItems);
             outState.putBooleanArray(CHECKED_ITEMS_EXTRA, getCheckedItems());
+            outState.putBooleanArray(ENABLED_ITEMS_EXTRA, getEnabledItems());
         }
     }
 
@@ -722,9 +765,12 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         int[] iconResourceIds = savedInstanceState.getIntArray(ICON_RESOURCE_IDS_EXTRA);
 
         if (items != null) {
+            boolean[] enabledItems = savedInstanceState.getBooleanArray(ENABLED_ITEMS_EXTRA);
             setItems(items, iconResourceIds, this.singleChoiceListener);
+            adaptEnabledItems(enabledItems);
         } else {
             boolean[] checkedItems = savedInstanceState.getBooleanArray(CHECKED_ITEMS_EXTRA);
+            boolean[] enabledItems = savedInstanceState.getBooleanArray(ENABLED_ITEMS_EXTRA);
             CharSequence[] singleChoiceItems =
                     savedInstanceState.getCharSequenceArray(SINGLE_CHOICE_ITEMS_EXTRA);
 
@@ -732,6 +778,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
                 int checkedItem = checkedItems != null ? indexOfCheckedItem(checkedItems) : -1;
                 setSingleChoiceItems(singleChoiceItems, iconResourceIds, checkedItem,
                         this.singleChoiceListener);
+                adaptEnabledItems(enabledItems);
             } else {
                 CharSequence[] multiChoiceItems =
                         savedInstanceState.getCharSequenceArray(MULTI_CHOICE_ITEMS_EXTRA);
@@ -739,6 +786,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
                 if (multiChoiceItems != null) {
                     setMultiChoiceItems(multiChoiceItems, iconResourceIds, checkedItems,
                             this.multiChoiceListener);
+                    adaptEnabledItems(enabledItems);
                 }
             }
         }

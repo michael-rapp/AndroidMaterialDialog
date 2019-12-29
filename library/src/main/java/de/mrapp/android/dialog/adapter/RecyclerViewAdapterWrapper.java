@@ -289,7 +289,7 @@ public class RecyclerViewAdapterWrapper<VH extends RecyclerView.ViewHolder>
      * @return True, if the enable state of the item at the given position has changed, false
      * otherwise
      */
-    public final boolean setItemEnabledInternally(final int position, final boolean enabled) {
+    private boolean setItemEnabledInternally(final int position, final boolean enabled) {
         boolean result = false;
 
         if (enabled) {
