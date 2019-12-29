@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 5.2.1 (Dec. 29th 2019)
+
+A bugfix release, which fixes the following issues:
+
+- The icons of a `ListDialog`'s list items are now properly restored after orientation changes.
+
 ## Version 5.2.0 (Dec. 28th 2019)
 
 A feature release, which introduces the following changes:
