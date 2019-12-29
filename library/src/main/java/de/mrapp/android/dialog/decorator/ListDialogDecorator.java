@@ -77,6 +77,13 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     private static final String ITEMS_EXTRA = ListDialogDecorator.class.getSimpleName() + "::items";
 
     /**
+     * The name of the extra, which is used to store the resource ids of the iconds of the dialog's
+     * items within a bundle.
+     */
+    private static final String ICON_RESOURCE_IDS_EXTRA =
+            ListDialogDecorator.class.getSimpleName() + "::iconResourceIds";
+
+    /**
      * The name of the extra, which is used to store the dialog's single choice items within a
      * bundle.
      */
@@ -169,6 +176,11 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
      * The dialog's items.
      */
     private CharSequence[] items;
+
+    /**
+     * The resource ids of the icons of the dialog's items.
+     */
+    private int[] iconResourceIds;
 
     /**
      * The dialog's single choice items.
@@ -468,6 +480,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
                                @Nullable final int[] iconResourceIds,
                                @Nullable final DialogInterface.OnClickListener listener) {
         this.items = items;
+        this.iconResourceIds = iconResourceIds;
         this.singleChoiceItems = null;
         this.multiChoiceItems = null;
         this.adapter = items != null ? new RecyclerViewAdapterWrapper<>(getContext(),
@@ -497,6 +510,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
             @Nullable final RecyclerView.LayoutManager layoutManager,
             @Nullable final DialogInterface.OnClickListener listener) {
         this.items = null;
+        this.iconResourceIds = null;
         this.singleChoiceItems = null;
         this.multiChoiceItems = null;
         this.adapter = adapter != null ?
@@ -522,6 +536,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
                                            final int checkedItem,
                                            @Nullable final DialogInterface.OnClickListener listener) {
         this.items = null;
+        this.iconResourceIds = iconResourceIds;
         this.singleChoiceItems = items;
         this.multiChoiceItems = null;
         this.adapter = items != null ? new RecyclerViewAdapterWrapper<>(getContext(),
@@ -559,6 +574,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
             @Nullable final RecyclerView.LayoutManager layoutManager, final int checkedItem,
             @Nullable final DialogInterface.OnClickListener listener) {
         this.items = null;
+        this.iconResourceIds = null;
         this.singleChoiceItems = null;
         this.multiChoiceItems = null;
         this.adapter = adapter != null ?
@@ -592,6 +608,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         Condition.INSTANCE.ensureTrue(checkedItems == null || items == null ||
                 checkedItems.length == items.length, "Invalid number of checked items given");
         this.items = null;
+        this.iconResourceIds = iconResourceIds;
         this.singleChoiceItems = null;
         this.multiChoiceItems = items;
         this.adapter = items != null ? new RecyclerViewAdapterWrapper<>(getContext(),
@@ -636,6 +653,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
                         adapter.getItemCount() == checkedItems.length,
                 "Invalid number of checked items given");
         this.items = null;
+        this.iconResourceIds = null;
         this.singleChoiceItems = null;
         this.multiChoiceItems = null;
         this.adapter = adapter != null ?
@@ -679,6 +697,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
     @Override
     public final void onSaveInstanceState(@NonNull final Bundle outState) {
         outState.putParcelable(ITEM_COLOR_EXTRA, getItemColor());
+        outState.putIntArray(ICON_RESOURCE_IDS_EXTRA, iconResourceIds);
 
         if (items != null) {
             outState.putCharSequenceArray(ITEMS_EXTRA, items);
@@ -700,9 +719,10 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         }
 
         CharSequence[] items = savedInstanceState.getCharSequenceArray(ITEMS_EXTRA);
+        int[] iconResourceIds = savedInstanceState.getIntArray(ICON_RESOURCE_IDS_EXTRA);
 
         if (items != null) {
-            setItems(items, null);
+            setItems(items, iconResourceIds, null);
         } else {
             boolean[] checkedItems = savedInstanceState.getBooleanArray(CHECKED_ITEMS_EXTRA);
             CharSequence[] singleChoiceItems =
@@ -710,13 +730,13 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
 
             if (singleChoiceItems != null) {
                 int checkedItem = checkedItems != null ? indexOfCheckedItem(checkedItems) : -1;
-                setSingleChoiceItems(singleChoiceItems, checkedItem, null);
+                setSingleChoiceItems(singleChoiceItems, iconResourceIds, checkedItem, null);
             } else {
                 CharSequence[] multiChoiceItems =
                         savedInstanceState.getCharSequenceArray(MULTI_CHOICE_ITEMS_EXTRA);
 
                 if (multiChoiceItems != null) {
-                    setMultiChoiceItems(multiChoiceItems, checkedItems, null);
+                    setMultiChoiceItems(multiChoiceItems, iconResourceIds, checkedItems, null);
                 }
             }
         }
