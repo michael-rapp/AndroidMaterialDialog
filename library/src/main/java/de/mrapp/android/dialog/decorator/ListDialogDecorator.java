@@ -722,7 +722,7 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
         int[] iconResourceIds = savedInstanceState.getIntArray(ICON_RESOURCE_IDS_EXTRA);
 
         if (items != null) {
-            setItems(items, iconResourceIds, null);
+            setItems(items, iconResourceIds, this.singleChoiceListener);
         } else {
             boolean[] checkedItems = savedInstanceState.getBooleanArray(CHECKED_ITEMS_EXTRA);
             CharSequence[] singleChoiceItems =
@@ -730,13 +730,15 @@ public class ListDialogDecorator extends AbstractDialogDecorator<ButtonBarDialog
 
             if (singleChoiceItems != null) {
                 int checkedItem = checkedItems != null ? indexOfCheckedItem(checkedItems) : -1;
-                setSingleChoiceItems(singleChoiceItems, iconResourceIds, checkedItem, null);
+                setSingleChoiceItems(singleChoiceItems, iconResourceIds, checkedItem,
+                        this.singleChoiceListener);
             } else {
                 CharSequence[] multiChoiceItems =
                         savedInstanceState.getCharSequenceArray(MULTI_CHOICE_ITEMS_EXTRA);
 
                 if (multiChoiceItems != null) {
-                    setMultiChoiceItems(multiChoiceItems, iconResourceIds, checkedItems, null);
+                    setMultiChoiceItems(multiChoiceItems, iconResourceIds, checkedItems,
+                            this.multiChoiceListener);
                 }
             }
         }
