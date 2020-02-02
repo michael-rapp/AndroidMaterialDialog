@@ -35,6 +35,15 @@ import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+import androidx.core.content.ContextCompat;
+import androidx.core.util.Pair;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -43,13 +52,6 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import androidx.annotation.AttrRes;
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StyleRes;
-import androidx.core.content.ContextCompat;
-import androidx.core.util.Pair;
 import de.mrapp.android.dialog.R;
 import de.mrapp.android.dialog.ScrollableArea;
 import de.mrapp.android.dialog.ScrollableArea.Area;
@@ -95,9 +97,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
         /**
          * Creates a new view type, which represents a view, which corresponds to an {@link Area}.
          *
-         * @param area
-         *         The area, the view corresponds to, as a value of the enum {@link Area}. The area
-         *         may not be null
+         * @param area The area, the view corresponds to, as a value of the enum {@link Area}. The area
+         *             may not be null
          */
         public AreaViewType(final Area area) {
             Condition.INSTANCE.ensureNotNull(area, "The area may not be null");
@@ -160,9 +161,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
         /**
          * Creates a new view type, which represents a divider.
          *
-         * @param location
-         *         The location of the divider as a value of the enum {@link DividerLocation}. The
-         *         location may not be null
+         * @param location The location of the divider as a value of the enum {@link DividerLocation}. The
+         *                 location may not be null
          */
         public DividerViewType(@NonNull final DividerLocation location) {
             Condition.INSTANCE.ensureNotNull(location, "The location may not be null");
@@ -291,6 +291,11 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     private AbsListView listView;
 
     /**
+     * The recycler view, which is contained by the dialog.
+     */
+    private RecyclerView recyclerView;
+
+    /**
      * The divider, which is shown above the scrollable areas of the dialog.
      */
     private Divider topDivider;
@@ -402,7 +407,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
             }
 
             adaptAreaPadding();
-            findListView();
+            findListOrRecyclerView();
         }
     }
 
@@ -410,12 +415,12 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * Searches for the list view, which is contained by the dialog, in order to register a scroll
      * listener.
      */
-    private void findListView() {
+    private void findListOrRecyclerView() {
         if (scrollView == null) {
             View contentContainer = findViewById(R.id.content_container);
 
             if (contentContainer != null) {
-                findListView(contentContainer);
+                findListOrRecyclerView(contentContainer);
             }
         }
     }
@@ -424,20 +429,23 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * Searches for the list view, which is contained by the dialog, in order to register a scroll
      * listener.
      *
-     * @param view
-     *         The view, which should be searched, as an instance of the class {@link ViewGroup}.
-     *         The view may not be null
+     * @param view The view, which should be searched, as an instance of the class {@link ViewGroup}.
+     *             The view may not be null
      */
-    private boolean findListView(@NonNull final View view) {
+    private boolean findListOrRecyclerView(@NonNull final View view) {
         if (view instanceof AbsListView) {
             this.listView = (AbsListView) view;
             this.listView.setOnScrollListener(createListViewScrollListener());
+            return true;
+        } else if (view instanceof RecyclerView) {
+            this.recyclerView = (RecyclerView) view;
+            this.recyclerView.addOnScrollListener(createRecyclerViewScrollListener());
             return true;
         } else if (view instanceof ViewGroup) {
             ViewGroup viewGroup = (ViewGroup) view;
 
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                if (findListView(viewGroup.getChildAt(i))) {
+                if (findListOrRecyclerView(viewGroup.getChildAt(i))) {
                     return true;
                 }
             }
@@ -545,6 +553,9 @@ public class DialogRootView extends LinearLayout implements AreaListener {
         } else if (listView != null) {
             listView.getViewTreeObserver()
                     .addOnGlobalLayoutListener(createScrollViewLayoutListener(listView));
+        } else if (recyclerView != null) {
+            recyclerView.getViewTreeObserver()
+                    .addOnGlobalLayoutListener(createScrollViewLayoutListener(recyclerView));
         }
     }
 
@@ -552,8 +563,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * Creates and returns a {@link OnGlobalLayoutListener}, which allows to adjust the initial
      * visibility of the dividers, when a view has been layouted.
      *
-     * @param view
-     *         The observed view as an instance of the class {@link View}. The view may not be null
+     * @param view The observed view as an instance of the class {@link View}. The view may not be null
      * @return The listener, which has been created, as an instance of the type {@link
      * OnGlobalLayoutListener}. The listener may not be null
      */
@@ -581,6 +591,9 @@ public class DialogRootView extends LinearLayout implements AreaListener {
         } else if (listView != null) {
             adaptDividerVisibilities(isListViewScrolledToTop(listView),
                     isListViewScrolledToBottom(listView), false);
+        } else if (recyclerView != null) {
+            adaptDividerVisibilities(isRecyclerViewScrolledToTop(recyclerView),
+                    isRecyclerViewScrolledToBottom(recyclerView), false);
         }
     }
 
@@ -588,12 +601,9 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * Adapts the visibility of the top and bottom divider, depending on whether the scrollable area
      * is scrolled to the top/bottom, or not.
      *
-     * @param scrolledToTop
-     *         True, if the scrollable area is scrolled to the top, false otherwise
-     * @param scrolledToBottom
-     *         True, if the scrollable area is scrolled to the bottom, false otherwise
-     * @param animate
-     *         True, if the visibility should be changed in an animated manner, false otherwise
+     * @param scrolledToTop    True, if the scrollable area is scrolled to the top, false otherwise
+     * @param scrolledToBottom True, if the scrollable area is scrolled to the bottom, false otherwise
+     * @param animate          True, if the visibility should be changed in an animated manner, false otherwise
      */
     private void adaptDividerVisibilities(final boolean scrolledToTop,
                                           final boolean scrolledToBottom, final boolean animate) {
@@ -613,9 +623,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     /**
      * Returns, whether a specific list view is scrolled to the bottom, or not.
      *
-     * @param scrollView
-     *         The list view as an instance of the class {@link AbsListView}. The list view may not
-     *         be null
+     * @param scrollView The list view as an instance of the class {@link AbsListView}. The list view may not
+     *                   be null
      * @return True, if the given list view is scrolled to the bottom, false otherwise
      */
     private boolean isListViewScrolledToBottom(@NonNull final AbsListView scrollView) {
@@ -634,9 +643,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     /**
      * Returns, whether a specific list view is scrolled to the top, or not.
      *
-     * @param listView
-     *         The list view as an instance of the class {@link AbsListView}. The list view may not
-     *         be null
+     * @param listView The list view as an instance of the class {@link AbsListView}. The list view may not
+     *                 be null
      * @return True, if the given list view is scrolled to the top, false otherwise
      */
     private boolean isListViewScrolledToTop(@NonNull final AbsListView listView) {
@@ -653,14 +661,34 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     }
 
     /**
+     * Returns, whether a specific recylcer view is scrolled to the bottom, or not.
+     *
+     * @param recyclerView The recycler view as an instance of the class {@link RecyclerView}. The
+     *                     recycler view may not be null
+     * @return True, if the given recycler view is scrolled to the bottom, false otherwise
+     */
+    private boolean isRecyclerViewScrolledToBottom(@NonNull final RecyclerView recyclerView) {
+        return !recyclerView.canScrollVertically(1);
+    }
+
+    /**
+     * Returns, whether a specific recylcer view is scrolled to the top, or not.
+     *
+     * @param recyclerView The recycler view as an instance of the class {@link RecyclerView}. The
+     *                     recycler view may not be null
+     * @return True, if the given recycler view is scrolled to the top, false otherwise
+     */
+    private boolean isRecyclerViewScrolledToTop(@NonNull final RecyclerView recyclerView) {
+        return !recyclerView.canScrollVertically(-1);
+    }
+
+    /**
      * Applies the dialog's left padding to the view of a specific area.
      *
-     * @param area
-     *         The area, the view, the padding should be applied to, corresponds to, as an instance
-     *         of the class {@link Area}. The area may not be null
-     * @param view
-     *         The view, the padding should be applied to, as an instance of the class {@link View}.
-     *         The view may not be null
+     * @param area The area, the view, the padding should be applied to, corresponds to, as an instance
+     *             of the class {@link Area}. The area may not be null
+     * @param view The view, the padding should be applied to, as an instance of the class {@link View}.
+     *             The view may not be null
      */
     private void applyDialogPaddingLeft(@NonNull final Area area, @NonNull final View view) {
         int padding = area != Area.HEADER && area != Area.BUTTON_BAR && area != Area.CONTENT ?
@@ -672,12 +700,10 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     /**
      * Applies the dialog's top padding to the view of a specific area.
      *
-     * @param area
-     *         The area, the view, the padding should be applied to, corresponds to, as an instance
-     *         of the class {@link Area}. The area may not be null
-     * @param view
-     *         The view, the padding should be applied to, as an instance of the class {@link View}.
-     *         The view may not be null
+     * @param area The area, the view, the padding should be applied to, corresponds to, as an instance
+     *             of the class {@link Area}. The area may not be null
+     * @param view The view, the padding should be applied to, as an instance of the class {@link View}.
+     *             The view may not be null
      */
     private boolean applyDialogPaddingTop(@NonNull final Area area, @NonNull final View view) {
         if (area != Area.HEADER && area != Area.CONTENT && area != Area.BUTTON_BAR &&
@@ -693,12 +719,10 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     /**
      * Applies the dialog's right padding to the view of a specific area.
      *
-     * @param area
-     *         The area, the view, the padding should be applied to, corresponds to, as an instance
-     *         of the class {@link Area}. The area may not be null
-     * @param view
-     *         The view, the padding should be applied to, as an instance of the class {@link View}.
-     *         The view may not be null
+     * @param area The area, the view, the padding should be applied to, corresponds to, as an instance
+     *             of the class {@link Area}. The area may not be null
+     * @param view The view, the padding should be applied to, as an instance of the class {@link View}.
+     *             The view may not be null
      */
     private void applyDialogPaddingRight(@NonNull final Area area, @NonNull final View view) {
         int padding = area != Area.HEADER && area != Area.BUTTON_BAR && area != Area.CONTENT ?
@@ -710,12 +734,10 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     /**
      * Applies the dialog's bottom padding to the view of a specific area.
      *
-     * @param area
-     *         The area, the view, the padding should be applied to, corresponds to, as an instance
-     *         of the class {@link Area}. The area may not be null
-     * @param view
-     *         The view, the padding should be applied to, as an instance of the class {@link View}.
-     *         The view may not be null
+     * @param area The area, the view, the padding should be applied to, corresponds to, as an instance
+     *             of the class {@link Area}. The area may not be null
+     * @param view The view, the padding should be applied to, as an instance of the class {@link View}.
+     *             The view may not be null
      */
     private void applyDialogPaddingBottom(@NonNull final Area area, @NonNull final View view) {
         if (area != Area.HEADER && area != Area.BUTTON_BAR) {
@@ -728,14 +750,11 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * Adds spacing to the view of a specific area. The spacing is added to the view's current
      * bottom padding.
      *
-     * @param previousArea
-     *         The area, the view, the spacing should be applied to, corresponds to, as an instance
-     *         of the class {@link Area}. The area may not be null
-     * @param previousView
-     *         The view, the spacing should be applied to, as an instance of the class {@link View}.
-     *         The view may not be null
-     * @param area
-     *         The current area as a value of the enum {@link Area}. The area may not be null
+     * @param previousArea The area, the view, the spacing should be applied to, corresponds to, as an instance
+     *                     of the class {@link Area}. The area may not be null
+     * @param previousView The view, the spacing should be applied to, as an instance of the class {@link View}.
+     *                     The view may not be null
+     * @param area         The current area as a value of the enum {@link Area}. The area may not be null
      * @return A pair, which contains the top and bottom padding, which should be added to the
      * dialog's scroll view, as an instance of the class {@link Pair} value
      */
@@ -777,9 +796,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * Inflates the scroll view, which contains the dialog's scrollable areas, if it has not been
      * inflated yet.
      *
-     * @param scrollableArea
-     *         The scrollable area of the dialog, as an instance of the class {@link
-     *         ScrollableArea}. The scrollable area may not be null
+     * @param scrollableArea The scrollable area of the dialog, as an instance of the class {@link
+     *                       ScrollableArea}. The scrollable area may not be null
      */
     private void inflateScrollView(@NonNull final ScrollableArea scrollableArea) {
         if (scrollView == null) {
@@ -855,11 +873,11 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     }
 
     /**
-     * Creates and returns a listener, which allows to observe the list view, which is contained by
-     * the dialog, is scrolled.
+     * Creates and returns a listener, which allows to observe when the list view, which is
+     * contained by the dialog, is scrolled.
      *
-     * @return The listener, which has been created, as an instance of the type {@link
-     * android.widget.AbsListView.OnScrollListener}. The listener may not be null
+     * @return The listener, which has been created, as an instance of the type
+     * {@link AbsListView.OnScrollListener}. The listener may not be null
      */
     @NonNull
     private AbsListView.OnScrollListener createListViewScrollListener() {
@@ -875,6 +893,33 @@ public class DialogRootView extends LinearLayout implements AreaListener {
                                  final int visibleItemCount, final int totalItemCount) {
                 adaptDividerVisibilities(isListViewScrolledToTop(view),
                         isListViewScrolledToBottom(view), true);
+            }
+
+        };
+    }
+
+    /**
+     * Creates and returns a listener, which allows to observe when the recycler view, which is
+     * contained by the dialog, is scrolled.
+     *
+     * @return The listener, which has been created, as an instance of the type
+     * {@link RecyclerView.OnScrollListener}. The listener may not be null
+     */
+    @NonNull
+    private RecyclerView.OnScrollListener createRecyclerViewScrollListener() {
+        return new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(@NonNull final RecyclerView recyclerView,
+                                             final int newState) {
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx,
+                                   final int dy) {
+                adaptDividerVisibilities(isRecyclerViewScrolledToTop(recyclerView),
+                        isRecyclerViewScrolledToBottom(recyclerView), true);
             }
 
         };
@@ -897,9 +942,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     /**
      * Adapts the color of a specific divider.
      *
-     * @param divider
-     *         The divider, whose color should be adapted, as an instance of the class {@link
-     *         Divider}
+     * @param divider The divider, whose color should be adapted, as an instance of the class {@link
+     *                Divider}
      */
     private void adaptDividerColor(@Nullable final Divider divider) {
         if (divider != null) {
@@ -924,9 +968,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     /**
      * Adapts the left and right margin of a specific divider.
      *
-     * @param divider
-     *         The divider, whose left and right margin should be adapted, as an instance of the
-     *         class {@link Divider}
+     * @param divider The divider, whose left and right margin should be adapted, as an instance of the
+     *                class {@link Divider}
      */
     private void adaptDividerMargin(@Nullable final Divider divider) {
         if (divider != null) {
@@ -983,9 +1026,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * Creates a new root view of a dialog, which is designed according to Android 5's Material
      * Design guidelines even on pre-Lollipop devices.
      *
-     * @param context
-     *         The context, which should be used by the view, as an instance of the class {@link
-     *         Context}. The context may not be null
+     * @param context The context, which should be used by the view, as an instance of the class {@link
+     *                Context}. The context may not be null
      */
     public DialogRootView(@NonNull final Context context) {
         this(context, null);
@@ -995,12 +1037,10 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * Creates a new root view of a dialog, which is designed according to Android 5's Material
      * Design guidelines even on pre-Lollipop devices.
      *
-     * @param context
-     *         The context, which should be used by the view, as an instance of the class {@link
-     *         Context}. The context may not be null
-     * @param attributeSet
-     *         The attribute set, the view's attributes should be obtained from, as an instance of
-     *         the type {@link AttributeSet} or null, if no attributes should be obtained
+     * @param context      The context, which should be used by the view, as an instance of the class {@link
+     *                     Context}. The context may not be null
+     * @param attributeSet The attribute set, the view's attributes should be obtained from, as an instance of
+     *                     the type {@link AttributeSet} or null, if no attributes should be obtained
      */
     public DialogRootView(@NonNull final Context context,
                           @Nullable final AttributeSet attributeSet) {
@@ -1012,16 +1052,13 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * Creates a new root view of a dialog, which is designed according to Android 5's Material
      * Design guidelines even on pre-Lollipop devices.
      *
-     * @param context
-     *         The context, which should be used by the view, as an instance of the class {@link
-     *         Context}. The context may not be null
-     * @param attributeSet
-     *         The attribute set, the view's attributes should be obtained from, as an instance of
-     *         the type {@link AttributeSet} or null, if no attributes should be obtained
-     * @param defaultStyle
-     *         The default style to apply to this view. If 0, no style will be applied (beyond what
-     *         is included in the theme). This may either be an attribute resource, whose value will
-     *         be retrieved from the current theme, or an explicit style resource
+     * @param context      The context, which should be used by the view, as an instance of the class {@link
+     *                     Context}. The context may not be null
+     * @param attributeSet The attribute set, the view's attributes should be obtained from, as an instance of
+     *                     the type {@link AttributeSet} or null, if no attributes should be obtained
+     * @param defaultStyle The default style to apply to this view. If 0, no style will be applied (beyond what
+     *                     is included in the theme). This may either be an attribute resource, whose value will
+     *                     be retrieved from the current theme, or an explicit style resource
      */
     public DialogRootView(@NonNull final Context context, @Nullable final AttributeSet attributeSet,
                           @AttrRes final int defaultStyle) {
@@ -1033,20 +1070,16 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * Creates a new root view of a dialog, which is designed according to Android 5's Material
      * Design guidelines even on pre-Lollipop devices.
      *
-     * @param context
-     *         The context, which should be used by the view, as an instance of the class {@link
-     *         Context}. The context may not be null
-     * @param attributeSet
-     *         The attribute set, the view's attributes should be obtained from, as an instance of
-     *         the type {@link AttributeSet} or null, if no attributes should be obtained
-     * @param defaultStyle
-     *         The default style to apply to this view. If 0, no style will be applied (beyond what
-     *         is included in the theme). This may either be an attribute resource, whose value will
-     *         be retrieved from the current theme, or an explicit style resource
-     * @param defaultStyleResource
-     *         A resource identifier of a style resource that supplies default values for the view,
-     *         used only if the default style is 0 or can not be found in the theme. Can be 0 to not
-     *         look for defaults
+     * @param context              The context, which should be used by the view, as an instance of the class {@link
+     *                             Context}. The context may not be null
+     * @param attributeSet         The attribute set, the view's attributes should be obtained from, as an instance of
+     *                             the type {@link AttributeSet} or null, if no attributes should be obtained
+     * @param defaultStyle         The default style to apply to this view. If 0, no style will be applied (beyond what
+     *                             is included in the theme). This may either be an attribute resource, whose value will
+     *                             be retrieved from the current theme, or an explicit style resource
+     * @param defaultStyleResource A resource identifier of a style resource that supplies default values for the view,
+     *                             used only if the default style is 0 or can not be found in the theme. Can be 0 to not
+     *                             look for defaults
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public DialogRootView(@NonNull final Context context, @Nullable final AttributeSet attributeSet,
@@ -1059,12 +1092,10 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     /**
      * Sets the background and inset of the dialog's window.
      *
-     * @param windowBackground
-     *         The background, which should be set, as an instance of the class {@link Drawable} or
-     *         null, if no window background is set
-     * @param windowInsets
-     *         The insets of the dialog's window as an instance of the class {@link Rect} or null,
-     *         if no window background is set
+     * @param windowBackground The background, which should be set, as an instance of the class {@link Drawable} or
+     *                         null, if no window background is set
+     * @param windowInsets     The insets of the dialog's window as an instance of the class {@link Rect} or null,
+     *                         if no window background is set
      */
     public final void setWindowBackgroundAndInset(@Nullable final Drawable windowBackground,
                                                   @Nullable final Rect windowInsets) {
@@ -1076,8 +1107,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     /**
      * Sets, whether the dialog is shown fullscreen, or not.
      *
-     * @param fullscreen
-     *         True, if the dialog is shown fullscreen, false otherwise
+     * @param fullscreen True, if the dialog is shown fullscreen, false otherwise
      */
     public final void setFullscreen(final boolean fullscreen) {
         this.fullscreen = fullscreen;
@@ -1087,9 +1117,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     /**
      * Sets the maximum width of the view.
      *
-     * @param maxWidth
-     *         The maximum width, which should be set, in pixels as an {@link Integer} value. The
-     *         maximum width must be at least 1 or -1, if no maximum width should be set
+     * @param maxWidth The maximum width, which should be set, in pixels as an {@link Integer} value. The
+     *                 maximum width must be at least 1 or -1, if no maximum width should be set
      */
     public final void setMaxWidth(final int maxWidth) {
         if (maxWidth != -1) {
@@ -1103,9 +1132,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     /**
      * Sets the maximum height of the view.
      *
-     * @param maxHeight
-     *         The maximum height, which should be set, in pixels as an {@link Integer} value. The
-     *         maximum height must be at least 1 or -1, if no maximum height should be set
+     * @param maxHeight The maximum height, which should be set, in pixels as an {@link Integer} value. The
+     *                  maximum height must be at least 1 or -1, if no maximum height should be set
      */
     public final void setMaxHeight(final int maxHeight) {
         if (maxHeight != -1) {
@@ -1131,9 +1159,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     /**
      * Sets the scrollable area of the dialog.
      *
-     * @param scrollableArea
-     *         The scrollable area, which should be set, as an instance of the class {@link
-     *         ScrollableArea}. The scrollable area may not be null
+     * @param scrollableArea The scrollable area, which should be set, as an instance of the class {@link
+     *                       ScrollableArea}. The scrollable area may not be null
      */
     public final void setScrollableArea(@NonNull final ScrollableArea scrollableArea) {
         Condition.INSTANCE.ensureNotNull(scrollableArea, "The scrollable area may not be null");
@@ -1145,9 +1172,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
      * Sets, whether dividers, which are located above and below the dialog's scrollable areas,
      * should be shown, when scrolled, or not.
      *
-     * @param show
-     *         True, if the dividers, which are located above and below the dialog's scrollable
-     *         areas, should be shown, when scrolling, false otherwise
+     * @param show True, if the dividers, which are located above and below the dialog's scrollable
+     *             areas, should be shown, when scrolling, false otherwise
      */
     public final void showDividersOnScroll(final boolean show) {
         this.showDividersOnScroll = show;
@@ -1157,8 +1183,7 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     /**
      * Sets the color of dividers.
      *
-     * @param color
-     *         The color, which should be set, as an {@link Integer} value
+     * @param color The color, which should be set, as an {@link Integer} value
      */
     public final void setDividerColor(@ColorInt final int color) {
         this.dividerColor = color;
@@ -1168,9 +1193,8 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     /**
      * Sets the left and right margin of the divider, which is located above the dialog's button.
      *
-     * @param margin
-     *         The left and right margin, which should be set, in pixels as an {@link Integer}
-     *         value. The margin must be at least 0
+     * @param margin The left and right margin, which should be set, in pixels as an {@link Integer}
+     *               value. The margin must be at least 0
      */
     public final void setDividerMargin(final int margin) {
         Condition.INSTANCE.ensureAtLeast(margin, 0, "The margin must be at least 0");
@@ -1181,10 +1205,9 @@ public class DialogRootView extends LinearLayout implements AreaListener {
     /**
      * Adds the different areas of a dialog to the root view.
      *
-     * @param areas
-     *         A map, which contains the areas, which should be added, as keys and their
-     *         corresponding views as values, as an instance of the type {@link Map}. The map may
-     *         not be null
+     * @param areas A map, which contains the areas, which should be added, as keys and their
+     *              corresponding views as values, as an instance of the type {@link Map}. The map may
+     *              not be null
      */
     public final void addAreas(@NonNull final Map<ViewType, View> areas) {
         this.areas = new TreeMap<>(new AreaComparator());
