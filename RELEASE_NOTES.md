@@ -1,6 +1,6 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
-## Version 5.2.1 (Dec. 29th 2019)
+## Version 5.2.2 (Dec. 29th 2019)
 
 A bugfix release, which fixes the following issues:
 
