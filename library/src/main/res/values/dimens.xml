@@ -16,8 +16,8 @@ License.
 <resources>
 
     <dimen name="dialog_width">386dp</dimen>
-    <dimen name="dialog_horizontal_margin">10dp</dimen>
-    <dimen name="dialog_vertical_margin">10dp</dimen>
+    <dimen name="dialog_horizontal_margin">8dp</dimen>
+    <dimen name="dialog_vertical_margin">48dp</dimen>
     <dimen name="dialog_max_width">-1</dimen>
     <dimen name="dialog_max_height">-1</dimen>
     <dimen name="dialog_left_padding">24dp</dimen>
