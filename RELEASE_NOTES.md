@@ -5,6 +5,7 @@
 A bugfix release, which fixes the following issues:
 
 - Changed the default margin of dialogs on smartphones.
+- Dividers are now properly shown when `showDividersOnScroll` is set to true and a `MaterialDialog` contains a `RecyclerView` instead of an `AbsListView`.
 
 ## Version 5.2.2 (Dec. 29th 2019)
 
