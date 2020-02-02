@@ -1,5 +1,11 @@
 # AndroidMaterialDialog - RELEASE NOTES
 
+## Version 5.2.3 (Feb. 2nd 2020)
+
+A bugfix release, which fixes the following issues:
+
+- Changed the default margin of dialogs on smartphones.
+
 ## Version 5.2.2 (Dec. 29th 2019)
 
 A bugfix release, which fixes the following issues:
